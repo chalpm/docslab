@@ -261,6 +261,34 @@ class Sesion:
                     cel.execution_count = None
                     self._tocar(cel["id"])
 
+    def borrar_variables(self) -> bool:
+        """Borra las variables del núcleo (como «%reset -f») sin reiniciarlo: es más rápido, pero los
+        paquetes ya importados siguen cargados (para usar uno recién instalado hay que reiniciar).
+        Devuelve False si el núcleo estaba apagado (no había nada que borrar)."""
+        with self.mutex:
+            if self.ocupado():
+                raise ErrorAlmacen("Python está ocupado: espera a que termine la celda o interrúmpela")
+            if not (self.km and self.km.is_alive()):
+                return False
+            self.ultimo_uso = time.time()
+            kc = self.kc
+            msg_id = kc.execute("get_ipython().run_line_magic('reset', '-f')", silent=True, store_history=False)
+            limite = time.time() + 20
+            while time.time() < limite:
+                try:
+                    r = kc.get_shell_msg(timeout=1)
+                except queue.Empty:
+                    continue
+                if r["parent_header"].get("msg_id") == msg_id:
+                    break
+            else:
+                raise ErrorAlmacen("Python no respondió a tiempo")
+            for cel in self.nb.cells:                   # los números de ejecución ya no valen
+                if cel.cell_type == "code" and cel.get("execution_count") is not None:
+                    cel.execution_count = None
+                    self._tocar(cel["id"])
+            return True
+
     # ------------------------------------------------------------------ ejecución
     def ejecutar(self, ids: list[str] | None):
         with self.mutex:
@@ -356,12 +384,22 @@ class Sesion:
         msg_id = kc.execute(cel.source, store_history=True, allow_stdin=False)
         limite = time.time() + tiempo
         ok = True
+        respuesta, gracia = None, 0.0
         while True:
             try:
                 msg = kc.get_iopub_msg(timeout=1)
             except queue.Empty:
                 if self.km is None or not self.km.is_alive():
                     raise RuntimeError("el proceso de Python terminó (¿memoria agotada?)")
+                # Red de seguridad: si Python ya contestó que terminó (canal shell) pero el «idle» del canal
+                # iopub no llega, se da la celda por terminada a los 3 s en vez de esperar todo el límite.
+                if respuesta is None:
+                    respuesta = _respuesta_shell(kc, msg_id)
+                    gracia = time.time() + 3
+                elif time.time() > gracia:
+                    if respuesta.get("status") == "error":
+                        ok = False
+                    break
                 if time.time() > limite:
                     self.interrumpir()
                     limite = time.time() + 30
@@ -424,6 +462,17 @@ class Sesion:
                     raise ErrorAlmacen(f"{exp.get('ename', 'Error')}: {exp.get('evalue', '')}"[:400])
                 return json.loads(ast.literal_eval(exp["data"]["text/plain"]))
             raise ErrorAlmacen("El núcleo no respondió a tiempo")
+
+
+def _respuesta_shell(kc, msg_id: str) -> dict | None:
+    """El «execute_reply» de msg_id si ya está en el canal shell (sin esperar); None si no."""
+    while True:
+        try:
+            r = kc.get_shell_msg(timeout=0)
+        except queue.Empty:
+            return None
+        if r["parent_header"].get("msg_id") == msg_id and r.get("msg_type") == "execute_reply":
+            return r.get("content") or {}
 
 
 def _error_propio(nombre: str, valor: str):

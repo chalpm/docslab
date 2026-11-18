@@ -1,4 +1,4 @@
-# Especificación funcional · DocsLab 1.4.0
+# Especificación funcional · DocsLab 1.5.0
 
 Catálogo de funciones con identificadores estables (**F-NN**). Cada versión futura indica en el CHANGELOG qué F-NN añade, cambia o retira. Los identificadores no se reutilizan.
 
@@ -81,8 +81,16 @@ Columnas: **Módulos** (backend), **API** (grupo de `docs/API.md`), **Pruebas** 
 **Módulos.** `cuadernos.py`, `trabajos.py`. **API.** Cuadernos, Explorador. **Pruebas.** `test_api.py` · `test_cuaderno_genera_figuras`, `test_explorar_solo_dentro_de_las_raices`. **Estado.** Estable.
 
 ## F-18 · LAB interactivo
-**Descripción.** Cuadernos celda a celda (código y Markdown) con un núcleo persistente que conserva las variables y se apaga tras 3 h sin uso; ejecutar todo, reiniciar, limpiar y «Ejecutar en limpio»; guardado automático como `.ipynb`.
-**Módulos.** `lab.py`. **API.** LAB. **Pruebas.** `test_lab.py` · `test_cuaderno_nuevo_y_edicion`, `test_ejecutar_celda_a_celda_conserva_las_variables`. **Estado.** Estable.
+**Descripción.** Cuadernos celda a celda (código y Markdown) con un núcleo persistente que conserva las variables y se apaga tras 3 h sin uso. Acciones: ejecutar todo, interrumpir, limpiar salidas, «Ejecutar en limpio», y guardado automático como `.ipynb`. Desde 1.5.0:
+- **Reiniciar Python**, con botón visible: nuevo proceso, para cargar paquetes instalados o actualizados.
+- **Borrar las variables (sin reiniciar)**, como `%reset -f` en el mismo proceso.
+- **Avisos de paquetes:**
+  - tras un `%pip|!pip|%conda|uv pip install` que instaló algo, se propone reiniciar (o reiniciar y ejecutar todo);
+  - ante un `ModuleNotFoundError`, se propone insertar y ejecutar `%pip install <paquete>`, con el nombre de pip correcto para los módulos que se llaman distinto;
+  - ante `google.colab`, se explica que esa celda es propia de Colab.
+- **Red de seguridad:** si Python contesta en el canal shell pero no llega el «idle» del canal iopub, la celda se da por terminada a los 3 s.
+
+**Módulos.** `lab.py` (`borrar_variables`, `_respuesta_shell`), frontend `cuaderno.js`. **API.** `POST …/lab/<nb>/reiniciar`, `POST …/lab/<nb>/borrar-variables`. **Pruebas.** `test_lab.py` · `test_cuaderno_nuevo_y_edicion`, `test_ejecutar_celda_a_celda_conserva_las_variables`, `test_borrar_variables_conserva_el_proceso_y_reiniciar_lo_cambia`, `test_una_celda_no_se_queda_colgada_si_se_pierde_el_idle`. Los avisos se probaron en un navegador real con un paquete instalado de verdad. **Estado.** Estable.
 
 ## F-19 · Plantillas de gráficos
 **Descripción.** Gráficos con formulario: 73 plantillas incluidas (ver F-26 y F-27) con matplotlib, seaborn o plotly, filtrables por categoría y por biblioteca. Datos: CSV, TSV, Excel, JSON, Parquet o un DataFrame del cuaderno. El código generado se inserta en una celda editable. Plantillas propias en `datos/graficos/`; «Probar» las ejecuta con todos los datos de ejemplo.

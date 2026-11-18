@@ -910,11 +910,17 @@ details.seccion-banco > summary { cursor: pointer; font-weight: 700; }
 .figuras-lab .contenido-panel { padding: 12px; display: grid; gap: 10px; align-content: start; }
 .figuras-lab h3 { font-size: var(--t-s); }
 .figuras-lab .recurso { cursor: default; }
-.cuaderno-lab, .editor-grafico { min-height: 0; min-width: 0; display: grid; grid-template-rows: auto minmax(0, 1fr); }
+.editor-grafico { min-height: 0; min-width: 0; display: grid; grid-template-rows: auto minmax(0, 1fr); }
+.cuaderno-lab { min-height: 0; min-width: 0; display: flex; flex-direction: column; }
+.cuaderno-lab > :not(.barra-lab):not(.aviso-paquetes) { flex: 1 1 auto; min-height: 0; }
 .barra-lab { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding: 8px 14px; background: var(--superficie); border-bottom: 1px solid var(--linea); }
 .barra-lab h2 { font-size: var(--t-m); max-width: 28ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .barra-lab .espacio { flex: 1; }
 .barra-lab .divisor { width: 1px; height: 20px; background: var(--linea); }
+.grupo-ejecucion { display: inline-flex; align-items: center; gap: 6px; flex-wrap: nowrap; }
+.aviso-paquetes { margin: 10px 22px 0 10px; padding: 10px 12px; border-radius: 8px; background: var(--acento-tenue); border: 1px solid var(--linea); display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: var(--t-s); }
+.aviso-paquetes > span { flex: 1 1 320px; }
+.aviso-paquetes code { font-size: 0.95em; }
 .celdas-lab { overflow: auto; padding: 18px 22px 80px 10px; display: grid; gap: 10px; align-content: start; }
 .celda-lab { display: grid; grid-template-columns: 58px minmax(0, 1fr); gap: 4px; max-width: 1040px; width: 100%; margin: 0 auto; }
 .celda-lab .margen { display: grid; justify-items: end; align-content: start; gap: 2px; padding-top: 4px; }

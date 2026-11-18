@@ -6,11 +6,12 @@ Solo la **última versión MINOR publicada** recibe correcciones de seguridad, q
 
 | Versión | Soporte |
 |---|---|
-| 1.4.x | ✅ Con soporte |
-| 1.3.x | ❌ Sin soporte: actualiza a 1.4.x |
-| 1.2.x | ❌ Sin soporte: actualiza a 1.4.x |
-| 1.1.x | ❌ Sin soporte: actualiza a 1.4.x |
-| 1.0.x | ❌ Sin soporte: actualiza a 1.4.x |
+| 1.5.x | ✅ Con soporte |
+| 1.4.x | ❌ Sin soporte: actualiza a 1.5.x |
+| 1.3.x | ❌ Sin soporte: actualiza a 1.5.x |
+| 1.2.x | ❌ Sin soporte: actualiza a 1.5.x |
+| 1.1.x | ❌ Sin soporte: actualiza a 1.5.x |
+| 1.0.x | ❌ Sin soporte: actualiza a 1.5.x |
 
 ## Modelo de amenazas
 

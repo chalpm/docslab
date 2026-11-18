@@ -12,6 +12,29 @@ Tipos de entrada: **Añadido**, **Cambiado**, **Obsoleto**, **Eliminado**, **Cor
 
 _Nada todavía._
 
+## [1.5.0] - 2026-11-18
+
+Huella: [`huella/v1.5.0.json`](huella/v1.5.0.json). Versiones: aplicación 1.5.0 · `.sty` 1.1.0 (sin cambios) · esquema 1.
+
+### Añadido
+- **Cuadernos del LAB: reiniciar Python a la vista.** Hay un botón «Reiniciar» junto a «Ejecutar todo» (antes solo estaba en el menú ⋯). Reiniciar arranca un proceso nuevo: se borran las variables y se cargan los paquetes recién instalados o actualizados.
+- **Borrar las variables sin reiniciar** (menú ⋯; `POST …/lab/<nb>/borrar-variables`): equivale a `%reset -f` en el mismo proceso. Es más rápido, pero no recarga los paquetes.
+- **Avisos de paquetes:**
+  - Cuando una celda `%pip install`, `!pip install`, `%conda install` o `uv pip install` instala algo, aparece un aviso con «Reiniciar Python» y «Reiniciar y ejecutar todo». Si pip no instaló nada («Requirement already satisfied»), no hay aviso.
+  - Ante un `ModuleNotFoundError`, el aviso ofrece añadir y ejecutar `%pip install <paquete>` justo antes de la celda que falló, con el nombre de pip correcto cuando difiere del módulo (sklearn → scikit-learn, cv2 → opencv-python, PIL → pillow, umap → umap-learn…).
+  - Para `google.colab`, explica que es una celda propia de Colab.
+- Pruebas:
+  - `test_borrar_variables_conserva_el_proceso_y_reiniciar_lo_cambia` comprueba que borrar las variables mantiene el proceso de Python y reiniciar lo cambia.
+  - `test_una_celda_no_se_queda_colgada_si_se_pierde_el_idle`.
+  - El recorrido completo (falla el `import`, se instala el paquete, se reinicia y funciona) se comprobó en un navegador real.
+
+### Corregido
+- **Celdas que podían quedarse en «Ejecutando» hasta una hora** si se perdía el mensaje «idle» del canal iopub. Ahora, si Python ya contestó en el canal shell, la celda se da por terminada a los 3 s. [NO VERIFICADO] Es una posible causa del fallo intermitente de `test_ejecutar_celda_a_celda_conserva_las_variables`, pero no se ha podido reproducir el fallo para confirmarlo.
+
+### Cambiado
+- `SECURITY.md`: con soporte solo 1.5.x.
+
+
 ## [1.4.0] - 2026-11-18
 
 Huella: [`huella/v1.4.0.json`](huella/v1.4.0.json). Versiones: aplicación 1.4.0 · `.sty` 1.1.0 (sin cambios) · esquema 1.
@@ -210,7 +233,8 @@ Línea base. Es la primera versión con versionado formal. Huella: [`huella/v1.0
 - En un TeX Live sin `texlive-lang-spanish` ni `luatex85.sty` fallan 11 pruebas (las 9 de compilación de plantillas, una de la API y una de LuaLaTeX). Verificado como problema de entorno en 1.2.1.
 - La API no tiene autenticación y los cuadernos ejecutan código arbitrario (ver `SECURITY.md`).
 
-[Sin publicar]: ../../compare/v1.4.0...HEAD
+[Sin publicar]: ../../compare/v1.5.0...HEAD
+[1.5.0]: ../../compare/v1.4.0...v1.5.0
 [1.4.0]: ../../compare/v1.3.0...v1.4.0
 [1.3.0]: ../../compare/v1.2.3...v1.3.0
 [1.2.3]: ../../compare/v1.2.2...v1.2.3

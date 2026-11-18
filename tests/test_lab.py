@@ -95,6 +95,78 @@ def test_un_grafico_de_plantilla_llega_al_documento(cliente):
         cliente.application.config["lab"].apagar_todo()
 
 
+@hay_nucleo
+def test_borrar_variables_conserva_el_proceso_y_reiniciar_lo_cambia(cliente):
+    """«Borrar las variables» es un %reset en el mismo Python; «Reiniciar» arranca otro proceso (así se
+    cargan los paquetes recién instalados)."""
+    pid, nb = _proyecto(cliente)
+    base = f"/api/proyectos/{pid}/lab/{nb}"
+    celdas = [{"id": "a", "tipo": "codigo", "fuente": "import os\nx = 41\nprint(os.getpid())"},
+              {"id": "b", "tipo": "codigo", "fuente": "import os\nprint('x' in dir(), os.getpid())"}]
+
+    def correr(cid):
+        cliente.post(base + "/ejecutar", json={"ids": [cid]})
+        e = _esperar(cliente, pid, nb)
+        return next(c for c in e["celdas"] if c["id"] == cid)["salidas"][0]["texto"].split()
+
+    try:
+        # con Python apagado no hay nada que borrar, y no falla
+        assert cliente.post(base + "/borrar-variables").status_code == 200
+        cliente.put(base, json={"celdas": celdas})
+        proceso = correr("a")[0]
+        assert cliente.post(base + "/borrar-variables").status_code == 200
+        hay_x, mismo = correr("b")
+        assert hay_x == "False" and mismo == proceso            # sin variables, mismo proceso
+        assert cliente.get(base).get_json()["nucleo"]["estado"] == "listo"
+        correr("a")
+        cliente.post(base + "/reiniciar")
+        assert cliente.get(base).get_json()["nucleo"]["estado"] == "apagado"
+        hay_x, otro = correr("b")
+        assert hay_x == "False" and otro != proceso              # proceso nuevo
+    finally:
+        cliente.application.config["lab"].apagar_todo()
+
+
+def test_una_celda_no_se_queda_colgada_si_se_pierde_el_idle():
+    """Si el «idle» del canal iopub no llega pero Python ya contestó en el canal shell, la celda termina
+    a los pocos segundos (antes esperaba el límite entero, hasta 1 h)."""
+    import queue
+    import threading
+
+    import nbformat
+
+    from docslab import lab as L
+
+    class Cliente:
+        iopub = [{"parent_header": {"msg_id": "m"}, "msg_type": "stream", "header": {"msg_type": "stream"},
+                  "content": {"name": "stdout", "text": "hola\n"}}]
+        shell = [{"parent_header": {"msg_id": "m"}, "msg_type": "execute_reply", "content": {"status": "ok"}}]
+
+        def execute(self, *a, **k):
+            return "m"
+
+        def get_iopub_msg(self, timeout=1):
+            if self.iopub:
+                return self.iopub.pop(0)
+            raise queue.Empty
+
+        def get_shell_msg(self, timeout=0):
+            if self.shell:
+                return self.shell.pop(0)
+            raise queue.Empty
+
+    class Gestor:
+        def is_alive(self):
+            return True
+
+    s = L.Sesion.__new__(L.Sesion)
+    s.kc, s.km, s.mutex, s.rev, s.revs, s.interrumpido = Cliente(), Gestor(), threading.RLock(), 0, {}, False
+    cel = nbformat.v4.new_code_cell("print('hola')", id="c1")
+    inicio = time.time()
+    assert s._una(cel, 3600) is True
+    assert time.time() - inicio < 10 and [o["output_type"] for o in cel.outputs] == ["stream"]
+
+
 def test_generar_codigo_de_plantilla():
     t = next(x for x in G.INCLUIDAS if x["id"] == "lineas")
     codigo = G.generar(t, {"datos": {"modo": "variable", "variable": "df"}, "grupo": "", "titulo": 'Con "comillas"',

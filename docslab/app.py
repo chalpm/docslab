@@ -1016,6 +1016,8 @@ def crear_app(datos: Path, raices: list[Path] | None = None, colab: bool = False
             s.interrumpir()
         elif accion == "reiniciar":
             s.reiniciar()
+        elif accion == "borrar-variables":
+            s.borrar_variables()
         elif accion == "limpiar":
             s.limpiar_salidas()
         elif accion == "ejemplo":

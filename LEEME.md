@@ -4,7 +4,7 @@
 
 Funciona **en tu equipo** (Windows, macOS o Linux, con un pequeño servidor local) o **en Google Colab**. Una vez instalado no necesita internet, salvo para buscar referencias por DOI.
 
-**Versión 1.4.0** · Licencia [AGPL-3.0](LICENSE) (plantilla LaTeX: [LPPL-1.3c](latex/LICENSE-LPPL-1.3c.txt)) · [Registro de cambios](CHANGELOG.md) · [Documentación técnica y funcional](docs/README.md) · [Seguridad](SECURITY.md)
+**Versión 1.5.0** · Licencia [AGPL-3.0](LICENSE) (plantilla LaTeX: [LPPL-1.3c](latex/LICENSE-LPPL-1.3c.txt)) · [Registro de cambios](CHANGELOG.md) · [Documentación técnica y funcional](docs/README.md) · [Seguridad](SECURITY.md)
 
 ---
 
@@ -480,6 +480,9 @@ flowchart LR
 - «Código» y «Texto» añaden celdas (el texto es Markdown).
 - ▶ ejecuta una celda; **Mayús + Intro** ejecuta y pasa a la siguiente; **Ctrl + Intro** ejecuta y se queda. «Ejecutar todo» se detiene en el primer error. En ⋯: reiniciar y ejecutar todo, reiniciar o limpiar salidas.
 - Python sigue encendido entre ejecuciones (las variables se conservan) y se apaga tras tres horas sin uso o al cerrar DocsLab.
+- **Reiniciar Python** (botón «Reiniciar», junto a «Ejecutar todo»): cierra el proceso y la siguiente celda arranca uno nuevo. Se borran las variables y se cargan de nuevo los paquetes, así que es lo que hay que hacer **después de instalar o actualizar un paquete**. El código y las salidas se conservan. En el menú ⋯ también está «Reiniciar Python y ejecutar todo».
+- **Borrar las variables (sin reiniciar)** (menú ⋯): vacía la memoria en el mismo proceso, como `%reset -f`. Es más rápido, pero los paquetes ya importados siguen cargados.
+- **Instalar paquetes:** escribe en una celda `%pip install nombre`. Si la instalación funcionó, aparece un aviso con «Reiniciar Python» y «Reiniciar y ejecutar todo». Si una celda falla con `ModuleNotFoundError`, el aviso ofrece añadir la celda `%pip install …` con el nombre correcto del paquete (por ejemplo, `sklearn` → `scikit-learn`, `cv2` → `opencv-python`).
 - El cuaderno se guarda solo como `.ipynb` normal. «Ejecutar en limpio» lo ejecuta en un Python recién arrancado sin tocar el archivo.
 
 **Ajustes de cada cuaderno:** carpeta de figuras, tipos de archivo, preferir PDF cuando hay PNG y PDF de la misma figura, recoger también las imágenes que solo se muestran, **omitir las celdas propias de Colab** (montar Drive, subir archivos), **parámetros** (código que se inserta tras la celda que elijas, por ejemplo `CONFIG["figure_dpi"] = 200`), tiempo máximo por celda y núcleo.
@@ -671,7 +674,7 @@ Más detalle en [docs/ARQUITECTURA.md](docs/ARQUITECTURA.md).
 Con el entorno `.venv` activado:
 ```
 python -m pip install pytest
-python -m pytest                 # 458 pruebas
+python -m pytest                 # 460 pruebas
 python tests/e2e_navegador.py    # opcional: necesita playwright y chromium
 ```
 Las pruebas que necesitan LaTeX, Poppler, LuaLaTeX o Ghostscript se saltan si faltan esas herramientas. Para que pasen todas hace falta un TeX Live completo: en Ubuntu/Debian, `texlive-latex-extra`, `texlive-lang-spanish` y `texlive-luatex`, además de `poppler-utils` y `ghostscript`.
@@ -719,7 +722,8 @@ Las pruebas que necesitan LaTeX, Poppler, LuaLaTeX o Ghostscript se saltan si fa
 |---|---|
 | `ModuleNotFoundError: google.colab` | Activa «Omitir las celdas propias de Colab» |
 | El cuaderno no encuentra sus datos | Súbelos en «Datos del cuaderno» (menú ⋯ de la tarjeta) |
-| Falta un paquete de Python | `.venv/bin/python -m pip install …` (Windows: `.venv\Scripts\python -m pip install …`) |
+| Falta un paquete de Python | En el cuaderno, usa el aviso «Añadir `%pip install …`» o escribe esa celda tú; después, «Reiniciar Python». Fuera del cuaderno: `.venv/bin/python -m pip install …` (Windows: `.venv\Scripts\python -m pip install …`) |
+| Instalé un paquete y sigue diciendo que no existe, o usa la versión vieja | Reinicia Python (botón «Reiniciar»): un Python en marcha no ve los paquetes nuevos o actualizados hasta que arranca de nuevo |
 
 **Proyectos**
 

@@ -112,6 +112,18 @@ const SalidaCelda = {
 };
 
 // ---------------------------------------------------------------- formulario de un gráfico
+// Instalar paquetes desde una celda: %pip install …, !pip install …, %conda install …
+const RE_INSTALAR = /^\s*[%!]\s*(?:pip3?|python3?\s+-m\s+pip|conda|mamba|micromamba|uv\s+pip)\s+install\b/m;
+// Lo que escriben pip, uv y conda cuando instalan o actualizan algo
+const RE_INSTALADO = /Successfully installed|Installed \d+ packages?|Executing transaction: done/;
+// Módulos cuyo paquete de pip se llama distinto
+const PAQUETE_DE = {
+  sklearn: 'scikit-learn', cv2: 'opencv-python', PIL: 'pillow', yaml: 'pyyaml', bs4: 'beautifulsoup4',
+  umap: 'umap-learn', skimage: 'scikit-image', Bio: 'biopython', dateutil: 'python-dateutil', docx: 'python-docx',
+  pptx: 'python-pptx', Crypto: 'pycryptodome', serial: 'pyserial', dotenv: 'python-dotenv', jwt: 'PyJWT',
+  attr: 'attrs', fitz: 'pymupdf', osgeo: 'gdal', mpl_toolkits: 'matplotlib', sentence_transformers: 'sentence-transformers',
+};
+
 const DialogoGrafico = {
   name: 'dialogo-grafico',
   props: { nb: String, inicial: Object },      // inicial: {plantilla, valores} al reajustar una celda
@@ -373,7 +385,7 @@ const CuadernoLab = {
   setup() { return { ed: inject('ed') }; },
   data: () => ({
     celdas: null, nucleo: { estado: 'apagado', cola: [] }, rev: 0, sel: null, editando: null, guardado: true,
-    grafico: null, tanda: 0, error: '', menu: false,
+    grafico: null, tanda: 0, error: '', menu: false, aviso: null,
   }),
   computed: {
     base() { return `api/proyectos/${this.ed.pid}/lab/${this.c.id}`; },
@@ -474,6 +486,8 @@ const CuadernoLab = {
       if (!this.puedeEjecutar) { avisar('Para ejecutar código hace falta instalar nbclient e ipykernel en el Python de DocsLab.', { tipo: 'error', ms: 8000 }); return; }
       clearTimeout(this._guardar);
       this.guardado = true;
+      this._ultimas = todas || !ids ? this.celdas.filter((x) => x.tipo === 'codigo').map((x) => x.id) : ids;
+      if (reiniciar) this.aviso = null;
       try {
         const r = await post(this.base + '/ejecutar', { celdas: this.carga(), ids, todas, reiniciar });
         this.nucleo = r.nucleo;
@@ -506,6 +520,7 @@ const CuadernoLab = {
     alTerminar(n) {
       this.$emit('tanda');
       if (n.error) { avisar(n.error, { tipo: 'error', ms: 9000 }); return; }
+      this.revisarPaquetes();
       if (n.figuras_nuevas) {
         avisar(n.figuras_nuevas === 1 ? 'Una figura lista para el documento' : `${n.figuras_nuevas} figuras listas para el documento`);
         this.ed.recursosCambiaron();
@@ -513,18 +528,66 @@ const CuadernoLab = {
         if (this.c.recompilar !== false) this.ed.compilarAhora();
       }
     },
-    async accion(nombre) {
+    async accion(nombre, { preguntar = true } = {}) {
       this.menu = false;
       try {
-        if (nombre === 'reiniciar') {
-          const ok = await confirmar({ titulo: '¿Reiniciar Python?', texto: 'Se pierden las variables que hay en memoria. El código y las salidas del cuaderno se conservan.', aceptar: 'Reiniciar' });
+        if (preguntar && nombre === 'reiniciar') {
+          const ok = await confirmar({ titulo: '¿Reiniciar Python?', texto: 'Python se cierra y vuelve a arrancar en la siguiente ejecución: se borran las variables y se cargan de nuevo los paquetes (también los recién instalados). El código y las salidas del cuaderno se conservan.', aceptar: 'Reiniciar' });
+          if (!ok) return;
+        }
+        if (preguntar && nombre === 'borrar-variables') {
+          const ok = await confirmar({ titulo: '¿Borrar las variables?', texto: 'Se borran todas las variables y tablas en memoria sin reiniciar Python (es más rápido). Los paquetes ya importados siguen cargados: si instalaste o actualizaste alguno, usa «Reiniciar Python».', aceptar: 'Borrar las variables' });
           if (!ok) return;
         }
         await this.guardar();
         const r = await post(`${this.base}/${nombre}`);
         this.fundir(r.celdas); this.nucleo = r.nucleo; this.rev = r.rev;
         if (nombre === 'interrumpir') this.sondear();
+        if (nombre === 'reiniciar') { this.aviso = null; avisar('Python reiniciado: la próxima celda arranca uno nuevo, con los paquetes al día'); }
+        if (nombre === 'borrar-variables') avisar('Variables borradas');
       } catch (e) { avisarError(e); }
+    },
+    // ------------------------------------------------ paquetes nuevos o que faltan
+    revisarPaquetes() {
+      const hechas = (this._ultimas || []).map((id) => this.celdas.find((x) => x.id === id)).filter(Boolean);
+      for (const cel of hechas) {
+        const salidas = cel.salidas || [];
+        const err = salidas.find((s) => s.t === 'error');
+        const textos = salidas.filter((s) => s.t === 'texto').map((s) => s.texto).join('\n');
+        // solo si de verdad se instaló algo («Requirement already satisfied» no pide reiniciar)
+        if (RE_INSTALAR.test(cel.fuente) && !err && RE_INSTALADO.test(textos)) {
+          this.aviso = { tipo: 'instalado' };
+          return;
+        }
+        if (err && err.nombre === 'ModuleNotFoundError') {
+          const m = /No module named '([^']+)'/.exec(err.valor || '');
+          if (!m) continue;
+          const modulo = m[1], raiz = modulo.split('.')[0];
+          if (modulo.startsWith('google.colab')) {
+            this.aviso = { tipo: 'colab' };
+            return;
+          }
+          const paquete = PAQUETE_DE[raiz] || raiz;
+          if (/^[A-Za-z0-9][A-Za-z0-9._-]*$/.test(paquete)) {
+            this.aviso = { tipo: 'falta', modulo: raiz, paquete, celda: cel.id };
+            return;
+          }
+        }
+      }
+    },
+    instalarQueFalta() {
+      const a = this.aviso;
+      const i = this.celdas.findIndex((x) => x.id === a.celda);
+      const cel = this.nueva('codigo', `%pip install ${a.paquete}`);
+      this.celdas.splice(i < 0 ? this.celdas.length : i, 0, cel);
+      this.aviso = null;
+      this.tocar();
+      this.ejecutar([cel.id]);
+    },
+    reiniciarDesdeAviso(todo) {
+      this.aviso = null;
+      if (todo) this.ejecutar(null, { todas: true, reiniciar: true });
+      else this.accion('reiniciar', { preguntar: false });
     },
     // ------------------------------------------------ gráficos de plantilla
     abrirGrafico(cel) {
@@ -555,18 +618,42 @@ const CuadernoLab = {
       <button class="btn pequeno" @click="agregar('texto')" :disabled="!celdas"><icono n="mas"/>Texto</button>
       <button class="btn pequeno" @click="abrirGrafico(null)" :disabled="!celdas"><icono n="imagen"/>Gráfico de plantilla</button>
       <span class="divisor"></span>
-      <button v-if="!ocupado" class="btn pequeno primario" @click="ejecutar(null, {todas: true})" :disabled="!celdas"><icono n="play"/>Ejecutar todo</button>
+      <span class="grupo-ejecucion">
+        <button v-if="!ocupado" class="btn pequeno primario" @click="ejecutar(null, {todas: true})" :disabled="!celdas"><icono n="play"/>Ejecutar todo</button>
       <button v-else class="btn pequeno peligro" @click="accion('interrumpir')"><icono n="parar"/>Interrumpir</button>
+      <button class="btn pequeno" @click="accion('reiniciar')" :disabled="!celdas || nucleo.estado === 'apagado'"
+              title="Reiniciar Python: borra las variables y vuelve a cargar los paquetes (por ejemplo, después de instalar uno)"><icono n="deshacer"/>Reiniciar</button>
       <div class="menu-contenedor">
         <button class="btn icono pequeno" @click="menu = !menu" aria-label="Más opciones de ejecución" aria-haspopup="true" :aria-expanded="menu"><icono n="puntos"/></button>
         <div class="menu" v-if="menu">
           <button @click="menu = false; ejecutar(null, {todas: true, reiniciar: true})"><icono n="play"/>Reiniciar Python y ejecutar todo</button>
-          <button @click="accion('reiniciar')"><icono n="deshacer"/>Reiniciar Python (borra las variables)</button>
+          <button @click="accion('reiniciar')"><icono n="deshacer"/>Reiniciar Python (para paquetes nuevos o actualizados)</button>
+          <button @click="accion('borrar-variables')" :disabled="ocupado || nucleo.estado !== 'listo'"><icono n="basura"/>Borrar las variables (sin reiniciar)</button>
           <button @click="accion('limpiar')" :disabled="ocupado"><icono n="basura"/>Limpiar todas las salidas</button>
+          <p class="nota">Para instalar un paquete, escribe en una celda <code>%pip install nombre</code> y después reinicia Python.</p>
           <p class="nota">Mayús + Intro ejecuta la celda y pasa a la siguiente; Ctrl + Intro la ejecuta y se queda.</p>
         </div>
       </div>
+      </span>
     </header>
+
+    <div class="aviso-paquetes" v-if="aviso" role="status">
+      <template v-if="aviso.tipo === 'instalado'">
+        <span><strong>Instalaste paquetes.</strong> Reinicia Python para que el cuaderno los use (las variables se borran; el código y las salidas, no).</span>
+        <button class="btn pequeno primario" @click="reiniciarDesdeAviso(false)" :disabled="ocupado"><icono n="deshacer"/>Reiniciar Python</button>
+        <button class="btn pequeno" @click="reiniciarDesdeAviso(true)" :disabled="ocupado"><icono n="play"/>Reiniciar y ejecutar todo</button>
+      </template>
+      <template v-else-if="aviso.tipo === 'falta'">
+        <span><strong>Falta el paquete «{{ aviso.modulo }}».</strong>
+          <template v-if="aviso.paquete !== aviso.modulo"> Se instala con el nombre «{{ aviso.paquete }}».</template>
+          Puedes añadir una celda que lo instale y después reiniciar Python.</span>
+        <button class="btn pequeno primario" @click="instalarQueFalta" :disabled="ocupado"><icono n="mas"/>Añadir <code>%pip install {{ aviso.paquete }}</code></button>
+      </template>
+      <template v-else-if="aviso.tipo === 'colab'">
+        <span><strong>Esta celda es propia de Google Colab</strong> (por ejemplo, montar Drive) y aquí no hace falta: bórrala o sáltala.</span>
+      </template>
+      <button class="btn icono pequeno fantasma" @click="aviso = null" aria-label="Cerrar el aviso"><icono n="cerrar"/></button>
+    </div>
 
     <div class="celdas-lab" v-if="celdas">
       <div v-if="!celdas.length" class="vacio">
