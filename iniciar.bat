@@ -8,26 +8,24 @@ rem sin tocar el Python del sistema. Se instalan la primera vez y cuando cambia 
 setlocal
 cd /d "%~dp0"
 
-rem Python 3: el lanzador "py" de python.org o, si no, "python" (se prueban de verdad:
-rem el "python" de la Microsoft Store sin Python instalado no sirve)
+rem Python 3.11 o posterior: el lanzador "py" de python.org (el mas nuevo que haya) o, si no,
+rem "python". Se prueban de verdad: el "python" de la Microsoft Store sin Python instalado no sirve.
 set "PY="
-py -3 --version >nul 2>nul
-if not errorlevel 1 set "PY=py -3"
-if defined PY goto con_python
-python --version >nul 2>nul
-if not errorlevel 1 set "PY=python"
+for %%V in (3 3.14 3.13 3.12 3.11) do if not defined PY call :probar "py -%%V"
+if not defined PY call :probar "python"
 if not defined PY goto sin_python
-:con_python
 
-rem entorno propio; si quedo a medias (sin pip), se rehace
+rem entorno propio; si quedo a medias (sin pip) o es de un Python anterior a 3.11, se rehace
 set "VPY=.venv\Scripts\python.exe"
 if not exist "%VPY%" goto crear
+"%VPY%" -c "import sys; sys.exit(sys.version_info < (3, 11))" >nul 2>nul
+if errorlevel 1 goto crear
 call "%VPY%" -m pip --version >nul 2>nul
 if errorlevel 1 goto crear
 goto dependencias
 
 :crear
-echo Preparando DocsLab por primera vez, tarda un par de minutos...
+echo Preparando DocsLab, tarda un par de minutos...
 call %PY% -m venv --clear .venv
 if errorlevel 1 goto sin_entorno
 if not exist "%VPY%" goto sin_entorno
@@ -53,8 +51,15 @@ echo DocsLab se ha cerrado.
 pause
 exit /b 0
 
+:probar
+rem %~1 es la orden ("py -3.12" o "python"): vale si existe y es 3.11 o posterior
+%~1 -c "import sys; sys.exit(sys.version_info < (3, 11))" >nul 2>nul
+if not errorlevel 1 set "PY=%~1"
+exit /b 0
+
 :sin_python
-echo No encuentro Python 3. Instalalo desde https://www.python.org/downloads/
+echo DocsLab necesita Python 3.11 o posterior y no lo encuentro
+echo (o el que hay es mas antiguo). Instalalo desde https://www.python.org/downloads/
 echo y marca la casilla "Add python.exe to PATH". Luego vuelve a abrir este archivo.
 pause
 exit /b 1

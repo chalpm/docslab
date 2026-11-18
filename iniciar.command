@@ -12,20 +12,36 @@
 # Con otro Python:  DOCSLAB_PYTHON=python3.12 sh iniciar.command
 cd "$(dirname "$0")" || exit 1
 
-PY="${DOCSLAB_PYTHON:-python3}"
-if ! command -v "$PY" >/dev/null 2>&1; then
-  echo "No encuentro Python 3."
+# Python 3.11 o posterior: el de DOCSLAB_PYTHON si se indica; si no, python3 o el más nuevo que haya
+valido() { "$1" -c 'import sys; sys.exit(sys.version_info < (3, 11))' >/dev/null 2>&1; }
+PY=""
+if [ -n "$DOCSLAB_PYTHON" ]; then
+  valido "$DOCSLAB_PYTHON" && PY="$DOCSLAB_PYTHON"
+else
+  for c in python3 python3.14 python3.13 python3.12 python3.11; do
+    if command -v "$c" >/dev/null 2>&1 && valido "$c"; then PY="$c"; break; fi
+  done
+fi
+if [ -z "$PY" ]; then
+  viejo="$("${DOCSLAB_PYTHON:-python3}" -c 'import platform; print(platform.python_version())' 2>/dev/null)"
+  if [ -n "$viejo" ]; then
+    echo "DocsLab necesita Python 3.11 o posterior y el que encuentro es $viejo."
+  else
+    echo "No encuentro Python 3."
+  fi
   echo "  macOS:          brew install python"
-  echo "  Ubuntu/Debian:  sudo apt install python3 python3-venv"
+  echo "  Ubuntu 24.04+ / Debian 12+:  sudo apt install python3 python3-venv"
+  echo "  Ubuntu 22.04:   sudo apt install python3.11 python3.11-venv"
+  echo "  Luego vuelve a abrir este archivo (o usa DOCSLAB_PYTHON=python3.12 sh iniciar.command)."
   exit 1
 fi
 
-# entorno propio; si quedó a medias (sin pip), se rehace
-if [ ! -x .venv/bin/python ] || ! .venv/bin/python -m pip --version >/dev/null 2>&1; then
-  echo "Preparando DocsLab por primera vez (un par de minutos)..."
+# entorno propio; si quedó a medias (sin pip) o es de un Python anterior a 3.11, se rehace
+if [ ! -x .venv/bin/python ] || ! valido .venv/bin/python || ! .venv/bin/python -m pip --version >/dev/null 2>&1; then
+  echo "Preparando DocsLab (un par de minutos; con $PY)..."
   if ! "$PY" -m venv --clear .venv; then
     echo "No se pudo crear el entorno de Python (.venv)."
-    echo "  Ubuntu/Debian:  sudo apt install python3-venv   y vuelve a intentarlo"
+    echo "  Ubuntu/Debian:  sudo apt install python3-venv (o python3.11-venv)   y vuelve a intentarlo"
     exit 1
   fi
 fi

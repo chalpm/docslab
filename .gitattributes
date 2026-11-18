@@ -1,0 +1,2 @@
+# Los .bat de Windows necesitan CRLF: con LF, cmd.exe puede no encontrar las etiquetas de «call :etiqueta».
+*.bat text eol=crlf

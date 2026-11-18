@@ -4,7 +4,7 @@
 
 Funciona **en tu equipo** (Windows, macOS o Linux, con un pequeño servidor local) o **en Google Colab**. Una vez instalado no necesita internet, salvo para buscar referencias por DOI.
 
-**Versión 1.6.1** · Licencia [AGPL-3.0](LICENSE) (plantilla LaTeX: [LPPL-1.3c](latex/LICENSE-LPPL-1.3c.txt)) · [Registro de cambios](CHANGELOG.md) · [Documentación técnica y funcional](docs/README.md) · [Seguridad](SECURITY.md)
+**Versión 1.7.0** · Licencia [AGPL-3.0](LICENSE) (plantilla LaTeX: [LPPL-1.3c](latex/LICENSE-LPPL-1.3c.txt)) · [Registro de cambios](CHANGELOG.md) · [Documentación técnica y funcional](docs/README.md) · [Seguridad](SECURITY.md)
 
 ---
 
@@ -112,7 +112,7 @@ flowchart LR
 
 | Componente | ¿Obligatorio? | Para qué | Windows | macOS | Linux (Ubuntu/Debian) |
 |---|---|---|---|---|---|
-| **Python 3.9+** | Sí | El servidor | [python.org](https://www.python.org/downloads/) (marca «Add python.exe to PATH») | `brew install python` | `python3` + `python3-venv` |
+| **Python 3.11+** | Sí | El servidor | [python.org](https://www.python.org/downloads/) (marca «Add python.exe to PATH») | `brew install python` (el `python3` que trae macOS es 3.9 y no sirve) | `python3` + `python3-venv` (Ubuntu 24.04+, Debian 12+); en Ubuntu 22.04, `python3.11` + `python3.11-venv` |
 | **LaTeX (pdfLaTeX)** | Sí | Compilar | [MiKTeX](https://miktex.org/) | MacTeX (`brew install --cask mactex-no-gui`) | `texlive-latex-recommended`, `texlive-latex-extra`, `texlive-pictures`, `texlive-fonts-recommended` |
 | **Poppler** | Recomendado | Miniaturas, revisión para imprimir, PowerPoint | `winget install oschwartz10612.Poppler` | `brew install poppler` | `poppler-utils` |
 | **Ghostscript** | Opcional | CMYK, comprobación de color, PowerPoint editable | [ghostscript.com](https://ghostscript.com/releases/gsdnld.html) | `brew install ghostscript` | `ghostscript` |
@@ -142,8 +142,9 @@ Resumen por sistema:
 
 **1 · Instala los requisitos (una sola vez)**
 
-1. **Python 3.9 o posterior** desde [python.org/downloads](https://www.python.org/downloads/). En la primera pantalla del instalador, **marca «Add python.exe to PATH»**.
+1. **Python 3.11 o posterior** desde [python.org/downloads](https://www.python.org/downloads/). En la primera pantalla del instalador, **marca «Add python.exe to PATH»**.
    > El «python» de la Microsoft Store que aparece sin tener Python instalado no sirve. El lanzador lo detecta y te lo dice.
+   > Si tienes varios Python, el lanzador usa el más nuevo (a partir de 3.11) que encuentre con `py`.
 2. **MiKTeX** desde [miktex.org](https://miktex.org/). No hace falta instalar paquetes de LaTeX a mano: DocsLab le pide a MiKTeX los que falten, así que **la primera compilación puede tardar unos minutos**.
 3. **Poppler** (recomendado), en PowerShell o en el Símbolo del sistema:
    ```
@@ -185,6 +186,8 @@ Con [Homebrew](https://brew.sh/), en la Terminal:
 brew install python poppler ghostscript
 brew install --cask mactex-no-gui
 ```
+El `python3` que trae macOS (el de las herramientas de Xcode) es 3.9 y no sirve: el lanzador busca uno de 3.11 o posterior (`python3.13`, `python3.12`…) y, si no lo hay, te dice cómo instalarlo.
+
 MacTeX también se puede instalar con el instalador de [tug.org/mactex](https://tug.org/mactex/). Trae LuaLaTeX, los idiomas y las tipografías libres. Después de instalarlo, **abre una Terminal nueva** (DocsLab de todos modos busca `/Library/TeX/texbin`).
 
 **2 · Arranca**
@@ -205,7 +208,7 @@ DOCSLAB_PYTHON=python3.12 sh iniciar.command        # usar otro Python
 
 **A mano, sin el lanzador:**
 ```
-python3 -m venv .venv
+python3.12 -m venv .venv          # o cualquier Python 3.11 o posterior
 source .venv/bin/activate
 python -m pip install -r requirements.txt
 python servidor.py --abrir
@@ -226,6 +229,8 @@ Recomendado (idioma, tipografías propias, CMYK y tipografías libres):
 sudo apt install texlive-lang-spanish texlive-luatex ghostscript texlive-fonts-extra
 ```
 > `texlive-fonts-extra` ocupa varios GB; instálalo solo si quieres las 19 tipografías libres.
+
+DocsLab necesita **Python 3.11 o posterior**. Ubuntu 24.04 y Debian 12 ya lo traen como `python3`. **Ubuntu 22.04** trae 3.10: instala también `sudo apt install python3.11 python3.11-venv`; el lanzador encuentra `python3.11` solo. [NO VERIFICADO] Probado en el entorno de desarrollo con Python 3.13, no en una Ubuntu 22.04 real.
 
 En otras distribuciones, instala los equivalentes de TeX Live, Poppler y Ghostscript. [NO VERIFICADO] DocsLab solo se ha probado en Ubuntu y Debian.
 
@@ -265,9 +270,9 @@ En **LAB › Abrir desde una carpeta (Drive)** puedes elegir cuadernos de `/cont
 
 ```mermaid
 flowchart TD
-    A([Doble clic / sh iniciar.command]) --> B{¿Hay Python 3?}
+    A([Doble clic / sh iniciar.command]) --> B{¿Hay Python 3.11<br/>o posterior?}
     B -- No --> B1[Muestra cómo instalarlo y termina]
-    B -- Sí --> C{¿Existe .venv<br/>y funciona pip?}
+    B -- Sí --> C{¿Existe .venv, es de<br/>Python 3.11+ y funciona pip?}
     C -- No --> C1[Crea el entorno .venv<br/>primera vez · un par de minutos]
     C -- Sí --> D
     C1 --> D{¿Cambió requirements.txt<br/>desde la última instalación?}
@@ -280,7 +285,7 @@ flowchart TD
     G --> H([Deja la ventana abierta · Ctrl + C cierra])
 ```
 
-- Si borras la carpeta `.venv`, el lanzador la vuelve a crear.
+- Si borras la carpeta `.venv`, el lanzador la vuelve a crear. También la rehace sola si se creó con un Python anterior a 3.11 (al actualizar desde DocsLab 1.6 o anterior).
 - Al actualizar DocsLab a una versión con nuevas dependencias, el lanzador las instala solo, porque nota que `requirements.txt` cambió.
 
 ### 5.6 Opciones del servidor
@@ -682,7 +687,7 @@ Más detalle en [docs/ARQUITECTURA.md](docs/ARQUITECTURA.md).
 Con el entorno `.venv` activado:
 ```
 python -m pip install pytest
-python -m pytest                 # 483 pruebas
+python -m pytest                 # 491 pruebas
 python tests/e2e_navegador.py    # opcional: necesita playwright y chromium
 python tests/auditoria_navegador.py   # opcional: accesibilidad (axe) y seguridad; además, pip install axe-playwright-python
 ```
@@ -694,8 +699,8 @@ Las pruebas que necesitan LaTeX, Poppler, LuaLaTeX o Ghostscript se saltan si fa
 
 | Síntoma | Sistema | Solución |
 |---|---|---|
-| «No encuentro Python 3» | Windows | Instala Python desde python.org marcando «Add python.exe to PATH» y vuelve a abrir `iniciar.bat` |
-| «No encuentro Python 3» | macOS / Linux | macOS: `brew install python` · Ubuntu/Debian: `sudo apt install python3 python3-venv` |
+| «No encuentro Python 3» o «necesita Python 3.11 o posterior» | Windows | Instala Python 3.11 o posterior desde python.org marcando «Add python.exe to PATH» y vuelve a abrir `iniciar.bat` |
+| «No encuentro Python 3» o «necesita Python 3.11 o posterior» | macOS / Linux | macOS: `brew install python` · Ubuntu 24.04+ / Debian 12+: `sudo apt install python3 python3-venv` · Ubuntu 22.04: `sudo apt install python3.11 python3.11-venv` |
 | «No se pudo crear el entorno de Python (.venv)» | Linux | `sudo apt install python3-venv` y vuelve a intentarlo |
 | `error: externally-managed-environment` al hacer `pip install` | macOS (Homebrew), Ubuntu 23.04+, Debian 12+ | Usa el lanzador o el entorno `.venv`; no hace falta `--break-system-packages` ni `pipx` |
 | `command not found: pip` o `python` | macOS / Linux | Fuera de `.venv` se llaman `pip3` y `python3` |

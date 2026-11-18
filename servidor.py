@@ -74,7 +74,19 @@ def silenciar_registro() -> None:
         pass
 
 
+def python_valido(version=None) -> bool:
+    from docslab import PYTHON_MINIMO
+    return tuple((version or sys.version_info)[:2]) >= PYTHON_MINIMO
+
+
 def main(argv=None):
+    if not python_valido():
+        from docslab import PYTHON_MINIMO
+        minimo = ".".join(map(str, PYTHON_MINIMO))
+        print(f"DocsLab necesita Python {minimo} o posterior y este es {sys.version.split()[0]}.\n"
+              f"Instala uno más nuevo (python.org, brew install python o el de tu distribución), borra la "
+              f"carpeta .venv si existe y vuelve a abrir el lanzador.", file=sys.stderr, flush=True)
+        return 1
     ap = argparse.ArgumentParser(description="DocsLab · editor web de pósters científicos con LaTeX")
     ap.add_argument("--puerto", type=int, default=int(os.environ.get("DOCSLAB_PUERTO", 8765)))
     ap.add_argument("--host", default=os.environ.get("DOCSLAB_HOST", "127.0.0.1"),

@@ -1,4 +1,4 @@
-# Arquitectura · DocsLab 1.6.1
+# Arquitectura · DocsLab 1.7.0
 
 ## 1. Vista general
 

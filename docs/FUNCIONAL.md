@@ -1,4 +1,4 @@
-# Especificación funcional · DocsLab 1.6.1
+# Especificación funcional · DocsLab 1.7.0
 
 Catálogo de funciones con identificadores estables (**F-NN**). Cada versión futura indica en el CHANGELOG qué F-NN añade, cambia o retira. Los identificadores no se reutilizan.
 
@@ -125,7 +125,7 @@ Columnas: **Módulos** (backend), **API** (grupo de `docs/API.md`), **Pruebas** 
 ## F-26 · Galería de gráficos
 **Introducida en.** 1.3.0.
 **Descripción.** Las 7 categorías y los 41 tipos de gráfico de The R Graph Gallery (Distribución, Correlación, Ranking, Partes de un todo, Evolución, Mapas y Flujos), adaptados a Python. Son 35 plantillas nuevas más las 13 anteriores, ahora con categoría y enlace a su página de la galería. Las nuevas usan matplotlib o seaborn (y scipy para el dendrograma), sin conexión ni Chrome. Los mapas usan `mundo.geojson` (Natural Earth, dominio público) con proyección Equal Earth o longitud/latitud, y zonas predefinidas. «Usar datos de ejemplo» copia al cuaderno los datos de cada plantilla (y el mapa base si lo necesita), solo desde `lab/graficos/datos_ejemplo/`.
-**Reglas.** Código válido en Python 3.9 o posterior. Ninguna plantilla depende de geopandas, networkx, squarify, wordcloud ni circlify: los algoritmos (squarify, empaquetado circular, Fruchterman-Reingold, Dorling, círculo máximo, Chaikin, espiral de palabras) van en el propio código, editable.
+**Reglas.** Código válido en Python 3.9 o posterior (el del núcleo del cuaderno, que puede no ser el del servidor). Ninguna plantilla depende de geopandas, networkx, squarify, wordcloud ni circlify: los algoritmos (squarify, empaquetado circular, Fruchterman-Reingold, Dorling, círculo máximo, Chaikin, espiral de palabras) van en el propio código, editable.
 **Módulos.** `lab/graficos/galeria.py`, `lab/graficos/__init__.py` (`CATEGORIAS`, `archivos_ejemplo`), `lab/nucleos.py` (`copiar_ejemplo`), `lab/graficos/datos_ejemplo/`, `herramientas/datos_ejemplo.py`, `herramientas/construir_graficos.py`; frontend `cuaderno.js`. **API.** `GET /api/graficos` (`categorias`, `ejemplo` por plantilla), `POST …/lab/<nb>/ejemplo` (`archivos`). **Pruebas.** `test_galeria.py` · `test_cada_tipo_de_la_galeria_tiene_plantilla`, `test_las_plantillas_de_la_galeria_dibujan_con_sus_datos_de_ejemplo`, `test_el_codigo_vale_en_python_3_9` (48), `test_usar_datos_de_ejemplo_copia_los_de_la_plantilla`. **Estado.** Estable.
 
 ## F-27 · Plantillas de análisis científico y de datos
@@ -162,7 +162,7 @@ Columnas: **Módulos** (backend), **API** (grupo de `docs/API.md`), **Pruebas** 
 |---|---|---|
 | RNF-01 | Funciona sin conexión (librerías incluidas), salvo la búsqueda por DOI | LEEME |
 | RNF-02 | Recompilación rápida. Medido el 2026-11-18 (plantilla Académico A0, Linux, TeX Live): primera compilación ≈ 5,3 s; cambio pequeño ≈ 2,4 s. El LEEME original decía ~1 s | Medición |
-| RNF-03 | Python ≥ 3.9 | `requirements.txt` |
+| RNF-03 | Python ≥ 3.11 para el servidor (desde 1.7.0; lo comprueban los lanzadores y `servidor.py`). El código que generan las plantillas de gráficos sigue valiendo en Python 3.9, porque puede ejecutarse en otro núcleo o en Colab | `requirements.txt`, `docslab.PYTHON_MINIMO` |
 | RNF-04 | Uso local de un solo usuario, sin autenticación; protegido frente a otras webs del mismo navegador (F-28) | `SECURITY.md` |
 | RNF-06 | Compatibilidad hacia atrás: todo proyecto de un esquema anterior se abre sin pérdida de datos | `docs/MIGRACIONES.md`, F-25 |
 | RNF-07 | Licencias: AGPL-3.0-only (aplicación) y LPPL-1.3c (`postercientifico.sty`); cabecera SPDX en cada archivo de código propio | `LICENSE`, `latex/LICENSE-LPPL-1.3c.txt` |

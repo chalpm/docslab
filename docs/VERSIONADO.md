@@ -35,6 +35,7 @@ Cuando cambia la plantilla `.sty` o el esquema, también cambia la aplicación, 
 | Se añade una ruta, variante, estilo, idioma, tipografía, plantilla o función de usuario | **MINOR** |
 | Sube `ESQUEMA` con migración automática y probada | **MINOR** |
 | Nueva dependencia obligatoria en `requirements.txt` | **MINOR** (se anota en el CHANGELOG) |
+| Sube la versión mínima de Python (`docslab.PYTHON_MINIMO`) | **MINOR** (se anota en el CHANGELOG; los lanzadores y `servidor.py` lo comprueban y lo explican) |
 | Cambio de licencia de la aplicación o de un componente | **MINOR** (del componente y de la aplicación) |
 | Corrección de errores sin cambio de contrato, rendimiento, textos o documentación | **PATCH** |
 

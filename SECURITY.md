@@ -6,26 +6,27 @@ Solo la **última versión MINOR publicada** recibe correcciones de seguridad, q
 
 | Versión | Soporte |
 |---|---|
-| 1.6.x | ✅ Con soporte |
-| 1.5.x | ❌ Sin soporte: actualiza a 1.6.x (corrige fallos de seguridad, ver CHANGELOG) |
-| 1.4.x | ❌ Sin soporte: actualiza a 1.6.x |
-| 1.3.x | ❌ Sin soporte: actualiza a 1.6.x |
-| 1.2.x | ❌ Sin soporte: actualiza a 1.6.x |
-| 1.1.x | ❌ Sin soporte: actualiza a 1.6.x |
-| 1.0.x | ❌ Sin soporte: actualiza a 1.6.x |
+| 1.7.x | ✅ Con soporte (Python 3.11 o posterior) |
+| 1.6.x | ❌ Sin soporte: actualiza a 1.7.x |
+| 1.5.x | ❌ Sin soporte: actualiza a 1.7.x (corrige fallos de seguridad, ver CHANGELOG) |
+| 1.4.x | ❌ Sin soporte: actualiza a 1.7.x |
+| 1.3.x | ❌ Sin soporte: actualiza a 1.7.x |
+| 1.2.x | ❌ Sin soporte: actualiza a 1.7.x |
+| 1.1.x | ❌ Sin soporte: actualiza a 1.7.x |
+| 1.0.x | ❌ Sin soporte: actualiza a 1.7.x |
 
 ## Modelo de amenazas
 
 DocsLab está pensado como **aplicación local de un solo usuario**.
 
-| Superficie | Estado en 1.6.0 | Riesgo |
+| Superficie | Estado en 1.7.0 | Riesgo |
 |---|---|---|
 | Interfaz de red | Escucha en `127.0.0.1:8765` por defecto | Bajo en local |
 | Otras webs abiertas en el navegador (CSRF) | Las peticiones que cambian algo exigen la cabecera `X-DocsLab: 1` (otra web no puede ponerla sin un permiso CORS que DocsLab nunca da) y, si traen `Origin`, que sea el propio servidor (`docslab/seguridad.py`; pruebas en `tests/test_seguridad.py`) | Bajo |
 | DNS rebinding (un dominio ajeno que apunta a 127.0.0.1) | Solo se atienden `localhost`, `*.localhost`, direcciones IP y los nombres de `DOCSLAB_HOSTS`; el resto recibe 403 (en modo Colab filtra el proxy de Google) | Bajo |
 | Salidas HTML de cuadernos | Se muestran en un `<iframe sandbox="allow-scripts">` sin el origen de DocsLab: un cuaderno ajeno no puede leer la página ni usar la API | Bajo |
 | Marcos y tipos MIME | `Content-Security-Policy: frame-ancestors 'self'` (más Colab en ese modo), `X-Content-Type-Options: nosniff`, `Referrer-Policy: same-origin` | Bajo |
-| Imágenes subidas | Pillow solo abre los formatos esperados y mantiene su límite contra imágenes gigantes; versiones mínimas sin avisos conocidos en `requirements.txt` (en Python 3.9 y 3.10 la última Pillow disponible aún tiene avisos corregidos en 13.0) | Bajo (medio en Python < 3.11) |
+| Imágenes subidas | Pillow ≥ 13.0 (sin avisos conocidos) solo con los formatos esperados y con su límite contra imágenes gigantes. Desde 1.7.0 el servidor exige Python 3.11, así que ya no se instalan Pillow anteriores | Bajo |
 | Visor de PDF | pdf.js 4.10.38 con `isEvalSupported: false` | Bajo |
 | Procesos del LAB | Como mucho `DOCSLAB_MAX_NUCLEOS` (4) a la vez; se apaga el que lleva más tiempo sin usarse | Bajo |
 | `--host 0.0.0.0` | **Sin autenticación** | **Alto**: cualquiera en la red tiene acceso total |

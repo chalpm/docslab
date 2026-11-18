@@ -12,6 +12,23 @@ Tipos de entrada: **Añadido**, **Cambiado**, **Obsoleto**, **Eliminado**, **Cor
 
 _Nada todavía._
 
+## [1.7.0] - 2026-11-18
+
+Huella: [`huella/v1.7.0.json`](huella/v1.7.0.json). Versiones: aplicación 1.7.0 · `.sty` 1.1.0 (sin cambios) · esquema 1. Rutas sin cambios.
+
+### Cambiado
+- **El servidor necesita Python 3.11 o posterior** (antes, 3.9). Así se instala siempre Pillow 13.0 o posterior, sin los avisos de seguridad que seguían en Python 3.9 y 3.10. El valor está en `docslab.PYTHON_MINIMO`. Las plantillas de gráficos siguen generando código válido en Python 3.9, porque puede ejecutarse en otro núcleo o en Colab.
+  - **Lanzadores:** `iniciar.command` usa `DOCSLAB_PYTHON` si se indica; si no, `python3` o el `python3.14`…`python3.11` más nuevo que haya. `iniciar.bat` prueba `py -3` y luego `py -3.14`…`py -3.11` y `python`. Si solo hay un Python anterior, dicen qué versión encontraron y cómo instalar una válida.
+  - **Actualización:** un `.venv` creado con un Python anterior a 3.11 se rehace solo.
+  - **Arranque manual:** `servidor.py` se niega a arrancar con Python < 3.11 y lo explica.
+  - `requirements.txt`: `pillow>=13.0`, sin marcadores por versión de Python.
+- `iniciar.bat` se guarda con finales de línea CRLF (`.gitattributes`): con LF, `cmd.exe` puede no encontrar las etiquetas de `call :etiqueta`.
+- LEEME: requisitos y pasos por sistema con Python 3.11. El `python3` de macOS es 3.9 y Ubuntu 22.04 necesita `python3.11`.
+- `docs/VERSIONADO.md`: subir la versión mínima de Python es MINOR.
+
+### Añadido
+- `tests/test_lanzadores.py`: versión mínima en `requirements.txt` y `servidor.py`, y lanzador de macOS/Linux con Pythons simulados (3.10 rechazado, búsqueda de uno más nuevo, `DOCSLAB_PYTHON`, `.venv` antiguo rehecho).
+
 ## [1.6.1] - 2026-11-18
 
 Huella: [`huella/v1.6.1.json`](huella/v1.6.1.json). Versiones: aplicación 1.6.1 · `.sty` 1.1.0 (sin cambios) · esquema 1. Contrato sin cambios.
@@ -296,7 +313,8 @@ Línea base. Es la primera versión con versionado formal. Huella: [`huella/v1.0
 - En un TeX Live sin `texlive-lang-spanish` ni `luatex85.sty` fallan 11 pruebas (las 9 de compilación de plantillas, una de la API y una de LuaLaTeX). Verificado como problema de entorno en 1.2.1.
 - La API no tiene autenticación y los cuadernos ejecutan código arbitrario (ver `SECURITY.md`).
 
-[Sin publicar]: ../../compare/v1.6.1...HEAD
+[Sin publicar]: ../../compare/v1.7.0...HEAD
+[1.7.0]: ../../compare/v1.6.1...v1.7.0
 [1.6.1]: ../../compare/v1.6.0...v1.6.1
 [1.6.0]: ../../compare/v1.5.1...v1.6.0
 [1.5.1]: ../../compare/v1.5.0...v1.5.1
