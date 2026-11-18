@@ -10,6 +10,15 @@ Tipos de entrada: **Añadido**, **Cambiado**, **Obsoleto**, **Eliminado**, **Cor
 
 ## [Sin publicar]
 
+_Nada todavía._
+
+## [1.2.1] - 2026-11-18
+
+Huella: [`huella/v1.2.1.json`](huella/v1.2.1.json). Versiones: aplicación 1.2.1 · `.sty` 1.1.0 · esquema 1.
+
+### Seguridad
+- `SECURITY.md`: canal de reporte privado por correo (chalpm60@gmail.com), con la información que conviene incluir y el proceso de divulgación coordinada. GitHub Security Advisories queda previsto como canal secundario.
+
 ### Corregido
 - Miniaturas de `catalogo-latex` y `ejemplo-capas-latex` regeneradas con `construir_plantillas.miniaturas()` en un TeX Live con español. Solo cambia el texto de la versión.
 - `catalogo.tex` (plantilla y fuente): la cabecera y los autores ya no dicen «versión 2».
@@ -105,10 +114,11 @@ Línea base. Es la primera versión con versionado formal. Huella: [`huella/v1.0
 - ~~`plantillas/catalogo-latex` y `plantillas/ejemplo-capas-latex` llevan una copia antigua de `postercientifico.sty`.~~ Corregido en 1.0.1.
 - ~~No hay migraciones del esquema del modelo.~~ Resuelto en 1.1.0.
 - ~~El proyecto no tiene archivo de licencia propio.~~ Resuelto en 1.1.0 (AGPL-3.0-only).
-- En un TeX Live sin `texlive-lang-spanish` ni `luatex85.sty` fallan 11 pruebas (las 9 de compilación de plantillas, una de la API y una de LuaLaTeX). Verificado como problema de entorno (ver [Sin publicar]).
+- En un TeX Live sin `texlive-lang-spanish` ni `luatex85.sty` fallan 11 pruebas (las 9 de compilación de plantillas, una de la API y una de LuaLaTeX). Verificado como problema de entorno en 1.2.1.
 - La API no tiene autenticación y los cuadernos ejecutan código arbitrario (ver `SECURITY.md`).
 
-[Sin publicar]: ../../compare/v1.2.0...HEAD
+[Sin publicar]: ../../compare/v1.2.1...HEAD
+[1.2.1]: ../../compare/v1.2.0...v1.2.1
 [1.2.0]: ../../compare/v1.1.0...v1.2.0
 [1.1.0]: ../../compare/v1.0.1...v1.1.0
 [1.0.1]: ../../compare/v1.0.0...v1.0.1

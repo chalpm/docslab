@@ -31,4 +31,21 @@ DocsLab está pensado como **aplicación local de un solo usuario**.
 - En Colab, el enlace público solo funciona mientras el lanzador está conectado; no lo compartas.
 
 ## Reportar una vulnerabilidad
-[NO VERIFICADO] Aún no hay un canal definido. Hasta que lo haya, repórtala en privado al responsable del proyecto, no en un issue público.
+
+**No abras un issue público.** Reporta en privado por correo:
+
+📧 **chalpm60@gmail.com** · asunto: `[DocsLab][seguridad] <resumen breve>`
+
+Incluye, si puedes:
+- versión de DocsLab (`GET /api/estado` o `docslab/__init__.py`) y sistema operativo;
+- componente afectado (API, cuadernos/LAB, compilación LaTeX, importación de zips…);
+- pasos para reproducirlo o una prueba de concepto mínima;
+- impacto que estimas (quién puede explotarlo y qué consigue).
+
+Qué esperar:
+- Se acusa recibo y se evalúa el reporte; **no hay plazos de respuesta comprometidos**.
+- Si se confirma, la corrección sale como versión PATCH de la última MINOR con soporte y se registra en `CHANGELOG.md` en la sección **Seguridad**, con crédito a quien la reportó si así lo desea.
+- Pedimos divulgación coordinada: no publiques detalles hasta que haya una versión corregida.
+
+> Canal secundario previsto: **GitHub Security Advisories** (reporte privado en el repositorio). Se activará cuando el repositorio público exista.
+
