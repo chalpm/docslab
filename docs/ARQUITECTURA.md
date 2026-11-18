@@ -1,4 +1,4 @@
-# Arquitectura · DocsLab 1.0.0
+# Arquitectura · DocsLab 1.1.0
 
 ## 1. Vista general
 
@@ -11,6 +11,7 @@ Flask  docslab/app.py ──────────────┐
   ├─ almacen.py   disco: proyectos, │               progreso, registro y cancelación)
   │               plantillas, zips  │
   ├─ modelo.py    modelo JSON        │
+  │    └─ migraciones.py  esquema N→N+1 │
   ├─ generador.py modelo → .tex ─────┼─► compilador.py ─► pdflatex / lualatex (-no-shell-escape)
   │    ├─ variantes.py  (69)         │        │                 formato precompilado (mylatexformat)
   │    ├─ texto.py      marcado      │        ├─► pdftoppm (Poppler): miniaturas y recortes
@@ -31,6 +32,7 @@ Flask  docslab/app.py ──────────────┐
 | `app.py` | 1189 | Fábrica de Flask, rutas y validación de entrada |
 | `almacen.py` | 661 | Disco: proyectos, plantillas, recursos, historial, importar/exportar zips (Overleaf, proyecto, plantilla) |
 | `modelo.py` | 815 | Esquema y valores por defecto del modelo JSON: clases, tamaños, temas, idiomas, tipografías, capas, `normalizar()` |
+| `migraciones.py` | 107 | Migraciones del esquema del modelo, en cadena, con detección de modelos heredados y de esquemas más nuevos (ver `MIGRACIONES.md`) |
 | `variantes.py` | 360 | Catálogo de las 69 variantes de elemento y sus campos |
 | `generador.py` | 1183 | Modelo → LaTeX, con un mapa línea→elemento para ubicar errores. También el PDF para imprenta |
 | `texto.py` | 148 | Marcado sencillo (`**`, `*`, `^`, `~`, `$…$`, `[@clave]`, `{{…}}`) → LaTeX escapado |
@@ -54,13 +56,14 @@ Son módulos ES cargados por `index.html`, sin paso de compilación. Piezas prin
 ```
 datos/
   proyectos/<pid>/
-    modelo.json            ← proyectos estructurados (esquema 1)
+    modelo.json            ← proyectos estructurados (clave version_esquema; actual: 1)
     *.tex                  ← proyectos en modo LaTeX
     postercientifico.sty
     recursos/              imágenes (recursos/cuadernos/<nb>/… para las figuras de cuadernos)
     fuentes/               tipografías propias
     cuadernos/             .ipynb y sus datos
     historial/             modelo-AAAAMMDD-HHMMSS.json (≥120 s entre copias; se guardan las 30 últimas)
+                           modelo-antes-de-esquema-<N>.json (copia previa a una migración)
     build/                 salida de LaTeX
   plantillas/<tid>/        plantillas del usuario (misma forma + plantilla.json)
   componentes/             biblioteca del Componente Lab
@@ -71,7 +74,7 @@ Las plantillas incluidas viven en `plantillas/` dentro de la aplicación y son d
 
 ## 5. Flujo de compilación
 
-1. El cliente guarda (`PUT /api/proyectos/<pid>/modelo`) → `almacen.guardar_modelo()` → `modelo.normalizar()` y copia al historial.
+1. El cliente guarda (`PUT /api/proyectos/<pid>/modelo`) → `almacen.guardar_modelo()` → `modelo.normalizar()` (que primero aplica `migraciones.migrar()`) y copia al historial.
 2. `POST …/compilar` crea un trabajo → `generador.generar()` produce el `.tex` y el mapa de líneas.
 3. `compilador.compilar()`: usa el formato precompilado si existe y repite pasadas hasta que el `.aux` deja de cambiar; si nada ha cambiado, no compila.
 4. Con un error, se conserva el último PDF correcto y el error se traduce al elemento de origen.

@@ -154,6 +154,9 @@ def comparar(a: dict, b: dict) -> tuple[str, list[str]]:
             lineas.append(f"\n### {titulo}")
             lineas += [f"- `{p}`" for p in lista]
     lineas.append(f"\n## Pruebas\n- {a['pruebas']['total_funciones']} → {b['pruebas']['total_funciones']} funciones")
+    # un módulo nuevo del backend o del frontend suele ser una función nueva
+    agrega |= any(re.match(r"(docslab/[^/]+\.py|static/js/[^/]+\.js)$", n) for n in nuevos)
+    agrega |= a.get("licencia") != b.get("licencia")
     salto = "MAJOR" if rompe else "MINOR" if agrega else "PATCH" if (nuevos or quitados or cambiados) else "NINGUNO"
     lineas.insert(1, f"**Salto SemVer sugerido:** {salto} (orientativo: los cambios de comportamiento no se detectan solos)\n")
     return salto, lineas

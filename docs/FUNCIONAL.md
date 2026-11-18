@@ -1,4 +1,4 @@
-# Especificación funcional · DocsLab 1.0.0
+# Especificación funcional · DocsLab 1.1.0
 
 Catálogo de funciones con identificadores estables (**F-NN**). Cada versión futura indica en el CHANGELOG qué F-NN añade, cambia o retira. Los identificadores no se reutilizan.
 
@@ -108,6 +108,12 @@ Columnas: **Módulos** (backend), **API** (grupo de `docs/API.md`), **Pruebas** 
 **Descripción.** `iniciar.command` (macOS/Linux) e `iniciar.bat` (Windows) crean `.venv`, instalan las dependencias y abren `http://127.0.0.1:8765`; si ya está en marcha, solo abren el navegador. Opciones `--puerto`, `--datos`, `--raices`, `--host` y `--detalle`. Lanzador de Colab que usa Drive.
 **Módulos.** `servidor.py`, `herramientas/crear_lanzador_colab.py`. **API.** `GET /api/estado`. **Pruebas.** `test_api.py` · `test_estado_y_catalogo`. Colab [NO VERIFICADO] en un Colab real (según el LEEME, se probó en un entorno simulado). **Estado.** Parcial.
 
+## F-25 · Migración del esquema de proyectos
+**Introducida en.** 1.1.0.
+**Descripción.** Al abrir un proyecto guardado con un esquema anterior, DocsLab lo lleva al esquema actual aplicando migraciones en cadena (N→N+1) y guarda antes una copia en `historial/modelo-antes-de-esquema-<N>.json`. Los proyectos heredados (PosterLab, DocsLab 2.1.0 y 1.0.x) se reconocen como esquema 1. Un proyecto de un esquema más nuevo no se abre y muestra «Actualiza DocsLab para abrirlo».
+**Reglas.** Leer no reescribe el archivo; la versión migrada se guarda al primer cambio. Ninguna migración pierde datos en silencio.
+**Módulos.** `migraciones.py`, `modelo.py`, `almacen.py`. **API.** `GET`/`PUT /api/proyectos/<pid>/modelo` (400 si el esquema es más nuevo). **Pruebas.** `test_migraciones.py` (15 funciones; las de cadena usan un registro simulado porque aún no hay migraciones reales). **Estado.** Estable.
+
 ---
 
 ## Requisitos no funcionales
@@ -118,4 +124,6 @@ Columnas: **Módulos** (backend), **API** (grupo de `docs/API.md`), **Pruebas** 
 | RNF-02 | Un cambio pequeño compila en ~1 s [NO VERIFICADO: cifra del LEEME, no medida] | LEEME |
 | RNF-03 | Python ≥ 3.9 | `requirements.txt` |
 | RNF-04 | Uso local de un solo usuario, sin autenticación | `SECURITY.md` |
+| RNF-06 | Compatibilidad hacia atrás: todo proyecto de un esquema anterior se abre sin pérdida de datos | `docs/MIGRACIONES.md`, F-25 |
+| RNF-07 | Licencia AGPL-3.0-only; cabecera SPDX en cada archivo de código propio | `LICENSE` |
 | RNF-05 | Las funciones opcionales se desactivan si faltan sus herramientas (Poppler, Ghostscript, LuaLaTeX), con aviso | Pruebas con `skip` |

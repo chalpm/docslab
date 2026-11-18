@@ -278,7 +278,7 @@ abrir_docslab_en_colab.ipynb
 
 ```
 python -m pip install pytest     # con el entorno .venv activado
-python -m pytest                 # 288 pruebas; las que necesitan LaTeX, Poppler, LuaLaTeX o Ghostscript se saltan si faltan
+python -m pytest                 # 317 pruebas; las que necesitan LaTeX, Poppler, LuaLaTeX o Ghostscript se saltan si faltan
 python tests/e2e_navegador.py    # opcional: necesita playwright y chromium
 ```
 

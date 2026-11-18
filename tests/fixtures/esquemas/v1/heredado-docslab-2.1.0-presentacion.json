@@ -1,0 +1,496 @@
+{
+ "clase": "presentacion",
+ "formato_texto": "simple",
+ "idioma": "es",
+ "lienzo": {
+  "tamano": "16:9",
+  "orientacion": "horizontal",
+  "ancho": "338.67mm",
+  "alto": "190.5mm",
+  "margen": "14mm",
+  "margen_superior": "",
+  "margen_inferior": "",
+  "margen_izquierdo": "",
+  "margen_derecho": "",
+  "libre": false
+ },
+ "tipografia": {
+  "fuente": 20,
+  "interlinea": 1.22,
+  "familia": "helvetica",
+  "familia_titulos": "",
+  "propias": [],
+  "escalas": {
+   "titulo": 2.6,
+   "subtitulo": 1.3,
+   "autores": 1.1,
+   "afiliaciones": 0.9,
+   "bloque": 1.1,
+   "pie": 0.75,
+   "cita": 1.4,
+   "cifra": 2.8,
+   "referencias": 0.7,
+   "piedeposter": 0.62
+  }
+ },
+ "colores": {
+  "tema": "pizarra",
+  "primario": "3E5468",
+  "secundario": "6A8196",
+  "acento": "A9803A",
+  "fondo": "FFFFFF",
+  "fondo_bloque": "F2F4F6",
+  "texto": "22272C",
+  "tenue": "5D666E",
+  "contraste": "FFFFFF"
+ },
+ "estilo": {
+  "bloque": "ninguno",
+  "radio": "0.3em",
+  "relleno": "0.75em",
+  "separacion_columnas": "10mm",
+  "separacion_filas": "",
+  "separacion_bloques": "0.7em",
+  "separacion_imagenes": "0.45em",
+  "separacion_elementos": "0.35em",
+  "mostrar_titulos": true,
+  "numerar_bloques": false,
+  "alineacion_titulos": "izquierda",
+  "alinear_texto": "izquierda",
+  "sombra": false,
+  "numerar_figuras": true,
+  "nombre_figura": "Figura"
+ },
+ "cabecera": {
+  "visible": true,
+  "estilo": "banda",
+  "alineacion": "izquierda",
+  "titulo": "Título de la presentación",
+  "subtitulo": "El mensaje principal en una línea",
+  "autores": "Nombre Apellido",
+  "afiliaciones": "Institución · Congreso, año",
+  "logo_izquierdo": "",
+  "logo_derecho": "",
+  "ancho_logos": 0.15,
+  "alto_logos": "5.5em",
+  "tam_logo_izquierdo": 100,
+  "tam_logo_derecho": 100,
+  "fondo": "",
+  "color_texto": "",
+  "imagen": "",
+  "oscurecer": 0.45
+ },
+ "filas": [
+  {
+   "visible": true,
+   "alto": "auto",
+   "rejilla": 1,
+   "separacion": "",
+   "despues": "",
+   "igualar": true,
+   "columnas": [
+    {
+     "abarca": 1,
+     "distribucion": "arriba",
+     "bloques": [
+      {
+       "visible": true,
+       "titulo": "",
+       "mostrar_titulo": false,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-f9ta14",
+         "tipo": "txtVinetas",
+         "visible": true,
+         "items": [
+          "El problema, en una frase.",
+          "Por qué importa ahora.",
+          "Qué se propone en este trabajo."
+         ]
+        }
+       ],
+       "id": "b-erw9so"
+      }
+     ],
+     "id": "c-kabam9"
+    }
+   ],
+   "id": "f-udpf5e",
+   "pag": "p-mjdtur"
+  },
+  {
+   "visible": true,
+   "alto": "auto",
+   "rejilla": 2,
+   "separacion": "",
+   "despues": "",
+   "igualar": true,
+   "columnas": [
+    {
+     "abarca": 1,
+     "distribucion": "arriba",
+     "bloques": [
+      {
+       "visible": true,
+       "titulo": "",
+       "mostrar_titulo": false,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-maejku",
+         "tipo": "txtJustificado",
+         "visible": true,
+         "texto": "Explica aquí lo que muestra la figura: **una idea por diapositiva**."
+        },
+        {
+         "id": "e-5398q9",
+         "tipo": "txtCifra",
+         "visible": true,
+         "cifra": "87 %",
+         "texto": "de los casos mejoran con el método"
+        }
+       ],
+       "id": "b-13w7wv"
+      }
+     ],
+     "id": "c-sjv4rz"
+    },
+    {
+     "abarca": 1,
+     "distribucion": "arriba",
+     "bloques": [
+      {
+       "visible": true,
+       "titulo": "",
+       "mostrar_titulo": false,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-fsddnd",
+         "tipo": "imgAncho",
+         "visible": true,
+         "archivo": "recursos/prueba2.png",
+         "pie": "Resultado principal.",
+         "tam": 100
+        }
+       ],
+       "id": "b-035quo"
+      }
+     ],
+     "id": "c-njkjtw"
+    }
+   ],
+   "id": "f-zeszsi",
+   "pag": "p-d6wit5"
+  },
+  {
+   "visible": true,
+   "alto": "auto",
+   "rejilla": 1,
+   "separacion": "",
+   "despues": "",
+   "igualar": true,
+   "columnas": [
+    {
+     "abarca": 1,
+     "distribucion": "repartir",
+     "bloques": [
+      {
+       "visible": true,
+       "titulo": "",
+       "mostrar_titulo": false,
+       "estilo": "ninguno",
+       "numero": "",
+       "estirar": false,
+       "opciones": {
+        "relleno": "0pt"
+       },
+       "elementos": [
+        {
+         "id": "e-tb1baw",
+         "tipo": "imgAncho",
+         "visible": true,
+         "archivo": "recursos/prueba1.png",
+         "pie": "",
+         "tam": 100
+        }
+       ],
+       "id": "b-e625pq",
+       "libre": true,
+       "x": 0.06,
+       "y": 0.22,
+       "ancho": 0.4,
+       "rotacion": 0
+      },
+      {
+       "visible": true,
+       "titulo": "",
+       "mostrar_titulo": false,
+       "estilo": "ninguno",
+       "numero": "",
+       "estirar": false,
+       "opciones": {
+        "relleno": "0pt"
+       },
+       "elementos": [
+        {
+         "id": "e-pgr1mz",
+         "tipo": "imgAncho",
+         "visible": true,
+         "archivo": "recursos/prueba3.png",
+         "pie": "",
+         "tam": 100
+        }
+       ],
+       "id": "b-gu7ve2",
+       "libre": true,
+       "x": 0.56,
+       "y": 0.24,
+       "ancho": 0.24,
+       "rotacion": -4
+      },
+      {
+       "visible": true,
+       "titulo": "",
+       "mostrar_titulo": false,
+       "estilo": "ninguno",
+       "numero": "",
+       "estirar": false,
+       "opciones": {
+        "relleno": "0pt"
+       },
+       "elementos": [
+        {
+         "id": "e-dlfvgv",
+         "tipo": "txtIzquierda",
+         "visible": true,
+         "texto": "Aquí cada cosa se **arrastra** a donde quieras: no hay filas ni columnas."
+        }
+       ],
+       "id": "b-e62vgk",
+       "libre": true,
+       "x": 0.5,
+       "y": 0.76,
+       "ancho": 0.42,
+       "rotacion": 0
+      }
+     ],
+     "id": "c-te1cz6"
+    }
+   ],
+   "id": "f-9fj9y3",
+   "pag": "p-wqvb35"
+  },
+  {
+   "visible": true,
+   "alto": "auto",
+   "rejilla": 1,
+   "separacion": "",
+   "despues": "",
+   "igualar": true,
+   "columnas": [
+    {
+     "abarca": 1,
+     "distribucion": "arriba",
+     "bloques": [
+      {
+       "visible": true,
+       "titulo": "",
+       "mostrar_titulo": false,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-f2etpo",
+         "tipo": "txtVinetas",
+         "visible": true,
+         "items": [
+          "Lo más importante",
+          "Lo que sigue"
+         ]
+        }
+       ],
+       "id": "b-tntgyh"
+      }
+     ],
+     "id": "c-7qs5e4"
+    }
+   ],
+   "id": "f-z24jep",
+   "pag": "p-v6jn5i"
+  }
+ ],
+ "pie": {
+  "visible": true,
+  "estilo": "banda",
+  "izquierda": "",
+  "centro": "",
+  "derecha": "",
+  "fondo": "",
+  "color_texto": ""
+ },
+ "contenido_visible": true,
+ "capas": [
+  {
+   "id": "fondo",
+   "nombre": "Fondo",
+   "z": -10,
+   "visible": true,
+   "opacidad": 1,
+   "elementos": []
+  },
+  {
+   "id": "frente",
+   "nombre": "Frente",
+   "z": 10,
+   "visible": true,
+   "opacidad": 1,
+   "elementos": []
+  }
+ ],
+ "latex": {
+  "preambulo": "",
+  "antes": "",
+  "despues": ""
+ },
+ "bibliografia": {
+  "estilo": "apa",
+  "referencias": []
+ },
+ "componentes": {},
+ "paginas": [
+  {
+   "visible": true,
+   "nombre": "Portada",
+   "subtitulo": "",
+   "diseno": "portada",
+   "estilo": "",
+   "pie": false,
+   "fondo": "",
+   "libre": false,
+   "notas": "",
+   "id": "p-vvcod7"
+  },
+  {
+   "visible": true,
+   "nombre": "Introducción",
+   "subtitulo": "",
+   "diseno": "contenido",
+   "estilo": "",
+   "pie": true,
+   "fondo": "",
+   "libre": false,
+   "notas": "",
+   "id": "p-mjdtur"
+  },
+  {
+   "visible": true,
+   "nombre": "Resultados",
+   "subtitulo": "",
+   "diseno": "seccion",
+   "estilo": "",
+   "pie": true,
+   "fondo": "",
+   "libre": false,
+   "notas": "",
+   "id": "p-54vt8y"
+  },
+  {
+   "visible": true,
+   "nombre": "Un resultado con su figura",
+   "subtitulo": "",
+   "diseno": "contenido",
+   "estilo": "",
+   "pie": true,
+   "fondo": "",
+   "libre": false,
+   "notas": "",
+   "id": "p-d6wit5"
+  },
+  {
+   "visible": true,
+   "nombre": "Una diapositiva con lienzo libre",
+   "subtitulo": "",
+   "diseno": "contenido",
+   "estilo": "",
+   "pie": true,
+   "fondo": "",
+   "libre": true,
+   "notas": "",
+   "id": "p-wqvb35"
+  },
+  {
+   "visible": true,
+   "nombre": "Conclusiones",
+   "subtitulo": "",
+   "diseno": "contenido",
+   "estilo": "",
+   "pie": true,
+   "fondo": "",
+   "libre": false,
+   "notas": "",
+   "id": "p-v6jn5i"
+  }
+ ],
+ "presentacion": {
+  "pie": "Título corto · Nombre Apellido",
+  "numerar": true,
+  "titulo": "banda",
+  "progreso": false,
+  "escala_titulo": 1.5
+ },
+ "documento": {
+  "columnas": 1,
+  "parrafos": "sangria",
+  "numerar_paginas": true,
+  "numerar_secciones": true,
+  "encabezado": "",
+  "resumen": "",
+  "titulo_resumen": "Resumen",
+  "palabras_clave": "",
+  "titulo_palabras": "Palabras clave",
+  "resumen2": "",
+  "titulo_resumen2": "Abstract",
+  "palabras_clave2": "",
+  "titulo_palabras2": "Keywords",
+  "indice": false,
+  "titulo_indice": "Índice",
+  "lista_figuras": false,
+  "titulo_figuras": "Índice de figuras",
+  "lista_tablas": false,
+  "titulo_tablas": "Índice de tablas",
+  "numerar_tablas": true,
+  "nombre_tabla": "Tabla",
+  "nombre_capitulo": "Capítulo",
+  "nombre_apendice": "Apéndice",
+  "escala_seccion": 1.45,
+  "escala_capitulo": 2.2,
+  "dedicatoria": "",
+  "agradecimientos": "",
+  "titulo_agradecimientos": "Agradecimientos",
+  "portada": {
+   "visible": false,
+   "institucion": "",
+   "dependencia": "",
+   "tipo": "TESIS",
+   "grado": "",
+   "presenta": "",
+   "director": "",
+   "lugar": "",
+   "fecha": ""
+  }
+ },
+ "esquema": 2
+}

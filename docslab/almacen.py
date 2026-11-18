@@ -14,7 +14,7 @@ import zipfile
 from datetime import datetime
 from pathlib import Path
 
-from . import generador, modelo as M
+from . import generador, migraciones as MG, modelo as M
 
 RAIZ_APP = Path(__file__).resolve().parent.parent
 PLANTILLAS_INCLUIDAS = RAIZ_APP / "plantillas"
@@ -169,7 +169,10 @@ class Almacen:
                 meta["principal"] = pm.get("principal", "poster.tex")
                 meta["cuadernos"] = pm.get("cuadernos", [])
                 if meta["tipo"] == "estructurado":
-                    mod = M.normalizar(_leer_json(d / "modelo.json", {}))
+                    try:
+                        mod = M.normalizar(_leer_json(d / "modelo.json", {}))
+                    except MG.ErrorEsquema as exc:
+                        raise ErrorAlmacen(str(exc)) from exc
                     _escribir_json(d / "modelo.json", mod)
                     meta["clase"] = mod["clase"]
                 elif not (d / "postercientifico.sty").exists() and STY.exists():
@@ -186,11 +189,23 @@ class Almacen:
 
     def leer_modelo(self, pid: str) -> dict:
         d = self.dir_proyecto(pid)
-        return M.normalizar(_leer_json(d / "modelo.json", {}))
+        crudo = _leer_json(d / "modelo.json", {})
+        try:
+            if isinstance(crudo, dict) and MG.necesita_copia(crudo):
+                copia = d / "historial" / f"modelo-antes-de-esquema-{M.ESQUEMA}.json"
+                if not copia.exists():
+                    copia.parent.mkdir(exist_ok=True)
+                    shutil.copy2(d / "modelo.json", copia)
+            return M.normalizar(crudo)
+        except MG.ErrorEsquema as exc:
+            raise ErrorAlmacen(str(exc)) from exc
 
     def guardar_modelo(self, pid: str, modelo: dict) -> dict:
         d = self.dir_proyecto(pid)
-        modelo = M.normalizar(modelo)
+        try:
+            modelo = M.normalizar(modelo)
+        except MG.ErrorEsquema as exc:
+            raise ErrorAlmacen(str(exc)) from exc
         actual = d / "modelo.json"
         hist = d / "historial"
         if actual.exists():

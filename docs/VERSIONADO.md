@@ -19,7 +19,7 @@ DocsLab tiene cuatro contratos que evolucionan a ritmos distintos. Cada uno llev
 |---|---|---|---|
 | **Aplicación** | `docslab/__init__.py` → `__version__` | SemVer | Usuarios, `/api/estado`, empaquetado |
 | **Plantilla LaTeX** | `latex/postercientifico.sty` → `\ProvidesPackage[… vX.Y.Z …]` y `docslab.__version_sty__` | SemVer | `.tex` de usuarios, Overleaf, proyectos en modo LaTeX |
-| **Esquema del modelo** | `docslab/modelo.py` → `ESQUEMA` | Entero creciente | `modelo.json` de proyectos y plantillas |
+| **Esquema del modelo** | `docslab/modelo.py` → `ESQUEMA` (clave `version_esquema` en `modelo.json`) | Entero creciente | `modelo.json` de proyectos y plantillas |
 | **Exportación de componentes** | `docslab/componentes.py` → `"version": 1` | Entero creciente | `.json` de componentes exportados |
 
 Cuando cambia la plantilla `.sty` o el esquema, también cambia la aplicación, como mínimo en MINOR.
@@ -44,13 +44,13 @@ Cuando cambia la plantilla `.sty` o el esquema, también cambia la aplicación, 
 
 ### Esquema del modelo
 - Sube en 1 cada vez que cambia la forma de `modelo.json` de un modo que `normalizar()` no resuelve completando valores por defecto (renombrar, mover o cambiar el tipo de un campo).
-- Cada subida debe venir con una función de migración `N-1 → N`. Las migraciones aún no existen (ver «Problemas conocidos» en el CHANGELOG).
+- Cada subida debe venir con una función de migración `N-1 → N` en `docslab/migraciones.py` y un fixture del esquema de origen. El procedimiento está en [`MIGRACIONES.md`](MIGRACIONES.md).
 
 ## 4. Huella digital
 
 `herramientas/huella.py` produce `huella/vX.Y.Z.json` con:
 
-- los números de versión de los cuatro ejes;
+- los números de versión de los cuatro ejes y la licencia;
 - el **contrato público**: las rutas de la API, las 69 variantes, los estilos de caja y bibliográficos, las clases, los tamaños, los temas, los idiomas, las familias tipográficas y las plantillas incluidas;
 - las dependencias, el número de funciones de prueba por archivo y las líneas de código por módulo;
 - el SHA-256 y el tamaño de cada archivo, más un `sha256_global` del árbol.

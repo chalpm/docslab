@@ -13,7 +13,7 @@ import string
 
 from . import variantes
 
-ESQUEMA = 1   # versión del esquema del modelo JSON (entero; ver docs/VERSIONADO.md)
+ESQUEMA = 1   # versión del esquema del modelo JSON (entero; clave "version_esquema"; ver docs/MIGRACIONES.md)
 
 TAMANOS = {
     "A0": ("841mm", "1189mm"), "A1": ("594mm", "841mm"), "A2": ("420mm", "594mm"),
@@ -144,7 +144,7 @@ def nuevo_id(prefijo: str = "x") -> str:
 
 
 DEFECTO = {
-    "esquema": ESQUEMA,
+    "version_esquema": ESQUEMA,
     "clase": "poster",       # poster | presentacion | documento | paper | tesis
     "formato_texto": "simple",
     "idioma": "",            # "" = sin definir (reglas del inglés, como siempre en LaTeX)
@@ -231,10 +231,13 @@ def _completar(destino: dict, defecto: dict) -> dict:
 
 
 def normalizar(m: dict | None) -> dict:
-    """Completa un modelo con los valores por defecto y asegura los identificadores."""
-    m = copy.deepcopy(m) if m else {}
+    """Lleva un modelo al esquema actual (migraciones), completa los valores por
+    defecto y asegura los identificadores. Lanza migraciones.ErrorEsquema si el
+    modelo es de un esquema más nuevo o no se puede migrar."""
+    from .migraciones import migrar
+    m, _ = migrar(m if isinstance(m, dict) else {})
     _completar(m, DEFECTO)
-    m["esquema"] = ESQUEMA
+    m["version_esquema"] = ESQUEMA
     from . import bibliografia as B
     bib = m.get("bibliografia")
     if not isinstance(bib, dict):

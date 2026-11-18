@@ -1,6 +1,6 @@
 {
  "clase": "documento",
- "esquema": 1,
+ "version_esquema": 1,
  "formato_texto": "simple",
  "idioma": "es",
  "lienzo": {

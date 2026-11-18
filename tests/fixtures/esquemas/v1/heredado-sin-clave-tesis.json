@@ -1,0 +1,416 @@
+{
+ "clase": "tesis",
+ "formato_texto": "simple",
+ "idioma": "es",
+ "lienzo": {
+  "tamano": "A4",
+  "orientacion": "vertical",
+  "ancho": "210mm",
+  "alto": "297mm",
+  "margen": "25mm",
+  "margen_superior": "",
+  "margen_inferior": "",
+  "margen_izquierdo": "30mm",
+  "margen_derecho": "",
+  "libre": false
+ },
+ "tipografia": {
+  "fuente": 12,
+  "interlinea": 1.5,
+  "familia": "palatino",
+  "familia_titulos": "",
+  "propias": [],
+  "escalas": {
+   "titulo": 2.1,
+   "subtitulo": 1.25,
+   "autores": 1.1,
+   "afiliaciones": 0.92,
+   "bloque": 1.05,
+   "pie": 0.9,
+   "cita": 1.25,
+   "cifra": 2.2,
+   "referencias": 0.92,
+   "piedeposter": 0.8
+  }
+ },
+ "colores": {
+  "tema": "pizarra",
+  "primario": "3E5468",
+  "secundario": "6A8196",
+  "acento": "A9803A",
+  "fondo": "FFFFFF",
+  "fondo_bloque": "F2F4F6",
+  "texto": "22272C",
+  "tenue": "5D666E",
+  "contraste": "FFFFFF"
+ },
+ "estilo": {
+  "bloque": "borde",
+  "radio": "0.2em",
+  "relleno": "0.6em",
+  "separacion_columnas": "7mm",
+  "separacion_filas": "",
+  "separacion_bloques": "0.9em",
+  "separacion_imagenes": "0.45em",
+  "separacion_elementos": "0.55em",
+  "mostrar_titulos": true,
+  "numerar_bloques": false,
+  "alineacion_titulos": "izquierda",
+  "alinear_texto": "justificado",
+  "sombra": false,
+  "numerar_figuras": true,
+  "nombre_figura": "Figura"
+ },
+ "cabecera": {
+  "visible": true,
+  "estilo": "banda",
+  "alineacion": "centro",
+  "titulo": "Título de la tesis",
+  "subtitulo": "",
+  "autores": "Nombre Apellido Apellido",
+  "afiliaciones": "",
+  "logo_izquierdo": "",
+  "logo_derecho": "",
+  "ancho_logos": 0.15,
+  "alto_logos": "5.5em",
+  "tam_logo_izquierdo": 100,
+  "tam_logo_derecho": 100,
+  "fondo": "",
+  "color_texto": "",
+  "imagen": "",
+  "oscurecer": 0.45
+ },
+ "filas": [
+  {
+   "visible": true,
+   "alto": "auto",
+   "rejilla": 1,
+   "separacion": "",
+   "despues": "",
+   "igualar": true,
+   "columnas": [
+    {
+     "abarca": 1,
+     "distribucion": "arriba",
+     "bloques": [
+      {
+       "visible": true,
+       "titulo": "Introducción",
+       "mostrar_titulo": true,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-1cce9w",
+         "tipo": "txtJustificado",
+         "visible": true,
+         "texto": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut purus elit, vestibulum ut, placerat ac, adipiscing vitae, felis. Curabitur dictum gravida mauris. Nam arcu libero, nonummy eget, consectetuer id, vulputate a, magna.\n\nPhasellus eu tellus sit amet tortor gravida placerat. Integer sapien est, iaculis in, pretium quis, viverra ac, nunc. Praesent eget sem vel leo ultrices bibendum. Aenean faucibus. Morbi dolor nulla, malesuada eu, pulvinar at, mollis ac, nulla."
+        }
+       ],
+       "id": "b-t2id9d",
+       "nivel": 1
+      },
+      {
+       "visible": true,
+       "titulo": "Planteamiento del problema",
+       "mostrar_titulo": true,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-dz21c3",
+         "tipo": "txtJustificado",
+         "visible": true,
+         "texto": "Donec vehicula augue eu neque. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Mauris ut leo. Cras viverra metus rhoncus sem. Nulla et lectus vestibulum urna fringilla ultrices."
+        }
+       ],
+       "id": "b-mgkwpd",
+       "nivel": 2
+      },
+      {
+       "visible": true,
+       "titulo": "Objetivos",
+       "mostrar_titulo": true,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-51ltai",
+         "tipo": "txtNumerada",
+         "visible": true,
+         "items": [
+          "Objetivo general del trabajo.",
+          "Primer objetivo específico.",
+          "Segundo objetivo específico."
+         ]
+        }
+       ],
+       "id": "b-fihefo",
+       "nivel": 2
+      },
+      {
+       "visible": true,
+       "titulo": "Marco teórico",
+       "mostrar_titulo": true,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-iy9g3g",
+         "tipo": "txtJustificado",
+         "visible": true,
+         "texto": "Phasellus eu tellus sit amet tortor gravida placerat. Integer sapien est, iaculis in, pretium quis, viverra ac, nunc. Praesent eget sem vel leo ultrices bibendum. Aenean faucibus. Morbi dolor nulla, malesuada eu, pulvinar at, mollis ac, nulla.\n\nCurabitur auctor semper nulla. Donec varius orci eget risus. Duis nibh mi, congue eu, accumsan eleifend, sagittis quis, diam. Duis eget orci sit amet orci dignissim rutrum."
+        }
+       ],
+       "id": "b-4bs065",
+       "nivel": 1
+      },
+      {
+       "visible": true,
+       "titulo": "Metodología",
+       "mostrar_titulo": true,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-e06t4w",
+         "tipo": "txtJustificado",
+         "visible": true,
+         "texto": "Donec vehicula augue eu neque. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Mauris ut leo. Cras viverra metus rhoncus sem. Nulla et lectus vestibulum urna fringilla ultrices."
+        },
+        {
+         "id": "e-92kdnm",
+         "tipo": "imgAncho",
+         "visible": true,
+         "archivo": "recursos/prueba1.png",
+         "pie": "Esquema del método.",
+         "tam": 70
+        }
+       ],
+       "id": "b-7y09fq",
+       "nivel": 1
+      },
+      {
+       "visible": true,
+       "titulo": "Resultados",
+       "mostrar_titulo": true,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-ivnmux",
+         "tipo": "txtJustificado",
+         "visible": true,
+         "texto": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut purus elit, vestibulum ut, placerat ac, adipiscing vitae, felis. Curabitur dictum gravida mauris. Nam arcu libero, nonummy eget, consectetuer id, vulputate a, magna."
+        },
+        {
+         "id": "e-k6d7ru",
+         "tipo": "imgAncho",
+         "visible": true,
+         "archivo": "recursos/prueba2.png",
+         "pie": "Resultado principal.",
+         "tam": 80
+        },
+        {
+         "id": "e-kmmdhq",
+         "tipo": "txtTabla",
+         "visible": true,
+         "pie": "Resumen de los grupos.",
+         "tabla": {
+          "columnas": "lrr",
+          "encabezado": true,
+          "filas": [
+           [
+            "Grupo",
+            "Media",
+            "Desviación"
+           ],
+           [
+            "Control",
+            "12.4",
+            "1.8"
+           ],
+           [
+            "Tratamiento A",
+            "18.9",
+            "2.1"
+           ],
+           [
+            "Tratamiento B",
+            "21.3",
+            "2.6"
+           ]
+          ]
+         }
+        }
+       ],
+       "id": "b-4oqhzc",
+       "nivel": 1
+      },
+      {
+       "visible": true,
+       "titulo": "Conclusiones",
+       "mostrar_titulo": true,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-8vz51e",
+         "tipo": "txtJustificado",
+         "visible": true,
+         "texto": "Curabitur auctor semper nulla. Donec varius orci eget risus. Duis nibh mi, congue eu, accumsan eleifend, sagittis quis, diam. Duis eget orci sit amet orci dignissim rutrum."
+        }
+       ],
+       "id": "b-vcegbm",
+       "nivel": 1
+      },
+      {
+       "visible": true,
+       "titulo": "Referencias",
+       "mostrar_titulo": true,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-9bcvza",
+         "tipo": "bibliografia",
+         "visible": true,
+         "incluir": "citadas",
+         "columnas": 1
+        }
+       ],
+       "id": "b-tk6xr3",
+       "nivel": 1,
+       "numerar": false
+      },
+      {
+       "visible": true,
+       "titulo": "Datos complementarios",
+       "mostrar_titulo": true,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-xtl6np",
+         "tipo": "txtJustificado",
+         "visible": true,
+         "texto": "Texto de «Datos complementarios»."
+        }
+       ],
+       "id": "b-o84pqf",
+       "nivel": 1,
+       "apendice": true
+      }
+     ],
+     "id": "c-8p1p8e"
+    }
+   ],
+   "id": "f-2npnpu"
+  }
+ ],
+ "pie": {
+  "visible": true,
+  "estilo": "banda",
+  "izquierda": "",
+  "centro": "",
+  "derecha": "",
+  "fondo": "",
+  "color_texto": ""
+ },
+ "contenido_visible": true,
+ "capas": [
+  {
+   "id": "fondo",
+   "nombre": "Fondo",
+   "z": -10,
+   "visible": true,
+   "opacidad": 1,
+   "elementos": []
+  },
+  {
+   "id": "frente",
+   "nombre": "Frente",
+   "z": 10,
+   "visible": true,
+   "opacidad": 1,
+   "elementos": []
+  }
+ ],
+ "latex": {
+  "preambulo": "",
+  "antes": "",
+  "despues": ""
+ },
+ "bibliografia": {
+  "estilo": "apa",
+  "referencias": []
+ },
+ "componentes": {},
+ "paginas": [],
+ "presentacion": {
+  "pie": "",
+  "numerar": true,
+  "titulo": "banda",
+  "progreso": false,
+  "escala_titulo": 1.5
+ },
+ "documento": {
+  "columnas": 1,
+  "parrafos": "sangria",
+  "numerar_paginas": true,
+  "numerar_secciones": true,
+  "encabezado": "",
+  "resumen": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut purus elit, vestibulum ut, placerat ac, adipiscing vitae, felis. Curabitur dictum gravida mauris. Nam arcu libero, nonummy eget, consectetuer id, vulputate a, magna.\n\nDonec vehicula augue eu neque. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Mauris ut leo. Cras viverra metus rhoncus sem. Nulla et lectus vestibulum urna fringilla ultrices.",
+  "titulo_resumen": "Resumen",
+  "palabras_clave": "",
+  "titulo_palabras": "Palabras clave",
+  "resumen2": "",
+  "titulo_resumen2": "Abstract",
+  "palabras_clave2": "",
+  "titulo_palabras2": "Keywords",
+  "indice": true,
+  "titulo_indice": "Índice",
+  "lista_figuras": true,
+  "titulo_figuras": "Índice de figuras",
+  "lista_tablas": false,
+  "titulo_tablas": "Índice de tablas",
+  "numerar_tablas": true,
+  "nombre_tabla": "Tabla",
+  "nombre_capitulo": "Capítulo",
+  "nombre_apendice": "Apéndice",
+  "escala_seccion": 1.4,
+  "escala_capitulo": 2.2,
+  "dedicatoria": "",
+  "agradecimientos": "A quienes acompañaron este trabajo.",
+  "titulo_agradecimientos": "Agradecimientos",
+  "portada": {
+   "visible": true,
+   "institucion": "Nombre de la institución",
+   "dependencia": "Departamento o facultad",
+   "tipo": "TESIS",
+   "grado": "que para obtener el título de …",
+   "presenta": "presenta",
+   "director": "Director: Nombre Apellido",
+   "lugar": "Ciudad",
+   "fecha": "mes de año"
+  }
+ }
+}

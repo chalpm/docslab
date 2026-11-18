@@ -31,7 +31,7 @@ def test_copias_de_la_sty_en_plantillas_son_la_actual():
 
 def test_plantillas_usan_el_esquema_actual():
     for p in (RAIZ / "plantillas").glob("*/modelo.json"):
-        assert json.loads(p.read_text(encoding="utf-8")).get("esquema") == M.ESQUEMA, p.parent.name
+        assert json.loads(p.read_text(encoding="utf-8")).get("version_esquema") == M.ESQUEMA, p.parent.name
 
 
 def test_version_en_el_changelog():

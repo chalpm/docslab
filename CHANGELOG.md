@@ -12,6 +12,24 @@ Tipos de entrada: **Añadido**, **Cambiado**, **Obsoleto**, **Eliminado**, **Cor
 
 _Nada todavía._
 
+## [1.1.0] - 2026-11-18
+
+Huella: [`huella/v1.1.0.json`](huella/v1.1.0.json). Versiones: aplicación 1.1.0 · `.sty` 1.0.1 · esquema 1 · licencia AGPL-3.0-only.
+
+### Añadido
+- **Licencia GNU AGPL-3.0-only** (`LICENSE`, texto canónico). Cabecera `SPDX-License-Identifier` en los 70 archivos de código propio, `docslab.__license__`, campo `licencia` en `GET /api/estado` y sección «Licencia» en el LEEME.
+- **Migraciones del esquema del modelo** (F-25): `docslab/migraciones.py`, con registro `@migracion(desde=N)` y aplicación en cadena desde `modelo.normalizar()`. Al abrir un proyecto que necesita migrar se guarda una copia en `historial/modelo-antes-de-esquema-<N>.json`. Los proyectos de un esquema más nuevo no se abren (HTTP 400, «Actualiza DocsLab para abrirlo»).
+- `tests/test_migraciones.py` y fixtures del esquema 1 en `tests/fixtures/esquemas/v1/`: un modelo actual, uno heredado de DocsLab 2.1.0 (`"esquema": 2`) y uno sin clave.
+- `docs/MIGRACIONES.md`: funcionamiento y procedimiento para añadir una migración.
+- `herramientas/huella.py` registra la licencia y compara sus cambios.
+
+### Cambiado
+- La versión del esquema se guarda en la clave **`version_esquema`** en lugar de `esquema`. Los `modelo.json` con la clave antigua (1 o 2) o sin clave se reconocen como esquema 1 y se actualizan al guardarse; no hace falta ninguna acción. Así el futuro esquema 2 no se confunde con los archivos de DocsLab 2.1.0, que guardaban `"esquema": 2`.
+- Plantillas incluidas: `modelo.json` con `version_esquema`.
+- `postercientifico.sty` 1.0.1: solo se añade la cabecera de licencia. Las copias de las plantillas LaTeX se sincronizan.
+- `ejemplo_capas.tex`: el pie ya no fija la versión de la `.sty`.
+
+
 ## [1.0.1] - 2026-11-18
 
 Huella: [`huella/v1.0.1.json`](huella/v1.0.1.json). Versiones: aplicación 1.0.1 · `.sty` 1.0.0 (sin cambios) · esquema 1.
@@ -63,11 +81,12 @@ Línea base. Es la primera versión con versionado formal. Huella: [`huella/v1.0
 
 ### Problemas conocidos
 - ~~`plantillas/catalogo-latex` y `plantillas/ejemplo-capas-latex` llevan una copia antigua de `postercientifico.sty`.~~ Corregido en 1.0.1.
-- No hay migraciones del esquema del modelo: `modelo.normalizar()` solo completa los valores por defecto.
-- El proyecto no tiene archivo de licencia propio; solo están las licencias de las librerías incluidas en `static/vendor/`.
+- ~~No hay migraciones del esquema del modelo.~~ Resuelto en 1.1.0.
+- ~~El proyecto no tiene archivo de licencia propio.~~ Resuelto en 1.1.0 (AGPL-3.0-only).
 - En un TeX Live sin `texlive-lang-spanish` ni `luatex85.sty` fallan 11 pruebas (las 9 de compilación de plantillas, una de la API y una de LuaLaTeX).
 - La API no tiene autenticación y los cuadernos ejecutan código arbitrario (ver `SECURITY.md`).
 
-[Sin publicar]: ../../compare/v1.0.1...HEAD
+[Sin publicar]: ../../compare/v1.1.0...HEAD
+[1.1.0]: ../../compare/v1.0.1...v1.1.0
 [1.0.1]: ../../compare/v1.0.0...v1.0.1
 [1.0.0]: ../../releases/tag/v1.0.0
