@@ -23,6 +23,10 @@ STY = RAIZ_APP / "latex" / "postercientifico.sty"
 
 EXT_IMAGEN = {".png", ".jpg", ".jpeg", ".pdf"}
 EXT_CONVERTIBLE = {".gif", ".bmp", ".tif", ".tiff", ".webp"}
+# Formatos que Pillow puede leer en cada caso (sin «formats», Pillow prueba todos sus decodificadores,
+# también los raros, con un archivo que viene de fuera).
+FORMATOS_IMAGEN = ("PNG", "JPEG")
+FORMATOS_CONVERTIBLES = ("GIF", "BMP", "TIFF", "WEBP", "PNG", "JPEG")
 EXT_TEXTO = {".tex", ".sty", ".cls", ".bib", ".bst", ".txt", ".md", ".csv", ".json", ".cfg", ".def", ".py"}
 IGNORAR = {"build", "historial", "__pycache__", ".ipynb_checkpoints", ".git"}
 
@@ -662,7 +666,10 @@ def _a_png(datos: bytes, nombre: str) -> tuple[bytes, str]:
         from PIL import Image
     except ImportError:
         raise ErrorAlmacen("Para convertir esta imagen a PNG hace falta Pillow (pip install pillow).")
-    im = Image.open(io.BytesIO(datos))
+    try:
+        im = Image.open(io.BytesIO(datos), formats=FORMATOS_CONVERTIBLES)
+    except (OSError, Image.DecompressionBombError) as exc:
+        raise ErrorAlmacen(f"No se pudo leer la imagen «{nombre}»: {exc}") from exc
     if im.mode not in ("RGB", "RGBA", "L", "LA"):
         im = im.convert("RGBA")
     buf = io.BytesIO()

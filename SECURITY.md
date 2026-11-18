@@ -6,30 +6,40 @@ Solo la **última versión MINOR publicada** recibe correcciones de seguridad, q
 
 | Versión | Soporte |
 |---|---|
-| 1.5.x | ✅ Con soporte |
-| 1.4.x | ❌ Sin soporte: actualiza a 1.5.x |
-| 1.3.x | ❌ Sin soporte: actualiza a 1.5.x |
-| 1.2.x | ❌ Sin soporte: actualiza a 1.5.x |
-| 1.1.x | ❌ Sin soporte: actualiza a 1.5.x |
-| 1.0.x | ❌ Sin soporte: actualiza a 1.5.x |
+| 1.6.x | ✅ Con soporte |
+| 1.5.x | ❌ Sin soporte: actualiza a 1.6.x (corrige fallos de seguridad, ver CHANGELOG) |
+| 1.4.x | ❌ Sin soporte: actualiza a 1.6.x |
+| 1.3.x | ❌ Sin soporte: actualiza a 1.6.x |
+| 1.2.x | ❌ Sin soporte: actualiza a 1.6.x |
+| 1.1.x | ❌ Sin soporte: actualiza a 1.6.x |
+| 1.0.x | ❌ Sin soporte: actualiza a 1.6.x |
 
 ## Modelo de amenazas
 
 DocsLab está pensado como **aplicación local de un solo usuario**.
 
-| Superficie | Estado en 1.0.0 | Riesgo |
+| Superficie | Estado en 1.6.0 | Riesgo |
 |---|---|---|
 | Interfaz de red | Escucha en `127.0.0.1:8765` por defecto | Bajo en local |
+| Otras webs abiertas en el navegador (CSRF) | Las peticiones que cambian algo exigen la cabecera `X-DocsLab: 1` (otra web no puede ponerla sin un permiso CORS que DocsLab nunca da) y, si traen `Origin`, que sea el propio servidor (`docslab/seguridad.py`; pruebas en `tests/test_seguridad.py`) | Bajo |
+| DNS rebinding (un dominio ajeno que apunta a 127.0.0.1) | Solo se atienden `localhost`, `*.localhost`, direcciones IP y los nombres de `DOCSLAB_HOSTS`; el resto recibe 403 (en modo Colab filtra el proxy de Google) | Bajo |
+| Salidas HTML de cuadernos | Se muestran en un `<iframe sandbox="allow-scripts">` sin el origen de DocsLab: un cuaderno ajeno no puede leer la página ni usar la API | Bajo |
+| Marcos y tipos MIME | `Content-Security-Policy: frame-ancestors 'self'` (más Colab en ese modo), `X-Content-Type-Options: nosniff`, `Referrer-Policy: same-origin` | Bajo |
+| Imágenes subidas | Pillow solo abre los formatos esperados y mantiene su límite contra imágenes gigantes; versiones mínimas sin avisos conocidos en `requirements.txt` (en Python 3.9 y 3.10 la última Pillow disponible aún tiene avisos corregidos en 13.0) | Bajo (medio en Python < 3.11) |
+| Visor de PDF | pdf.js 4.10.38 con `isEvalSupported: false` | Bajo |
+| Procesos del LAB | Como mucho `DOCSLAB_MAX_NUCLEOS` (4) a la vez; se apaga el que lleva más tiempo sin usarse | Bajo |
 | `--host 0.0.0.0` | **Sin autenticación** | **Alto**: cualquiera en la red tiene acceso total |
 | Cuadernos (`.ipynb`, LAB) | Ejecutan Python arbitrario con los permisos del usuario | **Alto** si el cuaderno no es de confianza |
 | Compilación LaTeX | `-no-shell-escape` al compilar documentos (`salidas/compilador.py` L425 y L566). La precompilación del formato (L88) no lo pasa explícitamente, pero solo procesa contenido interno (`pcformato.tex` y la `.sty`) y depende del valor por defecto de la distribución | Bajo |
 | Importación de zips | Se impide el *path traversal* (prueba `test_zip_malicioso_no_sale_de_su_carpeta`) | Bajo |
 | Explorador de carpetas | Limitado a `--raices` (prueba `test_explorar_solo_dentro_de_las_raices`) | Bajo |
 | Rutas y colores en el modelo | Se neutralizan antes de generar LaTeX (prueba `test_rutas_y_colores_peligrosos_se_neutralizan`) | Bajo |
-| Búsqueda por DOI | Petición saliente a doi.org | Bajo |
+| Búsqueda por DOI | Petición saliente a doi.org (solo el DOI); respuesta limitada a 2 MB | Bajo |
 
 ## Recomendaciones de uso
-- No uses `--host 0.0.0.0` fuera de una red de confianza.
+- No uses `--host 0.0.0.0` fuera de una red de confianza. Si entras por un nombre (no por la IP), añádelo a `DOCSLAB_HOSTS`.
+- Abre DocsLab siempre por `http://127.0.0.1:<puerto>/` o `http://localhost:<puerto>/`.
+- Si usas la API desde tus propios scripts, las peticiones POST, PUT, PATCH y DELETE deben llevar la cabecera `X-DocsLab: 1`.
 - Ejecuta solo cuadernos y plantillas de origen conocido.
 - En Colab, el enlace público solo funciona mientras el lanzador está conectado; no lo compartas.
 

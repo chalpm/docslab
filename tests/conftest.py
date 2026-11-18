@@ -31,6 +31,7 @@ def cliente(tmp_path):
     app = crear_app(tmp_path / "datos", [raiz])
     app.config["TESTING"] = True
     c = app.test_client()
+    c.environ_base["HTTP_X_DOCSLAB"] = "1"     # la cabecera que pone la interfaz (ver docslab/seguridad.py)
     c.raiz = raiz
     c.app = app
     return c

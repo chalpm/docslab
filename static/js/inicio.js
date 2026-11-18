@@ -107,7 +107,7 @@ const Asistente = {
     },
   },
   template: `
-  <div class="fondo-dialogo" @mousedown.self="$emit('cerrar')">
+  <div class="fondo-dialogo" @mousedown.self="$emit('cerrar')" @keydown.esc="$emit('cerrar')">
     <div class="dialogo ancho" role="dialog" aria-modal="true" aria-labelledby="tit-asistente">
       <header>
         <div style="flex:1">
@@ -205,6 +205,7 @@ export const VistaInicio = {
   data: () => ({ proyectos: null, plantillas: null, menu: null, asistente: false, importando: false, filtro: '' }),
   computed: {
     estado() { return tienda.estado; },
+    version() { return (tienda.estado && tienda.estado.version) || ""; },
     incluidas() { return (this.plantillas || []).filter((p) => p.incluida); },
     propias() { return (this.plantillas || []).filter((p) => !p.incluida); },
     // tipos de documento que hay entre los proyectos (para filtrar)
@@ -350,10 +351,10 @@ export const VistaInicio = {
             <div class="soporte"><div class="hoja-mini" style="width:136px;height:192px"><span><icono n="mas"/>Documento nuevo</span></div></div>
             <div class="pie-tarjeta"><span class="nombre">Empezar desde cero</span><span class="detalle">Póster, presentación, artículo, tesis o documento</span></div>
           </button>
-          <div v-for="p in visibles" :key="p.id" class="tarjeta-hoja" role="button" tabindex="0" @click="abrir(p)" @keydown.enter="abrir(p)">
+          <div v-for="p in visibles" :key="p.id" class="tarjeta-hoja" @click="abrir(p)">
             <div class="soporte"><hoja-mini :src="miniProyecto(p)"/></div>
             <div class="pie-tarjeta">
-              <span class="nombre">{{ p.nombre }}</span>
+              <button type="button" class="nombre boton-nombre" @click.stop="abrir(p)">{{ p.nombre }}</button>
               <span class="detalle">{{ p.tipo === 'latex' ? 'Código LaTeX' : nombreClase(p) }}, {{ fecha(p.modificado) }}</span>
             </div>
             <div class="menu-tarjeta menu-contenedor" @click.stop>
@@ -381,11 +382,11 @@ export const VistaInicio = {
         <h2>Plantillas</h2>
         <p class="sub">Empieza con un diseño hecho. Cualquier documento se puede guardar como plantilla desde su menú, y desde ese mismo documento se puede actualizar la plantilla más adelante.</p>
         <div class="mesa-hojas" v-if="plantillas">
-          <div v-for="t in [...incluidas, ...propias]" :key="t.id" class="tarjeta-hoja" role="button" tabindex="0"
-               @click="desdePlantilla(t)" @keydown.enter="desdePlantilla(t)" :title="t.descripcion">
+          <div v-for="t in [...incluidas, ...propias]" :key="t.id" class="tarjeta-hoja"
+               @click="desdePlantilla(t)" :title="t.descripcion">
             <div class="soporte"><hoja-mini :src="miniPlantilla(t)"/></div>
             <div class="pie-tarjeta">
-              <span class="nombre">{{ t.nombre }}</span>
+              <button type="button" class="nombre boton-nombre" :aria-label="'Crear un documento con la plantilla ' + t.nombre" @click.stop="desdePlantilla(t)">{{ t.nombre }}</button>
               <span class="detalle">{{ t.tipo === 'latex' ? 'Código LaTeX' : nombreClase(t) }}, {{ t.incluida ? 'incluida' : 'tuya' }}<template v-if="t.etiquetas && t.etiquetas.length">, {{ t.etiquetas.join(', ') }}</template></span>
             </div>
             <div class="menu-tarjeta menu-contenedor" @click.stop>
@@ -405,6 +406,13 @@ export const VistaInicio = {
         </div>
       </section>
     </main>
+    <footer class="pie-inicio">
+      DocsLab {{ version }} · Software libre bajo la
+      <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" rel="noopener">licencia GNU AGPL-3.0</a>
+      (la plantilla LaTeX, bajo la <a href="https://www.latex-project.org/lppl/lppl-1-3c/" target="_blank" rel="noopener">LPPL-1.3c</a>).
+      El código fuente completo está en la carpeta de DocsLab; el texto de las licencias, en <code>LICENSE</code> y <code>latex/</code>.
+      Copyright © 2026 Christian Alejandro Ponce Mejia.
+    </footer>
     <asistente-nuevo v-if="asistente" @cerrar="asistente = false"/>
   </div>`,
   created() {

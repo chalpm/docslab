@@ -51,6 +51,17 @@ function mdSimple(fuente) {
   return out.join('');
 }
 
+// Salida HTML de una celda (tablas de pandas, etc.) en un marco aislado: sin el mismo origen que
+// DocsLab, así que un cuaderno ajeno no puede leer la página ni llamar a la API. Solo avisa de su alto.
+function marcoHtml(html, id) {
+  return `<!doctype html><meta charset="utf-8"><style>
+html,body{margin:0;background:#fff;color:#1d1d1f;font:13px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif}
+body{padding:2px}table{border-collapse:collapse}th,td{border:1px solid #d9d9de;padding:3px 8px;text-align:right}
+th{background:#f4f4f6}img{max-width:100%}</style>${html}<script>
+(function(){var u=0;function a(){var h=Math.ceil(document.documentElement.scrollHeight);if(h!==u){u=h;parent.postMessage({docslabAlto:h,id:${JSON.stringify(id)}},'*');}}
+addEventListener('load',a);new ResizeObserver(a).observe(document.documentElement);a();})();</script>`;
+}
+
 // Una figura de plotly, viva, en un marco aislado
 function marcoPlotly(figura) {
   const datos = JSON.stringify(figura).replace(/</g, '\\u003c');
@@ -98,7 +109,18 @@ const SalidaCelda = {
     plotly() { return this.s.t === 'plotly' ? marcoPlotly(this.s.figura) : ''; },
     alto() { const h = this.s.figura && this.s.figura.layout && this.s.figura.layout.height; return Math.min(640, Math.max(260, Number(h) || 380)); },
     svg() { return this.s.t === 'svg' ? 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(this.s.svg) : ''; },
+    html() { return this.s.t === 'html' ? marcoHtml(this.s.html, this.idMarco) : ''; },
   },
+  data() { return { idMarco: 'm' + Math.random().toString(36).slice(2), altoHtml: 60 }; },
+  mounted() {
+    this.alMensaje = (e) => {
+      const m = this.$refs.marco;
+      if (!m || e.source !== m.contentWindow || !e.data || e.data.id !== this.idMarco) return;
+      this.altoHtml = Math.min(460, Math.max(24, Number(e.data.docslabAlto) || 60));
+    };
+    window.addEventListener('message', this.alMensaje);
+  },
+  unmounted() { window.removeEventListener('message', this.alMensaje); },
   template: `
   <pre v-if="s.t === 'texto'" class="salida texto" :class="{aviso: s.canal === 'stderr'}">{{ s.texto }}</pre>
   <div v-else-if="s.t === 'error'" class="salida error">
@@ -107,7 +129,7 @@ const SalidaCelda = {
   </div>
   <div v-else-if="s.t === 'img'" class="salida figura"><img :src="'data:' + s.mime + ';base64,' + s.b64" alt="Figura que mostró la celda"></div>
   <div v-else-if="s.t === 'svg'" class="salida figura"><img :src="svg" alt="Figura que mostró la celda"></div>
-  <div v-else-if="s.t === 'html'" class="salida html" v-html="s.html"></div>
+  <iframe v-else-if="s.t === 'html'" ref="marco" class="salida html" sandbox="allow-scripts" :srcdoc="html" :style="{height: altoHtml + 'px'}" title="Resultado de la celda (HTML)"></iframe>
   <iframe v-else-if="s.t === 'plotly'" class="salida plotly" sandbox="allow-scripts" :srcdoc="plotly" :style="{height: alto + 'px'}" title="Gráfico interactivo"></iframe>`,
 };
 

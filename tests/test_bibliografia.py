@@ -233,3 +233,31 @@ def test_poster_con_referencias_compila(estilo, tmp_path):
     assert r.returncode == 0, log[-3000:]
     assert "Cita desconocida" in log                     # [@nada] avisa
     assert "Overfull \\hbox" not in log, [l for l in log.splitlines() if "Overfull" in l]
+
+
+def test_buscar_doi_no_lee_respuestas_enormes(monkeypatch):
+    """La respuesta de doi.org se lee con tope (una referencia ocupa unos KB)."""
+    import io
+    import urllib.request
+
+    class Respuesta(io.BytesIO):
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *a):
+            return False
+
+    leidos = []
+
+    def falso(req, timeout=None):
+        r = Respuesta(b"{" + b" " * (B.LIMITE_DOI * 3) + b"}")
+        original = r.read
+        r.read = lambda n=-1: leidos.append(n) or original(n)
+        return r
+
+    monkeypatch.setattr(urllib.request, "urlopen", falso)
+    with pytest.raises(ValueError, match="demasiado grande"):
+        B.buscar_doi("10.1038/nature12373")
+    assert leidos == [B.LIMITE_DOI + 1]
+    monkeypatch.setattr(urllib.request, "urlopen", lambda req, timeout=None: Respuesta(b'{"title": "Hola", "type": "article-journal"}'))
+    assert B.buscar_doi("10.1038/nature12373")["doi"] == "10.1038/nature12373"

@@ -7,7 +7,8 @@ export class ErrorApi extends Error {
 }
 
 export async function api(ruta, { metodo = 'GET', json, cuerpo, texto = false, senal } = {}) {
-  const init = { method: metodo, headers: {}, signal: senal, cache: 'no-store' };
+  // X-DocsLab: el servidor solo acepta cambios que la lleven (otra web no puede añadirla).
+  const init = { method: metodo, headers: { 'X-DocsLab': '1' }, signal: senal, cache: 'no-store' };
   if (json !== undefined) {
     init.headers['Content-Type'] = 'application/json';
     init.body = JSON.stringify(json);
@@ -47,6 +48,7 @@ export function subir(ruta, campos, { alProgreso } = {}) {
     }
     const xhr = new XMLHttpRequest();
     xhr.open('POST', ruta);
+    xhr.setRequestHeader('X-DocsLab', '1');
     if (alProgreso) xhr.upload.onprogress = (e) => { if (e.lengthComputable) alProgreso(e.loaded / e.total); };
     xhr.onload = () => {
       let datos = null;

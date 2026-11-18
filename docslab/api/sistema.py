@@ -29,7 +29,10 @@ def registrar(app, c):
 
     @bp.get("/static/<path:ruta>")
     def estatico(ruta):
-        resp = send_from_directory(ESTATICO, ruta)
+        # El tipo MIME se fija aquí: con «nosniff», un .js o .mjs servido como text/plain (pasa en Windows
+        # cuando el registro tiene mal la extensión) no se ejecutaría.
+        tipo = {".js": "text/javascript", ".mjs": "text/javascript", ".css": "text/css"}.get(Path(ruta).suffix.lower())
+        resp = send_from_directory(ESTATICO, ruta, mimetype=tipo) if tipo else send_from_directory(ESTATICO, ruta)
         if not ruta.startswith("vendor/"):
             resp.headers["Cache-Control"] = "no-cache"
         return resp

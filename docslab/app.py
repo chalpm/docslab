@@ -12,6 +12,7 @@ from .documento import componentes as CP
 from .salidas import compilador
 from .lab import graficos as GR, nucleos as LAB
 from .nucleo.trabajos import GestorTrabajos
+from . import seguridad
 from .api import bibliografia, componentes, documento, plantillas, proyectos, sistema
 from .api import graficos as api_graficos, lab as api_lab, trabajos as api_trabajos
 
@@ -29,6 +30,7 @@ def crear_app(datos: Path, raices: list[Path] | None = None, colab: bool = False
     trabajos = GestorTrabajos()
     raices = [Path(r).expanduser().resolve() for r in (raices or [])]
     app.config.update(ALMACEN=alm, TRABAJOS=trabajos, RAICES=raices, COLAB=colab)
+    seguridad.proteger(app, colab)   # Host, cabecera X-DocsLab, Origin, cabeceras y errores en JSON
 
     # ------------------------------------------------------------------ utilidades
     @app.errorhandler(A.ErrorAlmacen)

@@ -1,6 +1,10 @@
 # DocsLab · dependencias de Python (3.9 o posterior)
-flask>=2.3
-pillow>=9.0          # miniaturas y conversión de GIF, WEBP, TIFF… a PNG
+flask>=3.1.3         # versiones anteriores con avisos de seguridad
+# Pillow: miniaturas y conversión de GIF, WEBP, TIFF… a PNG. Se pide la última versión con
+# correcciones de seguridad que admite cada Python (13.x necesita Python 3.11 o posterior).
+pillow>=13.0 ; python_version >= "3.11"
+pillow>=12.3 ; python_version == "3.10"
+pillow>=11.3 ; python_version < "3.10"
 python-pptx>=0.6.21  # exportar a PowerPoint
 # Extensión de cuadernos (ejecutar .ipynb de Colab o Jupyter)
 nbclient>=0.7
@@ -12,8 +16,8 @@ matplotlib>=3.6
 seaborn>=0.13
 plotly>=5.18
 kaleido>=0.2.1       # guardar los gráficos de plotly como imagen (las versiones 1.x necesitan Chrome)
-scipy>=1.9           # dendrograma, ajustes de curvas, pruebas estadísticas, picos
-scikit-learn>=1.2    # PCA, t-SNE, NMDS, k-means, ROC y matriz de confusión
+scipy>=1.10          # dendrograma, ajustes de curvas, pruebas estadísticas, picos
+scikit-learn>=1.5    # PCA, t-SNE, NMDS, k-means, ROC y matriz de confusión
 # Opcional: subir figuras SVG (se convierten a PDF)
 # cairosvg>=2.5
 # Opcional: pruebas

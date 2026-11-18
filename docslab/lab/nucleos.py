@@ -30,6 +30,9 @@ from ..nucleo.almacen import Almacen, ErrorAlmacen, limpiar_nombre
 
 ANSI = re.compile(r"\x1b\[[0-9;]*[A-Za-z]")
 OCIOSO_MAX = 3 * 3600                      # un núcleo sin usar se apaga a las tres horas
+# Procesos de Python del LAB a la vez (cada uno puede ocupar cientos de MB). Al pasar del tope se apaga el
+# que lleva más tiempo sin usarse; si todos están ejecutando, el nuevo espera a que se libere uno.
+MAX_NUCLEOS = max(1, int(os.environ.get("DOCSLAB_MAX_NUCLEOS") or 4))
 MAX_TEXTO = 200_000                        # tope del texto de una salida (lo demás se recorta)
 EJEMPLO = DIR_EJEMPLOS / "ejemplo.csv"
 
@@ -75,6 +78,7 @@ class Sesion:
         self.figuras_nuevas = 0
         self.tanda = 0                      # cuántas tandas han terminado (para que la interfaz lo note)
         self.nb = None
+        self.hacer_sitio = None             # lo pone Lab: libera un proceso si se llegó al tope
         self._leer()
 
     # ------------------------------------------------------------------ archivo
@@ -309,6 +313,8 @@ class Sesion:
         try:
             if not (self.km and self.km.is_alive()):
                 self.apagar_canales()
+                if self.hacer_sitio:
+                    self.hacer_sitio(self)
                 self._arrancar()
         except Exception as exc:  # noqa: BLE001
             with self.mutex:
@@ -565,8 +571,27 @@ class Lab:
             s = self._sesiones.get((pid, nb_id))
             if s is None:
                 s = self._sesiones[(pid, nb_id)] = Sesion(self.alm, pid, nb_id)
+                s.hacer_sitio = self.hacer_sitio
         s.refrescar()
         return s
+
+    def hacer_sitio(self, nueva: Sesion):
+        """Antes de arrancar Python en «nueva»: si ya hay MAX_NUCLEOS procesos vivos, apaga el que lleva
+        más tiempo sin usarse (y se lo dice a su cuaderno). Si todos están ejecutando, no arranca."""
+        with self._mutex:
+            vivos = [s for s in self._sesiones.values() if s is not nueva and s.km and s.km.is_alive()]
+            if len(vivos) < MAX_NUCLEOS:
+                return
+            libres = sorted((s for s in vivos if not s.ocupado()), key=lambda s: s.ultimo_uso)
+        if not libres:
+            raise RuntimeError(f"ya hay {len(vivos)} cuadernos ejecutando código a la vez (máximo "
+                               f"{MAX_NUCLEOS}, ver DOCSLAB_MAX_NUCLEOS). Espera a que termine alguno.")
+        for s in libres[:len(vivos) - MAX_NUCLEOS + 1]:
+            s.apagar()
+            with s.mutex:
+                s.error_nucleo = (f"Python se apagó para dejar sitio a otro cuaderno (máximo {MAX_NUCLEOS} a la vez); "
+                                  "las variables se perdieron. Al ejecutar, arranca de nuevo.")
+                s.rev += 1
 
     def cerrar(self, pid: str, nb_id: str | None = None):
         with self._mutex:

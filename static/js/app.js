@@ -5,12 +5,14 @@ import { ComponenteIcono } from './iconos.js';
 import { VistaInicio } from './inicio.js';
 import { VistaEditor } from './editor.js';
 import { VistaLab } from './lab.js';
+import { instalarFocoModal } from './foco.js';
+// pdf.js 4.10.38 (compilación «legacy», para navegadores no tan recientes). Los demás módulos lo usan como window.pdfjsLib.
+import * as pdfjsLib from '../vendor/pdf.min.mjs';
 
 const { createApp, nextTick } = Vue;
 
-if (window.pdfjsLib) {
-  window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'static/vendor/pdf.worker.min.js';
-}
+window.pdfjsLib = pdfjsLib;
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'static/vendor/pdf.worker.min.mjs';
 
 const Dialogo = {
   name: 'dialogo-global',
@@ -86,6 +88,7 @@ async function arrancar() {
   app.component('icono', ComponenteIcono);
   app.config.errorHandler = (err) => avisarError(err);
   app.mount('#app');
+  instalarFocoModal();
 }
 
 arrancar();

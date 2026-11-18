@@ -4,7 +4,7 @@
 
 Funciona **en tu equipo** (Windows, macOS o Linux, con un pequeño servidor local) o **en Google Colab**. Una vez instalado no necesita internet, salvo para buscar referencias por DOI.
 
-**Versión 1.5.1** · Licencia [AGPL-3.0](LICENSE) (plantilla LaTeX: [LPPL-1.3c](latex/LICENSE-LPPL-1.3c.txt)) · [Registro de cambios](CHANGELOG.md) · [Documentación técnica y funcional](docs/README.md) · [Seguridad](SECURITY.md)
+**Versión 1.6.0** · Licencia [AGPL-3.0](LICENSE) (plantilla LaTeX: [LPPL-1.3c](latex/LICENSE-LPPL-1.3c.txt)) · [Registro de cambios](CHANGELOG.md) · [Documentación técnica y funcional](docs/README.md) · [Seguridad](SECURITY.md)
 
 ---
 
@@ -295,6 +295,8 @@ Se pasan al lanzador o a `python servidor.py`:
 | `--host 0.0.0.0` | `DOCSLAB_HOST` | `127.0.0.1` | Abrirlo a otras máquinas de tu red. **No tiene contraseña:** úsalo solo en redes de confianza (ver [SECURITY.md](SECURITY.md)) |
 | `--abrir` | — | (los lanzadores la usan) | Abrir el navegador al arrancar |
 | `--detalle` | — | No | Mostrar cada petición en la terminal (para buscar un fallo) |
+| — | `DOCSLAB_HOSTS` | (vacío) | Nombres de equipo extra con los que se puede abrir DocsLab (separados por comas), p. ej. `mi-pc.lan` con `--host 0.0.0.0`. Por seguridad, sin esto solo se aceptan `localhost` y direcciones IP |
+| — | `DOCSLAB_MAX_NUCLEOS` | `4` | Cuadernos del LAB con Python en marcha a la vez; al pasar del tope se apaga el que lleva más tiempo sin usarse |
 
 Otras variables, para casos especiales: `DOCSLAB_PDFLATEX`, `DOCSLAB_LUALATEX` y `DOCSLAB_GS` (ruta a pdfLaTeX, LuaLaTeX o Ghostscript si no están en el PATH) y `DOCSLAB_PYTHON` (qué Python usa `iniciar.command`).
 
@@ -670,7 +672,7 @@ docslab/                    (carpeta del proyecto)
 │                           huella digital (huella.py) y referencia de la API (doc_api.py)
 ├── docs/                   documentación técnica y funcional
 ├── huella/                 huella digital de cada versión publicada
-└── tests/                  pruebas (pytest) y prueba en navegador
+└── tests/                  pruebas (pytest) y pruebas en navegador (recorrido y auditoría)
 ```
 
 Más detalle en [docs/ARQUITECTURA.md](docs/ARQUITECTURA.md).
@@ -680,8 +682,9 @@ Más detalle en [docs/ARQUITECTURA.md](docs/ARQUITECTURA.md).
 Con el entorno `.venv` activado:
 ```
 python -m pip install pytest
-python -m pytest                 # 460 pruebas
+python -m pytest                 # 483 pruebas
 python tests/e2e_navegador.py    # opcional: necesita playwright y chromium
+python tests/auditoria_navegador.py   # opcional: accesibilidad (axe) y seguridad; además, pip install axe-playwright-python
 ```
 Las pruebas que necesitan LaTeX, Poppler, LuaLaTeX o Ghostscript se saltan si faltan esas herramientas. Para que pasen todas hace falta un TeX Live completo: en Ubuntu/Debian, `texlive-latex-extra`, `texlive-lang-spanish` y `texlive-luatex`, además de `poppler-utils` y `ghostscript`.
 

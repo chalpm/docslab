@@ -1,4 +1,4 @@
-# Especificación funcional · DocsLab 1.5.1
+# Especificación funcional · DocsLab 1.6.0
 
 Catálogo de funciones con identificadores estables (**F-NN**). Cada versión futura indica en el CHANGELOG qué F-NN añade, cambia o retira. Los identificadores no se reutilizan.
 
@@ -145,6 +145,15 @@ Columnas: **Módulos** (backend), **API** (grupo de `docs/API.md`), **Pruebas** 
 
 **Módulos.** `lab/graficos/ciencia.py`, `lab/graficos/datos_ejemplo/` (11 archivos nuevos), `herramientas/datos_ejemplo.py`. **API.** Sin rutas nuevas. **Pruebas.** `test_galeria.py` · `test_las_plantillas_cientificas_dibujan_con_sus_datos_de_ejemplo`, `test_pedidos_de_las_plantillas_cientificas`, `test_el_codigo_compila_en_un_python_antiguo`, `test_los_numeros_pequenos_no_se_redondean_a_cero`. **Estado.** Estable.
 
+## F-28 · Protección del servidor local y accesibilidad
+**Introducida en.** 1.6.0.
+**Descripción.** Cierra las vías por las que otra web abierta en el mismo navegador, o un cuaderno ajeno, podía usar DocsLab: comprobación del Host (DNS rebinding), cabecera `X-DocsLab` y `Origin` en las peticiones que cambian algo, salidas HTML de los cuadernos en un marco aislado, cabeceras CSP y nosniff, errores en JSON, Pillow solo con los formatos esperados y pdf.js 4.10.38. Además, accesibilidad WCAG 2.2 AA en lo que comprueba axe: los diálogos retienen y devuelven el foco, el asistente se cierra con Esc, las tarjetas tienen su nombre como botón, el árbol de estructura cumple ARIA y las celdas del cuaderno se eligen con teclado. Pie del inicio con la versión, las licencias y dónde está el código fuente.
+**Reglas.**
+- Se atienden `localhost`, `*.localhost`, direcciones IP y los nombres de `DOCSLAB_HOSTS`; en modo Colab no se comprueba el Host (lo hace el proxy).
+- Una petición POST, PUT, PATCH o DELETE sin `X-DocsLab: 1`, o con un `Origin` distinto del servidor (incluido `null`), recibe 403.
+- Como mucho `DOCSLAB_MAX_NUCLEOS` (4) procesos de Python del LAB a la vez; se apaga el que lleva más tiempo sin usarse y su cuaderno lo avisa.
+**Módulos.** `seguridad.py`, `api/sistema.py` (tipos MIME), `lab/nucleos.py` (`hacer_sitio`), `nucleo/almacen.py` (`FORMATOS_*`), `salidas/powerpoint.py` (`abrir_render`); frontend `api.js`, `foco.js`, `cuaderno.js`, `arbol.js`, `inicio.js`, `cuadernos.js`. **API.** Sin rutas nuevas; cabecera obligatoria en las que cambian algo. **Pruebas.** `test_seguridad.py` (21); `test_lab.py` · `test_tope_de_procesos_del_lab_apaga_el_mas_antiguo`; `test_bibliografia.py` · `test_buscar_doi_no_lee_respuestas_enormes`; `tests/auditoria_navegador.py` (axe, foco, marco aislado, CSRF y rebinding en Chrome). **Estado.** Estable.
+
 ---
 
 ## Requisitos no funcionales
@@ -154,7 +163,8 @@ Columnas: **Módulos** (backend), **API** (grupo de `docs/API.md`), **Pruebas** 
 | RNF-01 | Funciona sin conexión (librerías incluidas), salvo la búsqueda por DOI | LEEME |
 | RNF-02 | Recompilación rápida. Medido el 2026-11-18 (plantilla Académico A0, Linux, TeX Live): primera compilación ≈ 5,3 s; cambio pequeño ≈ 2,4 s. El LEEME original decía ~1 s | Medición |
 | RNF-03 | Python ≥ 3.9 | `requirements.txt` |
-| RNF-04 | Uso local de un solo usuario, sin autenticación | `SECURITY.md` |
+| RNF-04 | Uso local de un solo usuario, sin autenticación; protegido frente a otras webs del mismo navegador (F-28) | `SECURITY.md` |
 | RNF-06 | Compatibilidad hacia atrás: todo proyecto de un esquema anterior se abre sin pérdida de datos | `docs/MIGRACIONES.md`, F-25 |
 | RNF-07 | Licencias: AGPL-3.0-only (aplicación) y LPPL-1.3c (`postercientifico.sty`); cabecera SPDX en cada archivo de código propio | `LICENSE`, `latex/LICENSE-LPPL-1.3c.txt` |
+| RNF-08 | Accesibilidad: sin infracciones de axe-core (WCAG 2.0/2.1/2.2 A y AA) en inicio, asistente, editor, LAB y Componente Lab | `tests/auditoria_navegador.py` |
 | RNF-05 | Las funciones opcionales se desactivan si faltan sus herramientas (Poppler, Ghostscript, LuaLaTeX), con aviso | Pruebas con `skip` |

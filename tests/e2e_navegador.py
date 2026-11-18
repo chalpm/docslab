@@ -243,11 +243,11 @@ def main():
                 const g = c.getContext('2d'); g.fillStyle = '#2b5a8a'; g.fillRect(0, 0, 300, 300);
                 const b = await new Promise((r) => c.toBlob(r, 'image/png'));
                 const fd = new FormData(); fd.append('archivos', b, 'logo.png');
-                await fetch('api/proyectos/{pid}/recursos', {{method: 'POST', body: fd}});
+                await fetch('api/proyectos/{pid}/recursos', {{method: 'POST', headers: {{'X-DocsLab': '1'}}, body: fd}});
                 const m = (await (await fetch('api/proyectos/{pid}')).json()).modelo;
                 m.cabecera.logo_izquierdo = 'recursos/logo.png';
-                await fetch('api/proyectos/{pid}/modelo', {{method: 'PUT', headers: {{'Content-Type': 'application/json'}}, body: JSON.stringify(m)}});
-                const t = await (await fetch('api/proyectos/{pid}/compilar', {{method: 'POST'}})).json();
+                await fetch('api/proyectos/{pid}/modelo', {{method: 'PUT', headers: {{'Content-Type': 'application/json', 'X-DocsLab': '1'}}, body: JSON.stringify(m)}});
+                const t = await (await fetch('api/proyectos/{pid}/compilar', {{method: 'POST', headers: {{'X-DocsLab': '1'}}}})).json();
                 for (let i = 0; i < 300; i++) {{
                     const x = await (await fetch('api/trabajos/' + t.id)).json();
                     if (['terminado', 'error', 'cancelado'].includes(x.estado)) break;

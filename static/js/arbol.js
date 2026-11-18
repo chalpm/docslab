@@ -13,6 +13,15 @@ export const Arbol = {
   setup() { return { ed: inject('ed') }; },
   data: () => ({ arrastre: null, destino: null, menuCapa: null }),
   computed: {
+    // Las filas partidas por sus cabeceras de grupo («Capas detrás», «Contenido»…): un role="tree" por tramo
+    segmentos() {
+      const out = [{ grupo: null, filas: [] }];
+      for (const f of this.filas) {
+        if (f.tipo === 'grupo') out.push({ grupo: f, filas: [] });
+        else out[out.length - 1].filas.push(f);
+      }
+      return out.filter((s) => s.grupo || s.filas.length);
+    },
     filas() {
       const ed = this.ed, m = ed.modelo, idx = ed.indice, ab = ed.abiertos;
       const flujo = ed.flujo, diapos = m.clase === 'presentacion';
@@ -168,15 +177,19 @@ export const Arbol = {
   mounted() { document.addEventListener('mousedown', this.cerrarMenu); },
   beforeUnmount() { document.removeEventListener('mousedown', this.cerrarMenu); },
   template: `
-  <div class="arbol" role="tree" aria-label="Estructura del documento">
-    <template v-for="f in filas" :key="f.id">
-      <div v-if="f.tipo === 'grupo'" class="grupo-arbol">
+  <div class="arbol">
+    <template v-for="(sg, i) in segmentos" :key="sg.grupo ? sg.grupo.id : 'sg' + i">
+      <template v-for="f in (sg.grupo ? [sg.grupo] : [])" :key="f.id">
+      <div class="grupo-arbol">
         <span>{{ f.nombre }}</span><span class="linea"></span>
         <button v-if="!f.contenido" class="btn icono pequeno fantasma" :title="f.delante ? 'Nueva capa delante del contenido' : 'Nueva capa detrás del contenido'"
                 :aria-label="f.delante ? 'Nueva capa delante' : 'Nueva capa detrás'" @click="ed.agregarCapa(f.delante)"><icono n="mas"/></button>
         <button v-else class="btn icono pequeno fantasma" :title="textoNuevo()" :aria-label="textoNuevo()" @click="nuevoContenido()"><icono n="mas"/></button>
       </div>
-      <div v-else class="fila-nodo" role="treeitem" :data-id="f.id"
+      </template>
+      <!-- Un árbol por grupo: los botones de la cabecera del grupo quedan fuera del role="tree" (ARIA solo admite treeitem dentro) -->
+      <div role="tree" :aria-label="sg.grupo ? sg.grupo.nombre : 'Estructura del documento'" v-if="sg.filas.length">
+      <div v-for="f in sg.filas" :key="f.id" class="fila-nodo" role="treeitem" :data-id="f.id"
            :aria-selected="ed.sel === f.id" :aria-expanded="f.hijos ? f.abierto : undefined" :aria-level="f.nivel + 1"
            :tabindex="ed.sel === f.id || (!ed.sel && f.id === 'poster') ? 0 : -1"
            :class="[{seleccionado: ed.sel === f.id, atenuado: !f.visible, 'capa-nodo': f.tipo === 'capa', 'pagina-nodo': f.tipo === 'pagina', arrastrando: arrastre && arrastre.id === f.id}, claseDestino(f)]"
@@ -210,6 +223,7 @@ export const Arbol = {
           <button v-if="!['poster', 'columna', 'documento'].includes(f.tipo)" :class="{apagado: !f.visible}" :title="f.visible ? 'Ocultar' : 'Mostrar'"
                   :aria-label="f.visible ? 'Ocultar' : 'Mostrar'" :aria-pressed="!f.visible" @click="ed.alternarVisible(f.id)"><icono :n="f.visible ? 'ojo' : 'ojo-no'"/></button>
         </span>
+      </div>
       </div>
     </template>
   </div>`,

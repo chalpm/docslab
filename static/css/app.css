@@ -245,6 +245,8 @@ button.chip { border: 0; cursor: pointer; }
 .inicio { min-height: 100%; background: var(--panel); }
 .inicio > .barra { position: sticky; top: 0; }
 .inicio main { max-width: 1240px; margin: 0 auto; padding: 28px 24px 64px; display: grid; gap: 34px; }
+.pie-inicio { max-width: 1240px; margin: -40px auto 0; padding: 0 24px 28px; font-size: var(--t-xs); color: var(--tinta-2); line-height: 1.6; }
+.pie-inicio a { color: inherit; text-decoration: underline; }
 .inicio .cabeza { display: flex; align-items: flex-end; gap: 16px; flex-wrap: wrap; }
 .inicio .cabeza h1 { font-size: var(--t-xxl); letter-spacing: -.02em; }
 .inicio .cabeza p { color: var(--tinta-2); max-width: 64ch; margin-top: 6px; }
@@ -271,6 +273,10 @@ button.chip { border: 0; cursor: pointer; }
 .tarjeta-nueva .hoja-mini span { line-height: 1.4; }
 .tarjeta-hoja:hover .hoja-mini, .tarjeta-hoja:focus-visible .hoja-mini { outline: 2px solid var(--acento); outline-offset: 5px; }
 .tarjeta-hoja:focus-visible { outline: none; }
+/* El nombre es el botón (teclado y lectores de pantalla); el resto de la tarjeta responde al ratón. */
+.tarjeta-hoja .boton-nombre { border: 0; background: none; padding: 0; margin: 0; color: inherit; font-family: inherit; text-align: left; cursor: pointer; }
+.tarjeta-hoja:has(.boton-nombre:focus-visible) .hoja-mini { outline: 2px solid var(--acento); outline-offset: 5px; }
+.tarjeta-hoja .boton-nombre:focus-visible { outline: 2px solid var(--acento); outline-offset: 2px; border-radius: 2px; }
 .tarjeta-hoja .pie-tarjeta { display: grid; gap: 2px; padding: 0 2px; }
 .tarjeta-hoja .nombre { font-weight: 700; font-size: var(--t-s); line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .tarjeta-hoja .detalle { font-size: var(--t-xs); color: var(--tinta-2); }
@@ -506,6 +512,8 @@ details.seccion > .contenido-seccion { display: grid; gap: 10px; padding-top: 10
 .cuaderno .estado-nb { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
 .celdas { max-height: 220px; overflow: auto; border: 1px solid var(--linea); border-radius: 6px; background: var(--superficie); }
 .celda { display: grid; grid-template-columns: 34px 1fr; gap: 6px; font: 11.5px/1.4 var(--mono); padding: 4px 6px; border-bottom: 1px solid var(--linea-2); cursor: pointer; }
+button.celda { width: 100%; border: 0; border-bottom: 1px solid var(--linea-2); background: none; color: inherit; text-align: left; }
+button.celda:focus-visible { outline: 2px solid var(--acento); outline-offset: -2px; }
 .celda:last-child { border-bottom: 0; }
 .celda .n { color: var(--tinta-3); text-align: right; }
 .celda.md { color: var(--tinta-3); }
@@ -924,7 +932,7 @@ details.seccion-banco > summary { cursor: pointer; font-weight: 700; }
 .celdas-lab { overflow: auto; padding: 18px 22px 80px 10px; display: grid; gap: 10px; align-content: start; }
 .celda-lab { display: grid; grid-template-columns: 58px minmax(0, 1fr); gap: 4px; max-width: 1040px; width: 100%; margin: 0 auto; }
 .celda-lab .margen { display: grid; justify-items: end; align-content: start; gap: 2px; padding-top: 4px; }
-.celda-lab .cuenta { font: 11.5px/1.4 var(--mono); color: var(--tinta-3); padding-right: 4px; }
+.celda-lab .cuenta { font: 11.5px/1.4 var(--mono); color: var(--tinta-2); padding-right: 4px; }   /* tinta-3 no llega a 4,5:1 sobre el fondo */
 .celda-lab .contenido { position: relative; min-width: 0; border: 1px solid var(--linea); border-radius: 8px; background: var(--superficie); }
 .celda-lab.texto .contenido { background: transparent; border-color: transparent; }
 .celda-lab.elegida .contenido { border-color: var(--acento); box-shadow: -3px 0 0 var(--acento); }
@@ -952,8 +960,7 @@ pre.salida, .salida pre { font: 12.5px/1.5 var(--mono); white-space: pre-wrap; o
 .salida.error { background: var(--rojo-claro); color: var(--rojo); border-radius: 6px; padding: 8px 10px; font-size: var(--t-s); }
 .salida.error details { margin-top: 6px; } .salida.error summary { cursor: pointer; } .salida.error pre { color: var(--tinta); margin-top: 6px; }
 .salida.figura img { max-width: 100%; height: auto; display: block; background: #fff; border-radius: 4px; }
-.salida.html { overflow: auto; font-size: var(--t-s); max-height: 460px; }
-.salida.html table { border-collapse: collapse; } .salida.html th, .salida.html td { border: 1px solid var(--linea); padding: 3px 8px; text-align: right; } .salida.html th { background: var(--panel); }
+iframe.salida.html { width: 100%; border: 0; border-radius: 4px; background: #fff; display: block; }
 iframe.salida.plotly { width: 100%; border: 0; border-radius: 4px; background: #fff; display: block; }
 .pie-celdas { display: flex; gap: 6px; justify-content: center; padding: 10px 0 0 58px; max-width: 1040px; width: 100%; margin: 0 auto; }
 /* formulario de un gráfico */

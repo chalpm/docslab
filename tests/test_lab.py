@@ -209,3 +209,35 @@ def test_probar_una_plantilla_con_los_datos_de_ejemplo(cliente):
     assert r["ok"] and r["imagen"].startswith("data:image/png;base64,")
     malo = cliente.post("/api/graficos/probar", json={"plantilla": {"nombre": "x", "codigo": "1/0", "parametros": []}}).get_json()
     assert not malo["ok"] and "ZeroDivisionError" in malo["error"]
+
+
+def test_tope_de_procesos_del_lab_apaga_el_mas_antiguo(monkeypatch):
+    """Con el tope alcanzado se apaga el núcleo libre usado hace más tiempo; si todos trabajan, no arranca otro."""
+    import types
+    from docslab.lab import nucleos as N
+
+    class KmFalso:
+        def is_alive(self):
+            return True
+
+    def falsa(uso, ocupada=False):
+        s = types.SimpleNamespace(km=KmFalso(), ultimo_uso=uso, rev=1, error_nucleo="", apagada=False,
+                                  mutex=__import__("threading").RLock())
+        s.ocupado = lambda: ocupada
+        s.apagar = lambda: setattr(s, "apagada", True)
+        return s
+
+    monkeypatch.setattr(N, "MAX_NUCLEOS", 2)
+    lab = N.Lab.__new__(N.Lab)
+    lab._mutex = __import__("threading").Lock()
+    vieja, reciente, nueva = falsa(100), falsa(200), falsa(300)
+    lab._sesiones = {("p", "a"): vieja, ("p", "b"): reciente, ("p", "c"): nueva}
+    lab.hacer_sitio(nueva)
+    assert vieja.apagada and not reciente.apagada
+    assert "dejar sitio" in vieja.error_nucleo and vieja.rev == 2
+
+    ocupadas = {("p", "a"): falsa(1, True), ("p", "b"): falsa(2, True)}
+    lab._sesiones = {**ocupadas, ("p", "c"): nueva}
+    with pytest.raises(RuntimeError, match="a la vez"):
+        lab.hacer_sitio(nueva)
+    assert not any(s.apagada for s in ocupadas.values())

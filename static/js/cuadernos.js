@@ -263,10 +263,10 @@ const TarjetaCuaderno = {
         <label class="campo"><span class="etiqueta">Parámetros (código Python que se añade antes de ejecutar)</span>
           <textarea class="entrada codigo" rows="3" v-model="par.codigo" placeholder='CONFIG["figure_dpi"] = 200' @change="guardar"></textarea></label>
         <div class="campo" v-if="par.codigo && par.codigo.trim()"><span class="etiqueta">Insertarlos después de la celda</span>
-          <div class="celdas" v-if="celdas">
-            <div class="celda" :class="{elegida: par.despues_de === -1}" @click="elegirCelda(-1)"><span class="n">0</span><span>Al principio del cuaderno</span></div>
-            <div v-for="cel in celdas" :key="cel.indice" class="celda" :class="{md: cel.tipo !== 'code', colab: cel.colab, elegida: par.despues_de === cel.indice}" @click="elegirCelda(cel.indice)">
-              <span class="n">{{ cel.indice + 1 }}</span><span>{{ cel.primera || '(vacía)' }}</span></div>
+          <div class="celdas" v-if="celdas" role="group" aria-label="Celda tras la que se insertan los parámetros">
+            <button type="button" class="celda" :class="{elegida: par.despues_de === -1}" :aria-pressed="par.despues_de === -1" @click="elegirCelda(-1)"><span class="n">0</span><span>Al principio del cuaderno</span></button>
+            <button v-for="cel in celdas" :key="cel.indice" type="button" class="celda" :class="{md: cel.tipo !== 'code', colab: cel.colab, elegida: par.despues_de === cel.indice}" :aria-pressed="par.despues_de === cel.indice" @click="elegirCelda(cel.indice)">
+              <span class="n">{{ cel.indice + 1 }}</span><span>{{ cel.primera || '(vacía)' }}</span></button>
           </div>
         </div>
         <div class="fila-campos">

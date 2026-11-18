@@ -214,7 +214,7 @@ def registrar(app, c):
             else:
                 try:
                     from PIL import Image
-                    im = Image.open(p)
+                    im = Image.open(p, formats=A.FORMATOS_CONVERTIBLES)
                     im.thumbnail((lado, lado))
                     if im.mode not in ("RGB", "RGBA"):
                         im = im.convert("RGBA")

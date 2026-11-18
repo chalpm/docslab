@@ -80,6 +80,11 @@ def markdown() -> str:
         f"Total: **{len(lista)}** combinaciones método + ruta. Base: `http://127.0.0.1:8765`. "
         "Formato: JSON salvo descargas (PDF, PNG, ZIP, PPTX, BIB). Sin autenticación (ver `SECURITY.md`).",
         "",
+        "**Cabecera obligatoria (desde 1.6.0):** las peticiones POST, PUT, PATCH y DELETE deben llevar "
+        "`X-DocsLab: 1`; sin ella, 403. Si llevan `Origin`, debe ser el propio servidor. El servidor solo "
+        "atiende a `localhost`, `*.localhost`, direcciones IP y los nombres de `DOCSLAB_HOSTS`. "
+        "Los errores (400, 403, 404, 405, 413, 500) llegan en JSON: `{\"error\": \"…\"}`.",
+        "",
         "Parámetros de ruta: `<pid>` proyecto · `<tid>` plantilla o trabajo · `<cid>` componente · "
         "`<gid>` plantilla de gráfico · `<nb>` cuaderno · `<path:ruta>` ruta relativa dentro del proyecto.",
         "",

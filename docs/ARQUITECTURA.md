@@ -1,4 +1,4 @@
-# Arquitectura · DocsLab 1.5.1
+# Arquitectura · DocsLab 1.6.0
 
 ## 1. Vista general
 
@@ -6,7 +6,7 @@
 Navegador (Vue 3 sin bundler, pdf.js, CodeMirror; todo en static/vendor, sin conexión)
         │  HTTP/JSON  (95 rutas, ver docs/API.md)
         ▼
-Flask  docslab/app.py  crear_app(): configuración, errores y registro de 9 blueprints
+Flask  docslab/app.py  crear_app(): configuración, seguridad.py y registro de 9 blueprints
   │
   ├─ api/        rutas HTTP por área (sistema, componentes, bibliografia, plantillas,
   │              proyectos, documento, lab, graficos, trabajos)
@@ -37,8 +37,9 @@ Dependencias entre subpaquetes (estado en 1.5.1): `api` usa todos; `lab` solo us
 
 | Módulo (`docslab/…`) | Líneas | Responsabilidad |
 |---|---:|---|
-| `app.py` | 66 | Fábrica de Flask: configuración, manejadores de error, contexto compartido y registro de los blueprints |
-| `api/sistema.py` | 85 | Estado del servidor, catálogo, tipografías del sistema, archivos estáticos |
+| `app.py` | 68 | Fábrica de Flask: configuración, manejadores de error, contexto compartido y registro de los blueprints |
+| `seguridad.py` | 103 | Defensas del servidor local: Host (DNS rebinding), cabecera `X-DocsLab` y `Origin` en las peticiones que cambian algo, cabeceras CSP/nosniff y errores en JSON |
+| `api/sistema.py` | 88 | Estado del servidor, catálogo, tipografías del sistema, archivos estáticos |
 | `api/componentes.py` | 120 | Rutas del Componente Lab |
 | `api/bibliografia.py` | 60 | Importar referencias, DOI, estilos |
 | `api/plantillas.py` | 55 | Plantillas incluidas y propias |
@@ -47,20 +48,20 @@ Dependencias entre subpaquetes (estado en 1.5.1): `api` usa todos; `lab` solo us
 | `api/lab.py` | 173 | Cuadernos del LAB: ejecutar, reiniciar, borrar variables, instalar paquetes, ejemplos |
 | `api/graficos.py` | 69 | Plantillas de gráficos |
 | `api/trabajos.py` | 33 | Estado y cancelación de trabajos en segundo plano |
-| `nucleo/almacen.py` | 678 | Disco: proyectos, plantillas, recursos, historial, importar/exportar zips (Overleaf, proyecto, plantilla) |
+| `nucleo/almacen.py` | 685 | Disco: proyectos, plantillas, recursos, historial, importar/exportar zips (Overleaf, proyecto, plantilla) |
 | `nucleo/modelo.py` | 819 | Esquema y valores por defecto del modelo JSON: clases, tamaños, temas, idiomas, tipografías, capas, `normalizar()` |
 | `nucleo/migraciones.py` | 107 | Migraciones del esquema del modelo, en cadena, con detección de modelos heredados y de esquemas más nuevos (ver `MIGRACIONES.md`) |
 | `nucleo/trabajos.py` | 117 | Cola de trabajos en hilos, con progreso, registro (400 líneas) y cancelación |
 | `documento/variantes.py` | 361 | Catálogo de las 69 variantes de elemento y sus campos |
 | `documento/generador.py` | 1184 | Modelo → LaTeX, con un mapa línea→elemento para ubicar errores. También el PDF para imprenta |
 | `documento/texto.py` | 149 | Marcado sencillo (`**`, `*`, `^`, `~`, `$…$`, `[@clave]`, `{{…}}`) → LaTeX escapado |
-| `documento/bibliografia.py` | 1838 | 8 estilos de cita, numeración, BibTeX/RIS/CSL-JSON y DOI |
+| `documento/bibliografia.py` | 1844 | 8 estilos de cita, numeración, BibTeX/RIS/CSL-JSON y DOI |
 | `documento/componentes.py` | 1054 | Componente Lab: piezas o código, campos `{{…}}`, vista previa, importar/exportar (formato v1) |
 | `documento/fuentes.py` | 173 | Tipografías propias .ttf/.otf: lectura de metadatos, familias, licencia de incrustación |
 | `salidas/compilador.py` | 625 | Detecta el motor (TeX Live o MiKTeX), formato precompilado, pasadas, errores, marcas de posición y CMYK |
 | `salidas/revision.py` | 1149 | Revisión antes de imprimir (resolución, letra, contraste, gama, tipografías, contenido) |
-| `salidas/powerpoint.py` | 585 | Exportación .pptx editable (texto sobre imagen sin texto) o como imagen |
-| `lab/nucleos.py` | 596 | Núcleos Jupyter persistentes por cuaderno del LAB; reiniciar y borrar variables |
+| `salidas/powerpoint.py` | 603 | Exportación .pptx editable (texto sobre imagen sin texto) o como imagen |
+| `lab/nucleos.py` | 621 | Núcleos Jupyter persistentes por cuaderno del LAB; reiniciar y borrar variables; tope de procesos a la vez (`DOCSLAB_MAX_NUCLEOS`) |
 | `lab/cuadernos.py` | 503 | Ejecución completa de `.ipynb`, recogida de figuras y celda para Colab |
 | `lab/graficos/__init__.py` | 540 | Catálogo de plantillas de gráficos (`{{param}}`) → código Python; categorías; probar con los datos de ejemplo |
 | `lab/graficos/comun.py` | 60 | Piezas comunes de las plantillas (parámetros, cabeceras y pies de código) |
@@ -72,7 +73,7 @@ Cada área de `api/` expone `registrar(app, c)`: crea su `Blueprint`, toma del c
 
 ## 3. Frontend (`static/js`)
 
-Son módulos ES cargados por `index.html`, sin paso de compilación. Piezas principales: `app.js` (arranque y rutas), `inicio.js` (inicio y asistente), `editor.js` (el editor), `vista.js` (vista previa con pdf.js), `directa.js` (edición directa), `inspector.js` y `campos.js` (formularios), `arbol.js` (estructura), `referencias.js`, `lab.js`, `cuaderno.js`, `cuadernos.js`, `revision.js`, `powerpoint.js`, `tipografias.js`, `latex.js` (modo código), `modeloed.js` (operaciones sobre el modelo), `tienda.js` (estado), `api.js` (cliente HTTP) y `util.js`.
+Son módulos ES cargados por `index.html`, sin paso de compilación. Piezas principales: `app.js` (arranque y rutas), `inicio.js` (inicio y asistente), `editor.js` (el editor), `vista.js` (vista previa con pdf.js), `directa.js` (edición directa), `inspector.js` y `campos.js` (formularios), `arbol.js` (estructura), `referencias.js`, `lab.js`, `cuaderno.js`, `cuadernos.js`, `revision.js`, `powerpoint.js`, `tipografias.js`, `latex.js` (modo código), `modeloed.js` (operaciones sobre el modelo), `tienda.js` (estado), `api.js` (cliente HTTP; añade la cabecera `X-DocsLab` a todas las peticiones), `foco.js` (foco en los diálogos modales: entra, no sale con Tab y vuelve al cerrar) y `util.js`. pdf.js 4.10.38 (compilación «legacy») se carga como módulo desde `app.js`. Las salidas HTML de los cuadernos se pintan en un `<iframe sandbox>`.
 
 ## 4. Almacenamiento (`datos/`, configurable con `--datos`)
 

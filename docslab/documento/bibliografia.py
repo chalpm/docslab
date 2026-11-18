@@ -1764,6 +1764,9 @@ def limpiar_doi(doi: str) -> str:
     return d.strip("<>").rstrip(".,;")
 
 
+LIMITE_DOI = 2_000_000          # bytes: una referencia en CSL-JSON ocupa unos pocos KB
+
+
 def buscar_doi(doi: str, tiempo: float = 12.0) -> dict:
     """Pide a doi.org los datos de la referencia (CSL-JSON). Necesita conexión a internet."""
     import urllib.error
@@ -1777,7 +1780,10 @@ def buscar_doi(doi: str, tiempo: float = 12.0) -> dict:
                                           "User-Agent": "DocsLab (gestor de referencias)"})
     try:
         with urllib.request.urlopen(req, timeout=tiempo) as r:
-            datos = json.loads(r.read().decode("utf-8", "replace"))
+            crudo = r.read(LIMITE_DOI + 1)
+        if len(crudo) > LIMITE_DOI:
+            raise ValueError("doi.org devolvió una respuesta demasiado grande para una referencia")
+        datos = json.loads(crudo.decode("utf-8", "replace"))
     except urllib.error.HTTPError as exc:
         if exc.code == 404:
             raise ValueError(f"doi.org no conoce el DOI {d}") from exc

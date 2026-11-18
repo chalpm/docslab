@@ -22,6 +22,7 @@ import re
 import shutil
 import subprocess
 import tempfile
+import threading
 from pathlib import Path
 
 from . import compilador, revision
@@ -352,6 +353,24 @@ def _resolucion(w_pt: float, h_pt: float, ppp: int) -> int:
     return max(36, min(ppp, int(MAX_PX * 72 / max(w_pt, h_pt))))
 
 
+_LIMITE_PIL = threading.Lock()
+
+
+def abrir_render(ruta: Path, pixeles: int):
+    """Abre en RGB una imagen que generó DocsLab a partir del PDF (no la subió nadie). Admite su tamaño,
+    que se conoce de antemano, subiendo el límite de Pillow solo mientras se abre; nunca lo desactiva."""
+    from PIL import Image
+    with _LIMITE_PIL:
+        antes = Image.MAX_IMAGE_PIXELS
+        if antes is not None and pixeles > antes:
+            Image.MAX_IMAGE_PIXELS = int(pixeles * 1.05) + 1
+        try:
+            with Image.open(ruta, formats=["PNG"]) as im:
+                return im.convert("RGB")
+        finally:
+            Image.MAX_IMAGE_PIXELS = antes
+
+
 def renderizar(pdf: Path, pagina: int, ppp: int, sin_texto: bool, destino: Path) -> Path:
     gs = compilador.ghostscript()
     if gs:
@@ -523,8 +542,6 @@ def exportar(pdf: Path, destino: Path, modo: str = "editable", modelo: dict | No
     except ImportError as exc:
         raise ErrorPowerPoint("Falta el paquete de Python «python-pptx»: instálalo en el entorno de DocsLab "
                               "(pip install python-pptx).") from exc
-    from PIL import Image
-    Image.MAX_IMAGE_PIXELS = None
     modo = modo if modo in MODOS else "editable"
     if modo == "editable" and not compilador.ghostscript():
         raise ErrorPowerPoint("Para el texto editable hace falta Ghostscript (gs). Sin él se puede exportar como imagen.")
@@ -556,9 +573,10 @@ def exportar(pdf: Path, destino: Path, modo: str = "editable", modelo: dict | No
             r = _resolucion(pw, ph, ppp)
             if informar:
                 informar(f"Página {n} de {paginas}: imagen", 0.15 + 0.75 * (n - 1) / paginas)
-            lleno = Image.open(renderizar(pdf, n, r, False, tmp / f"lleno-{n}.png")).convert("RGB")
+            px = int(pw / 72 * r + 2) * int(ph / 72 * r + 2)
+            lleno = abrir_render(renderizar(pdf, n, r, False, tmp / f"lleno-{n}.png"), px)
             if modo == "editable":
-                sin = Image.open(renderizar(pdf, n, r, True, tmp / f"sin-{n}.png")).convert("RGB")
+                sin = abrir_render(renderizar(pdf, n, r, True, tmp / f"sin-{n}.png"), px)
                 pag = lineas.get(n) or {"ancho": pw, "alto": ph, "lineas": []}
                 clases = clasificar(pag, n, figuras, girados, modelo is not None, tapan)
                 img = fondo(lleno, sin, clases, pw, ph)

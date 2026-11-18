@@ -12,6 +12,41 @@ Tipos de entrada: **Añadido**, **Cambiado**, **Obsoleto**, **Eliminado**, **Cor
 
 _Nada todavía._
 
+## [1.6.0] - 2026-11-18
+
+Huella: [`huella/v1.6.0.json`](huella/v1.6.0.json). Versiones: aplicación 1.6.0 · `.sty` 1.1.0 (sin cambios) · esquema 1. Rutas de la API sin cambios (95).
+
+Sale de la auditoría de prelanzamiento del 2026-11-18. Es MINOR y no PATCH porque añade opciones (`DOCSLAB_HOSTS`, `DOCSLAB_MAX_NUCLEOS`) y cambia lo que la API exige a los scripts propios (ver «Seguridad»). 1.5.x deja de tener soporte.
+
+### Seguridad
+- **Las salidas HTML de los cuadernos ya no ejecutan código en DocsLab.** Hasta 1.5.1 se pintaban tal cual en la página: abrir un `.ipynb` ajeno con una salida preparada (sin ejecutarlo) permitía usar la API y, con ella, ejecutar Python. Ahora van en un `<iframe sandbox="allow-scripts">` sin el origen de DocsLab. Comprobado en Chrome contra 1.5.1 (fallaba) y 1.6.0 (no).
+- **Otras webs ya no pueden usar el servidor local** (`docslab/seguridad.py`):
+  - **DNS rebinding:** solo se atienden `localhost`, `*.localhost`, direcciones IP y los nombres de la nueva variable `DOCSLAB_HOSTS`; el resto recibe 403. En 1.5.1, un dominio ajeno que apuntaba a 127.0.0.1 tenía la API entera.
+  - **CSRF:** POST, PUT, PATCH y DELETE exigen la cabecera `X-DocsLab: 1` (la interfaz la pone sola) y, si llevan `Origin`, que sea el propio servidor. En 1.5.1, otra web podía crear e importar proyectos.
+  - **Si usas la API desde tus scripts**, añade `X-DocsLab: 1` a esas peticiones (detalles en `docs/API.md`).
+- Cabeceras `Content-Security-Policy: frame-ancestors 'self'` (más Colab en ese modo), `X-Content-Type-Options: nosniff` y `Referrer-Policy: same-origin`. Los `.js`, `.mjs` y `.css` se sirven siempre con su tipo MIME.
+- **Dependencias:** mínimos sin avisos conocidos (pip-audit): `flask>=3.1.3`, `pillow>=13.0` en Python 3.11 o posterior (12.3 en 3.10 y 11.3 en 3.9, las últimas que admiten esos Python, todavía con avisos), `scipy>=1.10`, `scikit-learn>=1.5`.
+- **Imágenes:** Pillow solo abre los formatos esperados (PNG/JPEG, y GIF, BMP, TIFF y WEBP al convertir). La exportación a PowerPoint ya no desactiva para todo el proceso el límite contra imágenes gigantes.
+- **pdf.js 3.11.174 → 4.10.38** (compilación «legacy»; sin avisos en `npm audit`). Se mantiene `isEvalSupported: false`.
+- La respuesta de doi.org se lee con un tope de 2 MB.
+
+### Añadido
+- `DOCSLAB_HOSTS`: nombres de equipo extra con los que se puede abrir DocsLab (con `--host 0.0.0.0`).
+- `DOCSLAB_MAX_NUCLEOS` (4 por defecto): procesos de Python del LAB a la vez. Al pasar del tope se apaga el que lleva más tiempo sin usarse, y su cuaderno lo avisa.
+- Pie en el inicio con la versión, las licencias (AGPL-3.0 y LPPL-1.3c) y dónde está el código fuente.
+- `tests/test_seguridad.py` (21 pruebas) y `tests/auditoria_navegador.py`: axe-core, foco en diálogos, marco aislado, CSRF y DNS rebinding en un Chrome real.
+
+### Cambiado
+- Errores 404, 405 y 500 en JSON. El 500 no muestra detalles internos y se registra en la terminal.
+
+### Corregido
+- **Accesibilidad (WCAG 2.2 AA, sin infracciones de axe en inicio, asistente, editor, LAB y Componente Lab):**
+  - Los diálogos retienen el foco con Tab y lo devuelven al cerrar (`static/js/foco.js`). El asistente de documento nuevo se cierra con Esc.
+  - Las tarjetas del inicio ya no anidan botones dentro de otro botón: el nombre es el botón.
+  - El árbol de estructura cumple ARIA: un `role="tree"` por grupo, con los botones del grupo fuera.
+  - Las celdas del cuaderno se eligen con teclado.
+  - Mejor contraste del contador de ejecución del LAB.
+
 ## [1.5.1] - 2026-11-18
 
 Huella: [`huella/v1.5.1.json`](huella/v1.5.1.json). Versiones: aplicación 1.5.1 · `.sty` 1.1.0 (sin cambios) · esquema 1. Rutas y contrato de la API idénticos a 1.5.0.
@@ -253,7 +288,8 @@ Línea base. Es la primera versión con versionado formal. Huella: [`huella/v1.0
 - En un TeX Live sin `texlive-lang-spanish` ni `luatex85.sty` fallan 11 pruebas (las 9 de compilación de plantillas, una de la API y una de LuaLaTeX). Verificado como problema de entorno en 1.2.1.
 - La API no tiene autenticación y los cuadernos ejecutan código arbitrario (ver `SECURITY.md`).
 
-[Sin publicar]: ../../compare/v1.5.1...HEAD
+[Sin publicar]: ../../compare/v1.6.0...HEAD
+[1.6.0]: ../../compare/v1.5.1...v1.6.0
 [1.5.1]: ../../compare/v1.5.0...v1.5.1
 [1.5.0]: ../../compare/v1.4.0...v1.5.0
 [1.4.0]: ../../compare/v1.3.0...v1.4.0

@@ -233,7 +233,7 @@ def renderizar(pdf: Path, pagina: int, ppp: float):
         p = base.with_suffix(".png")
         if not p.exists():
             return None
-        with Image.open(p) as im:
+        with Image.open(p, formats=("PNG",)) as im:
             return im.convert("RGB")
 
 
@@ -534,7 +534,7 @@ def colores_en_cmyk(colores: list[str]) -> dict[str, str] | None:
                            capture_output=True, timeout=60, stdin=subprocess.DEVNULL)
             subprocess.run(base + ["-sDEVICE=png16m", "-r72", f"-sOutputFile={tmp / 'vuelta.png'}", str(tmp / "cmyk.pdf")],
                            capture_output=True, timeout=60, stdin=subprocess.DEVNULL)
-            with Image.open(tmp / "vuelta.png") as im:
+            with Image.open(tmp / "vuelta.png", formats=("PNG",)) as im:
                 im = im.convert("RGB")
                 return {c: _hex(im.getpixel((i * lado + lado // 2, lado // 2))) for i, c in enumerate(colores)}
         except (OSError, subprocess.TimeoutExpired, ValueError):
@@ -691,7 +691,7 @@ def revisar(directorio: Path, pdf: Path, modelo: dict | None = None, compilacion
         if p.suffix.lower() in EXT_RASTER:
             try:
                 from PIL import Image
-                with Image.open(p) as im:
+                with Image.open(p, formats=("PNG", "JPEG")) as im:
                     a["dims"].add(tuple(im.size))
             except Exception:
                 pass
