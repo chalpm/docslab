@@ -15,6 +15,17 @@ Salvo `ejemplo.csv`, se regeneran con `python herramientas/datos_ejemplo.py <ne_
 | `ejemplo_jerarquia.csv` | area, subarea, publicaciones | Sintético | Treemap, empaquetado circular, dona, pastel, gofre, barras circulares |
 | `ejemplo_puntuaciones.csv` | muestra, grupo, 6 variables | Sintético | Radar, coordenadas paralelas, dendrograma, tabla |
 | `ejemplo_palabras.csv` | palabra, frecuencia | Sintético | Nube de palabras |
+| `ejemplo_multivariado.csv` | muestra, grupo, gen01…gen12 (200 muestras, 4 grupos) | Simulado (3 factores latentes) | PCA, t-SNE, NMDS, k-means, mapa de calor agrupado |
+| `ejemplo_expresion.csv` | gen, log2fc, pvalor, padj, media (3000 genes) | Simulado; padj por Benjamini-Hochberg | Volcán |
+| `ejemplo_gwas.csv` | snp, cromosoma, posicion, pvalor (22 cromosomas) | Simulado, con 4 señales | Manhattan |
+| `ejemplo_supervivencia.csv` | paciente, grupo, tiempo_meses, evento (2 × 120) | Simulado (exponencial, censura uniforme) | Kaplan-Meier |
+| `ejemplo_dosis.csv` | compuesto, dosis_um, replica, viabilidad | Simulado (logística de 4 parámetros) | Dosis-respuesta |
+| `ejemplo_clasificacion.csv` | real, modelo_a, modelo_b, clase_real, clase_predicha | Simulado | ROC, matriz de confusión |
+| `ejemplo_metodos.csv` | muestra, metodo_a, metodo_b | Simulado | Bland-Altman |
+| `ejemplo_metaanalisis.csv` | estudio, anio, n, or, li, ls (10 estudios) | Simulado | Forest plot |
+| `ejemplo_espectro.csv` | longitud_onda_nm, intensidad | Simulado (6 picos gaussianos y ruido) | Espectro con picos |
+| `ejemplo_superficie.csv` | x, y, z (malla 41 × 41) | Función «peaks» | Superficie 3D |
+| `ejemplo_conjuntos.csv` | elemento, conjunto (formato largo) | Simulado | Venn |
 | `mundo.geojson` | iso3, nombre, continente + polígonos | **Natural Earth** 1:110m Admin 0 – Countries, coordenadas a 2 decimales | Todos los mapas |
 
 **Natural Earth** es de dominio público ([naturalearthdata.com](https://www.naturalearthdata.com/about/terms-of-use/)): «Made with Natural Earth». Las fronteras y los nombres siguen su criterio, que no refleja ninguna postura sobre disputas territoriales.

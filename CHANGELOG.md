@@ -12,6 +12,37 @@ Tipos de entrada: **Añadido**, **Cambiado**, **Obsoleto**, **Eliminado**, **Cor
 
 _Nada todavía._
 
+## [1.4.0] - 2026-11-18
+
+Huella: [`huella/v1.4.0.json`](huella/v1.4.0.json). Versiones: aplicación 1.4.0 · `.sty` 1.1.0 (sin cambios) · esquema 1.
+
+### Añadido
+- **25 plantillas de análisis científico y de datos (F-27)**, en 5 categorías nuevas del LAB. Ahora hay 73 plantillas.
+  - Multivariado: PCA, PCA 3D, biplot, varianza explicada, t-SNE, t-SNE 3D, NMDS/MDS y mapa de calor con agrupamiento.
+  - Aprendizaje automático: k-means, elegir k (codo y silueta), curva ROC y matriz de confusión.
+  - Estadística: comparación de grupos con valor p, raincloud, Q-Q, Bland-Altman, ajuste de curva y forest plot.
+  - Biomedicina: volcán, Manhattan, Kaplan-Meier, dosis-respuesta (CI50) y Venn.
+  - Señales y superficies: espectro con picos y superficie 3D.
+- Cada una escribe sus estadísticos en la salida de la celda (varianza explicada, estrés, AUC, valores p corregidos, CI50, medianas, log-rank…).
+- 11 archivos de datos de ejemplo simulados para estas plantillas (`datos_ejemplo/`, documentados en su LEEME).
+- Pruebas:
+  - `test_el_codigo_compila_en_un_python_antiguo` compila el código de las 73 plantillas con Python 3.9–3.11 si hay uno instalado.
+  - `test_los_numeros_pequenos_no_se_redondean_a_cero` comprueba la corrección del redondeo.
+  - Además, las 25 plantillas nuevas se ejecutan con sus datos de ejemplo.
+
+### Cambiado
+- **Nueva dependencia obligatoria:** `scikit-learn>=1.2`. Los lanzadores la instalan solos.
+- `CATEGORIAS` suma Multivariado, Aprendizaje automático, Estadística, Biomedicina, y Señales y superficies. Estas plantillas no enlazan a The R Graph Gallery.
+
+### Corregido
+- **Parámetros numéricos pequeños de las plantillas:** se redondeaban a 6 decimales, así que un umbral como 5e-8 llegaba al código como 0. Ahora se conservan 10 cifras significativas.
+- La prueba `test_el_codigo_vale_en_python_3_9` (1.3.0) no detectaba las comillas anidadas en f-strings: con Python 3.12 o posterior, `ast.parse(feature_version=…)` no aplica esa restricción. Se renombra a `test_el_codigo_es_python_valido` y se añade la compilación real con un Python antiguo. Las 48 plantillas de 1.3.0 compilaban bien con Python 3.11.
+
+### Problemas conocidos
+- `tests/test_lab.py::test_ejecutar_celda_a_celda_conserva_las_variables` puede fallar con el equipo muy cargado: espera 90 s a que arranque el núcleo de Jupyter. Falló en 1 de 3 ejecuciones de la suite completa en un contenedor de 2 CPU, y pasa sola y al repetir.
+- UMAP no se incluye: necesita `umap-learn` (con numba), una dependencia pesada.
+
+
 ## [1.3.0] - 2026-11-18
 
 Huella: [`huella/v1.3.0.json`](huella/v1.3.0.json). Versiones: aplicación 1.3.0 · `.sty` 1.1.0 (sin cambios) · esquema 1.
@@ -179,7 +210,8 @@ Línea base. Es la primera versión con versionado formal. Huella: [`huella/v1.0
 - En un TeX Live sin `texlive-lang-spanish` ni `luatex85.sty` fallan 11 pruebas (las 9 de compilación de plantillas, una de la API y una de LuaLaTeX). Verificado como problema de entorno en 1.2.1.
 - La API no tiene autenticación y los cuadernos ejecutan código arbitrario (ver `SECURITY.md`).
 
-[Sin publicar]: ../../compare/v1.3.0...HEAD
+[Sin publicar]: ../../compare/v1.4.0...HEAD
+[1.4.0]: ../../compare/v1.3.0...v1.4.0
 [1.3.0]: ../../compare/v1.2.3...v1.3.0
 [1.2.3]: ../../compare/v1.2.2...v1.2.3
 [1.2.2]: ../../compare/v1.2.1...v1.2.2

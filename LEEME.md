@@ -4,7 +4,7 @@
 
 Funciona **en tu equipo** (Windows, macOS o Linux, con un pequeño servidor local) o **en Google Colab**. Una vez instalado no necesita internet, salvo para buscar referencias por DOI.
 
-**Versión 1.3.0** · Licencia [AGPL-3.0](LICENSE) (plantilla LaTeX: [LPPL-1.3c](latex/LICENSE-LPPL-1.3c.txt)) · [Registro de cambios](CHANGELOG.md) · [Documentación técnica y funcional](docs/README.md) · [Seguridad](SECURITY.md)
+**Versión 1.4.0** · Licencia [AGPL-3.0](LICENSE) (plantilla LaTeX: [LPPL-1.3c](latex/LICENSE-LPPL-1.3c.txt)) · [Registro de cambios](CHANGELOG.md) · [Documentación técnica y funcional](docs/README.md) · [Seguridad](SECURITY.md)
 
 ---
 
@@ -498,7 +498,19 @@ flowchart LR
 | Mapas | Mapa con puntos, coropletas, mapa de hexágonos, cartograma (Dorling), conexiones, mapa de burbujas |
 | Flujos | Cuerdas, red, Sankey, arcos, agrupamiento de aristas (edge bundling) |
 
-Las nuevas usan solo matplotlib y seaborn (el dendrograma, también scipy): funcionan sin conexión y no necesitan Chrome. Los mapas traen su mapa base (`mundo.geojson`, de Natural Earth), con proyección Equal Earth y zonas para acercar (América, América Latina, México, Europa…). Cada plantilla enlaza a su página de la galería.
+Además, **25 plantillas de análisis científico y de datos** (73 en total):
+
+| Categoría | Plantillas |
+|---|---|
+| Multivariado | PCA, PCA 3D, biplot de PCA, varianza explicada (sedimentación), t-SNE, t-SNE 3D, NMDS/MDS (Bray-Curtis, Jaccard…), mapa de calor con agrupamiento |
+| Aprendizaje automático | Agrupamiento k-means, elegir k (codo y silueta), curva ROC con AUC, matriz de confusión |
+| Estadística | Comparación de grupos con valor p (t de Welch, Mann-Whitney; Holm o Bonferroni), nube de lluvia (raincloud), Q-Q con Shapiro-Wilk, Bland-Altman, ajuste de curva (8 modelos, banda de confianza y R²), forest plot de metaanálisis |
+| Biomedicina | Volcán, Manhattan (GWAS), supervivencia de Kaplan-Meier (log-rank y pacientes en riesgo), dosis-respuesta (CI50 con logística de 4 parámetros), Venn |
+| Señales y superficies | Espectro con detección de picos, superficie 3D y contornos |
+
+Escriben en la salida de la celda los números que acompañan a la figura (varianza explicada, estrés, AUC, valores p, CI50, medianas de supervivencia…). Usan scikit-learn y scipy.
+
+Las de la galería usan solo matplotlib y seaborn (el dendrograma, también scipy): funcionan sin conexión y no necesitan Chrome. Los mapas traen su mapa base (`mundo.geojson`, de Natural Earth), con proyección Equal Earth y zonas para acercar (América, América Latina, México, Europa…). Cada plantilla enlaza a su página de la galería.
 
 Eliges el tipo de gráfico (filtrado por categoría o por biblioteca), los datos (CSV, TSV, Excel, JSON o Parquet de la carpeta del cuaderno, o un `DataFrame` del cuaderno), las columnas y las opciones (rótulos, tamaño y colores, por defecto los del documento). «Insertar y ejecutar» añade una celda con el código ya escrito, que puedes editar. Los gráficos de plotly entran al documento como imagen fija; guardarlos necesita `kaleido` (y, en sus versiones 1.x, Chrome).
 
@@ -638,6 +650,7 @@ docslab/                    (carpeta del proyecto)
 │   ├── cuadernos.py        ejecución completa de .ipynb y recogida de figuras
 │   ├── graficos.py         plantillas de gráficos: catálogo, generar código y probar
 │   ├── graficos_galeria.py las 35 plantillas inspiradas en The R Graph Gallery
+│   ├── graficos_ciencia.py las 25 plantillas de análisis científico (PCA, t-SNE, Kaplan-Meier…)
 │   ├── graficos_comun.py   piezas comunes de las plantillas
 │   ├── datos_ejemplo/      datos de ejemplo de las plantillas y mapa base
 │   └── trabajos.py         tareas en segundo plano (compilar, ejecutar)
@@ -658,7 +671,7 @@ Más detalle en [docs/ARQUITECTURA.md](docs/ARQUITECTURA.md).
 Con el entorno `.venv` activado:
 ```
 python -m pip install pytest
-python -m pytest                 # 404 pruebas
+python -m pytest                 # 458 pruebas
 python tests/e2e_navegador.py    # opcional: necesita playwright y chromium
 ```
 Las pruebas que necesitan LaTeX, Poppler, LuaLaTeX o Ghostscript se saltan si faltan esas herramientas. Para que pasen todas hace falta un TeX Live completo: en Ubuntu/Debian, `texlive-latex-extra`, `texlive-lang-spanish` y `texlive-luatex`, además de `poppler-utils` y `ghostscript`.
@@ -721,7 +734,7 @@ DocsLab sigue [Versionado Semántico](https://semver.org/lang/es/): `MAYOR.MENOR
 | Documento | Para qué |
 |---|---|
 | [CHANGELOG.md](CHANGELOG.md) | Qué cambió en cada versión |
-| [docs/FUNCIONAL.md](docs/FUNCIONAL.md) | Especificación funcional (F-01…F-26) |
+| [docs/FUNCIONAL.md](docs/FUNCIONAL.md) | Especificación funcional (F-01…F-27) |
 | [docs/ARQUITECTURA.md](docs/ARQUITECTURA.md) | Componentes, almacenamiento y dependencias |
 | [docs/API.md](docs/API.md) | Las 95 rutas HTTP del servidor |
 | [docs/MIGRACIONES.md](docs/MIGRACIONES.md) | Cómo se actualizan los proyectos antiguos |

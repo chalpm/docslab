@@ -236,7 +236,8 @@ fig = px.bar(media, x={{x}}, y={{y}}, color={{grupo}} or None, barmode="group",
              labels={ {{x}}: {{etiqueta_x}} or {{x}}, {{y}}: {{etiqueta_y}} or {{y}} })
 ''' + PIE_PX),
 ]
-CATEGORIAS = ["Distribución", "Correlación", "Ranking", "Partes de un todo", "Evolución", "Mapas", "Flujos"]
+CATEGORIAS = ["Distribución", "Correlación", "Ranking", "Partes de un todo", "Evolución", "Mapas", "Flujos",
+              "Multivariado", "Aprendizaje automático", "Estadística", "Biomedicina", "Señales y superficies"]
 _CATEGORIA = {  # las incluidas desde el principio, en las categorías de The R Graph Gallery
     "barras": ("Ranking", "barplot.html"), "barras-agrupadas": ("Partes de un todo", "stacked-barplot.html"),
     "lineas": ("Evolución", "line-plot.html"), "dispersion": ("Correlación", "scatterplot.html"),
@@ -250,9 +251,10 @@ for _t in INCLUIDAS:
     _t["categoria"], _ref = _CATEGORIA[_t["id"]]
     _t["referencia"] = "https://r-graph-gallery.com/" + _ref
 
-from .graficos_galeria import GALERIA  # noqa: E402  (usa CABEZA_MPL, PIE_MPL… definidos arriba)
+from .graficos_ciencia import CIENCIA  # noqa: E402
+from .graficos_galeria import GALERIA  # noqa: E402
 
-INCLUIDAS += GALERIA
+INCLUIDAS += GALERIA + CIENCIA
 for _t in INCLUIDAS:
     _t["incluida"] = True
 
@@ -460,7 +462,7 @@ def valor_py(p: dict, v, colores: dict) -> str:
             n = float(v)
         except (TypeError, ValueError):
             n = float(p.get("defecto") or 0)
-        return str(int(n)) if n == int(n) else repr(round(n, 6))
+        return str(int(n)) if n == int(n) else repr(float(f"{n:.10g}"))     # 10 cifras: 5e-08 no se vuelve 0
     if tipo == "interruptor":
         return "True" if v else "False"
     if tipo == "color":

@@ -1,4 +1,4 @@
-# Especificación funcional · DocsLab 1.3.0
+# Especificación funcional · DocsLab 1.4.0
 
 Catálogo de funciones con identificadores estables (**F-NN**). Cada versión futura indica en el CHANGELOG qué F-NN añade, cambia o retira. Los identificadores no se reutilizan.
 
@@ -85,7 +85,7 @@ Columnas: **Módulos** (backend), **API** (grupo de `docs/API.md`), **Pruebas** 
 **Módulos.** `lab.py`. **API.** LAB. **Pruebas.** `test_lab.py` · `test_cuaderno_nuevo_y_edicion`, `test_ejecutar_celda_a_celda_conserva_las_variables`. **Estado.** Estable.
 
 ## F-19 · Plantillas de gráficos
-**Descripción.** Gráficos con formulario: 48 plantillas incluidas (ver F-26) con matplotlib, seaborn o plotly, filtrables por categoría y por biblioteca. Datos: CSV, TSV, Excel, JSON, Parquet o un DataFrame del cuaderno. El código generado se inserta en una celda editable. Plantillas propias en `datos/graficos/`; «Probar» las ejecuta con todos los datos de ejemplo.
+**Descripción.** Gráficos con formulario: 73 plantillas incluidas (ver F-26 y F-27) con matplotlib, seaborn o plotly, filtrables por categoría y por biblioteca. Datos: CSV, TSV, Excel, JSON, Parquet o un DataFrame del cuaderno. El código generado se inserta en una celda editable. Plantillas propias en `datos/graficos/`; «Probar» las ejecuta con todos los datos de ejemplo.
 **Módulos.** `graficos.py`, `graficos_comun.py`. **API.** Plantillas de gráficos. **Pruebas.** `test_lab.py` · `test_generar_codigo_de_plantilla`, `test_las_plantillas_incluidas_generan_python_valido`, `test_plantillas_propias`, `test_un_grafico_de_plantilla_llega_al_documento`. **Estado.** Estable.
 
 ## F-20 · Modo LaTeX
@@ -119,6 +119,23 @@ Columnas: **Módulos** (backend), **API** (grupo de `docs/API.md`), **Pruebas** 
 **Descripción.** Las 7 categorías y los 41 tipos de gráfico de The R Graph Gallery (Distribución, Correlación, Ranking, Partes de un todo, Evolución, Mapas y Flujos), adaptados a Python. Son 35 plantillas nuevas más las 13 anteriores, ahora con categoría y enlace a su página de la galería. Las nuevas usan matplotlib o seaborn (y scipy para el dendrograma), sin conexión ni Chrome. Los mapas usan `mundo.geojson` (Natural Earth, dominio público) con proyección Equal Earth o longitud/latitud, y zonas predefinidas. «Usar datos de ejemplo» copia al cuaderno los datos de cada plantilla (y el mapa base si lo necesita), solo desde `datos_ejemplo/`.
 **Reglas.** Código válido en Python 3.9 o posterior. Ninguna plantilla depende de geopandas, networkx, squarify, wordcloud ni circlify: los algoritmos (squarify, empaquetado circular, Fruchterman-Reingold, Dorling, círculo máximo, Chaikin, espiral de palabras) van en el propio código, editable.
 **Módulos.** `graficos_galeria.py`, `graficos.py` (`CATEGORIAS`, `archivos_ejemplo`), `lab.py` (`copiar_ejemplo`), `datos_ejemplo/`, `herramientas/datos_ejemplo.py`, `herramientas/construir_graficos.py`; frontend `cuaderno.js`. **API.** `GET /api/graficos` (`categorias`, `ejemplo` por plantilla), `POST …/lab/<nb>/ejemplo` (`archivos`). **Pruebas.** `test_galeria.py` · `test_cada_tipo_de_la_galeria_tiene_plantilla`, `test_las_plantillas_de_la_galeria_dibujan_con_sus_datos_de_ejemplo`, `test_el_codigo_vale_en_python_3_9` (48), `test_usar_datos_de_ejemplo_copia_los_de_la_plantilla`. **Estado.** Estable.
+
+## F-27 · Plantillas de análisis científico y de datos
+**Introducida en.** 1.4.0.
+**Descripción.** 25 plantillas en 5 categorías:
+- **Multivariado:** PCA 2D (con % de varianza y elipses del 95 %), PCA 3D, biplot, varianza explicada, t-SNE 2D y 3D, NMDS/MDS con distancias Bray-Curtis, euclídea, Jaccard, Manhattan o correlación, y mapa de calor con agrupamiento jerárquico.
+- **Aprendizaje automático:** k-means sobre el PCA, que añade la columna `cluster` a la tabla; elección de k por codo y silueta; ROC con AUC y punto de Youden; matriz de confusión con informe de clasificación.
+- **Estadística:** comparación de grupos con t de Welch, t de Student o Mann-Whitney, corrección de Holm o Bonferroni y prueba global (ANOVA o Kruskal-Wallis); raincloud; Q-Q con Shapiro-Wilk; Bland-Altman; ajuste de curva (8 modelos) con banda de confianza por el método delta y R²; forest plot con efecto combinado por el inverso de la varianza e I².
+- **Biomedicina:** volcán, Manhattan, Kaplan-Meier (IC de Greenwood, censuras, log-rank para k grupos y tabla de pacientes en riesgo), dosis-respuesta (logística de 4 parámetros, CI50) y Venn de 2 o 3 conjuntos.
+- **Señales y superficies:** espectro con suavizado Savitzky-Golay y detección de picos; superficie 3D o contornos.
+
+**Reglas.**
+- Cada plantilla imprime sus estadísticos en la salida de la celda.
+- t-SNE usa el método exacto hasta 1500 filas (más fiel y sin puntos sueltos en 3D) y Barnes-Hut a partir de ahí.
+- NMDS es compatible con la API de MDS de scikit-learn antes y después de 1.8.
+- Los datos de ejemplo científicos son simulados.
+
+**Módulos.** `graficos_ciencia.py`, `datos_ejemplo/` (11 archivos nuevos), `herramientas/datos_ejemplo.py`. **API.** Sin rutas nuevas. **Pruebas.** `test_galeria.py` · `test_las_plantillas_cientificas_dibujan_con_sus_datos_de_ejemplo`, `test_pedidos_de_las_plantillas_cientificas`, `test_el_codigo_compila_en_un_python_antiguo`, `test_los_numeros_pequenos_no_se_redondean_a_cero`. **Estado.** Estable.
 
 ---
 

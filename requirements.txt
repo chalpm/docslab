@@ -12,7 +12,8 @@ matplotlib>=3.6
 seaborn>=0.13
 plotly>=5.18
 kaleido>=0.2.1       # guardar los gráficos de plotly como imagen (las versiones 1.x necesitan Chrome)
-scipy>=1.9           # dendrograma
+scipy>=1.9           # dendrograma, ajustes de curvas, pruebas estadísticas, picos
+scikit-learn>=1.2    # PCA, t-SNE, NMDS, k-means, ROC y matriz de confusión
 # Opcional: subir figuras SVG (se convierten a PDF)
 # cairosvg>=2.5
 # Opcional: pruebas

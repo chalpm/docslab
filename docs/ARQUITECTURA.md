@@ -1,4 +1,4 @@
-# Arquitectura · DocsLab 1.3.0
+# Arquitectura · DocsLab 1.4.0
 
 ## 1. Vista general
 
@@ -44,9 +44,10 @@ Flask  docslab/app.py ──────────────┐
 | `fuentes.py` | 172 | Tipografías propias .ttf/.otf: lectura de metadatos, familias, licencia de incrustación |
 | `cuadernos.py` | 502 | Ejecución completa de `.ipynb`, recogida de figuras y celda para Colab |
 | `lab.py` | 540 | Núcleos Jupyter persistentes por cuaderno del LAB |
-| `graficos.py` | 538 | Catálogo de plantillas de gráficos (`{{param}}`) → código Python; categorías; probar con los datos de ejemplo |
+| `graficos.py` | 540 | Catálogo de plantillas de gráficos (`{{param}}`) → código Python; categorías; probar con los datos de ejemplo |
 | `graficos_comun.py` | 60 | Piezas comunes de las plantillas (parámetros, cabeceras y pies de código) |
 | `graficos_galeria.py` | 1219 | Las 35 plantillas de la galería (F-26) |
+| `graficos_ciencia.py` | 955 | Las 25 plantillas de análisis científico (F-27) |
 | `trabajos.py` | 116 | Cola de trabajos en hilos, con progreso, registro (400 líneas) y cancelación |
 
 ## 3. Frontend (`static/js`)
@@ -86,7 +87,7 @@ Las plantillas incluidas viven en `plantillas/` dentro de la aplicación y son d
 
 | Tipo | Componente | Obligatorio |
 |---|---|---|
-| Python | flask, pillow, python-pptx, nbclient, nbformat, ipykernel, pandas, matplotlib, seaborn, plotly, kaleido, scipy | Sí (`requirements.txt`) |
+| Python | flask, pillow, python-pptx, nbclient, nbformat, ipykernel, pandas, matplotlib, seaborn, plotly, kaleido, scipy, scikit-learn | Sí (`requirements.txt`) |
 | Datos | Natural Earth 1:110m (países), en `docslab/datos_ejemplo/mundo.geojson` | Incluido (dominio público) |
 | Sistema | pdfLaTeX (TeX Live / MacTeX / MiKTeX) | Sí |
 | Sistema | Poppler (`pdftoppm`, `pdftohtml`) | Para la revisión, las miniaturas y PowerPoint |
