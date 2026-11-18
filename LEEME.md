@@ -4,6 +4,8 @@ Editor web de documentos científicos hechos con LaTeX: **pósters, presentacion
 
 Funciona en tu equipo (un pequeño servidor local con Python) o dentro de Google Colab.
 
+**Versión 1.0.0** · [Registro de cambios](CHANGELOG.md) · [Documentación técnica y funcional](docs/README.md) · [Seguridad](SECURITY.md)
+
 ## Qué incluye
 
 - **Cinco tipos de documento.** Al crear un proyecto eliges qué vas a hacer:
@@ -262,9 +264,12 @@ docslab/                  servidor (Flask)
 static/                     aplicación web (Vue 3, pdf.js y CodeMirror incluidos; funciona sin conexión)
   js/editor.js              el editor; vista.js (vista previa), directa.js (edición directa),
                             inspector.js, referencias.js, lab.js, revision.js, powerpoint.js, tipografias.js…
-latex/postercientifico.sty  la plantilla LaTeX (v2, por capas)
+latex/postercientifico.sty  la plantilla LaTeX (por capas; versión en su \ProvidesPackage)
 plantillas/                 plantillas incluidas
-herramientas/               construir plantillas, miniaturas, lanzador de Colab y empaquetado
+herramientas/               construir plantillas, miniaturas, lanzador de Colab, empaquetado,
+                            huella digital (huella.py) y referencia de la API (doc_api.py)
+docs/                       documentación funcional, arquitectura, API y versionado
+huella/                     huella digital de cada versión publicada
 tests/                      pruebas (pytest) y prueba en navegador (e2e_navegador.py)
 abrir_docslab_en_colab.ipynb
 ```
@@ -273,7 +278,7 @@ abrir_docslab_en_colab.ipynb
 
 ```
 python -m pip install pytest     # con el entorno .venv activado
-python -m pytest                 # 245 pruebas; las que necesitan LaTeX, Poppler, LuaLaTeX o Ghostscript se saltan si faltan
+python -m pytest                 # 288 pruebas; las que necesitan LaTeX, Poppler, LuaLaTeX o Ghostscript se saltan si faltan
 python tests/e2e_navegador.py    # opcional: necesita playwright y chromium
 ```
 

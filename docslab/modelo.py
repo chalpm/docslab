@@ -12,7 +12,7 @@ import string
 
 from . import variantes
 
-ESQUEMA = 2
+ESQUEMA = 1   # versión del esquema del modelo JSON (entero; ver docs/VERSIONADO.md)
 
 TAMANOS = {
     "A0": ("841mm", "1189mm"), "A1": ("594mm", "841mm"), "A2": ("420mm", "594mm"),

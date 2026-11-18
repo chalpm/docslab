@@ -1,4 +1,4 @@
-"""Generador: modelo JSON del póster → documento LaTeX (postercientifico.sty v2).
+"""Generador: modelo JSON del póster → documento LaTeX (postercientifico.sty).
 
 generar(modelo, marcas=True) devuelve el texto .tex y un mapa
 {número de línea: id del elemento} para señalar en la aplicación de qué
