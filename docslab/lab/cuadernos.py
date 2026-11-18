@@ -26,7 +26,7 @@ import time
 import zipfile
 from pathlib import Path
 
-from .almacen import Almacen, ErrorAlmacen, limpiar_nombre, limpiar_ruta, unir
+from ..nucleo.almacen import Almacen, ErrorAlmacen, limpiar_nombre, limpiar_ruta, unir
 
 EXT_FIGURA = ("png", "jpg", "jpeg", "pdf")
 SALTAR_DIRS = {".ipynb_checkpoints", "__pycache__", ".git", "node_modules", ".venv", "venv", "build"}

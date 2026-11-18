@@ -5,7 +5,8 @@ from pathlib import Path
 
 import pytest
 
-from docslab import almacen as A, generador as G, migraciones as MG, modelo as M
+from docslab.nucleo import almacen as A, migraciones as MG, modelo as M
+from docslab.documento import generador as G
 
 FIXTURES = Path(__file__).parent / "fixtures" / "esquemas"
 TODOS = sorted(FIXTURES.glob("v*/*.json"))

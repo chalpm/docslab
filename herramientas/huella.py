@@ -27,7 +27,7 @@ FORMATO_HUELLA = 1
 EXCLUIR_DIRS = {".git", "datos", ".venv", "venv", "__pycache__", ".pytest_cache", "dist",
                 ".ipynb_checkpoints", "huella"}
 EXCLUIR_EXT = {".pyc"}
-RE_RUTA = re.compile(r'@app\.(get|post|put|patch|delete|route)\("([^"]+)"')
+RE_RUTA = re.compile(r'@(?:app|bp)\.(get|post|put|patch|delete|route)\("([^"]+)"')
 
 
 def _sha(p: Path) -> str:
@@ -69,9 +69,11 @@ def _version_sty(raiz: Path) -> str | None:
 def generar(raiz: Path = RAIZ) -> dict:
     sys.path.insert(0, str(raiz))
     import docslab
-    from docslab import bibliografia as B, modelo as M, variantes as V
+    from docslab.documento import bibliografia as B, variantes as V
+    from docslab.nucleo import modelo as M
 
-    rutas = sorted({f"{m.upper()} {r}" for m, r in RE_RUTA.findall((raiz / "docslab/app.py").read_text(encoding="utf-8"))})
+    fuentes_api = [raiz / "docslab" / "app.py"] + sorted((raiz / "docslab" / "api").glob("*.py"))
+    rutas = sorted({f"{m.upper()} {r}" for f in fuentes_api for m, r in RE_RUTA.findall(f.read_text(encoding="utf-8"))})
     plantillas = {}
     for d in sorted((raiz / "plantillas").iterdir()):
         meta = d / "plantilla.json"
@@ -82,7 +84,7 @@ def generar(raiz: Path = RAIZ) -> dict:
     for t in sorted((raiz / "tests").glob("test_*.py")):
         pruebas[t.name] = len(re.findall(r"^def test_", t.read_text(encoding="utf-8"), re.M))
     codigo = {p.relative_to(raiz).as_posix(): _lineas(p)
-              for patron in ("docslab/*.py", "static/js/*.js", "static/css/*.css", "latex/*.sty", "servidor.py")
+              for patron in ("docslab/**/*.py", "static/js/*.js", "static/css/*.css", "latex/*.sty", "servidor.py")
               for p in sorted(raiz.glob(patron))}
     archivos = _archivos(raiz)
     global_ = hashlib.sha256("".join(f"{k}:{v['sha256']}\n" for k, v in archivos.items()).encode()).hexdigest()
@@ -157,7 +159,8 @@ def comparar(a: dict, b: dict) -> tuple[str, list[str]]:
             lineas += [f"- `{p}`" for p in lista]
     lineas.append(f"\n## Pruebas\n- {a['pruebas']['total_funciones']} → {b['pruebas']['total_funciones']} funciones")
     # un módulo nuevo del backend o del frontend suele ser una función nueva
-    agrega |= any(re.match(r"(docslab/[^/]+\.py|static/js/[^/]+\.js)$", n) for n in nuevos)
+    agrega |= any(re.match(r"(docslab/.+\.py|static/js/[^/]+\.js)$", n) and not n.endswith("__init__.py")
+                  for n in nuevos)
     agrega |= any(a.get(k) != b.get(k) for k in ("licencia", "licencia_sty"))
     salto = "MAJOR" if rompe else "MINOR" if agrega else "PATCH" if (nuevos or quitados or cambiados) else "NINGUNO"
     lineas.insert(1, f"**Salto SemVer sugerido:** {salto} (orientativo: los cambios de comportamiento no se detectan solos)\n")

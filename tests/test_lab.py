@@ -5,7 +5,7 @@ import time
 import pytest
 
 from conftest import hay_nucleo
-from docslab import graficos as G
+from docslab.lab import graficos as G
 
 
 def _proyecto(cliente):
@@ -135,7 +135,7 @@ def test_una_celda_no_se_queda_colgada_si_se_pierde_el_idle():
 
     import nbformat
 
-    from docslab import lab as L
+    from docslab.lab import nucleos as L
 
     class Cliente:
         iopub = [{"parent_header": {"msg_id": "m"}, "msg_type": "stream", "header": {"msg_type": "stream"},

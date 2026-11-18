@@ -14,9 +14,10 @@ import zipfile
 from datetime import datetime
 from pathlib import Path
 
-from . import generador, migraciones as MG, modelo as M
+from ..documento import generador
+from . import migraciones as MG, modelo as M
 
-RAIZ_APP = Path(__file__).resolve().parent.parent
+RAIZ_APP = Path(__file__).resolve().parents[2]      # docslab/<área>/<módulo>.py → raíz
 PLANTILLAS_INCLUIDAS = RAIZ_APP / "plantillas"
 STY = RAIZ_APP / "latex" / "postercientifico.sty"
 
@@ -120,7 +121,7 @@ class Almacen:
 
     def miniatura(self, pid: str) -> Path | None:
         """La miniatura del último PDF correcto; se hace aquí si aún no está o es vieja."""
-        from . import compilador
+        from ..salidas import compilador
         d = self.dir_proyecto(pid)
         mini = d / "build" / "miniatura.png"
         ok_pdf = d / "build" / (Path(self.meta(pid).get("principal", "poster.tex")).stem + ".ok.pdf")
@@ -550,7 +551,7 @@ class Almacen:
                 if not (d / "postercientifico.sty").exists():
                     z.write(STY, "postercientifico.sty")
                 try:
-                    from . import compilador
+                    from ..salidas import compilador
                     motor = compilador.motor_del_tex(unir(d, meta.get("principal", "poster.tex")).read_text(
                         encoding="utf-8", errors="replace"))
                 except (OSError, ErrorAlmacen):

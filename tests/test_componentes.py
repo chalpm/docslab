@@ -7,7 +7,9 @@ import re
 import pytest
 
 from conftest import hay_latex
-from docslab import compilador, componentes as C, generador as G, modelo as M, variantes as V
+from docslab.salidas import compilador
+from docslab.documento import componentes as C, generador as G, variantes as V
+from docslab.nucleo import modelo as M
 
 Valor = C.Valor
 

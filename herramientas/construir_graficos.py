@@ -18,7 +18,7 @@ sys.path.insert(0, str(RAIZ))
 
 from PIL import Image  # noqa: E402
 
-from docslab import graficos as G  # noqa: E402
+from docslab.lab import graficos as G  # noqa: E402
 
 DESTINO = RAIZ / "static" / "img" / "graficos"
 COLORES = {"primario": "2F4858", "acento": "C8553D"}

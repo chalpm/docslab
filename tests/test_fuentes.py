@@ -10,7 +10,9 @@ from pathlib import Path
 import pytest
 
 from conftest import hay_latex
-from docslab import compilador, fuentes as F, generador as G, modelo as M
+from docslab.salidas import compilador
+from docslab.documento import fuentes as F, generador as G
+from docslab.nucleo import modelo as M
 
 
 def kpse(nombre):

@@ -6,7 +6,7 @@ import time
 import pytest
 
 from conftest import hay_latex
-from docslab import powerpoint as P
+from docslab.salidas import powerpoint as P
 
 hay_pptx = pytest.mark.skipif(not P.disponible()["pptx"], reason="sin python-pptx")
 hay_todo = pytest.mark.skipif(not P.disponible()["editable"], reason="sin python-pptx, Ghostscript o Poppler")

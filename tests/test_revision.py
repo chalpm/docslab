@@ -9,7 +9,9 @@ import time
 import pytest
 
 from conftest import hay_latex
-from docslab import generador as G, modelo as M, revision as R
+from docslab.documento import generador as G
+from docslab.nucleo import modelo as M
+from docslab.salidas import revision as R
 
 hay_poppler = pytest.mark.skipif(not all(R.herramientas().values()), reason="sin las herramientas de Poppler")
 hay_gs = pytest.mark.skipif(not (shutil.which("gs") or shutil.which("gswin64c")), reason="sin Ghostscript")

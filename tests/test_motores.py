@@ -9,7 +9,9 @@ from pathlib import Path
 import pytest
 
 from conftest import hay_latex
-from docslab import compilador as C, generador as G, modelo as M
+from docslab.salidas import compilador as C
+from docslab.documento import generador as G
+from docslab.nucleo import modelo as M
 
 MIKTEX = "MiKTeX-pdfTeX 4.20 (MiKTeX 25.4)"
 

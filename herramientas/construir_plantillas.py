@@ -21,7 +21,9 @@ from pathlib import Path
 RAIZ = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(RAIZ))
 
-from docslab import almacen as A, compilador, modelo as M, variantes as V  # noqa: E402
+from docslab.nucleo import almacen as A, modelo as M  # noqa: E402
+from docslab.salidas import compilador
+from docslab.documento import variantes as V
 
 DESTINO = RAIZ / "plantillas"
 FUENTES = RAIZ / "herramientas" / "fuentes"      # imágenes de prueba, figuras y cuadernos
@@ -115,7 +117,7 @@ def _cuaderno_sin_salidas(origen: Path, destino: Path):
 
 
 def cuaderno_meta(id_, archivo, carpeta):
-    from docslab.cuadernos import DEFECTO
+    from docslab.lab.cuadernos import DEFECTO
     c = json.loads(json.dumps(DEFECTO))
     c.update({"id": id_, "nombre": archivo, "archivo": archivo, "origen": "subido", "carpeta_figuras": carpeta})
     return c

@@ -13,7 +13,9 @@ from pathlib import Path
 RAIZ = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(RAIZ))
 
-from docslab import compilador, generador, modelo as M, variantes as V  # noqa: E402
+from docslab.salidas import compilador  # noqa: E402
+from docslab.documento import generador, variantes as V
+from docslab.nucleo import modelo as M
 
 IMG = RAIZ / "herramientas" / "fuentes" / "img"
 DESTINO = RAIZ / "static" / "img" / "variantes"

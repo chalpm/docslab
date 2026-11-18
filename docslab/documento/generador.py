@@ -12,9 +12,9 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 from . import bibliografia as B
-from . import compilador
+from ..salidas import compilador
 from . import componentes as C
-from . import modelo as M
+from ..nucleo import modelo as M
 from . import texto as T
 from . import variantes as V
 
@@ -568,7 +568,7 @@ def _aspecto(ruta) -> float | None:
     try:
         p = Path(ruta)
         if p.suffix.lower() == ".pdf":
-            from . import revision
+            from ..salidas import revision
             info = revision.info_pdf(p)
             w, h = info["tamanos"][0] if info else (0, 0)
         else:

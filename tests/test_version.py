@@ -7,7 +7,7 @@ import sys
 from pathlib import Path
 
 import docslab
-from docslab import modelo as M
+from docslab.nucleo import modelo as M
 
 RAIZ = Path(__file__).resolve().parent.parent
 STY = RAIZ / "latex" / "postercientifico.sty"

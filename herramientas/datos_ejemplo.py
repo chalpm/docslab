@@ -24,7 +24,7 @@ from datetime import date, timedelta
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent.parent
-DESTINO = RAIZ / "docslab" / "datos_ejemplo"
+DESTINO = RAIZ / "docslab" / "lab" / "graficos" / "datos_ejemplo"
 SEMILLA = 2026
 
 CONTINENTES = {"Africa": "África", "Asia": "Asia", "Europe": "Europa", "North America": "América del Norte",

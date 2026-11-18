@@ -8,8 +8,8 @@ señales (espectros, superficies). Usan matplotlib, seaborn, scipy y scikit-lear
 """
 from __future__ import annotations
 
-from .graficos_comun import CABEZA_MPL, CABEZA_SNS, PIE_MPL, _comunes, _p
-from .graficos_galeria import COLORES_N, FIG, PALETA, PIE_SIN_EJES, _datos, _sin_ejes
+from .comun import CABEZA_MPL, CABEZA_SNS, PIE_MPL, _comunes, _p
+from .galeria import COLORES_N, FIG, PALETA, PIE_SIN_EJES, _datos, _sin_ejes
 
 
 def _t(id_, nombre, categoria, biblioteca, descripcion, parametros, codigo):

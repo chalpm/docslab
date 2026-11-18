@@ -5,13 +5,15 @@ import copy
 import pytest
 
 from conftest import hay_latex
-from docslab import compilador, generador as G, modelo as M
+from docslab.salidas import compilador
+from docslab.documento import generador as G
+from docslab.nucleo import modelo as M
 
 CLASES = ["poster", "presentacion", "documento", "paper", "tesis"]
 
 
 def _compilar(m, tmp_path):
-    from docslab import almacen as A
+    from docslab.nucleo import almacen as A
     alm = A.Almacen(tmp_path)
     meta = alm.crear_proyecto("p", None, None)
     alm.guardar_modelo(meta["id"], m)

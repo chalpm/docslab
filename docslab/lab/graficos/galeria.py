@@ -11,7 +11,7 @@ público) y no hacen falta geopandas, networkx, squarify ni wordcloud.
 """
 from __future__ import annotations
 
-from .graficos_comun import CABEZA_MPL, CABEZA_SNS, PIE_MPL, _comunes, _p
+from .comun import CABEZA_MPL, CABEZA_SNS, PIE_MPL, _comunes, _p
 
 GALERIA_URL = "https://r-graph-gallery.com/"
 

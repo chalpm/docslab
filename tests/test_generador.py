@@ -5,7 +5,9 @@ from pathlib import Path
 import pytest
 
 from conftest import RAIZ, hay_latex
-from docslab import compilador, generador as G, modelo as M, variantes as V
+from docslab.salidas import compilador
+from docslab.documento import generador as G, variantes as V
+from docslab.nucleo import modelo as M
 
 PLANTILLAS = sorted(p.parent.name for p in (RAIZ / "plantillas").glob("*/modelo.json"))
 
@@ -153,7 +155,7 @@ def test_leer_registro():
 @hay_latex
 @pytest.mark.parametrize("plantilla", PLANTILLAS)
 def test_las_plantillas_compilan_en_una_pagina(plantilla, tmp_path):
-    from docslab import almacen as A
+    from docslab.nucleo import almacen as A
     alm = A.Almacen(tmp_path)
     meta = alm.crear_proyecto("p", plantilla)
     alm.escribir_tex(meta["id"], marcas=True)
@@ -166,7 +168,8 @@ def test_las_plantillas_compilan_en_una_pagina(plantilla, tmp_path):
 
 
 def test_tamano_de_cada_logo():
-    from docslab import generador as G, modelo as M
+    from docslab.documento import generador as G
+    from docslab.nucleo import modelo as M
     m = M.desde_asistente({"tamano": "A2"})
     assert m["cabecera"]["tam_logo_izquierdo"] == 100
     m["cabecera"].update({"tam_logo_izquierdo": 160, "tam_logo_derecho": 900})

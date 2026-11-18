@@ -21,7 +21,7 @@ import tempfile
 import time
 from pathlib import Path
 
-from .almacen import ErrorAlmacen
+from ...nucleo.almacen import ErrorAlmacen
 
 TIPOS = ("datos", "columna", "columnas", "texto", "numero", "interruptor", "opcion", "color", "paleta")
 BIBLIOTECAS = ("matplotlib", "seaborn", "plotly")
@@ -32,7 +32,7 @@ EJEMPLO = DIR_EJEMPLOS / "ejemplo.csv"
 COLORES_DEFECTO = ["#2F4858", "#C8553D", "#588157", "#E0A458", "#6D597A", "#33658A"]
 
 
-from .graficos_comun import (  # noqa: E402,F401  (también se usan desde fuera)
+from .comun import (  # noqa: E402,F401  (también se usan desde fuera)
     CABEZA_MPL, CABEZA_PX, CABEZA_SNS, DATOS, PIE_MPL, PIE_PX, _comunes, _p)
 
 INCLUIDAS = [
@@ -251,8 +251,8 @@ for _t in INCLUIDAS:
     _t["categoria"], _ref = _CATEGORIA[_t["id"]]
     _t["referencia"] = "https://r-graph-gallery.com/" + _ref
 
-from .graficos_ciencia import CIENCIA  # noqa: E402
-from .graficos_galeria import GALERIA  # noqa: E402
+from .ciencia import CIENCIA  # noqa: E402
+from .galeria import GALERIA  # noqa: E402
 
 INCLUIDAS += GALERIA + CIENCIA
 for _t in INCLUIDAS:

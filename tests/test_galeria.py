@@ -8,9 +8,9 @@ from concurrent.futures import ThreadPoolExecutor
 
 import pytest
 
-from docslab import graficos as G
-from docslab.graficos_ciencia import CATEGORIAS_CIENCIA, CIENCIA
-from docslab.graficos_galeria import GALERIA
+from docslab.lab import graficos as G
+from docslab.lab.graficos.ciencia import CATEGORIAS_CIENCIA, CIENCIA
+from docslab.lab.graficos.galeria import GALERIA
 
 # Los 41 tipos de gráfico de https://r-graph-gallery.com/ (página de cada uno)
 PAGINAS_GALERIA = {

@@ -12,7 +12,7 @@ import threading
 import time
 from pathlib import Path
 
-RAIZ_APP = Path(__file__).resolve().parent.parent
+RAIZ_APP = Path(__file__).resolve().parents[2]      # docslab/<área>/<módulo>.py → raíz
 STY = RAIZ_APP / "latex" / "postercientifico.sty"
 SP = 65536.0
 

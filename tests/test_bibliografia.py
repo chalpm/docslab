@@ -6,7 +6,8 @@ import subprocess
 import pytest
 
 from conftest import RAIZ, hay_latex
-from docslab import bibliografia as B, generador as G, modelo as M, variantes as V
+from docslab.documento import bibliografia as B, generador as G, variantes as V
+from docslab.nucleo import modelo as M
 
 ARTICULO = {"clave": "garcia2020", "tipo": "articulo", "anio": "2020", "titulo": "Un título de prueba",
             "autores": [{"apellido": "García", "nombre": "Ana"}, {"apellido": "López", "nombre": "Beatriz"}],

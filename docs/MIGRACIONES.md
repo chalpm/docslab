@@ -2,7 +2,7 @@
 
 ## Qué problema resuelven
 
-Cada proyecto estructurado se guarda en `modelo.json`. Su forma es el **esquema**, identificado por la clave `version_esquema` (un entero; el actual está en `docslab/modelo.py → ESQUEMA`).
+Cada proyecto estructurado se guarda en `modelo.json`. Su forma es el **esquema**, identificado por la clave `version_esquema` (un entero; el actual está en `docslab/nucleo/modelo.py → ESQUEMA`).
 
 Si una versión futura cambia esa forma, por ejemplo renombrando o moviendo un campo, los proyectos guardados antes conservan la forma vieja. `modelo.normalizar()` solo **completa** los campos que faltan: no sabe que `tam_logo_izquierdo` ahora vive en `logos.izquierdo.tam`, así que el valor del usuario se perdería sin aviso.
 
@@ -16,10 +16,10 @@ modelo.json (esquema 1) ──1→2──► esquema 2 ──2→3──► esqu
 
 | Pieza | Dónde |
 |---|---|
-| Registro de migraciones y motor (`migrar`, `version_de`, `@migracion`) | `docslab/migraciones.py` |
-| Punto único de entrada: `modelo.normalizar()` llama a `migrar()` antes de completar los valores por defecto | `docslab/modelo.py` |
+| Registro de migraciones y motor (`migrar`, `version_de`, `@migracion`) | `docslab/nucleo/migraciones.py` |
+| Punto único de entrada: `modelo.normalizar()` llama a `migrar()` antes de completar los valores por defecto | `docslab/nucleo/modelo.py` |
 | Copia de seguridad al abrir un proyecto que necesita migrar: `historial/modelo-antes-de-esquema-<N>.json` (una vez por esquema) | `almacen.leer_modelo()` |
-| Errores (`ErrorEsquema`) convertidos en `ErrorAlmacen` → HTTP 400 con un mensaje para el usuario | `docslab/almacen.py` |
+| Errores (`ErrorEsquema`) convertidos en `ErrorAlmacen` → HTTP 400 con un mensaje para el usuario | `docslab/nucleo/almacen.py` |
 | Fixtures de cada esquema anterior | `tests/fixtures/esquemas/v<N>/*.json` |
 | Pruebas | `tests/test_migraciones.py` |
 
@@ -34,8 +34,8 @@ Comportamiento:
 ## Cómo añadir una migración (procedimiento)
 
 1. **Fixture del esquema de origen.** Antes de tocar nada, copia uno o varios `modelo.json` reales del esquema actual N a `tests/fixtures/esquemas/vN/`. Si ya hay, comprueba que cubren los campos que vas a cambiar.
-2. **Sube el esquema.** En `docslab/modelo.py`: `ESQUEMA = N + 1`, y ajusta `DEFECTO` a la forma nueva.
-3. **Escribe la migración** en `docslab/migraciones.py`:
+2. **Sube el esquema.** En `docslab/nucleo/modelo.py`: `ESQUEMA = N + 1`, y ajusta `DEFECTO` a la forma nueva.
+3. **Escribe la migración** en `docslab/nucleo/migraciones.py`:
    ```python
    @migracion(desde=N)
    def _n_a_n1(m: dict) -> dict:

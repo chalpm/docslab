@@ -22,7 +22,7 @@ DocsLab está pensado como **aplicación local de un solo usuario**.
 | Interfaz de red | Escucha en `127.0.0.1:8765` por defecto | Bajo en local |
 | `--host 0.0.0.0` | **Sin autenticación** | **Alto**: cualquiera en la red tiene acceso total |
 | Cuadernos (`.ipynb`, LAB) | Ejecutan Python arbitrario con los permisos del usuario | **Alto** si el cuaderno no es de confianza |
-| Compilación LaTeX | `-no-shell-escape` al compilar documentos (`compilador.py` L424 y L565). La precompilación del formato (L86) no lo pasa explícitamente, pero solo procesa contenido interno (`pcformato.tex` y la `.sty`) y depende del valor por defecto de la distribución | Bajo |
+| Compilación LaTeX | `-no-shell-escape` al compilar documentos (`salidas/compilador.py` L425 y L566). La precompilación del formato (L88) no lo pasa explícitamente, pero solo procesa contenido interno (`pcformato.tex` y la `.sty`) y depende del valor por defecto de la distribución | Bajo |
 | Importación de zips | Se impide el *path traversal* (prueba `test_zip_malicioso_no_sale_de_su_carpeta`) | Bajo |
 | Explorador de carpetas | Limitado a `--raices` (prueba `test_explorar_solo_dentro_de_las_raices`) | Bajo |
 | Rutas y colores en el modelo | Se neutralizan antes de generar LaTeX (prueba `test_rutas_y_colores_peligrosos_se_neutralizan`) | Bajo |

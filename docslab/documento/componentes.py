@@ -36,7 +36,7 @@ from pathlib import Path
 from . import texto as T
 from . import variantes as V
 
-STY = Path(__file__).resolve().parent.parent / "latex" / "postercientifico.sty"
+STY = Path(__file__).resolve().parents[2] / "latex" / "postercientifico.sty"
 
 MODOS = ("visual", "latex", "preajuste")
 TIPOS_CAMPO = ("texto", "parrafo", "latex", "lista", "pares", "hitos", "tabla", "flechas", "imagen", "color",
@@ -950,7 +950,7 @@ ANCHOS_VISTA = {"estrecha": 4, "media": 3, "ancha": 2}
 def modelo_vista(c: dict, tema: str = "pizarra", ancho: str = "media", en_caja: bool = False,
                  valores: dict | None = None) -> dict:
     """Un póster A0 sin cabecera ni pie con el componente en la primera columna."""
-    from . import modelo as M
+    from ..nucleo import modelo as M
     m = M.normalizar({})
     m["lienzo"].update({"tamano": "A0", "orientacion": "vertical", "ancho": "841mm", "alto": "1189mm"})
     tema = tema if tema in M.TEMAS else "pizarra"
@@ -976,7 +976,8 @@ def modelo_vista(c: dict, tema: str = "pizarra", ancho: str = "media", en_caja: 
 def compilar_vista(datos: dict, raiz: Path, tema: str = "pizarra", ancho: str = "media", en_caja: bool = False,
                    valores: dict | None = None, tiempo: int = 45) -> dict:
     """Compila el componente solo y devuelve dónde está en la página (para recortarlo)."""
-    from . import compilador, generador as G
+    from ..salidas import compilador
+    from . import generador as G
     # el id, el nombre y las fechas no cambian el dibujo: la vista se guarda por lo demás
     c = normalizar(datos, "k-vista0")
     dibujo = {k: c.get(k) for k in ("modo", "campos", "codigo", "preambulo", "diseno", "base", "fijos")}
@@ -1036,7 +1037,7 @@ def _limpiar_vistas(base: Path, conservar: int = 60):
 
 
 def miniatura_desde_vista(raiz: Path, h: str, destino: Path) -> bool:
-    from . import compilador
+    from ..salidas import compilador
     pdf = pdf_vista(raiz, h)
     if not pdf:
         return False

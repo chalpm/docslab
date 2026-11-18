@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-only
-from docslab import texto as T
+from docslab.documento import texto as T
 
 
 def test_escapa_los_simbolos_de_latex():

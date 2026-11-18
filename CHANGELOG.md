@@ -12,6 +12,26 @@ Tipos de entrada: **Añadido**, **Cambiado**, **Obsoleto**, **Eliminado**, **Cor
 
 _Nada todavía._
 
+## [1.5.1] - 2026-11-18
+
+Huella: [`huella/v1.5.1.json`](huella/v1.5.1.json). Versiones: aplicación 1.5.1 · `.sty` 1.1.0 (sin cambios) · esquema 1. Rutas y contrato de la API idénticos a 1.5.0.
+
+`huella.py comparar` sugiere MINOR porque cuenta los módulos movidos como nuevos; el contrato público no cambia, así que el salto es PATCH (refactorización).
+
+### Cambiado
+- **Código del servidor reorganizado en subpaquetes** (movido con historial de git):
+  - `nucleo/`: almacen, modelo, migraciones, trabajos.
+  - `documento/`: generador, texto, variantes, bibliografia, componentes, fuentes.
+  - `salidas/`: compilador, revision, powerpoint.
+  - `lab/`: `nucleos.py` (antes `lab.py`), cuadernos y `graficos/` (antes `graficos.py`, `graficos_comun.py`, `graficos_galeria.py`, `graficos_ciencia.py` y `datos_ejemplo/`).
+- **`app.py` partido en 9 blueprints de Flask** en `api/` (sistema, componentes, bibliografia, plantillas, proyectos, documento, lab, graficos, trabajos). `app.py` pasa de 1195 a 66 líneas y solo configura la app y registra las áreas. Las 95 rutas, sus métodos y respuestas no cambian.
+- `herramientas/doc_api.py` y `herramientas/huella.py` leen las rutas de `docslab/api/`; `docs/API.md` regenerado.
+- La ruta de ejecución de celdas del LAB comprueba nbclient directamente en vez de llamar a la función de estado del servidor (mismo resultado).
+- Documentación (LEEME, ARQUITECTURA, FUNCIONAL, MIGRACIONES, VERSIONADO, SECURITY) con las rutas nuevas.
+
+### Corregido
+- Prueba en navegador (`tests/e2e_navegador.py`): el paso «descargar el PDF» buscaba el botón «PDF del póster», que ya se llama «PDF». Ya pasa completa.
+
 ## [1.5.0] - 2026-11-18
 
 Huella: [`huella/v1.5.0.json`](huella/v1.5.0.json). Versiones: aplicación 1.5.0 · `.sty` 1.1.0 (sin cambios) · esquema 1.
@@ -233,7 +253,8 @@ Línea base. Es la primera versión con versionado formal. Huella: [`huella/v1.0
 - En un TeX Live sin `texlive-lang-spanish` ni `luatex85.sty` fallan 11 pruebas (las 9 de compilación de plantillas, una de la API y una de LuaLaTeX). Verificado como problema de entorno en 1.2.1.
 - La API no tiene autenticación y los cuadernos ejecutan código arbitrario (ver `SECURITY.md`).
 
-[Sin publicar]: ../../compare/v1.5.0...HEAD
+[Sin publicar]: ../../compare/v1.5.1...HEAD
+[1.5.1]: ../../compare/v1.5.0...v1.5.1
 [1.5.0]: ../../compare/v1.4.0...v1.5.0
 [1.4.0]: ../../compare/v1.3.0...v1.4.0
 [1.3.0]: ../../compare/v1.2.3...v1.3.0

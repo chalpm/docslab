@@ -27,7 +27,8 @@ import subprocess
 import tempfile
 from pathlib import Path
 
-from . import modelo as M, variantes as V
+from ..nucleo import modelo as M
+from ..documento import variantes as V
 
 AREA_A0 = 841 * 1189                 # mm²
 MM_POR_BP = 25.4 / 72                # punto PostScript (el del PDF)
@@ -1057,7 +1058,7 @@ def _revisar_contenido_modelo(sc: list, m: dict, nodos: dict, pos: _Posiciones, 
     if len(hallados) > 12:
         sc.append(item("info", f"Y {len(hallados) - 12} partes más con texto de ejemplo"))
     # citas a referencias que no existen
-    from . import generador
+    from ..documento import generador
     try:
         ctx = generador.preparar_citas(copy.deepcopy(m))
     except Exception:          # noqa: BLE001 (una referencia rara no debe tumbar la revisión)
@@ -1089,7 +1090,7 @@ def _revisar_registro(sc: list, comp: dict, directorio: Path, m: dict | None, no
         if mo and float(mo.group(1)) > 3:
             desbordes.append((float(mo.group(1)), int(mo.group(2))))
     if desbordes and m:
-        from . import generador
+        from ..documento import generador
         try:
             _, mapa = generador.generar(m, marcas=True)
         except Exception:      # noqa: BLE001

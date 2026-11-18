@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-only
-"""Genera docs/API.md a partir de las rutas declaradas en docslab/app.py.
+"""Genera docs/API.md a partir de las rutas declaradas en docslab/api/*.py (una blueprint por área).
 
 Uso (desde la raíz del proyecto):
     python herramientas/doc_api.py            # escribe docs/API.md
@@ -13,7 +13,7 @@ from collections import defaultdict
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent.parent
-APP = RAIZ / "docslab" / "app.py"
+API = RAIZ / "docslab" / "api"
 DESTINO = RAIZ / "docs" / "API.md"
 METODOS = {"get", "post", "put", "patch", "delete", "route"}
 
@@ -35,7 +35,14 @@ GRUPOS = [
 
 
 def rutas() -> list[dict]:
-    arbol = ast.parse(APP.read_text(encoding="utf-8"))
+    out = []
+    for archivo in sorted(API.glob("*.py")):
+        out += _rutas_de(archivo)
+    return sorted(out, key=lambda r: (r["ruta"], r["metodo"]))
+
+
+def _rutas_de(archivo: Path) -> list[dict]:
+    arbol = ast.parse(archivo.read_text(encoding="utf-8"))
     out = []
     for nodo in ast.walk(arbol):
         if not isinstance(nodo, ast.FunctionDef):
@@ -49,8 +56,8 @@ def rutas() -> list[dict]:
                     ms = next((k.value for k in dec.keywords if k.arg == "methods"), None)
                     metodo = "/".join(e.value for e in ms.elts) if isinstance(ms, ast.List) else "GET"
                 out.append({"metodo": metodo, "ruta": dec.args[0].value, "funcion": nodo.name,
-                            "linea": nodo.lineno, "doc": doc})
-    return sorted(out, key=lambda r: (r["ruta"], r["metodo"]))
+                            "archivo": archivo.name, "linea": nodo.lineno, "doc": doc})
+    return out
 
 
 def grupo(ruta: str) -> str:
@@ -68,7 +75,7 @@ def markdown() -> str:
     lineas = [
         "# Referencia de la API HTTP",
         "",
-        "> Archivo generado por `herramientas/doc_api.py` a partir de `docslab/app.py`. No editar a mano.",
+        "> Archivo generado por `herramientas/doc_api.py` a partir de `docslab/api/*.py`. No editar a mano.",
         "",
         f"Total: **{len(lista)}** combinaciones método + ruta. Base: `http://127.0.0.1:8765`. "
         "Formato: JSON salvo descargas (PDF, PNG, ZIP, PPTX, BIB). Sin autenticación (ver `SECURITY.md`).",
@@ -80,9 +87,9 @@ def markdown() -> str:
     for _, nombre in GRUPOS + [("", "Otros")]:
         if nombre not in por_grupo:
             continue
-        lineas += [f"## {nombre}", "", "| Método | Ruta | Función (app.py) | Descripción |", "|---|---|---|---|"]
+        lineas += [f"## {nombre}", "", "| Método | Ruta | Función (docslab/api/) | Descripción |", "|---|---|---|---|"]
         for r in por_grupo.pop(nombre):
-            lineas.append(f"| `{r['metodo']}` | `{r['ruta']}` | `{r['funcion']}` (L{r['linea']}) | {r['doc'] or '—'} |")
+            lineas.append(f"| `{r['metodo']}` | `{r['ruta']}` | `{r['funcion']}` ({r['archivo']}:{r['linea']}) | {r['doc'] or '—'} |")
         lineas.append("")
     return "\n".join(lineas)
 

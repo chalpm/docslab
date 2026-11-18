@@ -4,7 +4,7 @@
 
 Funciona **en tu equipo** (Windows, macOS o Linux, con un pequeño servidor local) o **en Google Colab**. Una vez instalado no necesita internet, salvo para buscar referencias por DOI.
 
-**Versión 1.5.0** · Licencia [AGPL-3.0](LICENSE) (plantilla LaTeX: [LPPL-1.3c](latex/LICENSE-LPPL-1.3c.txt)) · [Registro de cambios](CHANGELOG.md) · [Documentación técnica y funcional](docs/README.md) · [Seguridad](SECURITY.md)
+**Versión 1.5.1** · Licencia [AGPL-3.0](LICENSE) (plantilla LaTeX: [LPPL-1.3c](latex/LICENSE-LPPL-1.3c.txt)) · [Registro de cambios](CHANGELOG.md) · [Documentación técnica y funcional](docs/README.md) · [Seguridad](SECURITY.md)
 
 ---
 
@@ -519,7 +519,7 @@ Eliges el tipo de gráfico (filtrado por categoría o por biblioteca), los datos
 
 **Plantillas de gráficos.** Código Python con huecos `{{nombre}}` y un formulario que los rellena. Abre una incluida para ver cómo está hecha, cópiala para modificarla o crea una desde cero; «Probar con los datos de ejemplo» la ejecuta en una carpeta con todos los datos de ejemplo. Se guardan en `datos/graficos/`.
 
-**Datos de ejemplo.** «Usar datos de ejemplo» copia a la carpeta del cuaderno los datos de esa plantilla: series temporales, países (población y PIB de Natural Earth), puntos, conexiones, redes, flujos, jerarquías, puntuaciones o palabras, y el mapa base cuando hace falta. La lista y su origen están en [`docslab/datos_ejemplo/LEEME.md`](docslab/datos_ejemplo/LEEME.md).
+**Datos de ejemplo.** «Usar datos de ejemplo» copia a la carpeta del cuaderno los datos de esa plantilla: series temporales, países (población y PIB de Natural Earth), puntos, conexiones, redes, flujos, jerarquías, puntuaciones o palabras, y el mapa base cuando hace falta. La lista y su origen están en [`docslab/lab/graficos/datos_ejemplo/LEEME.md`](docslab/lab/graficos/datos_ejemplo/LEEME.md).
 
 > **Un cuaderno ejecuta código Python con tus permisos.** Ejecuta solo cuadernos en los que confíes. Si te falta un paquete: `.venv/bin/python -m pip install …` (Windows: `.venv\Scripts\python -m pip install …`).
 
@@ -610,18 +610,17 @@ flowchart TB
         UI[Vue 3 · pdf.js · CodeMirror<br/>sin conexión]
     end
     subgraph Servidor["Servidor · docslab/ (Flask)"]
-        API[app.py · API HTTP]
-        ALM[almacen.py · disco]
-        MOD[modelo.py + migraciones.py]
-        GEN[generador.py · texto.py<br/>variantes.py · bibliografia.py<br/>componentes.py · fuentes.py]
-        COMP[compilador.py]
-        REV[revision.py · powerpoint.py]
-        LAB[lab.py · cuadernos.py · graficos.py]
-        JOB[trabajos.py · tareas en segundo plano]
+        API[app.py + api/ · 9 blueprints, API HTTP]
+        ALM[nucleo/ · almacen · modelo · migraciones]
+        GEN[documento/ · generador · texto · variantes<br/>bibliografia · componentes · fuentes]
+        COMP[salidas/compilador]
+        REV[salidas/ · revision · powerpoint]
+        LAB[lab/ · nucleos · cuadernos · graficos/]
+        JOB[nucleo/trabajos · tareas en segundo plano]
     end
     EXT[pdfLaTeX / LuaLaTeX · Poppler · Ghostscript · Jupyter]
     UI <-->|JSON| API
-    API --> ALM --> MOD
+    API --> ALM
     API --> GEN --> COMP --> EXT
     API --> REV --> EXT
     API --> LAB --> EXT
@@ -636,27 +635,34 @@ docslab/                    (carpeta del proyecto)
 ├── abrir_docslab_en_colab.ipynb
 ├── requirements.txt        dependencias de Python
 ├── docslab/                el servidor (Flask)
-│   ├── app.py              API HTTP (95 rutas, ver docs/API.md)
-│   ├── almacen.py          proyectos, plantillas, recursos, historial y zips
-│   ├── modelo.py           el modelo JSON: clases, tamaños, temas, tipografías, capas
-│   ├── migraciones.py      actualización de proyectos de esquemas anteriores
-│   ├── variantes.py        las 69 variantes de elemento
-│   ├── generador.py        modelo → LaTeX (también el PDF para imprenta)
-│   ├── texto.py            formato sencillo → LaTeX
-│   ├── bibliografia.py     estilos, citas, BibTeX, RIS, CSL-JSON y DOI
-│   ├── componentes.py      Componente Lab
-│   ├── compilador.py       pdfLaTeX/LuaLaTeX, formato precompilado, errores, CMYK
-│   ├── revision.py         revisión para imprimir
-│   ├── powerpoint.py       exportar a .pptx
-│   ├── fuentes.py          tipografías propias
-│   ├── lab.py              núcleos de Python del LAB (celda a celda)
-│   ├── cuadernos.py        ejecución completa de .ipynb y recogida de figuras
-│   ├── graficos.py         plantillas de gráficos: catálogo, generar código y probar
-│   ├── graficos_galeria.py las 35 plantillas inspiradas en The R Graph Gallery
-│   ├── graficos_ciencia.py las 25 plantillas de análisis científico (PCA, t-SNE, Kaplan-Meier…)
-│   ├── graficos_comun.py   piezas comunes de las plantillas
-│   ├── datos_ejemplo/      datos de ejemplo de las plantillas y mapa base
-│   └── trabajos.py         tareas en segundo plano (compilar, ejecutar)
+│   ├── app.py              crear_app(): configuración y registro de las áreas de la API
+│   ├── api/                las 95 rutas HTTP en 9 blueprints (ver docs/API.md):
+│   │                       sistema, componentes, bibliografia, plantillas, proyectos,
+│   │                       documento, lab, graficos, trabajos
+│   ├── nucleo/             datos y estado
+│   │   ├── almacen.py      proyectos, plantillas, recursos, historial y zips
+│   │   ├── modelo.py       el modelo JSON: clases, tamaños, temas, tipografías, capas
+│   │   ├── migraciones.py  actualización de proyectos de esquemas anteriores
+│   │   └── trabajos.py     tareas en segundo plano (compilar, ejecutar)
+│   ├── documento/          del modelo al LaTeX
+│   │   ├── generador.py    modelo → LaTeX (también el PDF para imprenta)
+│   │   ├── variantes.py    las 69 variantes de elemento
+│   │   ├── texto.py        formato sencillo → LaTeX
+│   │   ├── bibliografia.py estilos, citas, BibTeX, RIS, CSL-JSON y DOI
+│   │   ├── componentes.py  Componente Lab
+│   │   └── fuentes.py      tipografías propias
+│   ├── salidas/            lo que sale del documento
+│   │   ├── compilador.py   pdfLaTeX/LuaLaTeX, formato precompilado, errores, CMYK
+│   │   ├── revision.py     revisión para imprimir
+│   │   └── powerpoint.py   exportar a .pptx
+│   └── lab/                el LAB de Python
+│       ├── nucleos.py      núcleos de Python (celda a celda, reiniciar, borrar variables)
+│       ├── cuadernos.py    ejecución completa de .ipynb y recogida de figuras
+│       └── graficos/       plantillas de gráficos: catálogo, generar código y probar
+│           ├── galeria.py  las plantillas inspiradas en The R Graph Gallery
+│           ├── ciencia.py  las 25 plantillas de análisis científico (PCA, t-SNE, Kaplan-Meier…)
+│           ├── comun.py    piezas comunes de las plantillas
+│           └── datos_ejemplo/  datos de ejemplo de las plantillas y mapa base
 ├── static/                 la interfaz web (Vue 3; librerías en static/vendor)
 ├── latex/                  postercientifico.sty y su licencia (LPPL-1.3c)
 ├── plantillas/             las 12 plantillas incluidas

@@ -11,7 +11,7 @@ import copy
 import secrets
 import string
 
-from . import variantes
+from ..documento import variantes
 
 ESQUEMA = 1   # versión del esquema del modelo JSON (entero; clave "version_esquema"; ver docs/MIGRACIONES.md)
 
@@ -238,7 +238,7 @@ def normalizar(m: dict | None) -> dict:
     m, _ = migrar(m if isinstance(m, dict) else {})
     _completar(m, DEFECTO)
     m["version_esquema"] = ESQUEMA
-    from . import bibliografia as B
+    from ..documento import bibliografia as B
     bib = m.get("bibliografia")
     if not isinstance(bib, dict):
         bib = m["bibliografia"] = {"estilo": "apa", "referencias": []}
@@ -536,7 +536,7 @@ def convertir_formato(m: dict, nuevo: str) -> dict:
     latex → simple: los textos con símbolos de LaTeX se envuelven en {{...}}
     (LaTeX sin tocar), párrafo a párrafo."""
     import re
-    from . import texto as T
+    from ..documento import texto as T
 
     m = normalizar(m)
     viejo = m.get("formato_texto", "simple")

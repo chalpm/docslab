@@ -14,6 +14,7 @@ descargas y el Componente Lab.
 from __future__ import annotations
 
 import os
+import re
 import socket
 import subprocess
 import sys
@@ -196,7 +197,7 @@ def main():
             # descargas
             with pg.expect_download() as d:
                 pg.click(".barra .btn:has-text('Descargar')")
-                pg.click(".menu button:has-text('PDF del póster')")
+                pg.locator(".menu button").filter(has_text=re.compile(r"^\s*PDF\s*$")).click()   # «PDF» a secas
             ok(d.value.suggested_filename.endswith(".pdf"), "descargar el PDF")
             # plantilla
             pg.click(".barra button[aria-label='Más opciones']")

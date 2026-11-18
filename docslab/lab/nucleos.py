@@ -25,12 +25,13 @@ import warnings
 from pathlib import Path
 
 from . import cuadernos as C
-from .almacen import Almacen, ErrorAlmacen, limpiar_nombre
+from .graficos import DIR_EJEMPLOS
+from ..nucleo.almacen import Almacen, ErrorAlmacen, limpiar_nombre
 
 ANSI = re.compile(r"\x1b\[[0-9;]*[A-Za-z]")
 OCIOSO_MAX = 3 * 3600                      # un núcleo sin usar se apaga a las tres horas
 MAX_TEXTO = 200_000                        # tope del texto de una salida (lo demás se recorta)
-EJEMPLO = Path(__file__).resolve().parent / "datos_ejemplo" / "ejemplo.csv"
+EJEMPLO = DIR_EJEMPLOS / "ejemplo.csv"
 
 NB_VACIO = {
     "cells": [], "metadata": {"kernelspec": {"display_name": "Python 3", "language": "python", "name": "python3"},
