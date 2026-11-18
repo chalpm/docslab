@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-only
 // Tipografías del documento: clásicas, libres de TeX Live y las propias (.ttf, .otf).
 import { api, subir, borrar } from './api.js';
 import { tienda, avisar, avisarError } from './tienda.js';

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-only
 // Estado global: servidor, catálogo de variantes, avisos y diálogos.
 import { api } from './api.js';
 

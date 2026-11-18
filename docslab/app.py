@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: AGPL-3.0-only
 """Servidor web de DocsLab (Flask)."""
 from __future__ import annotations
 
@@ -16,7 +17,7 @@ from pathlib import Path
 
 from flask import Flask, Response, jsonify, request, send_file, send_from_directory
 
-from . import __version__, almacen as A, bibliografia as B, compilador, componentes as CP, cuadernos, generador
+from . import __license__, __version__, almacen as A, bibliografia as B, compilador, componentes as CP, cuadernos, generador
 from . import graficos as GR, lab as LAB
 from . import fuentes as F
 from . import modelo as M, powerpoint as PP, revision, texto as T, variantes as V
@@ -88,7 +89,7 @@ def crear_app(datos: Path, raices: list[Path] | None = None, colab: bool = False
         except ImportError:
             pil_ok = False
         return jsonify({
-            "version": __version__, "pdflatex": compilador.pdflatex(), "tex": compilador.version_tex(),
+            "version": __version__, "licencia": __license__, "pdflatex": compilador.pdflatex(), "tex": compilador.version_tex(),
             "miktex": compilador.es_miktex(),
             "pdftoppm": bool(compilador.pdftoppm()), "cuadernos": nb_ok, "pillow": pil_ok,
             "ghostscript": bool(compilador.ghostscript()), "poppler": revision.herramientas(),

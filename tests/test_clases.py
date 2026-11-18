@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: AGPL-3.0-only
 """Clases de documento de DocsLab: presentación, documento, artículo y tesis; cajas sueltas."""
 import copy
 

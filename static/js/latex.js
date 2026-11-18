@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-only
 // Cuerpo del editor para proyectos en modo LaTeX: archivos, código y vista previa.
 import { api, subir, borrar, patch } from './api.js';
 import { avisar, avisarError, confirmar, preguntar } from './tienda.js';

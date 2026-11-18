@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-only
 // Pantalla de inicio: pósters, plantillas, asistente y zips.
 import { api, post, patch, put, borrar, subir, descargar } from './api.js';
 import { tienda, avisar, avisarError, confirmar, preguntar, ir } from './tienda.js';

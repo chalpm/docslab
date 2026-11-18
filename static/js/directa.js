@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-only
 // Edición directa sobre la vista previa: dónde cae una caja o un elemento que
 // se arrastra, tiradores para cambiar el ancho de las columnas y el cuadro para
 // escribir un texto con doble clic.

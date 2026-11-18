@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: AGPL-3.0-only
 """Genera static/img/variantes/<clave>.png: una miniatura de cada variante de
 elemento, recortada de un póster de muestra compilado con marcas de posición."""
 from __future__ import annotations

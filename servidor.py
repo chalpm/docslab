@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: AGPL-3.0-only
 """DocsLab · editor web de pósters científicos con LaTeX.
 
 Uso (con el entorno de Python activado; o, más fácil, sh iniciar.command):

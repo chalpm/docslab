@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-only
 // Panel de imágenes del proyecto: subir, ver, usar y borrar.
 import { api, subir, borrar } from './api.js';
 import { avisar, avisarError, confirmar } from './tienda.js';

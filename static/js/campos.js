@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-only
 // Campos del inspector. Cada campo edita obj[clave] directamente (el editor
 // vigila el modelo y guarda solo).
 import { tienda } from './tienda.js';

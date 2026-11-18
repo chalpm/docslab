@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-only
 // LAB: los cuadernos del documento, celda a celda, y las plantillas de gráficos.
 import { api, post, put, borrar, subir } from './api.js';
 import { tienda, avisar, avisarError, confirmar, preguntar } from './tienda.js';

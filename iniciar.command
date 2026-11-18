@@ -1,4 +1,5 @@
 #!/bin/sh
+# SPDX-License-Identifier: AGPL-3.0-only
 # DocsLab: prepara lo que hace falta la primera vez y abre el editor en el navegador.
 #
 #   macOS:  doble clic en este archivo, o en la Terminal:  sh iniciar.command

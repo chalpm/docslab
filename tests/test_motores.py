@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: AGPL-3.0-only
 """La distribución de TeX: MiKTeX (instala solo lo que falte), formatos que hay que
 rehacer y compilaciones que fallan sin dejar registro."""
 import os

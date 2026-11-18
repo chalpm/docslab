@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: AGPL-3.0-only
 """Exportar a PowerPoint: texto editable sobre el póster sin texto, o una imagen."""
 import io
 import time

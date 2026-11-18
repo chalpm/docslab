@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-only
 // Gestor de referencias: lista en el estilo elegido (en el mismo orden y con las
 // mismas etiquetas que en el documento), formulario, importación (BibTeX, RIS,
 // CSL-JSON y DOI) y el botón para citar desde los campos de texto.

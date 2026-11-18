@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: AGPL-3.0-only
 """Referencias bibliográficas del póster.
 
 * Datos: cada referencia es un diccionario (clave, tipo, autores, año, título,

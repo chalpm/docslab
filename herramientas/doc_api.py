@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: AGPL-3.0-only
 """Genera docs/API.md a partir de las rutas declaradas en docslab/app.py.
 
 Uso (desde la raíz del proyecto):

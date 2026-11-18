@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-only
 // Ayudas para recorrer y modificar el modelo del póster en el navegador.
 import { nuevoId, clonar, textoPlano, nombreArchivo } from './util.js';
 import { tienda } from './tienda.js';

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: AGPL-3.0-only
 """Modelo de un documento estructurado (lo que edita la aplicación): póster,
 presentación, documento, artículo o tesis.
 

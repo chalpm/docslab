@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: AGPL-3.0-only
 """Revisión antes de imprimir y PDF para imprenta."""
 import io
 import re

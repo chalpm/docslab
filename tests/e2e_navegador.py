@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: AGPL-3.0-only
 """Prueba de extremo a extremo en un navegador real (opcional; necesita Playwright y Chromium).
 
     pip install playwright && python -m playwright install chromium

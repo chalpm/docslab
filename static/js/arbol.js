@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-only
 // Árbol de estructura: capas, cabecera, filas, columnas, cajas y elementos.
 // Se pinta como una lista plana (más fácil de arrastrar y recorrer con el teclado).
 import { nombreNodo, detalleNodo, iconoNodo, tieneTitulo } from './modeloed.js';

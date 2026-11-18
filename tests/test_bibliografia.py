@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: AGPL-3.0-only
 """Gestor de referencias: estilos, citas en el póster e importación."""
 import io
 import subprocess

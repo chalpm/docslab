@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: AGPL-3.0-only
 """LAB: cuadernos celda a celda y plantillas de gráficos."""
 import time
 

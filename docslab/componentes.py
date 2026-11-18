@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: AGPL-3.0-only
 """Componente Lab: elementos propios para usar dentro de las cajas del póster.
 
 Un componente se hace de tres maneras:

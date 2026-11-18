@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-only
 // Acceso al servidor. Todas las rutas son relativas para que la aplicación
 // funcione también detrás del proxy de Google Colab.
 

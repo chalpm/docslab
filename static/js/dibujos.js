@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-only
 // Pequeños dibujos SVG que imitan los estilos de la plantilla (cajas, cabeceras, pósters).
 
 const mezclar = (hexA, hexB, t) => {

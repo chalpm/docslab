@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-only
 // Exportar el documento a PowerPoint (.pptx): con el texto editable o como imagen.
 import { post, esperarTrabajo, descargar } from './api.js';
 import { tienda, avisar, avisarError } from './tienda.js';

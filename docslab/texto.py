@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: AGPL-3.0-only
 """Conversión del texto que se escribe en la aplicación a LaTeX.
 
 Hay dos formatos por proyecto:

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: AGPL-3.0-only
 """Huella digital de una versión de DocsLab.
 
 Genera un manifiesto JSON reproducible con lo que define una versión:
@@ -94,6 +95,7 @@ def generar(raiz: Path = RAIZ) -> dict:
             "postercientifico_sty": _version_sty(raiz),
             "esquema_modelo": M.ESQUEMA,
         },
+        "licencia": getattr(docslab, "__license__", None),
         "generado_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "contrato": {
             "api": rutas,
@@ -127,6 +129,8 @@ def comparar(a: dict, b: dict) -> tuple[str, list[str]]:
     for k in va:
         if va[k] != vb.get(k):
             lineas.append(f"- Versión `{k}`: {va[k]} → {vb.get(k)}")
+    if a.get("licencia") != b.get("licencia"):
+        lineas.append(f"- Licencia: {a.get('licencia')} → {b.get('licencia')}")
     if va["esquema_modelo"] != vb["esquema_modelo"]:
         rompe = True
     for k in a["contrato"]:

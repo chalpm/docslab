@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-only
 // Diálogo para elegir un elemento: las 69 variantes incluidas (I01–I34, T01–T36)
 // y los componentes propios del Componente Lab.
 import { tienda, cargarBiblioteca, ir } from './tienda.js';

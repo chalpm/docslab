@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: AGPL-3.0-only
 """Tipografías propias de un póster (.ttf y .otf).
 
 Se guardan en la carpeta fuentes/ del proyecto (así viajan con el zip para Overleaf y

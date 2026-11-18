@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: AGPL-3.0-only
 """Genera las imágenes de prueba de las plantillas (herramientas/fuentes/img/prueba1–6.png).
 
 Son marcadores de posición: un degradado sobrio con su número, su proporción y su

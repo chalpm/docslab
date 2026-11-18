@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: AGPL-3.0-only
 """LAB: los cuadernos del documento como cuadernos de verdad.
 
 Cada cuaderno abierto tiene una «sesión»: el .ipynb en memoria y, cuando hace falta,

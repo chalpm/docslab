@@ -4,7 +4,7 @@ Editor web de documentos científicos hechos con LaTeX: **pósters, presentacion
 
 Funciona en tu equipo (un pequeño servidor local con Python) o dentro de Google Colab.
 
-**Versión 1.0.0** · [Registro de cambios](CHANGELOG.md) · [Documentación técnica y funcional](docs/README.md) · [Seguridad](SECURITY.md)
+**Versión 1.1.0** · Licencia [AGPL-3.0](LICENSE) · [Registro de cambios](CHANGELOG.md) · [Documentación técnica y funcional](docs/README.md) · [Seguridad](SECURITY.md)
 
 ## Qué incluye
 
@@ -307,3 +307,18 @@ Incluidos en `static/vendor/`: Vue 3 (MIT), pdf.js (Apache 2.0), CodeMirror 5 (M
 ## Si venías de PosterLab
 
 DocsLab es la continuación de PosterLab. Tus pósters se abren igual: importa el zip de cada proyecto («Importar zip») o copia tu carpeta `datos` a la de DocsLab. Los proyectos sin tipo se tratan como pósters. La plantilla LaTeX conserva su nombre (`postercientifico.sty`) para que los proyectos LaTeX y los zips de Overleaf anteriores sigan compilando. En Colab, el cuaderno lanzador copia una vez `MyDrive/PosterLab/datos` a `MyDrive/DocsLab/datos` si esta última no existe.
+
+## Licencia
+
+Copyright (C) 2026 Christian.
+
+DocsLab es software libre: puedes redistribuirlo y modificarlo bajo los términos de la **GNU Affero General Public License, versión 3** (`AGPL-3.0-only`), publicada por la Free Software Foundation. Se distribuye con la esperanza de que sea útil, pero **SIN NINGUNA GARANTÍA**, ni siquiera la implícita de COMERCIABILIDAD o IDONEIDAD PARA UN PROPÓSITO PARTICULAR. El texto completo está en [`LICENSE`](LICENSE).
+
+En la práctica:
+
+- Puedes usarlo, estudiarlo, modificarlo y redistribuirlo, también con fines comerciales.
+- Si distribuyes una versión (modificada o no), debe ir con su código fuente y bajo la misma licencia.
+- **Cláusula de red (§13):** si modificas DocsLab y lo ofreces a otras personas a través de una red (por ejemplo, un servidor compartido), debes ofrecerles el código fuente de tu versión modificada.
+- Los documentos que produces con DocsLab (PDF, `.tex`, `.pptx`) son tuyos; la licencia cubre el programa, no tu contenido.
+
+Cada archivo de código propio lleva la cabecera `SPDX-License-Identifier: AGPL-3.0-only`. Las librerías de `static/vendor/` conservan sus propias licencias (ver «Licencias de terceros»).

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: AGPL-3.0-only
 """Construye las plantillas incluidas en DocsLab (carpeta plantillas/).
 
     python herramientas/construir_plantillas.py [--sin-miniaturas]

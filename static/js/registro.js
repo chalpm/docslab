@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-only
 // Errores y avisos de la última compilación.
 import { tienda } from './tienda.js';
 

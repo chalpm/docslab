@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: AGPL-3.0-only
 """Plantillas de gráficos del LAB.
 
 Una plantilla es código Python con huecos «{{nombre}}» y la lista de parámetros que

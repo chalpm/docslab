@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: AGPL-3.0-only
 """Componente Lab: plantillas {{campo}}, diseños sin código, recrear los incluidos y su uso en el póster."""
 import io
 import json

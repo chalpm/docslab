@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-only
 // Panel de cuadernos (Colab / Jupyter): subir o enlazar, configurar, ejecutar y usar sus figuras.
 import { api, patch, borrar, subir, descargar, esperarTrabajo, post } from './api.js';
 import { tienda, avisar, avisarError, confirmar } from './tienda.js';

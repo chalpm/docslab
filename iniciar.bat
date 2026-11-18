@@ -1,4 +1,5 @@
 @echo off
+rem SPDX-License-Identifier: AGPL-3.0-only
 rem DocsLab: prepara lo que hace falta la primera vez y abre el editor en el navegador.
 rem Doble clic en este archivo. Lo que escribas despues se pasa al servidor, por ejemplo:
 rem   iniciar.bat --puerto 9000

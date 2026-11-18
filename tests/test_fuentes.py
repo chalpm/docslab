@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: AGPL-3.0-only
 """Tipografías: las libres de TeX Live y las propias (.ttf, .otf) con LuaLaTeX."""
 import io
 import shutil

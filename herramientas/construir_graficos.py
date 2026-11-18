@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: AGPL-3.0-only
 """Miniaturas de las plantillas de gráficos incluidas (static/img/graficos/<id>.png).
 
 Cada una se dibuja con los datos de ejemplo y los valores iniciales de la plantilla.

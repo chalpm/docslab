@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-only
 // Inspector: el formulario de lo que está seleccionado.
 import { CAMPOS } from './campos.js';
 import { tienda } from './tienda.js';

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: AGPL-3.0-only
 """Trabajos en segundo plano (compilar, ejecutar cuadernos) con progreso y cancelación."""
 from __future__ import annotations
 

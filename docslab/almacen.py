@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: AGPL-3.0-only
 """Proyectos, plantillas y recursos en disco."""
 from __future__ import annotations
 

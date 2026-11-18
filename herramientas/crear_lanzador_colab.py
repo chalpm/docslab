@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: AGPL-3.0-only
 """Crea abrir_docslab_en_colab.ipynb: el cuaderno que instala y abre DocsLab en Google Colab."""
 from pathlib import Path
 

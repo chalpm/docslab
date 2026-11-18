@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: AGPL-3.0-only
 """Revisión antes de imprimir.
 
 Mira el PDF ya compilado con las herramientas de Poppler (pdfinfo, pdfimages,

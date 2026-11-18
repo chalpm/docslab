@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: AGPL-3.0-only
 """Compilación con pdfLaTeX, lectura del registro y de las marcas de posición."""
 from __future__ import annotations
 

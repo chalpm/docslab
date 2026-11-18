@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-only
 // Editor de un proyecto: barra superior, paneles, guardado automático,
 // compilación, deshacer y todas las operaciones sobre el modelo.
 import { api, post, patch, put, descargar, esperarTrabajo } from './api.js';

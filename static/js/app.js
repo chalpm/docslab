@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-only
 // Raíz de la aplicación: rutas, diálogos y avisos.
 import { tienda, cerrarDialogo, cerrarAviso, cargarEstado, cargarCatalogo, leerRuta, avisarError } from './tienda.js';
 import { ComponenteIcono } from './iconos.js';

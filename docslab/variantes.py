@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: AGPL-3.0-only
 """Registro de los elementos que se pueden poner dentro de una caja.
 
 Cada variante corresponde a una orden de postercientifico.sty (I01–I34,

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-only
 // Revisión antes de imprimir (panel lateral) y PDF para imprenta (diálogo).
 import { post, esperarTrabajo, descargar } from './api.js';
 import { tienda, avisar, avisarError } from './tienda.js';

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: AGPL-3.0-only
 """Generador: modelo JSON del póster → documento LaTeX (postercientifico.sty).
 
 generar(modelo, marcas=True) devuelve el texto .tex y un mapa

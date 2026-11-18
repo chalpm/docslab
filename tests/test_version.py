@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: AGPL-3.0-only
 """Coherencia de versiones: evita que los ejes versionados se desincronicen (ver docs/VERSIONADO.md)."""
 import json
 import re

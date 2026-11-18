@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-only
 // Vista previa del PDF con pdf.js, sobre una «mesa de luz», con marcos
 // para seleccionar elementos y arrastrar los de las capas.
 

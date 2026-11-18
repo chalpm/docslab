@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-only
 // Componente Lab: hacer y recrear componentes para las cajas del documento,
 // sin código (piezas), con código LaTeX (plantilla con {{campos}}) o como
 // preajuste de uno de los componentes incluidos.

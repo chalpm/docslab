@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: AGPL-3.0-only
 """Extensión de cuadernos: ejecutar .ipynb (los de Colab) y recoger sus figuras.
 
 Un cuaderno puede estar:
