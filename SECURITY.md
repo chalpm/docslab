@@ -2,11 +2,13 @@
 
 ## Versiones con soporte
 
+Solo la **última versión MINOR publicada** recibe correcciones de seguridad, que salen como una versión PATCH (por ejemplo, 1.2.1). Las versiones anteriores no reciben correcciones: si usas una, actualiza a la última. Al publicarse una MINOR nueva, la anterior deja de tener soporte.
+
 | Versión | Soporte |
 |---|---|
-| 1.2.x | ✅ |
-| 1.1.x | Sin definir |
-| 1.0.x | Sin definir |
+| 1.2.x | ✅ Con soporte |
+| 1.1.x | ❌ Sin soporte: actualiza a 1.2.x |
+| 1.0.x | ❌ Sin soporte: actualiza a 1.2.x |
 
 ## Modelo de amenazas
 

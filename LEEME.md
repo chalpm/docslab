@@ -209,7 +209,7 @@ Las plantillas incluidas se regeneran con `python herramientas/construir_plantil
 
 ## La plantilla LaTeX sin la aplicación
 
-`latex/postercientifico.sty` funciona sola, también en Overleaf. El zip `plantilla_postercientifico_overleaf.zip` trae la plantilla, un póster de ejemplo por capas (`main.tex`), el catálogo de 6 páginas con todas las variantes (`catalogo.tex`) y las imágenes de prueba. En Overleaf: *New Project › Upload Project*, compila con pdfLaTeX y cambia de documento en *Menu › Main document*. Las filas con `alto=llenar` y las cajas con `estirar` se miden en una pasada y se ajustan en la siguiente: Overleaf repite solo; a mano, repite `pdflatex` mientras el registro diga «Rerun … (vuelve a compilar)» (2 o 3 veces).
+`latex/postercientifico.sty` funciona sola, también en Overleaf. El zip `plantilla_postercientifico_overleaf.zip` trae la plantilla, un póster de ejemplo por capas (`main.tex`), el catálogo de 7 páginas con todas las variantes (`catalogo.tex`) y las imágenes de prueba. En Overleaf: *New Project › Upload Project*, compila con pdfLaTeX y cambia de documento en *Menu › Main document*. Las filas con `alto=llenar` y las cajas con `estirar` se miden en una pasada y se ajustan en la siguiente: Overleaf repite solo; a mano, repite `pdflatex` mientras el registro diga «Rerun … (vuelve a compilar)» (2 o 3 veces).
 
 Lo esencial:
 

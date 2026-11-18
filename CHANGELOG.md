@@ -10,7 +10,17 @@ Tipos de entrada: **Añadido**, **Cambiado**, **Obsoleto**, **Eliminado**, **Cor
 
 ## [Sin publicar]
 
-_Nada todavía._
+### Corregido
+- Miniaturas de `catalogo-latex` y `ejemplo-capas-latex` regeneradas con `construir_plantillas.miniaturas()` en un TeX Live con español. Solo cambia el texto de la versión.
+- `catalogo.tex` (plantilla y fuente): la cabecera y los autores ya no dicen «versión 2».
+- LEEME y `empaquetar.py`: el catálogo tiene 7 páginas, no 6. Comprobado con la separación de palabras en español instalada.
+
+### Cambiado
+- `SECURITY.md`: solo la última versión MINOR recibe correcciones de seguridad; 1.0.x y 1.1.x quedan sin soporte. No se comprometen plazos de respuesta.
+- `docs/VERSIONADO.md`: paquetes de TeX Live necesarios para la suite completa y un paso para actualizar la tabla de soporte al publicar.
+
+### Verificado
+- Los 11 fallos señalados como «Problemas conocidos» desde 1.0.0 eran del entorno: con `texlive-lang-spanish` y `luatex85.sty` (`texlive-luatex`) pasan las 313 pruebas (4 se saltan por herramientas opcionales).
 
 ## [1.2.0] - 2026-11-18
 
@@ -95,7 +105,7 @@ Línea base. Es la primera versión con versionado formal. Huella: [`huella/v1.0
 - ~~`plantillas/catalogo-latex` y `plantillas/ejemplo-capas-latex` llevan una copia antigua de `postercientifico.sty`.~~ Corregido en 1.0.1.
 - ~~No hay migraciones del esquema del modelo.~~ Resuelto en 1.1.0.
 - ~~El proyecto no tiene archivo de licencia propio.~~ Resuelto en 1.1.0 (AGPL-3.0-only).
-- En un TeX Live sin `texlive-lang-spanish` ni `luatex85.sty` fallan 11 pruebas (las 9 de compilación de plantillas, una de la API y una de LuaLaTeX).
+- En un TeX Live sin `texlive-lang-spanish` ni `luatex85.sty` fallan 11 pruebas (las 9 de compilación de plantillas, una de la API y una de LuaLaTeX). Verificado como problema de entorno (ver [Sin publicar]).
 - La API no tiene autenticación y los cuadernos ejecutan código arbitrario (ver `SECURITY.md`).
 
 [Sin publicar]: ../../compare/v1.2.0...HEAD
