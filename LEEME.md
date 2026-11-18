@@ -1,217 +1,526 @@
 # DocsLab
 
-Editor web de documentos científicos hechos con LaTeX: **pósters, presentaciones de diapositivas, artículos, tesis y documentos generales**. Editas por bloques y capas, con formularios o directamente sobre la vista previa, ves el PDF real compilado, revisas que esté listo para imprimir y descargas el PDF (también preparado para la imprenta) o un zip para Overleaf. Las figuras pueden salir directamente de tus cuadernos de Colab o Jupyter.
+**Editor web de documentos científicos hechos con LaTeX:** pósters, presentaciones, artículos, tesis y documentos generales. Editas con formularios o directamente sobre la vista previa, ves el PDF real compilado al momento, revisas que esté listo para imprimir y lo descargas en PDF (también preparado para la imprenta), PowerPoint o como zip para Overleaf. Las figuras pueden salir directamente de tus cuadernos de Python.
 
-Funciona en tu equipo (un pequeño servidor local con Python) o dentro de Google Colab.
+Funciona **en tu equipo** (Windows, macOS o Linux, con un pequeño servidor local) o **en Google Colab**. Una vez instalado no necesita internet, salvo para buscar referencias por DOI.
 
-**Versión 1.2.1** · Licencia [AGPL-3.0](LICENSE) (plantilla LaTeX: [LPPL-1.3c](latex/LICENSE-LPPL-1.3c.txt)) · [Registro de cambios](CHANGELOG.md) · [Documentación técnica y funcional](docs/README.md) · [Seguridad](SECURITY.md)
+**Versión 1.2.2** · Licencia [AGPL-3.0](LICENSE) (plantilla LaTeX: [LPPL-1.3c](latex/LICENSE-LPPL-1.3c.txt)) · [Registro de cambios](CHANGELOG.md) · [Documentación técnica y funcional](docs/README.md) · [Seguridad](SECURITY.md)
 
-## Qué incluye
+---
 
-- **Cinco tipos de documento.** Al crear un proyecto eliges qué vas a hacer:
-  - **Póster**: una hoja grande con cabecera, filas, columnas y cajas.
-  - **Presentación**: diapositivas (16:9, 16:10 o 4:3), cada una con su propia cuadrícula; diseños de portada, título y contenido, título de sección y en blanco; pie, numeración y barra de avance. Se hacen con el motor de DocsLab (no con Beamer), así que usan los mismos elementos, estilos y capas que el póster.
-  - **Documento**: informe o guía con secciones, a una o dos columnas.
-  - **Artículo**: título, autores, resumen y palabras clave (también en un segundo idioma), secciones numeradas, figuras, tablas y referencias; a una o dos columnas.
-  - **Tesis**: plantilla genérica y configurable con portada (institución, grado, dirección, lugar y fecha), dedicatoria, agradecimientos, resumen, índices de contenido, figuras y tablas, capítulos con secciones y apéndices, numeración romana en las páginas preliminares y margen de encuadernación.
-- **Posición libre cuando la quieras** (pósters y presentaciones). La cuadrícula sigue siendo lo normal, pero cualquier caja o elemento se puede **soltar de la cuadrícula** y arrastrar a cualquier punto de la página; su esquina cambia el ancho y las flechas del teclado lo mueven poco a poco. También puedes añadir textos, imágenes o cajas sueltos, o encender **Lienzo libre** en un póster o en una diapositiva para colocarlo todo a mano. «Volver a la cuadrícula» lo deshace. En documentos, artículos y tesis el texto corre de una página a otra y no hay posición libre.
+## Contenido
 
-- **Editor visual por capas.** El póster tiene capas *detrás* del contenido (fondos, formas, imágenes), el *contenido* (cabecera, filas de columnas con cajas, pie) y capas *delante* (sellos, notas, logotipos). Cada capa se oculta, se atenúa y se reordena; puedes crear las que quieras.
-- **Edición directa sobre la vista previa.** Arrastra una caja o un elemento a otro sitio (también a otra columna), cambia el ancho de las columnas arrastrando el borde que hay entre ellas, haz doble clic en un texto para escribirlo ahí mismo y estira los logos de la cabecera desde su esquina (cada uno tiene su tamaño).
-- **69 formas de colocar texto e imágenes** (I01–I34, T01–T36, más LaTeX libre y espacio) y **12 estilos de caja**, con miniaturas para elegir. Todas las cajas tienen un título opcional.
-- **Referencias con estilo.** Un gestor de referencias por póster: escríbelas con un formulario, búscalas por DOI o impórtalas (BibTeX, RIS o CSL-JSON). Cita con `[@clave]` en cualquier texto y elige el estilo (APA 7, Vancouver, IEEE, Chicago, MLA 9, Harvard, Nature o ACS): las citas y la lista se escriben solas.
-- **Componente Lab.** Crea tus propios componentes, con piezas (título, texto, cifra, imagen, lista, icono, columnas…) o con código LaTeX, y úsalos en cualquier póster. También puedes recrear cualquiera de los 69 incluidos para cambiarlo a tu gusto.
-- **Ajustar a una página.** Si algo no cabe, DocsLab busca el tamaño de letra más grande con el que todo cabe (se puede deshacer).
-- **Revisión para imprimir.** Resolución real de cada imagen, tamaño de letra (también dentro de las figuras), contraste, colores que cambian en tinta, tipografías incrustadas, textos de ejemplo, citas sin referencia y lo que queda demasiado cerca del borde, con un botón para verlo en el póster.
-- **PDF para imprenta.** Con sangrado (el fondo pasa 3 o 5 mm del borde), marcas de corte y cajas TrimBox y BleedBox; en RGB o en CMYK.
-- **PowerPoint.** Una diapositiva por cada página (una para un póster, todas las de una presentación): con el texto editable (cada línea es un cuadro de texto sobre una imagen del póster sin texto; las fórmulas y las letras de las figuras quedan en la imagen) o como una imagen idéntica al PDF. Lo editable necesita Ghostscript.
-- **Tipografías.** 6 clásicas, 19 libres de TeX Live (Source Sans, Fira Sans, Roboto, Lato, Atkinson Hyperlegible, Libertinus, EB Garamond, Merriweather…) y las tuyas: sube un `.ttf` o un `.otf` y el póster se compila con LuaLaTeX.
-- **Idioma del póster** (español, inglés, portugués, francés, alemán o italiano): separación de palabras, comillas y palabras de las referencias.
-- **Plantillas**: 12 incluidas (académica A0, horizontal 48 × 36 in, por capas A1, mínima A1, el póster BGC en inglés y en español, el catálogo, un ejemplo en LaTeX, una presentación 16:9, un artículo a dos columnas, una tesis y un informe). Cualquier documento se guarda como plantilla y, más adelante, la actualiza.
-- **LAB.** Cada documento tiene, junto a su editor, un apartado LAB con sus cuadernos de Python: créalos desde cero o sube un `.ipynb`, escribe celdas de código y de texto, y ejecútalo entero o celda por celda (las variables se conservan entre celdas, como en Jupyter o Colab). Incluye **plantillas de gráficos** con formulario (barras, líneas, dispersión, histograma, cajas, violín, mapa de calor… con matplotlib, seaborn o plotly) cuyo código queda en una celda y se puede editar; también puedes crear tus propias plantillas. Ver «LAB» más abajo.
-- **Cuadernos**: sube un `.ipynb` con sus datos (o ábrelo desde una carpeta, por ejemplo tu Google Drive en Colab). DocsLab lo ejecuta, recoge las figuras que guarda y las deja listas para el póster. Al volver a ejecutarlo, el póster se actualiza solo.
-- **Modo LaTeX**: si prefieres el código, cualquier proyecto se puede convertir y editar a mano, con resaltado y vista previa.
-- **Compilación rápida**: la plantilla va precompilada (un «formato» de pdfLaTeX), no se compila lo que no ha cambiado y la miniatura se hace aparte. Un cambio pequeño tarda alrededor de un segundo.
-- **Deshacer y rehacer, guardado automático, historial de versiones** y compilación automática al guardar.
+1. [Qué es y cómo funciona](#1-qué-es-y-cómo-funciona)
+2. [Conceptos clave](#2-conceptos-clave)
+3. [Qué incluye](#3-qué-incluye)
+4. [Requisitos](#4-requisitos)
+5. [Instalación y arranque](#5-instalación-y-arranque)
+   - [Windows](#51-windows) · [macOS](#52-macos) · [Linux](#53-linux-ubuntu-y-debian) · [Google Colab](#54-google-colab)
+   - [Qué hace el lanzador](#55-qué-hace-el-lanzador-los-tres-sistemas) · [Opciones del servidor](#56-opciones-del-servidor)
+6. [Primeros pasos: tu primer póster](#6-primeros-pasos-tu-primer-póster)
+7. [Cómo se usa el editor](#7-cómo-se-usa-el-editor)
+8. [Qué pasa al compilar](#8-qué-pasa-al-compilar)
+9. [Referencias bibliográficas](#9-referencias-bibliográficas)
+10. [Componente Lab](#10-componente-lab)
+11. [Revisión para imprimir y PDF para imprenta](#11-revisión-para-imprimir-y-pdf-para-imprenta)
+12. [Tipografías](#12-tipografías)
+13. [LAB: cuadernos y gráficos](#13-lab-cuadernos-y-gráficos)
+14. [Plantillas](#14-plantillas)
+15. [La plantilla LaTeX sin la aplicación](#15-la-plantilla-latex-sin-la-aplicación)
+16. [Dónde se guardan tus datos](#16-dónde-se-guardan-tus-datos)
+17. [Arquitectura y estructura del código](#17-arquitectura-y-estructura-del-código)
+18. [Pruebas](#18-pruebas)
+19. [Problemas frecuentes](#19-problemas-frecuentes)
+20. [Versionado y documentación](#20-versionado-y-documentación)
+21. [Si venías de PosterLab](#21-si-venías-de-posterlab)
+22. [Licencia](#22-licencia)
 
-## Instalación en tu equipo
+---
 
-1. **Python 3.9 o posterior** (en macOS, `brew install python` si no lo tienes).
-2. **LaTeX** (pdfLaTeX) y las herramientas de PDF (Poppler):
-   - macOS: instala MacTeX (`brew install --cask mactex-no-gui`, o el instalador de [tug.org/mactex](https://tug.org/mactex/)) y `brew install poppler ghostscript`.
-   - Ubuntu o Debian:
-     ```
-     sudo apt install python3-venv texlive-latex-recommended texlive-latex-extra texlive-pictures texlive-fonts-recommended poppler-utils
-     ```
-     Opcional: `texlive-fonts-extra` (las tipografías libres), `texlive-luatex` (tipografías propias), `ghostscript` (PDF en CMYK y la comprobación de color) y `texlive-lang-spanish` u otro idioma (separación de palabras).
-   - Windows: instala [MiKTeX](https://miktex.org/). No hace falta instalar paquetes a mano: DocsLab le pide a MiKTeX que descargue los que falten, así que la primera compilación puede tardar unos minutos. Para la revisión y las miniaturas, instala Poppler para Windows (por ejemplo `winget install oschwartz10612.Poppler`) y, para CMYK, Ghostscript.
-3. **Arrancar.** En Windows, doble clic en `iniciar.bat`. En macOS y Linux, desde la carpeta `docslab`:
-   ```
-   sh iniciar.command
-   ```
-   En macOS también vale el doble clic en `iniciar.command` (si la primera vez macOS dice que no puede comprobarlo, ve a Ajustes del Sistema → Privacidad y seguridad → «Abrir igualmente», o usa la Terminal). Los dos lanzadores hacen lo mismo: la primera vez crean un entorno de Python propio (la carpeta `.venv`) e instalan ahí las dependencias, sin tocar el Python del sistema; tarda un par de minutos. Luego abren `http://127.0.0.1:8765` en el navegador. Deja la ventana abierta mientras usas DocsLab; Ctrl + C lo cierra. Si ya estaba abierto, solo abre el navegador. Los proyectos se guardan en la carpeta `datos/`.
+## 1. Qué es y cómo funciona
 
-   Lo mismo a mano:
-   ```
-   python3 -m venv .venv                       # Windows: py -m venv .venv
-   source .venv/bin/activate                   # Windows: .venv\Scripts\activate
-   python -m pip install -r requirements.txt
-   python servidor.py --abrir
-   ```
-   Las siguientes veces basta con activar el entorno (`source .venv/bin/activate`) y `python servidor.py --abrir`.
+DocsLab separa **lo que escribes** de **cómo se compone**. Tú describes el documento (secciones, cajas, textos, imágenes, referencias) y DocsLab lo traduce a LaTeX, lo compila con pdfLaTeX (o LuaLaTeX) y te muestra el PDF resultante. No hace falta saber LaTeX, pero si lo sabes puedes escribirlo directamente.
 
-Opciones útiles:
+```mermaid
+flowchart LR
+    U([Tú]) -->|editas en el navegador| E[Editor web<br/>Vue 3 + pdf.js]
+    E -->|guarda el modelo JSON| S[Servidor local<br/>Python · Flask]
+    S -->|genera .tex| L[LaTeX<br/>pdfLaTeX / LuaLaTeX]
+    L -->|PDF| S
+    S -->|vista previa| E
+    S --> D[(Carpeta datos/<br/>proyectos, plantillas)]
+    N[Cuadernos .ipynb<br/>LAB] -->|figuras| S
+    S -->|descargas| O[PDF · PDF imprenta ·<br/>PowerPoint · zip Overleaf]
+```
 
-| Opción | Para qué sirve |
+- **Todo corre en tu máquina.** El servidor escucha solo en `127.0.0.1` (tu propio equipo); nadie más lo ve salvo que lo abras a la red a propósito.
+- **El navegador es solo la interfaz.** Puedes cerrarlo y volver a `http://127.0.0.1:8765` mientras el servidor siga encendido.
+- **Tus documentos son carpetas normales** dentro de `datos/`: puedes copiarlas, respaldarlas o llevarlas a otro equipo.
+
+## 2. Conceptos clave
+
+| Concepto | Qué es |
 |---|---|
-| `--puerto 9000` | otro puerto (con el lanzador: `sh iniciar.command --puerto 9000`) |
-| `--datos ~/DocsLab` | guardar los proyectos en otra carpeta |
-| `--raices ~/Documentos ~/Drive` | carpetas donde se pueden buscar cuadernos desde la aplicación (por defecto, tu carpeta personal) |
-| `--host 0.0.0.0` | abrirlo a otras máquinas de tu red; **no tiene contraseña**, úsalo solo en redes de confianza |
-| `--detalle` | mostrar en la terminal cada petición del navegador (para buscar un fallo) |
+| **Proyecto** | Un documento tuyo: póster, presentación, documento, artículo o tesis. Es una carpeta en `datos/proyectos/`. |
+| **Proyecto estructurado** | El modo normal: el documento se guarda como un modelo (`modelo.json`) y se edita con formularios y sobre la vista previa. |
+| **Proyecto LaTeX** | El modo código: el documento son archivos `.tex` que editas a mano. Cualquier proyecto estructurado se puede convertir a este modo. |
+| **Capas** | Planos del póster: *detrás* (fondos, formas), *contenido* (cabecera, filas, pie) y *delante* (sellos, notas). Se ocultan, se atenúan y se reordenan. |
+| **Fila · columna · caja** | La cuadrícula del contenido: las filas contienen columnas, y las columnas contienen cajas con elementos. |
+| **Variante (I01–I34, T01–T36)** | Cada forma predefinida de colocar imágenes (I) o texto (T) dentro de una caja. Hay 69 en total, contando «LaTeX libre» y «espacio». |
+| **Estilo de caja** | El aspecto del recuadro (barra, borde, sombra…). Hay 12. |
+| **Plantilla** | Un proyecto de partida. Hay 12 incluidas y puedes guardar las tuyas. |
+| **Componente** | Un elemento propio, hecho en el Componente Lab, reutilizable en cualquier documento. |
+| **LAB** | El espacio de cuadernos de Python de cada documento, de donde salen figuras que se actualizan solas. |
+| **Compilar** | Convertir el documento en PDF con LaTeX. DocsLab lo hace solo al guardar. |
+| **Esquema** | La versión de la estructura de `modelo.json`. Los proyectos antiguos se actualizan solos al abrirlos (ver [§16](#16-dónde-se-guardan-tus-datos)). |
 
-## En Google Colab
+## 3. Qué incluye
+
+**Tipos de documento**
+
+| Tipo | Para qué | Rasgos |
+|---|---|---|
+| **Póster** | Congresos, carteles | Una hoja grande con cabecera, filas, columnas y cajas; capas; posición libre |
+| **Presentación** | Charlas | Diapositivas 16:9, 16:10 o 4:3, cada una con su cuadrícula; diseños de portada, título y contenido, sección y en blanco; pie, numeración y barra de avance. Se hace con el motor de DocsLab (no con Beamer), así que usa los mismos elementos, estilos y capas que el póster |
+| **Documento** | Informes, guías | Secciones a una o dos columnas |
+| **Artículo** | Publicaciones | Título, autores, resumen y palabras clave (también en un segundo idioma), secciones numeradas, figuras, tablas y referencias; a una o dos columnas |
+| **Tesis** | Trabajos de grado | Portada (institución, grado, dirección, lugar y fecha), dedicatoria, agradecimientos, resumen, índices, capítulos y apéndices, numeración romana en las páginas preliminares y margen de encuadernación |
+
+**Edición**
+- **Editor visual por capas** y **edición directa sobre la vista previa**: arrastrar cajas y elementos (también a otra columna), cambiar el ancho de las columnas, escribir con doble clic y estirar los logos desde su esquina.
+- **Posición libre** (pósters y presentaciones): cualquier caja o elemento se puede soltar de la cuadrícula y colocar en cualquier punto; con «Lienzo libre», toda la página. En documentos, artículos y tesis el texto pasa de una página a otra y no hay posición libre.
+- **69 variantes** de texto e imagen y **12 estilos de caja**, con miniaturas para elegir. Todas las cajas tienen un título opcional.
+- **Texto con formato sencillo** (`**negrita**`, `*cursiva*`, `$x^2$`, `[@cita]`…) o código LaTeX.
+- **Deshacer y rehacer, guardado automático e historial de versiones.**
+
+**Contenido**
+- **Referencias**: formulario, búsqueda por DOI, importación de BibTeX, RIS y CSL-JSON, y 8 estilos (APA 7, Vancouver, IEEE, Chicago, MLA 9, Harvard, Nature y ACS).
+- **Tipografías**: 6 clásicas, 19 libres de TeX Live y las tuyas (`.ttf` y `.otf`).
+- **Idioma del documento**: español, inglés, portugués, francés, alemán o italiano (separación de palabras, comillas y textos de las referencias).
+- **Componente Lab**: elementos propios, con piezas o con código LaTeX.
+- **LAB**: cuadernos de Python celda a celda y plantillas de gráficos (matplotlib, seaborn y plotly). Las figuras pasan al documento y se actualizan al volver a ejecutar.
+
+**Salida**
+- **Ajustar a una página**: busca el tamaño de letra más grande con el que todo cabe.
+- **Revisión para imprimir**: resolución, tamaño de letra, contraste, colores de tinta, tipografías y contenido.
+- **PDF para imprenta**: sangrado, marcas de corte, TrimBox y BleedBox, en RGB o CMYK.
+- **PowerPoint**: con el texto editable o como imagen.
+- **Zip para Overleaf** y **zip del proyecto** (copia de seguridad).
+- **Compilación rápida**: la plantilla va precompilada y no se compila lo que no cambió. En nuestras pruebas, con un póster A0, la primera compilación tardó unos 5 s y cada cambio pequeño, unos 2–3 s; depende del equipo y del documento.
+
+## 4. Requisitos
+
+| Componente | ¿Obligatorio? | Para qué | Windows | macOS | Linux (Ubuntu/Debian) |
+|---|---|---|---|---|---|
+| **Python 3.9+** | Sí | El servidor | [python.org](https://www.python.org/downloads/) (marca «Add python.exe to PATH») | `brew install python` | `python3` + `python3-venv` |
+| **LaTeX (pdfLaTeX)** | Sí | Compilar | [MiKTeX](https://miktex.org/) | MacTeX (`brew install --cask mactex-no-gui`) | `texlive-latex-recommended`, `texlive-latex-extra`, `texlive-pictures`, `texlive-fonts-recommended` |
+| **Poppler** | Recomendado | Miniaturas, revisión para imprimir, PowerPoint | `winget install oschwartz10612.Poppler` | `brew install poppler` | `poppler-utils` |
+| **Ghostscript** | Opcional | CMYK, comprobación de color, PowerPoint editable | [ghostscript.com](https://ghostscript.com/releases/gsdnld.html) | `brew install ghostscript` | `ghostscript` |
+| **LuaLaTeX** | Opcional | Tipografías propias | Viene con MiKTeX | Viene con MacTeX | `texlive-luatex` |
+| **Idioma de LaTeX** | Recomendado | Separación de palabras | MiKTeX lo descarga solo | Viene con MacTeX | `texlive-lang-spanish` (u otro idioma) |
+| **Tipografías libres** | Opcional | Las 19 de TeX Live | MiKTeX las descarga solas | Vienen con MacTeX | `texlive-fonts-extra` |
+| **Navegador moderno** | Sí | La interfaz | Chrome, Edge o Firefox | Safari, Chrome o Firefox | Chrome o Firefox |
+
+Las dependencias de Python (Flask, Pillow, python-pptx, Jupyter, pandas, matplotlib, seaborn, plotly…) **no se instalan a mano**: el lanzador las instala en un entorno propio (ver [§5.5](#55-qué-hace-el-lanzador-los-tres-sistemas)).
+
+DocsLab arranca aunque falten las herramientas opcionales: avisa y desactiva solo la función que las necesita.
+
+## 5. Instalación y arranque
+
+Resumen por sistema:
+
+| | **Windows** | **macOS** | **Linux** |
+|---|---|---|---|
+| Lanzador | `iniciar.bat` | `iniciar.command` | `iniciar.command` |
+| Cómo se abre | Doble clic | Doble clic o `sh iniciar.command` en la Terminal | `sh iniciar.command` en la terminal |
+| Python que busca | `py -3` y, si no, `python` | `python3` (o `DOCSLAB_PYTHON`) | `python3` (o `DOCSLAB_PYTHON`) |
+| Comprueba LaTeX y Poppler al arrancar | El servidor avisa si falta LaTeX | Sí, el lanzador y el servidor | Sí, el lanzador y el servidor |
+| Cerrar DocsLab | Ctrl + C o cerrar la ventana | Ctrl + C en la Terminal | Ctrl + C en la terminal |
+| Dirección | `http://127.0.0.1:8765` | `http://127.0.0.1:8765` | `http://127.0.0.1:8765` |
+
+### 5.1 Windows
+
+**1 · Instala los requisitos (una sola vez)**
+
+1. **Python 3.9 o posterior** desde [python.org/downloads](https://www.python.org/downloads/). En la primera pantalla del instalador, **marca «Add python.exe to PATH»**.
+   > El «python» de la Microsoft Store que aparece sin tener Python instalado no sirve. El lanzador lo detecta y te lo dice.
+2. **MiKTeX** desde [miktex.org](https://miktex.org/). No hace falta instalar paquetes de LaTeX a mano: DocsLab le pide a MiKTeX los que falten, así que **la primera compilación puede tardar unos minutos**.
+3. **Poppler** (recomendado), en PowerShell o en el Símbolo del sistema:
+   ```
+   winget install oschwartz10612.Poppler
+   ```
+4. **Ghostscript** (opcional, para CMYK y PowerPoint editable): instalador de [ghostscript.com](https://ghostscript.com/releases/gsdnld.html).
+
+No hace falta tocar el PATH de MiKTeX, Poppler ni Ghostscript: DocsLab los busca en sus carpetas habituales aunque se hayan instalado después de abrir la ventana.
+
+**2 · Arranca**
+
+1. Descomprime `docslab.zip` en una carpeta tuya (por ejemplo, `Documentos\DocsLab`).
+2. Haz **doble clic en `iniciar.bat`**.
+   - La primera vez verás «Preparando DocsLab por primera vez…» y «Instalando las dependencias de Python…». Tarda un par de minutos.
+   - Después se abre el navegador en `http://127.0.0.1:8765`.
+3. **Deja abierta la ventana negra** mientras usas DocsLab. Para cerrarlo: Ctrl + C en esa ventana, o ciérrala.
+
+Las siguientes veces, el doble clic arranca en segundos. Si DocsLab ya estaba abierto, solo abre otra pestaña del navegador.
+
+**Con opciones** (en el Símbolo del sistema, dentro de la carpeta):
+```
+iniciar.bat --puerto 9000 --datos D:\MisDocumentos\DocsLab
+```
+
+**A mano, sin el lanzador** (Símbolo del sistema):
+```
+py -m venv .venv
+.venv\Scripts\activate
+python -m pip install -r requirements.txt
+python servidor.py --abrir
+```
+
+### 5.2 macOS
+
+**1 · Instala los requisitos (una sola vez)**
+
+Con [Homebrew](https://brew.sh/), en la Terminal:
+```
+brew install python poppler ghostscript
+brew install --cask mactex-no-gui
+```
+MacTeX también se puede instalar con el instalador de [tug.org/mactex](https://tug.org/mactex/). Trae LuaLaTeX, los idiomas y las tipografías libres. Después de instalarlo, **abre una Terminal nueva** (DocsLab de todos modos busca `/Library/TeX/texbin`).
+
+**2 · Arranca**
+
+- **Con doble clic en `iniciar.command`.** La primera vez, macOS puede decir que no puede comprobar el desarrollador: ve a *Ajustes del Sistema › Privacidad y seguridad › Abrir igualmente*. Si dice que el archivo no se puede ejecutar, usa la Terminal.
+- **O en la Terminal**, desde la carpeta `docslab`:
+  ```
+  sh iniciar.command
+  ```
+
+La primera vez prepara el entorno (un par de minutos) y abre `http://127.0.0.1:8765`. Deja la ventana de la Terminal abierta; **Ctrl + C** cierra DocsLab.
+
+**Con opciones:**
+```
+sh iniciar.command --puerto 9000 --datos ~/DocsLab
+DOCSLAB_PYTHON=python3.12 sh iniciar.command        # usar otro Python
+```
+
+**A mano, sin el lanzador:**
+```
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+python servidor.py --abrir
+```
+
+### 5.3 Linux (Ubuntu y Debian)
+
+**1 · Instala los requisitos (una sola vez)**
+
+Lo mínimo:
+```
+sudo apt install python3 python3-venv \
+  texlive-latex-recommended texlive-latex-extra texlive-pictures texlive-fonts-recommended \
+  poppler-utils
+```
+Recomendado (idioma, tipografías propias, CMYK y tipografías libres):
+```
+sudo apt install texlive-lang-spanish texlive-luatex ghostscript texlive-fonts-extra
+```
+> `texlive-fonts-extra` ocupa varios GB; instálalo solo si quieres las 19 tipografías libres.
+
+En otras distribuciones, instala los equivalentes de TeX Live, Poppler y Ghostscript. [NO VERIFICADO] DocsLab solo se ha probado en Ubuntu y Debian.
+
+**2 · Arranca**
+
+Desde la carpeta `docslab`:
+```
+sh iniciar.command
+```
+La primera vez prepara el entorno (un par de minutos) y abre el navegador en `http://127.0.0.1:8765`. Si no se abre solo (por ejemplo, en un servidor sin escritorio), abre esa dirección a mano. **Ctrl + C** cierra DocsLab.
+
+Con opciones y a mano: igual que en macOS ([§5.2](#52-macos)).
+
+### 5.4 Google Colab
 
 1. Sube `docslab.zip` a tu Google Drive, en la carpeta `DocsLab`.
-2. Abre `abrir_docslab_en_colab.ipynb` en Colab y ejecuta todas las celdas. La primera vez instala LaTeX (3–4 minutos).
-3. Abre el enlace que aparece al final. Tus proyectos quedan en `MyDrive/DocsLab/datos`.
+2. Abre `abrir_docslab_en_colab.ipynb` en Colab y ejecuta sus celdas en orden:
 
-Desde Colab, en **LAB › Abrir desde una carpeta (Drive)** puedes elegir tus cuadernos de `/content/drive/MyDrive/…`; se ejecutan en su propia carpeta, con sus datos. El enlace solo funciona mientras el cuaderno lanzador está conectado.
+   | Celda | Qué hace |
+   |---|---|
+   | 1 · Opciones | Elige si guardar en Drive (`MyDrive/DocsLab`) y el puerto |
+   | 2 · Traer DocsLab | Monta Drive y descomprime el zip (o te pide subirlo) |
+   | 3 · Instalar | Instala LaTeX y las dependencias: 3–4 minutos la primera vez |
+   | 4 · Abrir DocsLab | Arranca el servidor y muestra el enlace |
+   | 5 · (Opcional) | Muestra DocsLab dentro del cuaderno |
+   | 6 · Detener | Apaga DocsLab; tus proyectos quedan en Drive |
 
-> Este lanzador se probó simulando el entorno; la instalación de LaTeX en Colab depende de los paquetes de Ubuntu de ese momento.
+3. Abre el enlace del paso 4. Tus proyectos quedan en `MyDrive/DocsLab/datos`.
 
-## Cómo se usa
+En **LAB › Abrir desde una carpeta (Drive)** puedes elegir cuadernos de `/content/drive/MyDrive/…`. **El enlace solo funciona mientras el cuaderno está conectado**; no lo compartas.
 
-**Inicio.** Arriba, tus documentos (con un filtro por tipo cuando hay de varios); abajo, las plantillas. «Documento nuevo» abre un asistente: eliges el tipo (póster, presentación, documento, artículo o tesis) y sus opciones (tamaño, columnas, colores, tipografía, idioma…). El menú ⋯ de cada tarjeta duplica, exporta, guarda como plantilla, actualiza su plantilla o borra. Desde el inicio también se entra en el **Componente Lab**.
+> El lanzador se probó en un entorno que simula Colab; la instalación de LaTeX depende de los paquetes de Ubuntu que tenga Colab en ese momento.
 
-**Editor.**
+### 5.5 Qué hace el lanzador (los tres sistemas)
 
-- *Izquierda* — **Estructura**: el árbol del documento, ordenado de delante hacia atrás (capas delante, contenido, capas detrás). En un póster el contenido son filas, columnas y cajas; en una presentación, las diapositivas (cada una con sus filas); en un documento, artículo o tesis, las secciones seguidas, con sangría según su nivel. Al elegir una diapositiva o una sección, la vista previa pasa a su página.
-  - El ojo muestra u oculta; la **T** muestra u oculta el título de una caja; **+** añade una columna, una caja, un elemento o un elemento de capa.
-  - Arrastra filas, columnas, cajas, elementos y elementos de capa para moverlos (también entre columnas o capas).
-  - Teclado: flechas para recorrer, Alt + flechas para subir o bajar, Supr para borrar.
-- *Izquierda* — **Imágenes**: sube PNG, JPG o PDF (también GIF, WEBP o TIFF, que se convierten a PNG). Selecciona una caja o un elemento y pulsa «Usar».
-- *Izquierda* — **Referencias**: el gestor de referencias (ver más abajo).
-- **LAB** (conmutador de arriba): los cuadernos y las plantillas de gráficos; ver más abajo.
-- *Centro* — **la vista previa**:
-  - clic para seleccionar; arrastra una caja o un elemento para cambiarlo de sitio (una línea marca dónde caerá);
-  - con una caja elegida aparecen unos tiradores entre las columnas: arrástralos para cambiar su ancho;
-  - doble clic en un texto o en el título de una caja para escribir ahí mismo (Esc o Ctrl + Intro para cerrar);
-  - los elementos de las capas se arrastran, el cuadrito de la esquina cambia su tamaño y las flechas del teclado los empujan (Mayús para pasos largos); Ctrl + rueda para hacer zoom.
-- **Posición libre** (pósters y presentaciones): con una caja o un elemento elegido, «Soltar de la cuadrícula» lo deja donde está, pero suelto; arrástralo por su asa (el cuadrito a su izquierda) o por la propia caja. El botón «Suelto» (abajo a la izquierda) añade un texto, una imagen o una caja ya sueltos. «Lienzo libre», en el diseño general del póster o en cada diapositiva, suelta todas las cajas de esa página.
-- **Diapositivas**: el botón «Diapositiva» añade una con el diseño que elijas después de la actual; en su inspector se cambia el diseño, el título, el fondo, si lleva pie y sus notas, y se duplica, mueve, oculta o borra. Si el contenido de una no cabe, el aviso de arriba dice cuál.
-- **Documentos, artículos y tesis**: «Título y autores» y «Resumen e índices» (en la tesis, también la portada y las páginas preliminares) van antes de las secciones. Cada sección tiene nivel (capítulo, sección, subsección…), numeración, salto de página y, en la tesis, si es un apéndice.
-- *Derecha* — **el inspector**: el formulario de lo seleccionado. Sin selección, el diseño general (lienzo, letra y tipografías, idioma, colores, cajas, espacios, figuras y LaTeX propio).
+`iniciar.bat` (Windows) e `iniciar.command` (macOS y Linux) siguen los mismos pasos. Nunca tocan el Python del sistema: todo va en la carpeta `.venv`, dentro de `docslab`.
 
-**Texto con formato sencillo** (por defecto): escribe normalmente; los símbolos de LaTeX se escapan solos. Admite `**negrita**`, `*cursiva*`, `` `código` ``, `^superíndice^`, `~subíndice~`, `$x^2$` (matemáticas), `[@clave]` (una cita) y `{{\orden}}` (LaTeX sin tocar). Una línea en blanco separa párrafos. Si prefieres escribir LaTeX, cambia a «Código LaTeX» en el diseño general: los textos se convierten sin que cambie el póster.
+```mermaid
+flowchart TD
+    A([Doble clic / sh iniciar.command]) --> B{¿Hay Python 3?}
+    B -- No --> B1[Muestra cómo instalarlo y termina]
+    B -- Sí --> C{¿Existe .venv<br/>y funciona pip?}
+    C -- No --> C1[Crea el entorno .venv<br/>primera vez · un par de minutos]
+    C -- Sí --> D
+    C1 --> D{¿Cambió requirements.txt<br/>desde la última instalación?}
+    D -- Sí --> D1[Instala las dependencias<br/>en .venv]
+    D -- No --> E
+    D1 --> E[Avisa si faltan LaTeX o Poppler<br/>macOS/Linux: el lanzador · todos: el servidor]
+    E --> F{¿Ya hay un DocsLab<br/>en el puerto 8765?}
+    F -- Sí --> F1[Solo abre el navegador]
+    F -- No --> G[Arranca el servidor<br/>y abre el navegador]
+    G --> H([Deja la ventana abierta · Ctrl + C cierra])
+```
 
-**Compilar.** Se compila solo al guardar (un momento después de cada cambio) o con **Ctrl + S**. Si hay un error, la vista sigue mostrando la última versión buena y el panel inferior explica el error con un botón para ir al elemento que lo causa. Si algo no cabe, el aviso ofrece **Ajustar a una página** (también en el menú ⋯).
+- Si borras la carpeta `.venv`, el lanzador la vuelve a crear.
+- Al actualizar DocsLab a una versión con nuevas dependencias, el lanzador las instala solo, porque nota que `requirements.txt` cambió.
 
-**Atajos.** Ctrl + Z deshacer, Ctrl + Mayús + Z rehacer, Ctrl + S guardar y compilar.
+### 5.6 Opciones del servidor
 
-**Descargar.** «Revisar para imprimir…», «PDF para imprenta…», el PDF tal cual, el zip para Overleaf (`poster.tex`, la plantilla, las imágenes que se usan y las tipografías propias) o el zip del proyecto completo (copia de seguridad que se puede volver a importar).
+Se pasan al lanzador o a `python servidor.py`:
 
-## Referencias
+| Opción | Variable de entorno | Por defecto | Para qué sirve |
+|---|---|---|---|
+| `--puerto 9000` | `DOCSLAB_PUERTO` | `8765` | Usar otro puerto |
+| `--datos <carpeta>` | `DOCSLAB_DATOS` | `docslab/datos` | Guardar los proyectos en otra carpeta |
+| `--raices <carpetas…>` | — | Tu carpeta personal | Carpetas donde se pueden buscar cuadernos desde la aplicación |
+| `--host 0.0.0.0` | `DOCSLAB_HOST` | `127.0.0.1` | Abrirlo a otras máquinas de tu red. **No tiene contraseña:** úsalo solo en redes de confianza (ver [SECURITY.md](SECURITY.md)) |
+| `--abrir` | — | (los lanzadores la usan) | Abrir el navegador al arrancar |
+| `--detalle` | — | No | Mostrar cada petición en la terminal (para buscar un fallo) |
+
+Otras variables, para casos especiales: `DOCSLAB_PDFLATEX`, `DOCSLAB_LUALATEX` y `DOCSLAB_GS` (ruta a pdfLaTeX, LuaLaTeX o Ghostscript si no están en el PATH) y `DOCSLAB_PYTHON` (qué Python usa `iniciar.command`).
+
+## 6. Primeros pasos: tu primer póster
+
+```mermaid
+flowchart LR
+    A[Documento nuevo] --> B[Asistente:<br/>tipo, tamaño, columnas,<br/>colores, tipografía, idioma]
+    B --> C[Editar:<br/>textos, imágenes,<br/>referencias]
+    C -->|se compila solo| D[Vista previa PDF]
+    D --> C
+    D --> E[Revisar para imprimir]
+    E --> F[Descargar:<br/>PDF · imprenta ·<br/>PowerPoint · Overleaf]
+```
+
+1. **Crea el documento.** En el inicio, pulsa «Documento nuevo», elige *Póster* y completa el asistente: tamaño (por ejemplo A0), columnas, colores, tipografía e idioma. También puedes partir de una plantilla de la parte inferior.
+2. **Escribe.** En *Estructura* (izquierda), elige una caja; en el *inspector* (derecha), escribe su título y su texto. O haz doble clic en el texto de la vista previa y escribe ahí mismo.
+3. **Añade imágenes.** En la pestaña *Imágenes*, sube tus PNG, JPG o PDF; selecciona una caja y pulsa «Usar».
+4. **Cita.** En *Referencias*, añade una (o búscala por DOI); en el texto, el botón de cita inserta `[@clave]`. Añade el elemento *Referencias con estilo* (T36) donde quieras la lista.
+5. **Revisa y descarga.** *Descargar › Revisar para imprimir…* te dice qué arreglar; después descarga el PDF o el *PDF para imprenta*.
+
+Cada cambio se guarda y se compila solo. **Ctrl + Z** deshace.
+
+## 7. Cómo se usa el editor
+
+```
+┌───────────────┬──────────────────────────────────┬──────────────────┐
+│  IZQUIERDA    │            CENTRO                │    DERECHA       │
+│ Estructura    │      Vista previa (PDF real)     │   Inspector      │
+│ Imágenes      │  clic: seleccionar               │ formulario de lo │
+│ Referencias   │  arrastrar: mover                │ seleccionado, o  │
+│               │  doble clic: escribir            │ diseño general   │
+├───────────────┴──────────────────────────────────┴──────────────────┤
+│  Panel inferior: estado de la compilación, errores y avisos         │
+└─────────────────────────────────────────────────────────────────────┘
+   Arriba: conmutador «Póster | LAB», Deshacer, Descargar, menú ⋯
+```
+
+**Inicio.** Arriba, tus documentos (con un filtro por tipo cuando hay de varios); abajo, las plantillas. El menú ⋯ de cada tarjeta duplica, exporta, guarda como plantilla, actualiza su plantilla o borra. Desde aquí también se entra en el **Componente Lab** y en «Importar zip».
+
+**Izquierda · Estructura.** El árbol del documento, de delante hacia atrás (capas delante, contenido, capas detrás). En un póster, el contenido son filas, columnas y cajas; en una presentación, las diapositivas; en un documento, artículo o tesis, las secciones, con sangría según su nivel.
+- El ojo muestra u oculta; la **T** muestra u oculta el título de una caja; **+** añade una columna, una caja, un elemento o un elemento de capa.
+- Arrastra para mover (también entre columnas o capas).
+- Teclado: flechas para recorrer, Alt + flechas para subir o bajar, Supr para borrar.
+
+**Izquierda · Imágenes.** Sube PNG, JPG o PDF (también GIF, WEBP o TIFF, que se convierten a PNG). Selecciona dónde va y pulsa «Usar».
+
+**Centro · Vista previa.**
+- Clic para seleccionar. Arrastra una caja o un elemento para moverlo; una línea marca dónde caerá.
+- Con una caja elegida, unos tiradores entre columnas cambian su ancho.
+- Doble clic en un texto o en un título para escribir ahí (Esc o Ctrl + Intro para cerrar).
+- Los elementos de capa se arrastran, el cuadrito de la esquina cambia su tamaño y las flechas los empujan (Mayús para pasos largos). Ctrl + rueda hace zoom.
+
+**Posición libre** (pósters y presentaciones). «Soltar de la cuadrícula» deja la caja donde está, pero suelta; arrástrala por su asa. «Suelto» (abajo a la izquierda) añade un texto, una imagen o una caja ya sueltos. «Lienzo libre» suelta todas las cajas de la página. «Volver a la cuadrícula» lo deshace.
+
+**Diapositivas.** «Diapositiva» añade una con el diseño que elijas. En su inspector: diseño, título, fondo, pie, notas, duplicar, mover, ocultar o borrar. Si una no cabe, el aviso de arriba dice cuál.
+
+**Documentos, artículos y tesis.** «Título y autores» y «Resumen e índices» (en la tesis, también la portada y las páginas preliminares) van antes de las secciones. Cada sección tiene nivel (capítulo, sección, subsección…), numeración, salto de página y, en la tesis, si es un apéndice.
+
+**Derecha · Inspector.** El formulario de lo seleccionado. Sin selección, el *diseño general*: lienzo, letra y tipografías, idioma, colores, cajas, espacios, figuras y LaTeX propio.
+
+**Texto con formato sencillo** (por defecto). Los símbolos de LaTeX se escapan solos.
+
+| Escribes | Resultado |
+|---|---|
+| `**negrita**` · `*cursiva*` · `` `código` `` | **negrita** · *cursiva* · `código` |
+| `^superíndice^` · `~subíndice~` | superíndice · subíndice |
+| `$x^2$` | Matemáticas |
+| `[@clave]` · `[@a; @b, p. 12]` | Citas |
+| `{{\orden}}` | LaTeX sin tocar |
+| Una línea en blanco | Párrafo nuevo |
+
+Si prefieres escribir LaTeX, cambia a «Código LaTeX» en el diseño general: los textos se convierten sin que cambie el documento.
+
+**Atajos.** Ctrl + S guardar y compilar · Ctrl + Z deshacer · Ctrl + Mayús + Z rehacer.
+
+**Menú ⋯ del editor.** Compilar solo al guardar (sí o no), guardar como plantilla nueva, actualizar su plantilla, ajustar a una página, duplicar, **versiones anteriores** (el historial, para restaurar), ver el código LaTeX y convertir en proyecto LaTeX.
+
+**Descargar.** «Revisar para imprimir…», «PDF para imprenta…», el PDF tal cual, PowerPoint, el zip para Overleaf (`poster.tex`, la plantilla, las imágenes usadas y las tipografías propias) o el zip del proyecto completo (copia de seguridad que se puede volver a importar).
+
+**Modo LaTeX.** Menú ⋯ › «Convertir en proyecto LaTeX»: el proyecto pasa a archivos `.tex` editables con resaltado y vista previa (se guarda antes una copia del modelo). Una primera línea `% !TEX program = lualatex` (o `xelatex`) elige el programa.
+
+## 8. Qué pasa al compilar
+
+```mermaid
+sequenceDiagram
+    participant N as Navegador
+    participant S as Servidor
+    participant G as Generador
+    participant L as LaTeX
+    N->>S: Guardar (automático o Ctrl + S)
+    S->>S: Completa el modelo y lo actualiza al esquema actual
+    S->>S: Copia al historial (cada 2 min como máximo)
+    N->>S: Compilar
+    S->>G: modelo → documento .tex
+    G-->>S: .tex + mapa línea → elemento
+    alt Nada cambió desde la última vez
+        S-->>N: Mismo PDF, sin compilar
+    else Hay cambios
+        S->>L: pdfLaTeX (formato precompilado), repite pasadas si hace falta
+        alt Compila bien
+            L-->>S: PDF
+            S-->>N: PDF nuevo + avisos (por ejemplo, «no cabe»)
+        else Error
+            L-->>S: Registro con el error
+            S-->>N: Sigue el último PDF bueno + el error, con un botón al elemento que lo causa
+        end
+    end
+```
+
+Si algo no cabe, el aviso ofrece **Ajustar a una página** (también en el menú ⋯).
+
+## 9. Referencias bibliográficas
 
 En la pestaña **Referencias**:
 
-- **Añadir** abre un formulario con los campos del tipo elegido (artículo, libro, capítulo, congreso, tesis, informe, web, datos, software, preprint…) y una vista previa en el estilo del póster. **Buscar por DOI** rellena el formulario con los datos que da doi.org (necesita conexión a internet).
+- **Añadir** abre un formulario con los campos del tipo elegido (artículo, libro, capítulo, congreso, tesis, informe, web, datos, software, preprint…) y una vista previa en el estilo del documento. **Buscar por DOI** rellena el formulario con los datos de doi.org (necesita internet).
 - **Importar** acepta BibTeX (`.bib`), RIS (`.ris`, de Zotero, Mendeley o EndNote), CSL-JSON o una lista de DOI. **Exportar** descarga un `.bib`.
 - El **estilo** (APA 7, Vancouver, IEEE, Chicago autor-fecha, MLA 9, Harvard, Nature o ACS) cambia a la vez todas las citas y la lista.
-- **Citar**: en cualquier campo de texto, el botón de cita inserta `[@clave]`; varias juntas se escriben `[@a; @b]` y con página `[@a, p. 12]`. En los estilos numéricos, las citas se numeran por orden de lectura.
+- **Citar**: el botón de cita inserta `[@clave]`; varias juntas, `[@a; @b]`; con página, `[@a, p. 12]`. En los estilos numéricos, las citas se numeran por orden de lectura.
 - La lista va en el elemento **Referencias con estilo** (T36): solo las citadas o todas.
 
-## Componente Lab
+## 10. Componente Lab
 
-El Lab (botón en el inicio y en el selector de elementos) es un banco de trabajo para hacer tus propios componentes:
+Un banco de trabajo para hacer tus propios elementos (botón en el inicio y en el selector de elementos):
 
-- **Con piezas**, sin código: apila título, texto, cifra, etiqueta, imagen, lista, icono, separador, espacio, LaTeX o columnas con piezas dentro; decide qué partes se rellenan en cada póster (los *campos*) y elige la caja que lo envuelve.
-- **Con código LaTeX**: escribe el código con `{{campo}}` donde va cada dato; los campos se crean solos y la vista previa compila al momento, con los errores señalados en tu código.
-- **Recrear un incluido**: parte de cualquiera de las 69 variantes (como piezas ajustables o como código) y cámbiala.
+- **Con piezas**, sin código: apila título, texto, cifra, etiqueta, imagen, lista, icono, separador, espacio, LaTeX o columnas; decide qué partes se rellenan en cada documento (los *campos*) y la caja que lo envuelve.
+- **Con código LaTeX**: escribe el código con `{{campo}}` donde va cada dato; la vista previa compila al momento y señala los errores en tu código.
+- **Recrear un incluido**: parte de cualquiera de las 69 variantes y cámbiala.
 
-Los componentes se guardan en tu biblioteca (`datos/componentes/`) y aparecen en «Tus componentes» al añadir un elemento. Cada póster guarda una copia del componente que usa: si lo cambias en el Lab, el inspector ofrece ponerlo al día. Se exportan e importan en `.json`.
+Se guardan en `datos/componentes/` y aparecen en «Tus componentes». Cada documento guarda una copia del componente que usa; si lo cambias en el Lab, el inspector ofrece ponerlo al día. Se exportan e importan en `.json`.
 
-## Revisión para imprimir y PDF para imprenta
+## 11. Revisión para imprimir y PDF para imprenta
 
-**Descargar › Revisar para imprimir…** abre un panel con la revisión del PDF actual (si hay cambios, compila antes):
+**Descargar › Revisar para imprimir…** revisa el PDF actual (si hay cambios, compila antes):
 
 | Sección | Qué mira |
 |---|---|
-| Tamaño y páginas | el tamaño del papel, que no haya una segunda página ni filas que no caben, el margen y si hay color hasta el borde |
-| Imágenes | la resolución real de cada imagen a su tamaño en el póster (también las de dentro de las figuras PDF), las que faltan y las de ejemplo |
-| Tamaño de letra | el texto principal y lo más pequeño de cada parte, también dentro de las figuras, según el tamaño del póster |
-| Contraste | cada texto frente a lo que tiene detrás (fórmula de las WCAG) |
-| Color al imprimir | los colores del póster que la tinta (CMYK) no alcanza, con una muestra de cómo quedan |
-| Tipografías | que todas vayan incrustadas y que ninguna sea de mapa de bits |
-| Contenido | textos de ejemplo, citas sin referencia, líneas que se salen de su sitio y texto a menos de 5 mm del borde |
+| Tamaño y páginas | Tamaño del papel, que no haya una segunda página ni filas que no caben, margen, color hasta el borde |
+| Imágenes | Resolución real de cada imagen a su tamaño en el documento (también dentro de las figuras PDF), las que faltan y las de ejemplo |
+| Tamaño de letra | El texto principal y lo más pequeño de cada parte, también dentro de las figuras |
+| Contraste | Cada texto frente a lo que tiene detrás (fórmula de las WCAG) |
+| Color al imprimir | Los colores que la tinta (CMYK) no alcanza, con una muestra |
+| Tipografías | Que todas vayan incrustadas y ninguna sea de mapa de bits |
+| Contenido | Textos de ejemplo, citas sin referencia, líneas que se salen y texto a menos de 5 mm del borde |
 
-Cada comprobación explica qué pasa y cómo arreglarlo, y **Mostrar en el póster** acerca la vista previa a ese sitio. Los umbrales dependen del tamaño: en un A0 se recomiendan 150 ppi en las imágenes, 24 pt en el texto principal y 18 pt como mínimo (en un A1, unos 17 y 13 pt).
+Cada comprobación explica cómo arreglarla, y **Mostrar en el póster** acerca la vista previa a ese sitio. Los umbrales dependen del tamaño: en un A0, 150 ppi en las imágenes, 24 pt en el texto principal y 18 pt como mínimo (en un A1, unos 17 y 13 pt).
 
-**Descargar › PDF para imprenta…** prepara otro PDF, sin tocar el del póster:
+**Descargar › PDF para imprenta…** crea otro PDF, sin tocar el del documento:
+- **Sangrado** de 3 o 5 mm: el fondo (y lo que toca el borde) se alarga para que al cortar no queden filos blancos.
+- **Marcas de corte** en las esquinas, en 10 mm de margen.
+- **CMYK** (Ghostscript, perfil genérico). Úsalo solo si la imprenta lo pide; si te da su perfil ICC, mejor envía RGB.
 
-- **Sangrado** de 3 o 5 mm: el papel crece por cada lado y el fondo (y las imágenes o formas de las capas que llegan al borde) se alarga hasta ahí, para que al cortar no queden filos blancos.
-- **Marcas de corte**: líneas en las esquinas, fuera del sangrado, en 10 mm de margen alrededor.
-- **CMYK** (con Ghostscript y su perfil genérico). Úsalo solo si la imprenta lo pide; si te da su perfil ICC, mejor envía RGB y que conviertan ellos.
+El PDF lleva TrimBox (el documento) y BleedBox (con sangrado). En los proyectos LaTeX el sangrado no se añade solo (las marcas y el CMYK sí).
 
-El PDF lleva las cajas TrimBox (el póster) y BleedBox (con el sangrado). En los proyectos de código el sangrado no se añade solo (las marcas y el CMYK sí).
-
-## Tipografías
+## 12. Tipografías
 
 En el diseño general, **Tipografía del texto** y **Tipografía de los títulos**:
 
-- **Clásicas**: Helvetica, Avant Garde, Palatino, Times, Bookman y Charter. Funcionan con cualquier LaTeX.
-- **Libres de TeX Live**: Source Sans, Fira Sans, Roboto, Lato, Open Sans, Noto Sans, IBM Plex Sans, Atkinson Hyperlegible, Montserrat, Raleway, Cabin, Inter, Libertinus Serif, EB Garamond, Merriweather, Source Serif, Crimson, Noto Serif e IBM Plex Serif. Las que no estén instaladas salen marcadas (vienen en `texlive-fonts-extra`; MiKTeX y Overleaf las tienen).
-- **Tuyas**: «Subir .ttf u .otf» (sube a la vez los archivos de la familia: normal, negrita, cursiva…). Se guardan en la carpeta `fuentes/` del proyecto. Si falta la negrita o la cursiva, se imitan. Un póster con una tipografía propia se compila con **LuaLaTeX** (algo más lento) y no puede combinarla con las libres de TeX Live: en su lugar se usa una clásica. El zip para Overleaf trae un `latexmkrc` para que Overleaf use LuaLaTeX sin tocar nada. Si la licencia de la tipografía no permite incrustarla en un PDF, la aplicación lo avisa.
+| Grupo | Cuáles | Requisito |
+|---|---|---|
+| **Clásicas** | Helvetica, Avant Garde, Palatino, Times, Bookman, Charter | Cualquier LaTeX |
+| **Libres de TeX Live** | Source Sans, Fira Sans, Roboto, Lato, Open Sans, Noto Sans, IBM Plex Sans, Atkinson Hyperlegible, Montserrat, Raleway, Cabin, Inter, Libertinus Serif, EB Garamond, Merriweather, Source Serif, Crimson, Noto Serif, IBM Plex Serif | `texlive-fonts-extra` (MiKTeX, MacTeX y Overleaf las tienen). Las no instaladas salen marcadas |
+| **Tuyas** | Sube los `.ttf` u `.otf` de la familia (normal, negrita, cursiva…) | LuaLaTeX |
 
-En los proyectos de código, una primera línea `% !TEX program = lualatex` (o `xelatex`) hace que DocsLab compile con ese programa.
+Con una tipografía propia el documento se compila con **LuaLaTeX** (algo más lento) y no se puede combinar con las libres de TeX Live: en su lugar se usa una clásica. Si falta la negrita o la cursiva, se imitan. El zip para Overleaf incluye un `latexmkrc` para que Overleaf use LuaLaTeX. Si la licencia de la tipografía no permite incrustarla en un PDF, DocsLab lo avisa.
 
-## LAB: cuadernos celda a celda y plantillas de gráficos
+## 13. LAB: cuadernos y gráficos
 
-En el editor, arriba a la izquierda, el conmutador **Póster | LAB** (o Presentación, Tesis…) cambia entre el documento y su LAB.
+El conmutador **Póster | LAB** (o Presentación, Tesis…), arriba a la izquierda del editor, cambia entre el documento y sus cuadernos.
 
-**Cuadernos.** A la izquierda, los cuadernos del documento («Cuaderno nuevo», subir un `.ipynb` o abrir uno de una carpeta); en el centro, el cuaderno abierto; a la derecha, las figuras que ha guardado.
+```mermaid
+flowchart LR
+    A[Cuaderno .ipynb<br/>nuevo, subido o<br/>desde una carpeta] --> B[Ejecutar<br/>celda a celda o todo]
+    B --> C[El código guarda figuras<br/>PNG · JPG · PDF]
+    C --> D[DocsLab las recoge en<br/>recursos/cuadernos/…]
+    D --> E[«Usar» en una caja<br/>del documento]
+    B -.->|cambias el análisis<br/>y vuelves a ejecutar| D
+    D -.->|misma ruta:<br/>el documento se actualiza solo| E
+```
 
-- «Código» y «Texto» añaden celdas (el texto es Markdown; doble clic para editarlo). Cada celda se sube, se baja, se convierte o se borra desde sus botones.
-- ▶ ejecuta una celda; **Mayús + Intro** la ejecuta y pasa a la siguiente; **Ctrl + Intro** la ejecuta y se queda. «Ejecutar todo» recorre el cuaderno y se detiene en el primer error. En el menú ⋯: reiniciar Python y ejecutar todo, reiniciar (borra las variables) y limpiar las salidas.
-- Python sigue encendido entre ejecuciones, así que las variables se conservan. Se apaga solo tras tres horas sin uso o al cerrar DocsLab.
-- El cuaderno se guarda solo, con sus salidas, como un `.ipynb` normal. «Ejecutar en limpio» (en la tarjeta del cuaderno) lo ejecuta entero en un Python recién arrancado sin tocar el archivo.
-- Al terminar cada ejecución, las imágenes que el código guardó en la carpeta del cuaderno (PDF, PNG o JPG) aparecen en «Figuras del cuaderno» y en «Imágenes». Selecciona en el documento dónde va una y pulsa «Usar». Si vuelves a ejecutar, el documento se actualiza.
+**Cuadernos.** A la izquierda, los cuadernos del documento («Cuaderno nuevo», subir un `.ipynb` con sus datos o abrir uno desde una carpeta); en el centro, el cuaderno abierto; a la derecha, sus figuras.
+- «Código» y «Texto» añaden celdas (el texto es Markdown).
+- ▶ ejecuta una celda; **Mayús + Intro** ejecuta y pasa a la siguiente; **Ctrl + Intro** ejecuta y se queda. «Ejecutar todo» se detiene en el primer error. En ⋯: reiniciar y ejecutar todo, reiniciar o limpiar salidas.
+- Python sigue encendido entre ejecuciones (las variables se conservan) y se apaga tras tres horas sin uso o al cerrar DocsLab.
+- El cuaderno se guarda solo como `.ipynb` normal. «Ejecutar en limpio» lo ejecuta en un Python recién arrancado sin tocar el archivo.
 
-**Gráfico de plantilla.** Eliges el tipo de gráfico, tus datos (un archivo CSV, TSV, Excel, JSON o Parquet de la carpeta del cuaderno, o una tabla `DataFrame` que ya exista en el cuaderno), las columnas y las opciones (rótulos, tamaño, colores: por defecto los del documento). «Insertar y ejecutar» añade una celda con el código ya escrito y la ejecuta. Ese código es Python normal: edítalo para ajustes avanzados. «Ajustar el gráfico» vuelve al formulario (si cambiaste el código a mano, avisa de que lo regenera). Los gráficos de plotly se ven interactivos en el LAB y entran al documento como imagen fija; guardarlos necesita `kaleido` (y, en sus versiones 1.x, Chrome).
+**Ajustes de cada cuaderno:** carpeta de figuras, tipos de archivo, preferir PDF cuando hay PNG y PDF de la misma figura, recoger también las imágenes que solo se muestran, **omitir las celdas propias de Colab** (montar Drive, subir archivos), **parámetros** (código que se inserta tras la celda que elijas, por ejemplo `CONFIG["figure_dpi"] = 200`), tiempo máximo por celda y núcleo.
 
-**Plantillas de gráficos.** La segunda pestaña del LAB. Una plantilla es código Python con huecos `{{nombre}}` y la lista de parámetros del formulario que los rellenan (datos, una o varias columnas, texto, número, sí o no, lista de opciones, color o paleta). Abre una incluida para ver cómo está hecha, «Copiar para modificarla» te da una tuya, o crea una desde cero. «Probar con los datos de ejemplo» la ejecuta con `ejemplo.csv` y muestra el resultado. Tus plantillas se guardan en `datos/graficos/` y sirven para todos tus documentos.
+**¿Prefieres ejecutarlo en Colab?** «Traer figuras desde Colab» te da una celda: pégala al final de tu cuaderno de Colab, ejecútala y sube el zip que descarga.
 
-Las plantillas incluidas usan `pandas`, `matplotlib`, `seaborn` y `plotly`, que se instalan con `requirements.txt`. Tu código puede usar cualquier otro paquete que instales en el Python de DocsLab.
+**Gráfico de plantilla.** Eliges el tipo de gráfico, los datos (CSV, TSV, Excel, JSON o Parquet de la carpeta del cuaderno, o un `DataFrame` del cuaderno), las columnas y las opciones (rótulos, tamaño y colores, por defecto los del documento). «Insertar y ejecutar» añade una celda con el código ya escrito, que puedes editar. Los gráficos de plotly entran al documento como imagen fija; guardarlos necesita `kaleido` (y, en sus versiones 1.x, Chrome).
 
-## Cuadernos: figuras dinámicas desde Colab o Jupyter
+**Plantillas de gráficos.** Código Python con huecos `{{nombre}}` y un formulario que los rellena. Abre una incluida para ver cómo está hecha, cópiala para modificarla o crea una desde cero; «Probar con los datos de ejemplo» la ejecuta con `ejemplo.csv`. Se guardan en `datos/graficos/`.
 
-1. En **LAB**, «Subir un cuaderno»: elige el `.ipynb` y, a la vez, sus datos (CSV, un zip con varios archivos…). O «Abrir desde una carpeta» para usar un cuaderno que ya está en el servidor.
-2. **Ejecutar**. El registro muestra cada celda y lo que imprime. Al terminar, las figuras nuevas (PNG, JPG o PDF) se copian a `recursos/cuadernos/<cuaderno>/…` y el póster se recompila.
-3. Usa las figuras desde **Figuras** (en la tarjeta del cuaderno) o desde **Imágenes › Cuadernos**.
-4. Cuando cambies el análisis, vuelve a ejecutar: las rutas no cambian, así que el póster se actualiza solo.
+> **Un cuaderno ejecuta código Python con tus permisos.** Ejecuta solo cuadernos en los que confíes. Si te falta un paquete: `.venv/bin/python -m pip install …` (Windows: `.venv\Scripts\python -m pip install …`).
 
-Ajustes de cada cuaderno: carpeta donde guarda las figuras, tipos de archivo, preferir PDF cuando hay PNG y PDF de la misma figura, recoger también las imágenes que solo se muestran, **omitir las celdas propias de Colab** (montar Drive, subir archivos), **parámetros** (código que se inserta después de la celda que elijas, por ejemplo `CONFIG["figure_dpi"] = 200`), tiempo máximo por celda y núcleo.
+## 14. Plantillas
 
-¿Prefieres ejecutarlo en Colab? En «Traer figuras desde Colab» copia una celda, pégala al final de tu cuaderno de Colab, ejecútala y sube el zip que descarga.
+Una plantilla es una carpeta con `plantilla.json` (nombre, descripción, tipo), `modelo.json` o archivos `.tex`, `recursos/` (imágenes), `fuentes/` (tipografías) y, si tiene, `cuadernos/`.
 
-> Un cuaderno ejecuta código Python con tus permisos. Ejecuta solo cuadernos en los que confíes.
+**Incluidas (12):**
 
-## Plantillas
+| Plantilla | Tipo |
+|---|---|
+| Académica A0 · Horizontal 48 × 36 in · Por capas A1 · Mínima A1 | Pósters |
+| BGC (inglés y español) | Pósters de ejemplo completos |
+| Catálogo · Ejemplo por capas | Proyectos LaTeX (código) |
+| Presentación 16:9 | Presentación |
+| Artículo a dos columnas | Artículo |
+| Tesis genérica | Tesis |
+| Informe A4 | Documento |
 
-Una plantilla es una carpeta con `plantilla.json` (nombre, descripción, tipo), `modelo.json` (el póster) o los archivos `.tex`, `recursos/` (imágenes), `fuentes/` (tipografías propias) y, si tiene, `cuadernos/`. Desde la aplicación:
+**Desde la aplicación:**
+- **Guardar como plantilla nueva** (menú ⋯): copia diseño, contenido, imágenes, tipografías y cuadernos.
+- **Actualizar la plantilla «…»**: sustituye el contenido de la plantilla por el del documento; los documentos ya creados con ella no cambian. Para retocar una plantilla: crea un documento con ella, edítalo y actualízala.
+- **Renombrar, describir y borrar** (menú ⋯ de la plantilla). Las incluidas no se modifican: crea un documento con una y guárdalo como plantilla tuya.
+- **Exportar e importar**: «Importar zip» acepta zips de plantillas, de proyectos de DocsLab y de cualquier proyecto LaTeX (por ejemplo, de Overleaf).
 
-- **Guardar como plantilla nueva** (menú ⋯ de un póster, en el inicio o en el editor): copia diseño, contenido, imágenes, tipografías y cuadernos.
-- **Actualizar la plantilla «…»** (mismo menú): aparece en el póster desde el que guardaste la plantilla y en los pósters creados con ella. Sustituye el contenido de la plantilla por el del póster y conserva su nombre y su descripción; los pósters que ya se crearon con ella no cambian. Así, para retocar una plantilla: crea un póster con ella, edítalo y actualízala.
-- **Renombrar o describir y borrar** (menú ⋯ de la plantilla). Las incluidas no se pueden modificar: crea un póster con una de ellas y guárdalo como plantilla tuya.
-- **Exportar / importar**: el zip de una plantilla se importa con «Importar zip» en el inicio (también acepta zips de proyectos de DocsLab y cualquier proyecto LaTeX, por ejemplo de Overleaf).
+Las incluidas se regeneran con `python herramientas/construir_plantillas.py`, y las miniaturas de las variantes con `python herramientas/miniaturas_variantes.py`.
 
-Las plantillas incluidas se regeneran con `python herramientas/construir_plantillas.py`, y las miniaturas de las variantes con `python herramientas/miniaturas_variantes.py`.
+## 15. La plantilla LaTeX sin la aplicación
 
-## La plantilla LaTeX sin la aplicación
+`latex/postercientifico.sty` funciona sola, también en Overleaf. `python herramientas/empaquetar.py` genera `dist/plantilla_postercientifico_overleaf.zip`, con la plantilla, un póster de ejemplo por capas (`main.tex`), el catálogo de 7 páginas (`catalogo.tex`, variantes I01–I34 y T01–T35) y las imágenes de prueba. En Overleaf: *New Project › Upload Project*, compila con pdfLaTeX y cambia de documento en *Menu › Main document*.
 
-`latex/postercientifico.sty` funciona sola, también en Overleaf. El zip `plantilla_postercientifico_overleaf.zip` trae la plantilla, un póster de ejemplo por capas (`main.tex`), el catálogo de 7 páginas con todas las variantes (`catalogo.tex`) y las imágenes de prueba. En Overleaf: *New Project › Upload Project*, compila con pdfLaTeX y cambia de documento en *Menu › Main document*. Las filas con `alto=llenar` y las cajas con `estirar` se miden en una pasada y se ajustan en la siguiente: Overleaf repite solo; a mano, repite `pdflatex` mientras el registro diga «Rerun … (vuelve a compilar)» (2 o 3 veces).
-
-Lo esencial:
+Las filas con `alto=llenar` y las cajas con `estirar` se miden en una pasada y se ajustan en la siguiente: Overleaf repite solo; a mano, repite `pdflatex` mientras el registro diga «Rerun …» (2 o 3 veces).
 
 ```latex
 \documentclass{article}
@@ -233,82 +542,178 @@ Lo esencial:
 \end{document}
 ```
 
-Más claves:
-
-- Tipografía propia (compila con LuaLaTeX): `\posterfamilia{mia}{fuentes/}{Mia-Regular.ttf}{Mia-Bold.ttf}{}{}` y `familia=mia`.
+- Tipografía propia (LuaLaTeX): `\posterfamilia{mia}{fuentes/}{Mia-Regular.ttf}{Mia-Bold.ttf}{}{}` y `familia=mia`.
 - Para la imprenta: `sangrado=3mm, marcas corte=true`.
+- Lista de referencias (T36): `\PCbibliografia[numerica|autor][columnas]{\PCref{etiqueta}{texto} …}`.
 
-El catálogo documenta todas las claves de `\posterconfig`, las cajas, las filas, las capas y las tipografías.
+El catálogo documenta todas las claves de `\posterconfig`, las cajas, las filas, las capas y las tipografías. La plantilla tiene su propia licencia (LPPL-1.3c, ver [§22](#22-licencia)).
 
-## Estructura del código
+## 16. Dónde se guardan tus datos
 
-```
-iniciar.command             lanzador para macOS y Linux: crea el entorno .venv y arranca
-iniciar.bat                 lo mismo para Windows
-servidor.py                 arranque (python servidor.py --abrir)
-docslab/                  servidor (Flask)
-  app.py                    API
-  almacen.py                proyectos, plantillas, recursos y zips
-  modelo.py                 el modelo JSON del póster (temas, tamaños, tipografías)
-  variantes.py              las 69 variantes de elemento
-  generador.py              modelo → LaTeX (también el PDF para imprenta)
-  texto.py                  formato sencillo → LaTeX
-  bibliografia.py           referencias: estilos, citas, BibTeX, RIS, CSL-JSON y DOI
-  componentes.py            Componente Lab: componentes propios y su vista previa
-  compilador.py             pdfLaTeX / LuaLaTeX, formato precompilado, errores, marcas, CMYK
-  revision.py               revisión antes de imprimir
-  powerpoint.py             exportar a PowerPoint (.pptx)
-  fuentes.py                tipografías propias (.ttf, .otf)
-  cuadernos.py              ejecución de .ipynb y recogida de figuras
-  trabajos.py               trabajos en segundo plano
-static/                     aplicación web (Vue 3, pdf.js y CodeMirror incluidos; funciona sin conexión)
-  js/editor.js              el editor; vista.js (vista previa), directa.js (edición directa),
-                            inspector.js, referencias.js, lab.js, revision.js, powerpoint.js, tipografias.js…
-latex/postercientifico.sty  la plantilla LaTeX (por capas; versión en su \ProvidesPackage)
-plantillas/                 plantillas incluidas
-herramientas/               construir plantillas, miniaturas, lanzador de Colab, empaquetado,
-                            huella digital (huella.py) y referencia de la API (doc_api.py)
-docs/                       documentación funcional, arquitectura, API y versionado
-huella/                     huella digital de cada versión publicada
-tests/                      pruebas (pytest) y prueba en navegador (e2e_navegador.py)
-abrir_docslab_en_colab.ipynb
-```
-
-## Pruebas
+Por defecto en `docslab/datos/` (cámbialo con `--datos`; en Colab, `MyDrive/DocsLab/datos`):
 
 ```
-python -m pip install pytest     # con el entorno .venv activado
-python -m pytest                 # 317 pruebas; las que necesitan LaTeX, Poppler, LuaLaTeX o Ghostscript se saltan si faltan
+datos/
+├── proyectos/<id>/
+│   ├── modelo.json        el documento (proyectos estructurados)
+│   ├── *.tex              el documento (proyectos LaTeX)
+│   ├── recursos/          imágenes; recursos/cuadernos/<cuaderno>/ para las figuras del LAB
+│   ├── fuentes/           tipografías propias
+│   ├── cuadernos/         .ipynb y sus datos
+│   ├── historial/         copias automáticas (una cada 2 min como máximo; se guardan 30); se restauran en ⋯ › Versiones anteriores
+│   └── build/             salida de LaTeX (se puede borrar)
+├── plantillas/            tus plantillas
+├── componentes/           tu biblioteca del Componente Lab
+└── graficos/              tus plantillas de gráficos
+```
+
+- **Copia de seguridad:** copia la carpeta `datos/` entera, o descarga el zip de cada proyecto.
+- **Pasar a otro equipo:** copia `datos/` a la carpeta de DocsLab del otro equipo (o usa `--datos`).
+- **Al actualizar DocsLab**, tus proyectos se conservan: si la estructura de `modelo.json` cambió, se actualizan solos al abrirlos y antes se guarda una copia en `historial/modelo-antes-de-esquema-<N>.json`. Un proyecto creado con un DocsLab **más nuevo** no se abre en uno más antiguo: actualiza DocsLab (detalles en [docs/MIGRACIONES.md](docs/MIGRACIONES.md)).
+
+## 17. Arquitectura y estructura del código
+
+```mermaid
+flowchart TB
+    subgraph Navegador["Navegador · static/"]
+        UI[Vue 3 · pdf.js · CodeMirror<br/>sin conexión]
+    end
+    subgraph Servidor["Servidor · docslab/ (Flask)"]
+        API[app.py · API HTTP]
+        ALM[almacen.py · disco]
+        MOD[modelo.py + migraciones.py]
+        GEN[generador.py · texto.py<br/>variantes.py · bibliografia.py<br/>componentes.py · fuentes.py]
+        COMP[compilador.py]
+        REV[revision.py · powerpoint.py]
+        LAB[lab.py · cuadernos.py · graficos.py]
+        JOB[trabajos.py · tareas en segundo plano]
+    end
+    EXT[pdfLaTeX / LuaLaTeX · Poppler · Ghostscript · Jupyter]
+    UI <-->|JSON| API
+    API --> ALM --> MOD
+    API --> GEN --> COMP --> EXT
+    API --> REV --> EXT
+    API --> LAB --> EXT
+    API --> JOB
+```
+
+```
+docslab/                    (carpeta del proyecto)
+├── iniciar.bat             lanzador de Windows
+├── iniciar.command         lanzador de macOS y Linux
+├── servidor.py             arranque (python servidor.py --abrir)
+├── abrir_docslab_en_colab.ipynb
+├── requirements.txt        dependencias de Python
+├── docslab/                el servidor (Flask)
+│   ├── app.py              API HTTP (95 rutas, ver docs/API.md)
+│   ├── almacen.py          proyectos, plantillas, recursos, historial y zips
+│   ├── modelo.py           el modelo JSON: clases, tamaños, temas, tipografías, capas
+│   ├── migraciones.py      actualización de proyectos de esquemas anteriores
+│   ├── variantes.py        las 69 variantes de elemento
+│   ├── generador.py        modelo → LaTeX (también el PDF para imprenta)
+│   ├── texto.py            formato sencillo → LaTeX
+│   ├── bibliografia.py     estilos, citas, BibTeX, RIS, CSL-JSON y DOI
+│   ├── componentes.py      Componente Lab
+│   ├── compilador.py       pdfLaTeX/LuaLaTeX, formato precompilado, errores, CMYK
+│   ├── revision.py         revisión para imprimir
+│   ├── powerpoint.py       exportar a .pptx
+│   ├── fuentes.py          tipografías propias
+│   ├── lab.py              núcleos de Python del LAB (celda a celda)
+│   ├── cuadernos.py        ejecución completa de .ipynb y recogida de figuras
+│   ├── graficos.py         plantillas de gráficos
+│   └── trabajos.py         tareas en segundo plano (compilar, ejecutar)
+├── static/                 la interfaz web (Vue 3; librerías en static/vendor)
+├── latex/                  postercientifico.sty y su licencia (LPPL-1.3c)
+├── plantillas/             las 12 plantillas incluidas
+├── herramientas/           construir plantillas y miniaturas, empaquetar,
+│                           huella digital (huella.py) y referencia de la API (doc_api.py)
+├── docs/                   documentación técnica y funcional
+├── huella/                 huella digital de cada versión publicada
+└── tests/                  pruebas (pytest) y prueba en navegador
+```
+
+Más detalle en [docs/ARQUITECTURA.md](docs/ARQUITECTURA.md).
+
+## 18. Pruebas
+
+Con el entorno `.venv` activado:
+```
+python -m pip install pytest
+python -m pytest                 # 317 pruebas
 python tests/e2e_navegador.py    # opcional: necesita playwright y chromium
 ```
+Las pruebas que necesitan LaTeX, Poppler, LuaLaTeX o Ghostscript se saltan si faltan esas herramientas. Para que pasen todas hace falta un TeX Live completo: en Ubuntu/Debian, `texlive-latex-extra`, `texlive-lang-spanish` y `texlive-luatex`, además de `poppler-utils` y `ghostscript`.
 
-## Problemas frecuentes
+## 19. Problemas frecuentes
 
-- **`error: externally-managed-environment` al hacer `pip install`** (Python de Homebrew en macOS, Ubuntu 23.04 o posterior, Debian 12…): el sistema no deja instalar paquetes en su Python. Usa `sh iniciar.command` o el entorno `.venv` de «Instalación»; no hace falta `--break-system-packages` ni `pipx`.
-- **`command not found: pip` o `python`**: en macOS y Linux se llaman `pip3` y `python3`; dentro del entorno `.venv` activado ya valen `pip` y `python`.
-- **«Falta pdflatex»**: instala TeX Live, MacTeX o MiKTeX (arriba) y reinicia DocsLab.
-- **`File 'tcolorbox.sty' not found`** (u otro paquete) **con TeX Live**: instala `texlive-latex-extra` y `texlive-pictures`, o `tlmgr install` y el nombre del paquete.
-- **`File 'grfext.sty' not found`** (u otro paquete) **con MiKTeX**: DocsLab le pide a MiKTeX que instale solo lo que falta; si aun así sale (sin internet, o una versión antigua de DocsLab), abre MiKTeX Console → Packages, busca el paquete (el nombre del archivo sin `.sty`) e instálalo, o en Settings elige «Always install missing packages on-the-fly». Luego vuelve a compilar.
-- **El póster ocupa 2 páginas**: hay más contenido del que cabe. Usa «Ajustar a una página», acorta textos o reduce imágenes.
-- **Una tipografía libre sale «no instalada»**: instala `texlive-fonts-extra` (o el paquete de esa tipografía) y reinicia DocsLab.
-- **No se pueden subir tipografías**: hace falta LuaLaTeX (`texlive-luatex` en Ubuntu; viene con MacTeX y MiKTeX). La primera compilación con una tipografía nueva tarda unos segundos más.
-- **CMYK no está disponible** o la sección «Color al imprimir» no se revisa: instala Ghostscript (`ghostscript` en Ubuntu, `brew install ghostscript` en macOS).
-- **PowerPoint: falta «python-pptx»**: con los lanzadores se instala solo al arrancar; a mano, `python -m pip install -r requirements.txt` con el entorno `.venv` activado. **Sin la opción de texto editable**: hace falta Ghostscript.
-- **La revisión dice «No se pudo revisar»**: faltan las herramientas de Poppler (`poppler-utils`).
-- **Un cuaderno falla con `ModuleNotFoundError: google.colab`**: activa «Omitir las celdas propias de Colab».
-- **Un cuaderno no encuentra sus datos**: súbelos en «Datos del cuaderno» (menú ⋯ de la tarjeta).
-- **Falta un paquete de Python en el cuaderno**: instálalo en el entorno de DocsLab: `.venv/bin/python -m pip install …` (Windows: `.venv\Scripts\python -m pip install …`).
-- **El puerto está ocupado**: `sh iniciar.command --puerto 9000` (o `python servidor.py --puerto 9000`).
+**Al arrancar**
 
-## Licencias de terceros
+| Síntoma | Sistema | Solución |
+|---|---|---|
+| «No encuentro Python 3» | Windows | Instala Python desde python.org marcando «Add python.exe to PATH» y vuelve a abrir `iniciar.bat` |
+| «No encuentro Python 3» | macOS / Linux | macOS: `brew install python` · Ubuntu/Debian: `sudo apt install python3 python3-venv` |
+| «No se pudo crear el entorno de Python (.venv)» | Linux | `sudo apt install python3-venv` y vuelve a intentarlo |
+| `error: externally-managed-environment` al hacer `pip install` | macOS (Homebrew), Ubuntu 23.04+, Debian 12+ | Usa el lanzador o el entorno `.venv`; no hace falta `--break-system-packages` ni `pipx` |
+| `command not found: pip` o `python` | macOS / Linux | Fuera de `.venv` se llaman `pip3` y `python3` |
+| «Falló la instalación de las dependencias» | Todos | Revisa la conexión a internet y vuelve a abrir el lanzador |
+| macOS no deja abrir `iniciar.command` | macOS | *Ajustes del Sistema › Privacidad y seguridad › Abrir igualmente*, o `sh iniciar.command` en la Terminal |
+| El puerto está ocupado | Todos | `--puerto 9000` (con el lanzador o con `servidor.py`) |
 
-Incluidos en `static/vendor/`: Vue 3 (MIT), pdf.js (Apache 2.0), CodeMirror 5 (MIT) y las tipografías Atkinson Hyperlegible Next y Mono (SIL Open Font License 1.1). Las licencias completas están junto a cada archivo.
+**LaTeX y compilación**
 
-## Si venías de PosterLab
+| Síntoma | Solución |
+|---|---|
+| «Falta pdflatex» | Instala MiKTeX (Windows), MacTeX (macOS) o TeX Live (Linux) y reinicia DocsLab |
+| `File 'tcolorbox.sty' not found` (u otro) con TeX Live | `sudo apt install texlive-latex-extra texlive-pictures`, o `tlmgr install <paquete>` |
+| `File 'grfext.sty' not found` (u otro) con MiKTeX | DocsLab pide a MiKTeX lo que falta; si aun así sale (sin internet), abre *MiKTeX Console › Packages* e instálalo, o activa *Settings › Always install missing packages on-the-fly* |
+| La primera compilación tarda minutos | Windows (MiKTeX): está descargando paquetes; solo pasa la primera vez |
+| El documento ocupa 2 páginas | «Ajustar a una página», acorta textos o reduce imágenes |
+| Aviso «Falta el idioma spanish» | Instala `texlive-lang-spanish` (o el idioma que uses) |
+
+**Funciones opcionales**
+
+| Síntoma | Solución |
+|---|---|
+| Una tipografía libre sale «no instalada» | `texlive-fonts-extra` y reinicia DocsLab |
+| No se pueden subir tipografías | Hace falta LuaLaTeX (`texlive-luatex`; viene con MacTeX y MiKTeX) |
+| CMYK no disponible o «Color al imprimir» sin revisar | Instala Ghostscript |
+| La revisión dice «No se pudo revisar» | Faltan las herramientas de Poppler |
+| PowerPoint sin la opción de texto editable | Hace falta Ghostscript |
+| PowerPoint: falta «python-pptx» | Vuelve a abrir el lanzador (lo instala) o `python -m pip install -r requirements.txt` en `.venv` |
+
+**Cuadernos**
+
+| Síntoma | Solución |
+|---|---|
+| `ModuleNotFoundError: google.colab` | Activa «Omitir las celdas propias de Colab» |
+| El cuaderno no encuentra sus datos | Súbelos en «Datos del cuaderno» (menú ⋯ de la tarjeta) |
+| Falta un paquete de Python | `.venv/bin/python -m pip install …` (Windows: `.venv\Scripts\python -m pip install …`) |
+
+**Proyectos**
+
+| Síntoma | Solución |
+|---|---|
+| «Este proyecto se guardó con una versión más nueva de DocsLab» | Actualiza DocsLab; el proyecto no se toca |
+
+## 20. Versionado y documentación
+
+DocsLab sigue [Versionado Semántico](https://semver.org/lang/es/): `MAYOR.MENOR.PARCHE`. La plantilla LaTeX y la estructura de los proyectos tienen su propio número de versión.
+
+| Documento | Para qué |
+|---|---|
+| [CHANGELOG.md](CHANGELOG.md) | Qué cambió en cada versión |
+| [docs/FUNCIONAL.md](docs/FUNCIONAL.md) | Especificación funcional (F-01…F-25) |
+| [docs/ARQUITECTURA.md](docs/ARQUITECTURA.md) | Componentes, almacenamiento y dependencias |
+| [docs/API.md](docs/API.md) | Las 95 rutas HTTP del servidor |
+| [docs/MIGRACIONES.md](docs/MIGRACIONES.md) | Cómo se actualizan los proyectos antiguos |
+| [docs/VERSIONADO.md](docs/VERSIONADO.md) | Política de versiones, huella digital y cómo publicar |
+| [SECURITY.md](SECURITY.md) | Modelo de amenazas, versiones con soporte y cómo reportar vulnerabilidades |
+
+## 21. Si venías de PosterLab
 
 DocsLab es la continuación de PosterLab. Tus pósters se abren igual: importa el zip de cada proyecto («Importar zip») o copia tu carpeta `datos` a la de DocsLab. Los proyectos sin tipo se tratan como pósters. La plantilla LaTeX conserva su nombre (`postercientifico.sty`) para que los proyectos LaTeX y los zips de Overleaf anteriores sigan compilando. En Colab, el cuaderno lanzador copia una vez `MyDrive/PosterLab/datos` a `MyDrive/DocsLab/datos` si esta última no existe.
 
-## Licencia
+## 22. Licencia
 
 Copyright (C) 2026 Christian Alejandro Ponce Mejia.
 
@@ -323,4 +728,6 @@ En la práctica:
 
 **Excepción: la plantilla LaTeX.** `latex/postercientifico.sty` (y sus copias en las plantillas y en los zips para Overleaf) se distribuye bajo la **LaTeX Project Public License 1.3c** o posterior (`LPPL-1.3c`, texto en [`latex/LICENSE-LPPL-1.3c.txt`](latex/LICENSE-LPPL-1.3c.txt)), la licencia habitual de los paquetes LaTeX. Puedes usarla en tus documentos sin restricciones; si la modificas y redistribuyes, la versión modificada debe llevar otro nombre o indicar claramente que no es la original. Estado de mantenimiento LPPL: `maintained`; responsable: Christian Alejandro Ponce Mejia.
 
-Cada archivo de código propio lleva su cabecera `SPDX-License-Identifier` (`AGPL-3.0-only`, o `LPPL-1.3c` en la plantilla LaTeX). Las librerías de `static/vendor/` conservan sus propias licencias (ver «Licencias de terceros»).
+Cada archivo de código propio lleva su cabecera `SPDX-License-Identifier` (`AGPL-3.0-only`, o `LPPL-1.3c` en la plantilla LaTeX).
+
+**Licencias de terceros** (incluidos en `static/vendor/`, con su licencia completa junto a cada archivo): Vue 3 (MIT), pdf.js (Apache 2.0), CodeMirror 5 (MIT) y las tipografías Atkinson Hyperlegible Next y Mono (SIL Open Font License 1.1).

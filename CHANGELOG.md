@@ -12,6 +12,24 @@ Tipos de entrada: **Añadido**, **Cambiado**, **Obsoleto**, **Eliminado**, **Cor
 
 _Nada todavía._
 
+## [1.2.2] - 2026-11-18
+
+Huella: [`huella/v1.2.2.json`](huella/v1.2.2.json). Versiones: aplicación 1.2.2 · `.sty` 1.1.0 · esquema 1.
+
+### Cambiado
+- **LEEME reescrito** (22 secciones con índice):
+  - instalación y arranque separados por sistema (Windows, macOS, Linux y Colab), con una tabla comparativa y los pasos de cada lanzador;
+  - 6 diagramas Mermaid: funcionamiento general, lanzador, primer póster, compilación, LAB y arquitectura;
+  - tabla de requisitos por sistema, conceptos clave, primeros pasos, mapa del editor, ubicación de los datos (copias de seguridad, cambio de equipo y migraciones), opciones y variables de entorno del servidor, y problemas frecuentes agrupados por tema y sistema.
+- Datos corregidos en el LEEME:
+  - el tiempo de compilación ahora es el medido;
+  - la ruta real del zip para Overleaf (`dist/`, se genera con `empaquetar.py`);
+  - el catálogo cubre T01–T35;
+  - los nombres reales de los menús («Convertir en proyecto LaTeX», «Versiones anteriores»);
+  - el árbol de código incluye `migraciones.py`, `lab.py` y `graficos.py`.
+- `docs/FUNCIONAL.md` RNF-02: tiempo de compilación medido (≈ 2,4 s por cambio pequeño en A0) en lugar de la cifra no verificada de ~1 s.
+
+
 ## [1.2.1] - 2026-11-18
 
 Huella: [`huella/v1.2.1.json`](huella/v1.2.1.json). Versiones: aplicación 1.2.1 · `.sty` 1.1.0 · esquema 1.
@@ -117,7 +135,8 @@ Línea base. Es la primera versión con versionado formal. Huella: [`huella/v1.0
 - En un TeX Live sin `texlive-lang-spanish` ni `luatex85.sty` fallan 11 pruebas (las 9 de compilación de plantillas, una de la API y una de LuaLaTeX). Verificado como problema de entorno en 1.2.1.
 - La API no tiene autenticación y los cuadernos ejecutan código arbitrario (ver `SECURITY.md`).
 
-[Sin publicar]: ../../compare/v1.2.1...HEAD
+[Sin publicar]: ../../compare/v1.2.2...HEAD
+[1.2.2]: ../../compare/v1.2.1...v1.2.2
 [1.2.1]: ../../compare/v1.2.0...v1.2.1
 [1.2.0]: ../../compare/v1.1.0...v1.2.0
 [1.1.0]: ../../compare/v1.0.1...v1.1.0

@@ -121,7 +121,7 @@ Columnas: **Módulos** (backend), **API** (grupo de `docs/API.md`), **Pruebas** 
 | ID | Requisito | Fuente |
 |---|---|---|
 | RNF-01 | Funciona sin conexión (librerías incluidas), salvo la búsqueda por DOI | LEEME |
-| RNF-02 | Un cambio pequeño compila en ~1 s [NO VERIFICADO: cifra del LEEME, no medida] | LEEME |
+| RNF-02 | Recompilación rápida. Medido el 2026-11-18 (plantilla Académico A0, Linux, TeX Live): primera compilación ≈ 5,3 s; cambio pequeño ≈ 2,4 s. El LEEME original decía ~1 s | Medición |
 | RNF-03 | Python ≥ 3.9 | `requirements.txt` |
 | RNF-04 | Uso local de un solo usuario, sin autenticación | `SECURITY.md` |
 | RNF-06 | Compatibilidad hacia atrás: todo proyecto de un esquema anterior se abre sin pérdida de datos | `docs/MIGRACIONES.md`, F-25 |
