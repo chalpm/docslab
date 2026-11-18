@@ -1,0 +1,35 @@
+{
+ "nombre": "BGC Stutzerimonas (EN)",
+ "orden": 5,
+ "descripcion": "English draft poster of the BGC classification notebook. The figures come from the attached notebook: add tabla_bgc-5.csv to it and run it to regenerate them.",
+ "tipo": "estructurado",
+ "etiquetas": [
+  "A0",
+  "cuaderno",
+  "BGC"
+ ],
+ "cuadernos": [
+  {
+   "patrones_ext": [
+    "pdf",
+    "png",
+    "jpg"
+   ],
+   "carpeta_figuras": "results",
+   "preferir_pdf": true,
+   "recoger_mostradas": false,
+   "omitir_colab": false,
+   "parametros": {
+    "despues_de": -1,
+    "codigo": ""
+   },
+   "tiempo_celda": 3600,
+   "recompilar": true,
+   "kernel": "",
+   "id": "nb-bgc",
+   "nombre": "modelo_bgc_pfam_en.ipynb",
+   "archivo": "modelo_bgc_pfam_en.ipynb",
+   "origen": "subido"
+  }
+ ]
+}

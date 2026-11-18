@@ -1,0 +1,1568 @@
+%% ============================================================================
+%%  postercientifico.sty · v2.0 · Plantilla de póster científico POR CAPAS
+%%  ---------------------------------------------------------------------------
+%%  El póster se pinta en capas, de atrás hacia delante:
+%%
+%%      capa «fondo»      z = -10   imágenes, formas y textos detrás de todo
+%%      CONTENIDO         z =   0   cabecera, filas de columnas con cajas, pie
+%%      capa «frente»     z =  10   sellos, logotipos y notas encima de todo
+%%      ... y las capas que crees con \nuevacapa[z=<número>]{nombre}
+%%
+%%  Cada capa se puede ocultar, mover de orden o atenuar:
+%%      \configcapa{fondo}{visible=false}     \configcapa{frente}{z=20, opacidad=0.5}
+%%  y recibe elementos con posición absoluta. x e y van de 0 a 1 desde la
+%%  esquina superior izquierda (o con unidades: 12cm, 40mm):
+%%      \colocarimagen[capa=fondo, x=0, y=0, ancla=north west, ancho=1, alto=1,
+%%                     ajuste=cubrir, opacidad=0.1]{img/fondo.jpg}
+%%      \colocartexto[capa=frente, x=0.5, y=0.5, rotacion=30, escala=8,
+%%                    opacidad=0.15, color=pcAcento, negrita]{BORRADOR}
+%%      \colocarforma[capa=fondo, forma=circulo, x=0.9, y=0.1, ancho=0.3,
+%%                    fondo=pcSecundario!20]
+%%
+%%  El contenido se organiza en filas de columnas con cajas:
+%%      \begin{fila}[columnas=3, alto=llenar]
+%%        \begin{columna}[abarca=1]
+%%          \begin{caja}[titulo={Introducción}] ... \end{caja}
+%%          \begin{caja}[titulo={Métodos}, mostrar titulo=false] ... \end{caja}
+%%        \end{columna}
+%%        ...
+%%      \end{fila}
+%%  Las columnas de una fila terminan a la misma altura y las cajas se reparten
+%%  el espacio. «alto=llenar» hace que la fila ocupe todo el alto libre hasta
+%%  el pie (necesita dos compilaciones).
+%%
+%%  Cada caja admite: titulo, mostrar titulo=true|false (o «sin titulo»),
+%%  estilo, numero, fondo, borde, grosor borde, radio, relleno, color titulo,
+%%  fondo titulo, color texto, escala titulo, escala texto, alineacion titulo,
+%%  alinear texto, columnas, alto, opacidad, sombra, estirar, visible, id y
+%%  cualquier opción de tcolorbox.
+%%
+%%  Todo lo de la versión 1 sigue funcionando: \posterconfig, bloque,
+%%  bloquesimple, columnas/columna, \cabecera, \piedeposter y las 68 variantes
+%%  (\img... y \txt...), a las que se suma T35 \txtCaja.
+%%
+%%  Compila con pdfLaTeX (o con LuaLaTeX si usas tipografías propias, ver
+%%  «Familias tipográficas»). Dos pasadas si usas alto=llenar o estirar
+%%  (latexmk y Overleaf repiten solos).
+%% ============================================================================
+\NeedsTeXFormat{LaTeX2e}[2020/10/01]
+\ProvidesPackage{postercientifico}[2026/10/17 v2.0 Plantilla de poster cientifico por capas]
+
+%% ---- Paquetes ---------------------------------------------------------------
+\RequirePackage{iftex}
+\ifLuaTeX\RequirePackage{luatex85}\fi        % \pdfsavepos y compañía con sus nombres de pdfTeX
+\RequirePackage{fix-cm}                      % tamaños de letra arbitrarios
+\RequirePackage[T1]{fontenc}
+\ifPDFTeX\RequirePackage[utf8]{inputenc}\fi
+\RequirePackage[scaled=0.95]{helvet}
+\RequirePackage{courier}
+%% Con LuaLaTeX (tipografías propias) las letras son OpenType: fontspec
+\ifPDFTeX\else
+  \RequirePackage{fontspec}
+  \setmonofont[Ligatures=TeX, BoldFont=texgyrecursor-bold.otf, ItalicFont=texgyrecursor-italic.otf,
+    BoldItalicFont=texgyrecursor-bolditalic.otf]{texgyrecursor-regular.otf}
+\fi
+\RequirePackage{etoolbox,calc,amsmath,amssymb,graphicx,xcolor,adjustbox}
+\RequirePackage{tikz}
+\usetikzlibrary{calc,shadows,arrows.meta}
+\RequirePackage[most]{tcolorbox}
+\RequirePackage{multicol,wrapfig,lettrine,array,booktabs,enumitem,lipsum}
+\DeclareFontShape{OMX}{cmex}{m}{n}{<-> cmex10}{}   % símbolos matemáticos grandes a cualquier tamaño
+\ifdef{\setlipsum}{\setlipsum{auto-lang=false}}{}
+
+%% ---- Caracteres Unicode frecuentes en textos científicos ---------------------
+%% Con pdfLaTeX, inputenc los traduce; con LuaLaTeX, newunicodechar (así se ven igual
+%% aunque la tipografía propia no traiga esos signos).
+\ifPDFTeX
+  \let\PC@unicode\DeclareUnicodeCharacter
+\else
+  \RequirePackage{newunicodechar}
+  \newcommand\PC@unicode[2]{\expandafter\newunicodechar\expandafter{\Uchar"#1}{#2}}
+\fi
+\PC@unicode{2212}{\ensuremath{-}}
+\PC@unicode{2264}{\ensuremath{\leq}}
+\PC@unicode{2265}{\ensuremath{\geq}}
+\PC@unicode{2260}{\ensuremath{\neq}}
+\PC@unicode{2248}{\ensuremath{\approx}}
+\PC@unicode{2261}{\ensuremath{\equiv}}
+\PC@unicode{223C}{\ensuremath{\sim}}
+\PC@unicode{2192}{\ensuremath{\rightarrow}}
+\PC@unicode{2190}{\ensuremath{\leftarrow}}
+\PC@unicode{2191}{\ensuremath{\uparrow}}
+\PC@unicode{2193}{\ensuremath{\downarrow}}
+\PC@unicode{2194}{\ensuremath{\leftrightarrow}}
+\PC@unicode{21D2}{\ensuremath{\Rightarrow}}
+\PC@unicode{21D4}{\ensuremath{\Leftrightarrow}}
+\PC@unicode{221E}{\ensuremath{\infty}}
+\PC@unicode{221A}{\ensuremath{\surd}}
+\PC@unicode{2211}{\ensuremath{\sum}}
+\PC@unicode{220F}{\ensuremath{\prod}}
+\PC@unicode{2202}{\ensuremath{\partial}}
+\PC@unicode{2207}{\ensuremath{\nabla}}
+\PC@unicode{2208}{\ensuremath{\in}}
+\PC@unicode{2209}{\ensuremath{\notin}}
+\PC@unicode{2229}{\ensuremath{\cap}}
+\PC@unicode{222A}{\ensuremath{\cup}}
+\PC@unicode{2282}{\ensuremath{\subset}}
+\PC@unicode{2286}{\ensuremath{\subseteq}}
+\PC@unicode{2200}{\ensuremath{\forall}}
+\PC@unicode{2203}{\ensuremath{\exists}}
+\PC@unicode{2205}{\ensuremath{\emptyset}}
+\PC@unicode{222B}{\ensuremath{\int}}
+\PC@unicode{2206}{\ensuremath{\Delta}}
+\PC@unicode{2713}{\ensuremath{\checkmark}}
+\PC@unicode{2717}{\ensuremath{\times}}
+\PC@unicode{2605}{\ensuremath{\bigstar}}
+\PC@unicode{03B1}{\ensuremath{\alpha}}
+\PC@unicode{03B2}{\ensuremath{\beta}}
+\PC@unicode{03B3}{\ensuremath{\gamma}}
+\PC@unicode{03B4}{\ensuremath{\delta}}
+\PC@unicode{03B5}{\ensuremath{\varepsilon}}
+\PC@unicode{03B6}{\ensuremath{\zeta}}
+\PC@unicode{03B7}{\ensuremath{\eta}}
+\PC@unicode{03B8}{\ensuremath{\theta}}
+\PC@unicode{03B9}{\ensuremath{\iota}}
+\PC@unicode{03BA}{\ensuremath{\kappa}}
+\PC@unicode{03BB}{\ensuremath{\lambda}}
+\PC@unicode{03BC}{\ensuremath{\mu}}
+\PC@unicode{03BD}{\ensuremath{\nu}}
+\PC@unicode{03BE}{\ensuremath{\xi}}
+\PC@unicode{03BF}{o}
+\PC@unicode{03C0}{\ensuremath{\pi}}
+\PC@unicode{03C1}{\ensuremath{\rho}}
+\PC@unicode{03C2}{\ensuremath{\varsigma}}
+\PC@unicode{03C3}{\ensuremath{\sigma}}
+\PC@unicode{03C4}{\ensuremath{\tau}}
+\PC@unicode{03C5}{\ensuremath{\upsilon}}
+\PC@unicode{03C6}{\ensuremath{\varphi}}
+\PC@unicode{03C7}{\ensuremath{\chi}}
+\PC@unicode{03C8}{\ensuremath{\psi}}
+\PC@unicode{03C9}{\ensuremath{\omega}}
+\PC@unicode{0393}{\ensuremath{\Gamma}}
+\PC@unicode{0394}{\ensuremath{\Delta}}
+\PC@unicode{0398}{\ensuremath{\Theta}}
+\PC@unicode{039B}{\ensuremath{\Lambda}}
+\PC@unicode{039E}{\ensuremath{\Xi}}
+\PC@unicode{03A0}{\ensuremath{\Pi}}
+\PC@unicode{03A3}{\ensuremath{\Sigma}}
+\PC@unicode{03A5}{\ensuremath{\Upsilon}}
+\PC@unicode{03A6}{\ensuremath{\Phi}}
+\PC@unicode{03A8}{\ensuremath{\Psi}}
+\PC@unicode{03A9}{\ensuremath{\Omega}}
+\PC@unicode{2070}{\textsuperscript{0}}
+\PC@unicode{2074}{\textsuperscript{4}}
+\PC@unicode{2075}{\textsuperscript{5}}
+\PC@unicode{2076}{\textsuperscript{6}}
+\PC@unicode{2077}{\textsuperscript{7}}
+\PC@unicode{2078}{\textsuperscript{8}}
+\PC@unicode{2079}{\textsuperscript{9}}
+\PC@unicode{207A}{\textsuperscript{+}}
+\PC@unicode{207B}{\textsuperscript{\ensuremath{-}}}
+\PC@unicode{2080}{\textsubscript{0}}
+\PC@unicode{2081}{\textsubscript{1}}
+\PC@unicode{2082}{\textsubscript{2}}
+\PC@unicode{2083}{\textsubscript{3}}
+\PC@unicode{2084}{\textsubscript{4}}
+\PC@unicode{2085}{\textsubscript{5}}
+\PC@unicode{2086}{\textsubscript{6}}
+\PC@unicode{2087}{\textsubscript{7}}
+\PC@unicode{2088}{\textsubscript{8}}
+\PC@unicode{2089}{\textsubscript{9}}
+\PC@unicode{2009}{\,}
+\PC@unicode{202F}{\,}
+\PC@unicode{2002}{\enspace}
+\PC@unicode{2003}{\quad}
+%% el signo de micras: el de la letra si lo trae, si no, la mu de matemáticas
+\ifPDFTeX\else\PC@unicode{00B5}{\iffontchar\font"00B5 \char"00B5 \else\ensuremath{\mu}\fi}\fi
+
+%% ============================================================================
+%%  1. UTILIDADES
+%% ============================================================================
+\ExplSyntaxOn
+%% \PC@defcolor{nombre}{valor}: valor = 6 cifras hexadecimales (1F4E79) o un
+%% color de xcolor (pcAcento!20, white, ...).
+\cs_new_protected:Npn \PC@defcolor #1#2
+  {
+    \tl_set:Nx \l_tmpa_tl {#2}
+    \tl_trim_spaces:N \l_tmpa_tl
+    \exp_args:NnV \regex_match:nnTF { \A [0-9A-Fa-f]{6} \Z } \l_tmpa_tl
+      { \use:x { \exp_not:N \definecolor {#1} {HTML} { \l_tmpa_tl } } }
+      { \use:x { \exp_not:N \colorlet {#1} { \l_tmpa_tl } } }
+  }
+%% \PC@sinumero{valor}{si es un número sin unidades}{si no}
+\cs_new_protected:Npn \PC@sinumero #1#2#3
+  {
+    \tl_set:Nx \l_tmpb_tl {#1}
+    \exp_args:NnV \regex_match:nnTF { \A \s* [\+\-]? ( \d+ \.? \d* | \. \d+ ) \s* \Z } \l_tmpb_tl {#2} {#3}
+  }
+\ExplSyntaxOff
+%% \PC@adim{valor}{referencia}{\macro}: 0.25 → 0.25×referencia ; 12cm → 12cm
+\newcommand\PC@adim[3]{\PC@sinumero{#1}{\edef#3{\the\dimexpr#1#2\relax}}{\edef#3{\the\dimexpr#1\relax}}}
+%% \PC@siclaves{arg}{si contiene «=»}{si no}
+\newcommand\PC@siclaves[3]{\in@{=}{#1}\ifin@\expandafter\@firstoftwo\else\expandafter\@secondoftwo\fi{#2}{#3}}
+\def\PC@novalor{\pgfkeysnovalue}
+\newlength\PCsep \newlength\PCcolw
+\newlength\PC@w \newlength\PC@h \newlength\PC@bw \newlength\PC@bh \newlength\PC@g
+\newdimen\PC@tmpd \newdimen\PC@Hmax \newdimen\PC@T \newdimen\PC@disp
+\newsavebox\PC@box \newsavebox\PC@boxB
+
+%% ============================================================================
+%%  2. CONFIGURACIÓN GLOBAL: \posterconfig{clave=valor, ...}
+%% ============================================================================
+\newif\ifPC@numfig \newif\ifPC@marcas \newif\ifPC@mostrartit \newif\ifPC@numbloques
+\newif\ifPC@sombra \newif\ifPC@contenido \PC@contenidotrue \newif\ifPC@depurar \newif\ifPC@marcascorte
+\newcommand\PC@tamano[1]{\ifcsname PC@tam@#1\endcsname\csname PC@tam@#1\endcsname
+  \else\PackageWarning{postercientifico}{Tamano desconocido: #1}\fi}
+\newcommand\PC@deftam[3]{\@namedef{PC@tam@#1}{\def\PC@ancho{#2}\def\PC@alto{#3}}}
+\PC@deftam{A0}{841mm}{1189mm}  \PC@deftam{A1}{594mm}{841mm}  \PC@deftam{A2}{420mm}{594mm}
+\PC@deftam{A3}{297mm}{420mm}   \PC@deftam{A4}{210mm}{297mm}  \PC@deftam{B0}{1000mm}{1414mm}
+\PC@deftam{B1}{707mm}{1000mm}  \PC@deftam{24x36in}{24in}{36in} \PC@deftam{36x48in}{36in}{48in}
+\PC@deftam{42x56in}{42in}{56in} \PC@deftam{48x72in}{48in}{72in} \PC@deftam{70x100cm}{70cm}{100cm}
+\PC@deftam{90x120cm}{90cm}{120cm} \PC@deftam{100x140cm}{100cm}{140cm}
+\newcommand\PC@tema[1]{\ifcsname PC@tema@#1\endcsname\csname PC@tema@#1\endcsname
+  \else\PackageWarning{postercientifico}{Tema desconocido: #1}\fi}
+
+\pgfkeys{/poster/.is family, /poster/.cd,
+  % ---- Lienzo ----
+  ancho/.store in=\PC@ancho,                    ancho=841mm,      % A0 vertical
+  alto/.store in=\PC@alto,                      alto=1189mm,
+  tamano/.code={\PC@tamano{#1}},                                  % A0 … A4, B0, B1, 36x48in, 90x120cm …
+  orientacion/.store in=\PC@orient,             orientacion=,     % vertical | horizontal
+  margen/.store in=\PC@margen,                  margen=28mm,
+  margen superior/.store in=\PC@msup,           margen superior=,
+  margen inferior/.store in=\PC@minf,           margen inferior=,
+  margen izquierdo/.store in=\PC@mizq,          margen izquierdo=,
+  margen derecho/.store in=\PC@mder,            margen derecho=,
+  % ---- Retícula ----
+  columnas/.store in=\PC@ncol,                  columnas=3,
+  separacion/.store in=\PC@sep,                 separacion=20mm,  % entre columnas
+  separacion filas/.store in=\PC@sepfilas,      separacion filas=,% vacío = separacion bloques
+  separacion bloques/.store in=\PC@sepbloque,   separacion bloques=0.9em,
+  separacion imagenes/.store in=\PC@gapimg,     separacion imagenes=0.45em,
+  separacion elementos/.store in=\PC@sepelem,   separacion elementos=0.35em,
+  % ---- Tipografía: todo es un múltiplo de «fuente» ----
+  fuente/.store in=\PC@fuente,                  fuente=30pt,
+  interlinea/.store in=\PC@interl,              interlinea=1.28,
+  idioma/.store in=\PC@idioma,                  idioma=,          % spanish | english | portuguese | french | ngerman | italian (separación de palabras)
+  familia/.store in=\PC@familia,                familia=helvetica,% ver «Familias tipográficas»
+  familia titulos/.store in=\PC@familiatit,     familia titulos=, % vacío = la misma
+  escala titulo/.store in=\PC@esctit,           escala titulo=3.3,
+  escala subtitulo/.store in=\PC@escsub,        escala subtitulo=1.75,
+  escala autores/.store in=\PC@escaut,          escala autores=1.4,
+  escala afiliaciones/.store in=\PC@escafi,     escala afiliaciones=1.0,
+  escala bloque/.store in=\PC@escbloque,        escala bloque=1.35, % título de cada caja
+  escala pie/.store in=\PC@escpie,              escala pie=0.8,     % pies de figura
+  escala cita/.store in=\PC@esccita,            escala cita=1.5,
+  escala cifra/.store in=\PC@esccifra,          escala cifra=3.2,
+  escala referencias/.store in=\PC@escref,      escala referencias=0.75,
+  escala piedeposter/.store in=\PC@escpiepos,   escala piedeposter=0.8,
+  % ---- Cabecera y pie ----
+  cabecera/.store in=\PC@estcab,                cabecera=banda,   % banda | clara | minima | degradado | imagen
+  alineacion cabecera/.store in=\PC@alincab,    alineacion cabecera=centro, % centro | izquierda
+  ancho logos/.store in=\PC@logow,              ancho logos=0.15, % fracción del ancho, por logo
+  alto logos/.store in=\PC@logoh,               alto logos=5.5em,
+  escala logo izquierdo/.store in=\PC@logoescL, escala logo izquierdo=1, % tamaño de cada logo
+  escala logo derecho/.store in=\PC@logoescR,   escala logo derecho=1,
+  pie/.store in=\PC@estpie,                     pie=banda,        % banda | clara | ninguno
+  % ---- Cajas ----
+  estilo bloque/.store in=\PC@estbloque,        estilo bloque=barra,
+  radio/.store in=\PC@radio,                    radio=0.3em,
+  relleno/.store in=\PC@relleno,                relleno=0.75em,
+  mostrar titulos/.is if=PC@mostrartit,         mostrar titulos=true,
+  numerar bloques/.is if=PC@numbloques,         numerar bloques=false,
+  alineacion titulos/.store in=\PC@alintit,     alineacion titulos=izquierda,
+  alinear texto/.store in=\PC@alintxt,          alinear texto=justificado, % izquierda | centro | derecha | justificado
+  sombra/.is if=PC@sombra,                      sombra=false,
+  % ---- Figuras ----
+  numerar figuras/.is if=PC@numfig,             numerar figuras=true,
+  nombre figura/.store in=\PC@nomfig,           nombre figura=Figura,
+  % ---- Capas y aplicación ----
+  contenido visible/.is if=PC@contenido,
+  marcas/.is if=PC@marcas,                      marcas=false,     % posiciones para la aplicación web
+  depurar/.is if=PC@depurar,                    depurar=false,    % escribe en el .log el cálculo de las filas
+  % ---- Imprenta ----
+  sangrado/.store in=\PC@sangrado,              sangrado=0pt,     % el fondo pasa del borde (la imprenta suele pedir 3mm)
+  marcas corte/.is if=PC@marcascorte,           marcas corte=false, % marcas de corte alrededor del póster
+  % ---- Colores (hexadecimal sin #, o un color de xcolor) ----
+  tema/.code={\PC@tema{#1}},
+  primario/.code={\PC@defcolor{pcPrimario}{#1}},          primario=1F4E79,
+  secundario/.code={\PC@defcolor{pcSecundario}{#1}},      secundario=2A78D6,
+  acento/.code={\PC@defcolor{pcAcento}{#1}},              acento=E8743B,
+  fondo/.code={\PC@defcolor{pcFondo}{#1}},                fondo=FFFFFF,
+  fondo bloque/.code={\PC@defcolor{pcBloque}{#1}},        fondo bloque=F3F5F8,
+  texto/.code={\PC@defcolor{pcTexto}{#1}},                texto=1E2329,
+  tenue/.code={\PC@defcolor{pcTenue}{#1}},                tenue=59636E,
+  contraste/.code={\PC@defcolor{pcContraste}{#1}},        contraste=FFFFFF, % texto sobre el color primario
+}
+\newcommand{\posterconfig}[1]{\pgfkeys{/poster/.cd,#1}}
+
+%% ---- Temas de color ----------------------------------------------------------
+%% Sobrios: pizarra, salvia, niebla, ciruela, grafito. Vivos: azul, verde, burdeos,
+%% morado, gris, arena. Oscuro: oscuro.
+\@namedef{PC@tema@pizarra}{\posterconfig{primario=3E5468, secundario=6A8196, acento=A9803A, fondo=FFFFFF,
+  fondo bloque=F2F4F6, texto=22272C, tenue=5D666E, contraste=FFFFFF}}
+\@namedef{PC@tema@salvia}{\posterconfig{primario=4A6352, secundario=7A9483, acento=A5634A, fondo=FCFCFA,
+  fondo bloque=EFF2EE, texto=232823, tenue=5B635D, contraste=FFFFFF}}
+\@namedef{PC@tema@niebla}{\posterconfig{primario=4B5A6B, secundario=7D8C9E, acento=4F7F7C, fondo=FFFFFF,
+  fondo bloque=F1F3F5, texto=24282D, tenue=5F6770, contraste=FFFFFF}}
+\@namedef{PC@tema@ciruela}{\posterconfig{primario=5A4660, secundario=8C7891, acento=967639, fondo=FFFEFC,
+  fondo bloque=F4F1F3, texto=2A242B, tenue=655D66, contraste=FFFFFF}}
+\@namedef{PC@tema@grafito}{\posterconfig{primario=33393E, secundario=6B747C, acento=5C7F99, fondo=FFFFFF,
+  fondo bloque=F3F4F4, texto=1F2326, tenue=5C646B, contraste=FFFFFF}}
+\@namedef{PC@tema@azul}{\posterconfig{primario=1F4E79, secundario=2A78D6, acento=E8743B, fondo=FFFFFF,
+  fondo bloque=F3F5F8, texto=1E2329, tenue=59636E, contraste=FFFFFF}}
+\@namedef{PC@tema@verde}{\posterconfig{primario=14532D, secundario=2F855A, acento=C2410C, fondo=FBFAF6,
+  fondo bloque=EEF3EC, texto=1F2421, tenue=5B6660, contraste=FFFFFF}}
+\@namedef{PC@tema@burdeos}{\posterconfig{primario=7A1F2B, secundario=B23A48, acento=C98A1B, fondo=FFFDF9,
+  fondo bloque=F6EEEA, texto=2A1F1F, tenue=6B5B5B, contraste=FFFFFF}}
+\@namedef{PC@tema@morado}{\posterconfig{primario=4C1D95, secundario=7C3AED, acento=0E7490, fondo=FFFFFF,
+  fondo bloque=F4F1FB, texto=1E1B2E, tenue=5E5873, contraste=FFFFFF}}
+\@namedef{PC@tema@gris}{\posterconfig{primario=222222, secundario=4B5563, acento=0E7490, fondo=FFFFFF,
+  fondo bloque=F4F4F5, texto=18181B, tenue=52525B, contraste=FFFFFF}}
+\@namedef{PC@tema@arena}{\posterconfig{primario=7C4A1E, secundario=B7791F, acento=2B6CB0, fondo=FFFBF2,
+  fondo bloque=F5EBDA, texto=2D2418, tenue=6E5E4B, contraste=FFFFFF}}
+\@namedef{PC@tema@oscuro}{\posterconfig{primario=38BDF8, secundario=7DD3FC, acento=FBBF24, fondo=0F172A,
+  fondo bloque=1E293B, texto=E2E8F0, tenue=94A3B8, contraste=0F172A}}
+
+%% ---- Familias tipográficas (todas escalables) -------------------------------
+%%  «familia» (el texto) y «familia titulos» admiten:
+%%   · las clásicas de PostScript: helvetica, avantgarde, palatino, times, bookman, charter;
+%%   · las libres de TeX Live (con pdfLaTeX): sourcesans, fira, roboto, lato, opensans,
+%%     notosans, plexsans, atkinson, montserrat, raleway, cabin, inter, libertinus,
+%%     ebgaramond, merriweather, sourceserif, crimson, notoserif, plexserif;
+%%   · las propias, con LuaLaTeX, declaradas en el preámbulo con
+%%       \posterfamilia{nombre}{carpeta/}{normal.ttf}{negrita.ttf}{cursiva.ttf}{negrita-cursiva.ttf}
+%%     (negrita y cursivas pueden quedar vacías: se imitan a partir de la normal).
+%%  Con LuaLaTeX, las clásicas se cambian por sus gemelas OpenType (TeX Gyre y XCharter).
+%% \PC@famtex{nombre}{código NFSS}{paquete}{opciones}: la familia con pdfLaTeX
+\newcommand\PC@famtex[4]{\@namedef{PC@cod@#1}{#2}%
+  \@namedef{PC@paq@#1}{\ifstrempty{#3}{}{\@ifpackageloaded{#3}{}{\RequirePackage[#4]{#3}}}}}
+%% \PC@famotf{nombre}{carpeta}{normal}{negrita}{cursiva}{negrita cursiva}{escala}: con LuaLaTeX
+\newcommand\PC@famotf[7]{\@namedef{PC@otf@#1}{{#2}{#3}{#4}{#5}{#6}{#7}}}
+\newcommand\posterfamilia[6]{\PC@famotf{#1}{#2}{#3}{#4}{#5}{#6}{1}}
+\PC@famtex{helvetica}{phv}{}{}
+\PC@famtex{avantgarde}{pag}{}{}
+\PC@famtex{palatino}{ppl}{}{}  \@namedef{PC@mat@palatino}{\RequirePackage{mathpazo}}
+\PC@famtex{times}{ptm}{}{}     \@namedef{PC@mat@times}{\RequirePackage{mathptmx}}
+\PC@famtex{bookman}{pbk}{}{}
+\PC@famtex{charter}{bch}{}{}
+\PC@famtex{sourcesans}{SourceSansPro-TLF}{sourcesanspro}{}
+\PC@famtex{fira}{FiraSans-TLF}{FiraSans}{}
+\PC@famtex{roboto}{Roboto-TLF}{roboto}{}
+\PC@famtex{lato}{lato-TLF}{lato}{}
+\PC@famtex{opensans}{opensans-TLF}{opensans}{}
+\PC@famtex{notosans}{NotoSans-TLF}{noto-sans}{}
+\PC@famtex{plexsans}{IBMPlexSans-TLF}{plex-sans}{}
+\PC@famtex{atkinson}{atkinsn-TLF}{atkinson}{}
+\PC@famtex{montserrat}{Montserrat-TLF}{montserrat}{}
+\PC@famtex{raleway}{Raleway-TLF}{raleway}{}
+\PC@famtex{cabin}{Cabin-TLF}{cabin}{}
+\PC@famtex{inter}{Inter-TLF}{inter}{}
+\PC@famtex{libertinus}{LibertinusSerif-TLF}{libertinus}{}
+\PC@famtex{ebgaramond}{EBGaramond-TLF}{ebgaramond}{}
+\PC@famtex{merriweather}{Merriwthr-TLF}{merriweather}{}
+\PC@famtex{sourceserif}{SourceSerifPro-TLF}{sourceserifpro}{}
+\PC@famtex{crimson}{Crimson-TLF}{crimson}{}
+\PC@famtex{notoserif}{NotoSerif-TLF}{noto-serif}{}
+\PC@famtex{plexserif}{IBMPlexSerif-TLF}{plex-serif}{}
+\PC@famotf{helvetica}{}{texgyreheros-regular.otf}{texgyreheros-bold.otf}{texgyreheros-italic.otf}{texgyreheros-bolditalic.otf}{0.95}
+\PC@famotf{avantgarde}{}{texgyreadventor-regular.otf}{texgyreadventor-bold.otf}{texgyreadventor-italic.otf}{texgyreadventor-bolditalic.otf}{1}
+\PC@famotf{palatino}{}{texgyrepagella-regular.otf}{texgyrepagella-bold.otf}{texgyrepagella-italic.otf}{texgyrepagella-bolditalic.otf}{1}
+\PC@famotf{times}{}{texgyretermes-regular.otf}{texgyretermes-bold.otf}{texgyretermes-italic.otf}{texgyretermes-bolditalic.otf}{1}
+\PC@famotf{bookman}{}{texgyrebonum-regular.otf}{texgyrebonum-bold.otf}{texgyrebonum-italic.otf}{texgyrebonum-bolditalic.otf}{1}
+\PC@famotf{charter}{}{XCharter-Roman.otf}{XCharter-Bold.otf}{XCharter-Italic.otf}{XCharter-BoldItalic.otf}{1}
+\def\PC@fuentetit{}
+%% pdfLaTeX: texto y títulos
+\newcommand\PC@textotex[1]{%
+  \ifcsname PC@cod@#1\endcsname
+    \csname PC@paq@#1\endcsname
+    \ifcsname PC@mat@#1\endcsname\csname PC@mat@#1\endcsname\fi
+    \edef\familydefault{\csname PC@cod@#1\endcsname}%
+  \else
+    \ifcsname PC@otf@#1\endcsname
+      \PackageWarning{postercientifico}{La tipografía #1 necesita LuaLaTeX: se usa Helvetica}%
+    \else\PackageWarning{postercientifico}{Familia desconocida: #1}\fi
+    \def\familydefault{phv}%
+  \fi}
+\newcommand\PC@titulotex[1]{%
+  \ifcsname PC@cod@#1\endcsname
+    \csname PC@paq@#1\endcsname
+    \edef\PC@fuentetit{\noexpand\fontfamily{\csname PC@cod@#1\endcsname}\noexpand\selectfont}%
+  \else\PackageWarning{postercientifico}{La tipografía #1 de los títulos necesita LuaLaTeX}\fi}
+%% LuaLaTeX: opciones de fontspec (negrita y cursiva imitadas si faltan)
+\newcommand\PC@opcotf[6]{\def\PC@n{#2}\def\PC@o{Ligatures=TeX, Scale=#6}%
+  \ifstrempty{#1}{}{\appto\PC@o{, Path=#1}}%
+  \ifstrempty{#3}{\appto\PC@o{, BoldFont={#2}, BoldFeatures={FakeBold=1.5}}}{\appto\PC@o{, BoldFont={#3}}}%
+  \ifstrempty{#4}{\appto\PC@o{, ItalicFont={#2}, ItalicFeatures={FakeSlant=0.2}}}{\appto\PC@o{, ItalicFont={#4}}}%
+  \ifstrempty{#5}{\ifstrempty{#3}{\appto\PC@o{, BoldItalicFont={#2}, BoldItalicFeatures={FakeBold=1.5, FakeSlant=0.2}}}%
+      {\appto\PC@o{, BoldItalicFont={#3}, BoldItalicFeatures={FakeSlant=0.2}}}}%
+    {\appto\PC@o{, BoldItalicFont={#5}}}}
+\newcommand\PC@usarotf[2]{% #1 = orden de fontspec (\setmainfont, \newfontfamily\X), #2 = familia
+  \expandafter\expandafter\expandafter\PC@opcotf\csname PC@otf@#2\endcsname
+  \edef\PC@tmp{\unexpanded{#1}[\unexpanded\expandafter{\PC@o}]{\unexpanded\expandafter{\PC@n}}}\PC@tmp}
+\newcommand\PC@textootf[1]{%
+  \ifcsname PC@otf@#1\endcsname
+    \PC@usarotf{\setmainfont}{#1}\renewcommand\familydefault{\rmdefault}%
+  \else
+    \PackageWarning{postercientifico}{Con LuaLaTeX, #1 se cambia por Helvetica (TeX Gyre Heros)}%
+    \PC@usarotf{\setmainfont}{helvetica}\renewcommand\familydefault{\rmdefault}%
+  \fi}
+\newcommand\PC@titulootf[1]{%
+  \ifcsname PC@otf@#1\endcsname
+    \PC@usarotf{\newfontfamily\PC@fttit}{#1}\def\PC@fuentetit{\PC@fttit}%
+  \else\PackageWarning{postercientifico}{Con LuaLaTeX no está la tipografía #1 para los títulos}\fi}
+\newcommand\PC@ponerfamilias{%
+  \edef\PC@familia{\PC@familia}\edef\PC@familiatit{\PC@familiatit}%
+  \ifPDFTeX
+    % primero los títulos: su paquete puede tocar \familydefault, que se fija después
+    \ifdefempty\PC@familiatit{}{\PC@titulotex{\PC@familiatit}}%
+    \PC@textotex{\PC@familia}%
+  \else
+    \PC@textootf{\PC@familia}%
+    \ifdefempty\PC@familiatit{}{\PC@titulootf{\PC@familiatit}}%
+  \fi}
+
+%% ---- Idioma: separación de palabras (babel) y comillas ------------------------
+%% Sin «idioma» se usan las reglas del inglés, como siempre en LaTeX. Si falta el
+%% paquete del idioma (texlive-lang-spanish…), se avisa y se sigue compilando.
+\def\PC@abrecom{«}\def\PC@cierracom{»}
+\newcommand\PC@cargaridioma{%
+  \ifx\PC@idioma\@empty\else
+    \edef\PC@idioma{\PC@idioma}%
+    \IfFileExists{\PC@idioma.ldf}{%
+      \def\PC@opcidioma{}%
+      \ifdefstring\PC@idioma{spanish}{\def\PC@opcidioma{,es-minimal,es-nodecimaldot,es-noquoting,es-notilde}}{}%
+      \edef\PC@tmp{\noexpand\RequirePackage[shorthands=off,\PC@idioma\PC@opcidioma]{babel}}\PC@tmp
+      \ifdefstring\PC@idioma{french}{\frenchsetup{StandardLists=true}}{}%
+      \ifdefstring\PC@idioma{english}{\def\PC@abrecom{“}\def\PC@cierracom{”}}{}%
+      \ifdefstring\PC@idioma{ngerman}{\def\PC@abrecom{„}\def\PC@cierracom{“}}{}%
+    }{\PackageWarning{postercientifico}{Falta el idioma \PC@idioma\space en esta instalación de LaTeX:
+      las palabras se separan con las reglas del inglés}}%
+  \fi}
+
+%% ---- Lienzo, márgenes y familia: se fijan al final del preámbulo ------------
+\AtEndPreamble{%
+  \ifdefstring\PC@orient{horizontal}{\ifdim\dimexpr\PC@ancho\relax<\dimexpr\PC@alto\relax
+    \let\PC@tmp\PC@ancho\let\PC@ancho\PC@alto\let\PC@alto\PC@tmp\fi}{}%
+  \ifdefstring\PC@orient{vertical}{\ifdim\dimexpr\PC@ancho\relax>\dimexpr\PC@alto\relax
+    \let\PC@tmp\PC@ancho\let\PC@ancho\PC@alto\let\PC@alto\PC@tmp\fi}{}%
+  \ifdefempty\PC@msup{\let\PC@msup\PC@margen}{}\ifdefempty\PC@minf{\let\PC@minf\PC@margen}{}%
+  \ifdefempty\PC@mizq{\let\PC@mizq\PC@margen}{}\ifdefempty\PC@mder{\let\PC@mder\PC@margen}{}%
+  \RequirePackage[paperwidth=\PC@ancho,paperheight=\PC@alto,top=\PC@msup,bottom=\PC@minf,
+    left=\PC@mizq,right=\PC@mder,nohead,nofoot]{geometry}%
+  \PC@cargaridioma
+  \PC@ponerfamilias
+}
+\AtBeginDocument{%
+  \pagestyle{empty}\color{pcTexto}%
+  \normalsize\setlength{\PCsep}{\PC@sep}\PC@parrafos\raggedbottom\setlength{\topskip}{0pt}%
+  \ifdefempty\PC@sepfilas{\let\PC@sepfilas\PC@sepbloque}{}%
+  \PC@abrirposiciones
+}
+
+%% ============================================================================
+%%  3. TAMAÑOS DE LETRA (relativos a «fuente»)
+%% ============================================================================
+%% \tam{1.5} = letra 1.5 veces mayor que el texto normal, en cualquier sitio.
+\newcommand{\tam}[1]{\fontsize{#1\dimexpr\PC@fuente\relax}{\PC@interl\dimexpr#1\dimexpr\PC@fuente\relax\relax}\selectfont}
+\renewcommand{\normalsize}{\tam{1}%
+  \abovedisplayskip=0.6\baselineskip plus 0.2\baselineskip minus 0.2\baselineskip
+  \belowdisplayskip=\abovedisplayskip
+  \abovedisplayshortskip=0.2\baselineskip plus 0.2\baselineskip
+  \belowdisplayshortskip=0.4\baselineskip plus 0.2\baselineskip}
+\renewcommand{\tiny}{\tam{0.5}}        \renewcommand{\scriptsize}{\tam{0.6}}
+\renewcommand{\footnotesize}{\tam{0.7}} \renewcommand{\small}{\tam{0.85}}
+\renewcommand{\large}{\tam{1.2}}       \renewcommand{\Large}{\tam{1.44}}
+\renewcommand{\LARGE}{\tam{1.73}}      \renewcommand{\huge}{\tam{2.07}}
+\renewcommand{\Huge}{\tam{2.49}}
+\newcommand{\PC@parrafos}{\setlength{\parindent}{0pt}\setlength{\parskip}{0.55em plus 0.15em}}
+\setlist{leftmargin=1.25em,itemsep=0.22em,topsep=0.2em,parsep=0pt,partopsep=0pt}
+\setlength{\fboxsep}{0pt}
+\renewcommand{\LettrineFontHook}{\bfseries}
+
+%% ============================================================================
+%%  4. MARCAS DE POSICIÓN (las usa la aplicación web para «clic y editar»)
+%%     Con \posterconfig{marcas=true} se escribe <documento>.pos con la caja
+%%     de cada elemento que tiene id. No cambia el aspecto del póster.
+%% ============================================================================
+\newwrite\PC@posfile
+\newif\ifPC@posabierto
+\newcommand\PC@abrirposiciones{%
+  \ifPC@marcas\ifdefined\pdfsavepos
+    \immediate\openout\PC@posfile=\jobname.pos\relax\global\PC@posabiertotrue
+    \immediate\write\PC@posfile{papel \the\paperwidth\space\the\paperheight}%
+  \fi\fi}
+%% \PC@marca{id}{a|b}: esquina superior izquierda (a) o inferior derecha (b)
+\newcommand\PC@marca[2]{\ifPC@posabierto\pdfsavepos
+  \write\PC@posfile{#1 #2 \the\pdflastxpos\space\the\pdflastypos\space\thepage}\fi}
+%% \PC@marcaw{id}{a|b}: igual, pero anota también el ancho de línea actual
+\newcommand\PC@marcaw[2]{\ifPC@posabierto\pdfsavepos
+  \edef\PC@tmp{\noexpand\write\PC@posfile{#1 #2 \noexpand\the\noexpand\pdflastxpos\space
+    \noexpand\the\noexpand\pdflastypos\space\noexpand\thepage\space\the\linewidth}}\PC@tmp\fi}
+%% Elementos en posición absoluta o marcas: no ocupan sitio en el flujo
+\newcommand\PC@absoluto[1]{\ifvmode\begingroup\dimen0=\prevdepth\nointerlineskip
+  \vbox to 0pt{\hbox{#1}\vss}\prevdepth=\dimen0\endgroup\else#1\fi}
+\newcommand\PC@marcav[2]{\ifPC@posabierto\PC@absoluto{\PC@marcaw{#1}{#2}}\fi}
+%% Para la aplicación: \PCinicio{id} ... \PCfin{id} alrededor de cada elemento.
+%% La marca se mete delante del último espacio vertical y luego se repone ese
+%% espacio, así los espacios entre elementos se siguen fundiendo (\addvspace)
+%% y el póster queda igual con marcas que sin ellas.
+\newcommand\PCinicio[1]{\par\ifPC@posabierto\PC@marcaconserva{#1}{a}\fi}
+\newcommand\PCfin[1]{\par\ifPC@posabierto\PC@marcaconserva{#1}{b}\fi}
+\newcommand\PC@marcaconserva[2]{\ifvmode\ifinner\skip@=\lastskip\ifdim\skip@>\z@\unskip\fi
+    \PC@marcav{#1}{#2}\ifdim\skip@>\z@\vskip\skip@\fi
+  \else\PC@marcav{#1}{#2}\fi\else\PC@marcav{#1}{#2}\fi}
+%% Quita el espacio vertical sobrante al final de una caja
+\newcommand\PC@quitarespacio{\par\ifvmode\ifinner\ifdim\lastskip>\z@\unskip\fi\fi\fi}
+\newcommand\PC@marcasmarco[1]{\ifPC@posabierto
+  \node[inner sep=0pt,outer sep=0pt] at (frame.north west) {\PC@marca{#1}{a}};
+  \node[inner sep=0pt,outer sep=0pt] at (frame.south east) {\PC@marca{#1}{b}};\fi}
+
+%% ============================================================================
+%%  5. CAPAS
+%% ============================================================================
+%%  \nuevacapa[z=<número>, opacidad=<0..1>, visible=true|false]{nombre}
+%%  \configcapa{nombre}{z=..., opacidad=..., visible=...}
+%%  \ocultarcapa{nombre}  \mostrarcapa{nombre}
+%%  Las capas con z < 0 van detrás del contenido; las de z >= 0, delante.
+\def\PC@capas{}                % lista ordenada: \do{z}{nombre}\do{z}{nombre}...
+\newif\ifPC@k@visible
+\pgfkeys{/pc/capa/.is family, /pc/capa/.cd,
+  z/.store in=\PC@k@z, opacidad/.store in=\PC@k@op, visible/.is if=PC@k@visible,
+  nombre/.code={}, .unknown/.code={\PackageWarning{postercientifico}{Clave de capa desconocida: \pgfkeyscurrentname}}}
+\newcommand\PC@quitarcapa[1]{%
+  \def\PC@nuevalista{}\def\do##1##2{\ifstrequal{##2}{#1}{}{\appto\PC@nuevalista{\do{##1}{##2}}}}%
+  \PC@capas\global\let\PC@capas\PC@nuevalista}
+\newcommand\PC@insertarcapa[2]{% #1 z, #2 nombre
+  \def\PC@nuevalista{}\def\PC@ins{0}%
+  \def\do##1##2{\ifnum\PC@ins=0 \ifdim##1pt>#1pt \appto\PC@nuevalista{\do{#1}{#2}}\def\PC@ins{1}\fi\fi
+    \appto\PC@nuevalista{\do{##1}{##2}}}%
+  \PC@capas\ifnum\PC@ins=0 \appto\PC@nuevalista{\do{#1}{#2}}\fi
+  \global\let\PC@capas\PC@nuevalista}
+\NewDocumentCommand\nuevacapa{O{}m}{\begingroup
+  \def\PC@k@z{1}\def\PC@k@op{1}\PC@k@visibletrue
+  \pgfkeys{/pc/capa/.cd,#1}%
+  \ifcsname PC@capa@#2@items\endcsname\else\expandafter\gdef\csname PC@capa@#2@items\endcsname{}\fi
+  \expandafter\xdef\csname PC@capa@#2@z\endcsname{\PC@k@z}%
+  \expandafter\xdef\csname PC@capa@#2@op\endcsname{\PC@k@op}%
+  \expandafter\xdef\csname PC@capa@#2@vis\endcsname{\ifPC@k@visible 1\else 0\fi}%
+  \PC@quitarcapa{#2}\edef\PC@tmp{\noexpand\PC@insertarcapa{\PC@k@z}{#2}}\PC@tmp\endgroup}
+\newcommand\configcapa[2]{\ifcsname PC@capa@#1@z\endcsname\begingroup
+    \edef\PC@k@z{\csname PC@capa@#1@z\endcsname}\edef\PC@k@op{\csname PC@capa@#1@op\endcsname}%
+    \expandafter\ifnum\csname PC@capa@#1@vis\endcsname=1 \PC@k@visibletrue\else\PC@k@visiblefalse\fi
+    \pgfkeys{/pc/capa/.cd,#2}%
+    \expandafter\xdef\csname PC@capa@#1@z\endcsname{\PC@k@z}%
+    \expandafter\xdef\csname PC@capa@#1@op\endcsname{\PC@k@op}%
+    \expandafter\xdef\csname PC@capa@#1@vis\endcsname{\ifPC@k@visible 1\else 0\fi}%
+    \PC@quitarcapa{#1}\edef\PC@tmp{\noexpand\PC@insertarcapa{\PC@k@z}{#1}}\PC@tmp\endgroup
+  \else\nuevacapa[#2]{#1}\fi}
+\newcommand\ocultarcapa[1]{\configcapa{#1}{visible=false}}
+\newcommand\mostrarcapa[1]{\configcapa{#1}{visible=true}}
+\nuevacapa[z=-10]{fondo}
+\nuevacapa[z=10]{frente}
+
+%% ---- Elementos de capa -------------------------------------------------------
+%%  \colocar[claves]{contenido LaTeX}      \colocarimagen[claves]{archivo}
+%%  \colocartexto[claves]{texto}           \colocarforma[claves]
+%%  Claves comunes: capa, id, x, y, ancla (center, north west, south east …),
+%%  ancho, alto, rotacion, opacidad, pagina (número; por defecto todas), visible.
+%%  Imagen: ajuste = ajustar | cubrir | estirar.
+%%  Texto: escala, color, fondo, borde, grosor, radio, relleno, alineacion
+%%  (izquierda | centro | derecha | justificado), negrita, cursiva.
+%%  Forma: forma = rectangulo | circulo | elipse | linea | flecha, fondo, borde,
+%%  grosor, radio; para linea y flecha, x2 e y2.
+\newif\ifPC@i@vis \newif\ifPC@i@neg \newif\ifPC@i@cur
+\pgfkeys{/pc/item/.is family, /pc/item/.cd,
+  capa/.store in=\PC@i@capa, id/.store in=\PC@i@id, x/.store in=\PC@i@x, y/.store in=\PC@i@y,
+  ancla/.store in=\PC@i@ancla, ancho/.store in=\PC@i@ancho, alto/.store in=\PC@i@alto,
+  rotacion/.store in=\PC@i@rot, opacidad/.store in=\PC@i@op, pagina/.store in=\PC@i@pag,
+  visible/.is if=PC@i@vis, ajuste/.store in=\PC@i@ajuste, escala/.store in=\PC@i@esc,
+  color/.store in=\PC@i@color, fondo/.store in=\PC@i@fondo, borde/.store in=\PC@i@borde,
+  grosor/.store in=\PC@i@grosor, radio/.store in=\PC@i@radio, relleno/.store in=\PC@i@relleno,
+  alineacion/.store in=\PC@i@alin, negrita/.is if=PC@i@neg, cursiva/.is if=PC@i@cur,
+  forma/.store in=\PC@i@forma, x2/.store in=\PC@i@xb, y2/.store in=\PC@i@yb,
+  .unknown/.code={\PackageWarning{postercientifico}{Clave de elemento desconocida: \pgfkeyscurrentname}}}
+\newcommand\PC@i@reset{\def\PC@i@capa{frente}\def\PC@i@id{}\def\PC@i@x{0.5}\def\PC@i@y{0.5}%
+  \def\PC@i@ancla{center}\def\PC@i@ancho{}\def\PC@i@alto{}\def\PC@i@rot{0}\def\PC@i@op{1}%
+  \def\PC@i@pag{}\PC@i@vistrue\def\PC@i@ajuste{ajustar}\def\PC@i@esc{1}\def\PC@i@color{pcTexto}%
+  \def\PC@i@fondo{}\def\PC@i@borde{}\def\PC@i@grosor{0.08em}\def\PC@i@radio{0pt}\def\PC@i@relleno{0.4em}%
+  \def\PC@i@alin{centro}\PC@i@negfalse\PC@i@curfalse\def\PC@i@forma{rectangulo}\def\PC@i@xb{}\def\PC@i@yb{}}
+\newcommand\PC@capade[1]{\begingroup\PC@i@reset\pgfkeys{/pc/item/.cd,#1}%
+  \ifcsname PC@capa@\PC@i@capa @items\endcsname\else\nuevacapa{\PC@i@capa}\fi
+  \xdef\PC@capadestino{\PC@i@capa}\endgroup}
+\NewDocumentCommand\colocar{O{}+m}{\PC@capade{#1}%
+  \expandafter\gappto\csname PC@capa@\PC@capadestino @items\endcsname{\PC@pintaritem{general}{#1}{#2}}}
+\NewDocumentCommand\colocarimagen{O{}m}{\PC@capade{#1}%
+  \expandafter\gappto\csname PC@capa@\PC@capadestino @items\endcsname{\PC@pintaritem{imagen}{#1}{#2}}}
+\NewDocumentCommand\colocartexto{O{}+m}{\PC@capade{#1}%
+  \expandafter\gappto\csname PC@capa@\PC@capadestino @items\endcsname{\PC@pintaritem{texto}{#1}{#2}}}
+\NewDocumentCommand\colocarforma{O{}}{\PC@capade{#1}%
+  \expandafter\gappto\csname PC@capa@\PC@capadestino @items\endcsname{\PC@pintaritem{forma}{#1}{}}}
+
+%% ---- Dibujo de las capas al enviar cada página -----------------------------
+\newcommand\PC@alinear[1]{\ifstrequal{#1}{izquierda}{\raggedright}{\ifstrequal{#1}{derecha}{\raggedleft}%
+  {\ifstrequal{#1}{justificado}{}{\centering}}}}
+\newcommand\PC@pintaritem[3]{\begingroup\PC@i@reset\pgfkeys{/pc/item/.cd,#2}%
+  \def\PC@ok{0}%
+  \ifPC@i@vis\ifx\PC@i@pag\@empty\def\PC@ok{1}\else\ifnum\value{page}=\PC@i@pag\relax\def\PC@ok{1}\fi\fi\fi
+  \ifnum\PC@ok=1
+    \PC@adim{\PC@i@x}{\paperwidth}\PC@px \PC@adim{\PC@i@y}{\paperheight}\PC@py
+    \ifx\PC@i@ancho\@empty\def\PC@pw{}\else\PC@adim{\PC@i@ancho}{\paperwidth}\PC@pw\fi
+    \ifx\PC@i@alto\@empty\def\PC@ph{}\else\PC@adim{\PC@i@alto}{\paperheight}\PC@ph\fi
+    \pgfmathsetmacro\PC@opf{\PC@i@op*\PC@capaop}%
+    \setlength\PC@tmpd{\PC@i@relleno}\edef\PC@rel{\the\PC@tmpd}%
+    \setlength\PC@tmpd{\PC@i@grosor}\edef\PC@gro{\the\PC@tmpd}%
+    \setlength\PC@tmpd{\PC@i@radio}\edef\PC@rad{\the\PC@tmpd}%
+    \csname PC@pintar@#1\endcsname{#3}%
+  \fi\endgroup}
+%% cada elemento es un dibujo «overlay» con origen en la esquina superior izquierda
+\newcommand\PC@dibujar[1]{\begin{tikzpicture}[overlay]#1%
+  \ifx\PC@i@id\@empty\else\ifPC@posabierto\PC@escribircaja{\PC@i@id}\fi\fi\end{tikzpicture}}
+%% escribe en .pos la caja del nodo «pcitem» (girado o no)
+\newcommand\PC@escribircaja[1]{%
+  \pgfpointanchor{pcitem}{north west}\edef\PC@ax{\the\pgf@x}\edef\PC@ay{\the\pgf@y}%
+  \pgfpointanchor{pcitem}{north east}\edef\PC@bx{\the\pgf@x}\edef\PC@by{\the\pgf@y}%
+  \pgfpointanchor{pcitem}{south west}\edef\PC@cx{\the\pgf@x}\edef\PC@cy{\the\pgf@y}%
+  \pgfpointanchor{pcitem}{south east}\edef\PC@dx{\the\pgf@x}\edef\PC@dy{\the\pgf@y}%
+  \pgfmathsetmacro\PC@xmin{min(\PC@ax,\PC@bx,\PC@cx,\PC@dx)}\pgfmathsetmacro\PC@xmax{max(\PC@ax,\PC@bx,\PC@cx,\PC@dx)}%
+  \pgfmathsetmacro\PC@ymin{min(\PC@ay,\PC@by,\PC@cy,\PC@dy)}\pgfmathsetmacro\PC@ymax{max(\PC@ay,\PC@by,\PC@cy,\PC@dy)}%
+  \immediate\write\PC@posfile{#1 capa \PC@xmin\space\PC@ymax\space\PC@xmax\space\PC@ymin\space\thepage\space\PC@capaactual}}
+\expandafter\long\expandafter\def\csname PC@pintar@imagen\endcsname#1{%
+  \ifdefstring\PC@i@ajuste{cubrir}{\ifx\PC@pw\@empty\def\PC@i@ajuste{ajustar}\fi\ifx\PC@ph\@empty\def\PC@i@ajuste{ajustar}\fi}{}%
+  \ifdefstring\PC@i@ajuste{cubrir}{\sbox\PC@boxB{\PCrecorte{\PC@pw}{\PC@ph}{#1}}}%
+   {\ifdefstring\PC@i@ajuste{estirar}{\ifx\PC@ph\@empty\sbox\PC@boxB{\PCimg[width=\PC@pw]{#1}}%
+        \else\ifx\PC@pw\@empty\sbox\PC@boxB{\PCimg[height=\PC@ph]{#1}}\else
+        \sbox\PC@boxB{\PCimg[width=\PC@pw,height=\PC@ph]{#1}}\fi\fi}%
+     {\ifx\PC@pw\@empty\ifx\PC@ph\@empty\sbox\PC@boxB{\PCimg{#1}}\else\sbox\PC@boxB{\PCimg[height=\PC@ph]{#1}}\fi
+      \else\ifx\PC@ph\@empty\sbox\PC@boxB{\PCimg[width=\PC@pw]{#1}}%
+        \else\sbox\PC@boxB{\PCimg[width=\PC@pw,height=\PC@ph,keepaspectratio]{#1}}\fi\fi}}%
+  \PC@dibujar{\node[name=pcitem,anchor=\PC@i@ancla,inner sep=0pt,outer sep=0pt,rotate=\PC@i@rot,opacity=\PC@opf]
+    at (\PC@px,-\PC@py) {\usebox\PC@boxB};}}
+\expandafter\long\expandafter\def\csname PC@pintar@texto\endcsname#1{%
+  \ifx\PC@i@fondo\@empty\ifx\PC@i@borde\@empty\def\PC@rel{0pt}\fi\fi
+  \PC@defcolor{pc@i@color}{\PC@i@color}%
+  \ifx\PC@i@fondo\@empty\def\PC@f@opc{}\else\PC@defcolor{pc@i@fondo}{\PC@i@fondo}\def\PC@f@opc{fill=pc@i@fondo,}\fi
+  \ifx\PC@i@borde\@empty\def\PC@b@opc{}\else\PC@defcolor{pc@i@borde}{\PC@i@borde}\edef\PC@b@opc{draw=pc@i@borde,line width=\PC@gro,}\fi
+  \sbox\PC@boxB{\normalfont\tam{\PC@i@esc}\color{pc@i@color}\ifPC@i@neg\bfseries\fi\ifPC@i@cur\itshape\fi
+    \ifx\PC@pw\@empty #1\else\begin{minipage}{\dimexpr\PC@pw-2\dimexpr\PC@rel\relax\relax}\PC@parrafos
+      \PC@alinear{\PC@i@alin}#1\par\end{minipage}\fi}%
+  \edef\PC@tmp{\noexpand\node[name=pcitem,anchor=\PC@i@ancla,inner sep=\PC@rel,outer sep=0pt,rotate=\PC@i@rot,
+    opacity=\PC@opf,rounded corners=\PC@rad,\PC@f@opc\PC@b@opc] at (\PC@px,-\PC@py)}%
+  \PC@dibujar{\PC@tmp{\usebox\PC@boxB};}}
+\expandafter\long\expandafter\def\csname PC@pintar@general\endcsname#1{%
+  \sbox\PC@boxB{\normalfont\normalsize\color{pcTexto}\ifx\PC@pw\@empty #1\else
+    \begin{minipage}{\PC@pw}\PC@parrafos #1\par\end{minipage}\fi}%
+  \PC@dibujar{\node[name=pcitem,anchor=\PC@i@ancla,inner sep=0pt,outer sep=0pt,rotate=\PC@i@rot,opacity=\PC@opf]
+    at (\PC@px,-\PC@py) {\usebox\PC@boxB};}}
+\expandafter\long\expandafter\def\csname PC@pintar@forma\endcsname#1{%
+  \ifx\PC@pw\@empty\edef\PC@pw{\the\dimexpr0.1\paperwidth\relax}\fi\ifx\PC@ph\@empty\let\PC@ph\PC@pw\fi
+  \ifx\PC@i@fondo\@empty\def\PC@f@opc{}\else\PC@defcolor{pc@i@fondo}{\PC@i@fondo}\def\PC@f@opc{fill=pc@i@fondo,}\fi
+  \ifx\PC@i@borde\@empty\def\PC@b@opc{}\else\PC@defcolor{pc@i@borde}{\PC@i@borde}\def\PC@b@opc{draw=pc@i@borde,}\fi
+  \edef\PC@flen{\the\dimexpr4\dimexpr\PC@gro\relax+2pt\relax}%
+  \ifdefstring\PC@i@forma{linea}{\PC@dibujar{\PC@linea{}}}{\ifdefstring\PC@i@forma{flecha}{\PC@dibujar{\PC@linea{-{Latex[length=\PC@flen]}}}}{%
+    \ifdefstring\PC@i@forma{circulo}{\def\PC@shape{circle}\let\PC@ph\PC@pw}{\ifdefstring\PC@i@forma{elipse}{\def\PC@shape{ellipse}}{\def\PC@shape{rectangle}}}%
+    \ifx\PC@f@opc\@empty\ifx\PC@b@opc\@empty\def\PC@f@opc{fill=pcBloque,}\fi\fi
+    \edef\PC@tmp{\noexpand\node[name=pcitem,shape=\PC@shape,anchor=\PC@i@ancla,inner sep=0pt,outer sep=0pt,
+      minimum width=\PC@pw,minimum height=\PC@ph,rotate=\PC@i@rot,opacity=\PC@opf,rounded corners=\PC@rad,
+      line width=\PC@gro,\PC@f@opc\PC@b@opc] at (\PC@px,-\PC@py)}%
+    \PC@dibujar{\PC@tmp{};}}}}
+\newcommand\PC@linea[1]{%
+  \ifx\PC@i@xb\@empty\def\PC@i@xb{0.6}\fi\ifx\PC@i@yb\@empty\let\PC@i@yb\PC@i@y\fi
+  \PC@adim{\PC@i@xb}{\paperwidth}\PC@qx \PC@adim{\PC@i@yb}{\paperheight}\PC@qy
+  \ifx\PC@b@opc\@empty\PC@defcolor{pc@i@borde}{\PC@i@color}\fi
+  \edef\PC@tmp{\noexpand\draw[#1,pc@i@borde,line width=\PC@gro,opacity=\PC@opf]}%
+  \PC@tmp (\PC@px,-\PC@py)--(\PC@qx,-\PC@qy);
+  \pgfmathsetmacro\PC@lw{abs(\PC@qx-\PC@px)}\pgfmathsetmacro\PC@lh{abs(\PC@qy-\PC@py)}%
+  \path ($0.5*(\PC@px,-\PC@py)+0.5*(\PC@qx,-\PC@qy)$) node[name=pcitem,inner sep=0pt,outer sep=0pt,
+    minimum width=\PC@lw pt,minimum height=\PC@lh pt] {};}
+\newcommand\PC@pintarcapas[1]{% #1 = < (detrás del contenido) o > (delante)
+  \normalfont\normalsize\color{pcTexto}%
+  \def\do##1##2{\ifdim##1pt#10pt\relax\PC@pintarcapa{##2}\else\ifstrequal{#1}{>}{\ifdim##1pt=0pt\relax\PC@pintarcapa{##2}\fi}{}\fi}%
+  \PC@capas}
+\newcommand\PC@pintarcapa[1]{\expandafter\ifnum\csname PC@capa@#1@vis\endcsname=1
+  \edef\PC@capaop{\csname PC@capa@#1@op\endcsname}\edef\PC@capaactual{#1}%
+  \csname PC@capa@#1@items\endcsname\fi}
+\AddToHook{shipout/background}{\put(0,0){\begin{tikzpicture}[overlay]
+  \fill[pcFondo] (-\PC@sang,\PC@sang) rectangle (\paperwidth+\PC@sang,-\paperheight-\PC@sang);\end{tikzpicture}}%
+  \put(0,0){\PC@pintarcapas{<}}}
+\AddToHook{shipout/foreground}{\put(0,0){\PC@pintarcapas{>}}\ifPC@marcascorte\put(0,0){\PC@marcasdecorte}\fi}
+
+%% ---- Imprenta: sangrado y marcas de corte -----------------------------------
+%%  \posterconfig{sangrado=3mm}: el papel crece 3 mm por cada lado y el color de
+%%  fondo se alarga hasta ahí (la aplicación alarga también lo que llega al borde);
+%%  la imprenta corta por el tamaño del póster. Con «marcas corte=true» quedan
+%%  además 10 mm alrededor con las marcas de corte. El PDF lleva las cajas TrimBox
+%%  (el póster) y BleedBox (con el sangrado). Sin nada de esto, el PDF no cambia.
+\newdimen\PC@sang \newdimen\PC@extra
+\def\PC@bp#1{\strip@pt\dimexpr(#1)*7200/7227\relax}
+\def\PC@mm#1{\the\numexpr\dimexpr(#1)*2540/7227\relax/65536\relax}
+\AddToHook{shipout/before}{%
+  \global\PC@sang=\dimexpr\PC@sangrado\relax
+  \global\PC@extra=\PC@sang
+  \ifPC@marcascorte\global\advance\PC@extra 10mm\relax\fi
+  \ifdim\PC@extra>\z@
+    % todo (contenido, fondo y capas) se corre hacia dentro y la página crece
+    \global\hoffset=\PC@extra \global\voffset=\PC@extra
+    \global\pdfpagewidth=\dimexpr\paperwidth+2\PC@extra\relax
+    \global\pdfpageheight=\dimexpr\paperheight+2\PC@extra\relax
+    \xdef\PC@cajaspdf{/TrimBox [\PC@bp{\PC@extra} \PC@bp{\PC@extra} \PC@bp{\paperwidth+\PC@extra}
+      \PC@bp{\paperheight+\PC@extra}] /BleedBox [\PC@bp{\PC@extra-\PC@sang} \PC@bp{\PC@extra-\PC@sang}
+      \PC@bp{\paperwidth+\PC@extra+\PC@sang} \PC@bp{\paperheight+\PC@extra+\PC@sang}]}%
+    \global\pdfpageattr\expandafter{\PC@cajaspdf}%
+  \fi}
+%% marcas de corte en las cuatro esquinas, fuera del sangrado, y una línea con el tamaño
+\newcommand\PC@marcasdecorte{\begin{tikzpicture}[overlay, line width=0.3pt, black]
+  \foreach \PC@x/\PC@y/\PC@sx/\PC@sy in {0/0/-1/1, 1/0/1/1, 0/1/-1/-1, 1/1/1/-1}{%
+    \draw ($(\PC@x\paperwidth,-\PC@y\paperheight)+(\PC@sx*\PC@sang+\PC@sx*2mm,0)$) --
+          ($(\PC@x\paperwidth,-\PC@y\paperheight)+(\PC@sx*\PC@extra,0)$);
+    \draw ($(\PC@x\paperwidth,-\PC@y\paperheight)+(0,\PC@sy*\PC@sang+\PC@sy*2mm)$) --
+          ($(\PC@x\paperwidth,-\PC@y\paperheight)+(0,\PC@sy*\PC@extra)$);}
+  \node[anchor=north west, inner sep=0pt, font=\normalfont\fontsize{7pt}{8pt}\selectfont, text=black]
+    at (12mm,-\paperheight-\PC@sang-3mm) {\PC@mm{\paperwidth}\,$\times$\,\PC@mm{\paperheight}\,mm,
+      sangrado \PC@mm{\PC@sang}\,mm};
+\end{tikzpicture}}
+%% Ocultar el contenido (solo quedan las capas): \posterconfig{contenido visible=false}
+\AddToHook{shipout/before}{\ifPC@contenido\else
+  \setbox\ShipoutBox\vbox to\ht\ShipoutBox{\hbox to\wd\ShipoutBox{}\vss}\fi}
+
+%% ============================================================================
+%%  6. RETÍCULA
+%% ============================================================================
+%% ---- 6a. Filas (v2) ----------------------------------------------------------
+%%  \begin{fila}[columnas=3, alto=auto|llenar|<dimensión>, separacion=20mm,
+%%               despues=<espacio tras la fila>, igualar=true|false, id=..., visible=...]
+%%    \begin{columna}[abarca=<n>, ancho=<dimensión>, distribucion=repartir|arriba|abajo|centro, id=...]
+%%      ...
+%%    \end{columna}
+%%  \end{fila}
+\newcount\PC@nivelfila \newcount\PC@contfilas
+\newif\ifPC@enfila \newif\ifPC@f@igualar \newif\ifPC@f@visible
+\newif\ifPC@encolumna \newif\ifPC@primeracaja
+\@tempcnta=0
+\loop\advance\@tempcnta\@ne\expandafter\newbox\csname PC@cb@\the\@tempcnta\endcsname\ifnum\@tempcnta<40 \repeat
+\pgfkeys{/pc/fila/.is family, /pc/fila/.cd,
+  id/.store in=\PC@f@id, columnas/.store in=\PC@f@n, alto/.store in=\PC@f@alto,
+  separacion/.store in=\PC@f@sep, despues/.store in=\PC@f@desp,
+  igualar/.is if=PC@f@igualar, visible/.is if=PC@f@visible,
+  .unknown/.code={\PackageWarning{postercientifico}{Clave de fila desconocida: \pgfkeyscurrentname}}}
+\pgfkeys{/pc/col/.is family, /pc/col/.cd,
+  id/.store in=\PC@c@colid, abarca/.store in=\PC@c@abarca, ancho/.store in=\PC@c@ancho,
+  distribucion/.store in=\PC@c@dist,
+  .unknown/.code={\PackageWarning{postercientifico}{Clave de columna desconocida: \pgfkeyscurrentname}}}
+%% Valores guardados en el .aux por la compilación anterior
+\newif\ifPC@cambio
+\newcommand\PC@aux[3]{\expandafter\xdef\csname PC@aux@#1\endcsname{#2}\expandafter\xdef\csname PC@auxpag@#1\endcsname{#3}}
+\newcommand\PC@guardaraux[3]{% clave, valor (dimensión), página
+  \ifcsname PC@aux@#1\endcsname\ifdim\csname PC@aux@#1\endcsname=#2\relax\else\global\PC@cambiotrue\fi
+  \else\global\PC@cambiotrue\fi
+  \immediate\write\@auxout{\string\PC@aux{#1}{#2}{#3}}}
+\AtBeginDocument{\immediate\write\@auxout{\string\providecommand\string\PC@aux[3]{}}}
+%% Lo que va después de la fila que llena la página (filas y pie) se mide en
+%% cada compilación y se usa en la siguiente: \PC@acum suma sus alturas.
+%% Cada fila «llenar» guarda su propia suma (acum@<id>); solo cuenta lo que queda en
+%% la misma página, así que sirve también en documentos de varias páginas.
+\newdimen\PC@acum \newif\ifPC@trasllenar
+\def\PC@ultllenar{}\def\PC@acumpag{0}
+\newcommand\PC@sumar[1]{\ifPC@trasllenar\ifnum\value{page}=\PC@acumpag\relax
+  \global\advance\PC@acum\dimexpr#1\relax\fi\fi}
+\newcommand\PC@cerraracum{\ifx\PC@ultllenar\@empty\else
+  \PC@guardaraux{acum@\PC@ultllenar}{\the\PC@acum}{0}\fi}
+\newcommand\PC@despuesde[1]{% espacio que ocupa lo que va después de la fila #1 (de la compilación anterior)
+  \PC@tmpd=0pt
+  \ifcsname PC@aux@acum@#1\endcsname\PC@tmpd=\csname PC@aux@acum@#1\endcsname\relax\fi
+  \ifcsname PC@aux@fila@#1\endcsname\ifcsname PC@aux@fin\endcsname
+    \ifnum\csname PC@auxpag@fila@#1\endcsname=\csname PC@auxpag@fin\endcsname\relax
+      \ifdim\dimexpr\csname PC@aux@fin\endcsname-\csname PC@aux@fila@#1\endcsname\relax>\PC@tmpd
+        \PC@tmpd=\dimexpr\csname PC@aux@fin\endcsname-\csname PC@aux@fila@#1\endcsname\relax\fi
+    \fi\fi\fi}
+\newif\ifPC@hayllenar
+\AtEndDocument{\par\ifPC@hayllenar\penalty\@M\PC@guardaraux{fin}{\the\pagetotal}{\thepage}%
+  \PC@cerraracum\fi
+  \ifPC@cambio\PackageWarningNoLine{postercientifico}{Las alturas de las filas han cambiado.\MessageBreak
+    Rerun to get cross-references right (vuelve a compilar)}\fi}
+
+\NewDocumentEnvironment{fila}{O{}+b}{%
+  \par\begingroup
+  \global\advance\PC@contfilas\@ne
+  \advance\PC@nivelfila\@ne
+  \PC@f@igualartrue\PC@f@visibletrue
+  \edef\PC@f@id{fila\the\PC@contfilas}%
+  \pgfkeys{/pc/fila/.cd, columnas=\PC@ncol, alto=auto, separacion=\PC@sep, despues=\PC@sepfilas, #1}%
+  \ifPC@f@visible
+    \setlength\PCsep{\PC@f@sep}%
+    \setlength\PCcolw{\dimexpr(\linewidth-\PCsep*(\PC@f@n-1))/\PC@f@n\relax}%
+    \expandafter\xdef\csname PC@ncb@\the\PC@nivelfila\endcsname{0}%
+    \PC@enfilatrue
+    #2%
+    \PC@cerrarfila
+  \fi
+  \endgroup}{}
+
+\newcommand\PC@ci{}  % índice de caja del registro actual
+\newcommand\PC@colinicio[1]{%
+  \edef\PC@ncbactual{\the\numexpr\csname PC@ncb@\the\PC@nivelfila\endcsname+1\relax}%
+  \expandafter\xdef\csname PC@ncb@\the\PC@nivelfila\endcsname{\PC@ncbactual}%
+  \edef\PC@ci{\the\numexpr\PC@nivelfila*10-10+\PC@ncbactual\relax}%
+  \ifnum\PC@ncbactual>10 \PackageError{postercientifico}{Una fila admite como máximo 10 columnas}{}\fi
+  \def\PC@c@abarca{1}\def\PC@c@ancho{}\def\PC@c@dist{repartir}\edef\PC@c@colid{\PC@f@id-c\PC@ncbactual}%
+  \IfValueT{#1}{\PC@siclaves{#1}{\pgfkeys{/pc/col/.cd,#1}}{\def\PC@c@abarca{#1}}}%
+  \ifx\PC@c@ancho\@empty
+    \PC@tmpd=\dimexpr\PC@c@abarca\PCcolw+\PC@c@abarca\PCsep-\PCsep\relax
+  \else\PC@tmpd=\dimexpr\PC@c@ancho\relax\fi
+  \expandafter\xdef\csname PC@cw@\PC@ci\endcsname{\the\PC@tmpd}%
+  \expandafter\xdef\csname PC@cid@\PC@ci\endcsname{\PC@c@colid}%
+  \expandafter\xdef\csname PC@cdist@\PC@ci\endcsname{\PC@c@dist}%
+  \global\setbox\csname PC@cb@\PC@ci\endcsname=\vbox\bgroup\color@begingroup
+    \hsize=\PC@tmpd\relax\linewidth=\hsize\columnwidth=\hsize\textwidth=\hsize
+    \@parboxrestore\@setminipage\PC@parrafos\color{pcTexto}%
+    \let\PC@colid\PC@c@colid\let\PC@coldist\PC@c@dist
+    \PC@encolumnatrue\global\PC@primeracajatrue
+    \PC@marcav{\PC@colid}{a}%
+    \ifdefstring\PC@c@dist{abajo}{\vskip 0pt plus 1fil\relax}{}%
+    \ifdefstring\PC@c@dist{centro}{\vskip 0pt plus 1fil\relax}{}%
+    \ignorespaces}
+\newcommand\PC@colfin{%
+    \par\unskip
+    \ifdefstring\PC@coldist{abajo}{}{\vskip 0pt plus 1fil\relax}%
+    \PC@marcav{\PC@colid}{b}%
+  \color@endgroup\egroup}
+%% ---- 6b. Columnas de la versión 1 (siguen igual) ---------------------------
+%%  \begin{columnas}[n] \begin{columna}[k][alto] ... \end{columna} \end{columnas}
+\newif\ifPC@primera
+\newenvironment{columnas}[1][\PC@ncol]{%
+  \par\nointerlineskip\vskip-\parskip\noindent
+  \edef\PC@nsep{\the\numexpr#1-1\relax}%
+  \setlength{\PCcolw}{\dimexpr(\linewidth-\PCsep*\PC@nsep)/#1\relax}%
+  \global\PC@primeratrue\PC@enfilafalse\ignorespaces}{\par}
+\NewDocumentEnvironment{columna}{o o}{%
+  \ifPC@enfila\expandafter\@firstoftwo\else\expandafter\@secondoftwo\fi
+  {\PC@colinicio{#1}}%
+  {\ifPC@primera\global\PC@primerafalse\else\unskip\hfill\fi
+    \IfNoValueTF{#1}{\def\PC@k{1}}{\def\PC@k{#1}}%
+    \IfNoValueTF{#2}%
+      {\begin{minipage}[t]{\dimexpr\PC@k\PCcolw+\PC@k\PCsep-\PCsep\relax}}%
+      {\begin{minipage}[t][#2][t]{\dimexpr\PC@k\PCcolw+\PC@k\PCsep-\PCsep\relax}}%
+    \PC@parrafos\vspace{0pt}}}
+  {\ifPC@enfila\expandafter\@firstoftwo\else\expandafter\@secondoftwo\fi
+   {\PC@colfin}{\end{minipage}}\ignorespacesafterend}
+%%  \altolibre{reserva}: alto que queda libre en la página menos «reserva» (v1)
+\newcommand{\altolibre}[1]{\dimexpr\pagegoal-\pagetotal-#1\relax}
+
+\newcommand\PC@cerrarfila{%
+  \edef\PC@nc{\csname PC@ncb@\the\PC@nivelfila\endcsname}%
+  \PC@Hmax=0pt
+  \@tempcntb=0
+  \loop\ifnum\@tempcntb<\PC@nc\relax\advance\@tempcntb\@ne
+    \edef\PC@ci{\the\numexpr\PC@nivelfila*10-10+\@tempcntb\relax}%
+    \PC@tmpd=\dimexpr\ht\csname PC@cb@\PC@ci\endcsname+\dp\csname PC@cb@\PC@ci\endcsname\relax
+    \edef\PC@cid{\csname PC@cid@\PC@ci\endcsname}%
+    \ifcsname PC@usado@\PC@cid\endcsname\advance\PC@tmpd-\csname PC@usado@\PC@cid\endcsname\relax\fi
+    \ifdim\PC@tmpd>\PC@Hmax\PC@Hmax=\PC@tmpd\fi
+  \repeat
+  % alto objetivo
+  \PC@T=\PC@Hmax
+  \ifdefstring\PC@f@alto{auto}{}{%
+    \ifdefstring\PC@f@alto{llenar}{%
+      \ifinner\else
+        \global\PC@hayllenartrue
+        \penalty\@M
+        \ifdim\pagegoal=\maxdimen\PC@disp=\dimexpr\vsize-\pagetotal\relax
+        \else\PC@disp=\dimexpr\pagegoal-\pagetotal\relax\fi
+        \PC@despuesde{\PC@f@id}\advance\PC@disp-\PC@tmpd\advance\PC@disp-\dimexpr\PC@f@desp\relax
+        \ifPC@depurar\typeout{postercientifico: fila \PC@f@id: pagegoal=\the\pagegoal\space
+          pagetotal=\the\pagetotal\space despues=\the\PC@tmpd\space disp=\the\PC@disp\space
+          natural=\the\PC@Hmax}\fi
+        \ifdim\PC@disp>\PC@Hmax\PC@T=\PC@disp\else
+          \ifdim\dimexpr\PC@Hmax-\PC@disp\relax>\dimexpr\PC@f@desp\relax
+            \PackageWarning{postercientifico}{La fila \PC@f@id\space no cabe: sobra
+              \the\dimexpr\PC@Hmax-\PC@disp\relax\space de contenido}\fi\fi
+      \fi}%
+     {\PC@disp=\dimexpr\PC@f@alto\relax\ifdim\PC@disp>\PC@Hmax\PC@T=\PC@disp\fi}}%
+  % espacio extra de las columnas (para las cajas con «estirar»)
+  \@tempcntb=0
+  \loop\ifnum\@tempcntb<\PC@nc\relax\advance\@tempcntb\@ne
+    \edef\PC@ci{\the\numexpr\PC@nivelfila*10-10+\@tempcntb\relax}%
+    \edef\PC@cid{\csname PC@cid@\PC@ci\endcsname}%
+    \ifcsname PC@usado@\PC@cid\endcsname
+      \PC@tmpd=\dimexpr\PC@T-\ht\csname PC@cb@\PC@ci\endcsname-\dp\csname PC@cb@\PC@ci\endcsname
+        +\csname PC@usado@\PC@cid\endcsname\relax
+      \ifdim\PC@tmpd<0pt\PC@tmpd=0pt\fi
+      \PC@guardaraux{extra@\PC@cid}{\the\PC@tmpd}{0}%
+    \fi
+  \repeat
+  % salida
+  \PC@marcav{\PC@f@id}{a}%
+  \nointerlineskip
+  \hbox to\linewidth{%
+    \@tempcntb=0
+    \loop\ifnum\@tempcntb<\PC@nc\relax\advance\@tempcntb\@ne
+      \edef\PC@ci{\the\numexpr\PC@nivelfila*10-10+\@tempcntb\relax}%
+      \ifnum\@tempcntb>1 \hskip\PCsep\relax\fi
+      \ifPC@f@igualar\vbox to\PC@T{\unvbox\csname PC@cb@\PC@ci\endcsname}%
+      \else\vbox to\PC@T{\box\csname PC@cb@\PC@ci\endcsname\vss}\fi
+    \repeat\hfil}%
+  \PC@marcav{\PC@f@id}{b}%
+  \vskip\PC@f@desp minus \PC@f@desp\relax
+  \ifinner\else
+    \PC@sumar{\PC@T+\PC@f@desp}%
+    \ifdefstring\PC@f@alto{llenar}{\penalty\@M\PC@guardaraux{fila@\PC@f@id}{\the\pagetotal}{\thepage}%
+      \PC@cerraracum\xdef\PC@ultllenar{\PC@f@id}\xdef\PC@acumpag{\the\value{page}}%
+      \global\PC@trasllenartrue\global\PC@acum=0pt}{}%
+  \fi}
+
+%% ============================================================================
+%%  7. CAJAS: \begin{caja}[claves] ... \end{caja}
+%% ============================================================================
+%%  Estilos: barra | linea | caja | simple | borde | sombra | resaltado |
+%%           invertido | contorno | cita | nota | ninguno
+\newcount\PC@nivelcaja
+\def\PC@c@antes{0pt}\def\PC@c@despues{0pt}
+\newcounter{pcbloque}
+\newif\ifPC@c@mostrartit \newif\ifPC@c@visible \newif\ifPC@c@sombra \newif\ifPC@c@estirar
+\newif\ifPC@c@tienetit \newif\ifPC@c@esbloque
+\newcommand\PC@c@add[1]{\appto\PC@c@tcb{,#1}}
+\newcommand\PC@fwd[2]{\def\PC@v{#2}\ifx\PC@v\PC@novalor\pgfkeysalso{#1}\else\pgfkeysalso{#1={#2}}\fi}
+\pgfkeys{/pc/caja/.is family, /pc/caja/.cd,
+  id/.store in=\PC@c@id,
+  titulo/.store in=\PC@c@tit,
+  mostrar titulo/.is if=PC@c@mostrartit,
+  sin titulo/.code={\PC@c@mostrartitfalse},
+  con titulo/.code={\PC@c@mostrartittrue},
+  estilo/.store in=\PC@c@est,
+  numero/.store in=\PC@c@num,
+  visible/.is if=PC@c@visible,
+  oculta/.code={\PC@c@visiblefalse},
+  estirar/.is if=PC@c@estirar,
+  sombra/.is if=PC@c@sombra,
+  fondo/.code={\PC@defcolor{pc@c@fondo}{#1}\PC@c@add{colback=pc@c@fondo}},
+  borde/.code={\PC@defcolor{pc@c@borde}{#1}\PC@c@add{colframe=pc@c@borde}},
+  fondo titulo/.code={\PC@defcolor{pc@c@fondotit}{#1}\PC@c@add{colbacktitle=pc@c@fondotit}},
+  color titulo/.code={\PC@defcolor{pc@c@coltit}{#1}\PC@c@add{coltitle=pc@c@coltit}},
+  color texto/.code={\PC@defcolor{pc@c@coltxt}{#1}\PC@c@add{coltext=pc@c@coltxt}},
+  grosor borde/.code={\PC@c@add{boxrule=#1}},
+  radio/.code={\PC@c@add{arc=#1}},
+  relleno/.code={\PC@c@add{left=#1,right=#1,top=#1,bottom=#1}\def\PC@c@rel{#1}},
+  escala titulo/.store in=\PC@c@esctit,
+  escala texto/.code={\PC@c@add{fontupper=\tam{#1}}},
+  alineacion titulo/.store in=\PC@c@alintit,
+  alinear texto/.store in=\PC@c@alin,
+  columnas/.store in=\PC@c@cols,
+  alto/.code={\PC@c@add{height=#1}},
+  opacidad/.code={\PC@c@add{opacityback=#1,opacityframe=#1,opacitybacktitle=#1}},
+  antes/.store in=\PC@c@antes,
+  despues/.store in=\PC@c@despues,
+  tcb/.code={\PC@c@add{#1}},
+  .unknown/.code={\edef\PC@k{\pgfkeyscurrentname}\def\PC@v{#1}%
+    \ifx\PC@v\PC@novalor\eappto\PC@c@tcb{,\PC@k}\else\eappto\PC@c@tcb{,\PC@k={\unexpanded{#1}}}\fi},
+}
+\newcommand\PC@c@reset{%
+  \def\PC@c@id{}\def\PC@c@tit{}\def\PC@c@est{}\def\PC@c@num{}\def\PC@c@tcb{}%
+  \let\PC@c@esctit\PC@escbloque\let\PC@c@alintit\PC@alintit\let\PC@c@alin\PC@alintxt\def\PC@c@cols{}%
+  \let\PC@c@rel\PC@relleno
+  \ifPC@mostrartit\PC@c@mostrartittrue\else\PC@c@mostrartitfalse\fi
+  \ifPC@sombra\PC@c@sombratrue\else\PC@c@sombrafalse\fi
+  \PC@c@visibletrue\PC@c@estirarfalse
+  \ifnum\PC@nivelcaja=0 \PC@c@esbloquetrue\def\PC@c@antes{0pt}\let\PC@c@despues\PC@sepbloque
+  \else\PC@c@esbloquefalse\let\PC@c@antes\PC@sepelem\let\PC@c@despues\PC@sepelem\def\PC@c@esctit{1.1}\fi}
+\newcommand\PC@halin[1]{\ifstrequal{#1}{centro}{center}{\ifstrequal{#1}{derecha}{flush right}{flush left}}}
+\newcommand\PC@alintexto[1]{\ifstrequal{#1}{izquierda}{\raggedright}{\ifstrequal{#1}{derecha}{\raggedleft}%
+  {\ifstrequal{#1}{centro}{\centering}{}}}}
+%% insignia con el número del bloque
+\newcommand\PC@insignia[1]{\tikz[baseline=(pcn.base)]\node[circle,fill=pcAcento,text=pcContraste,inner sep=0pt,
+  minimum size=1.32em,font=\bfseries] (pcn) {#1};}
+
+\NewDocumentEnvironment{caja}{O{}+b}{%
+  \PC@c@reset
+  \pgfkeys{/pc/caja/.cd,#1}%
+  \ifPC@c@visible\expandafter\@firstofone\else\expandafter\@gobble\fi{\PC@c@componer{#2}}}{}
+\newcommand\PC@c@componer[1]{%
+  \ifx\PC@c@est\@empty\ifPC@c@esbloque\let\PC@c@est\PC@estbloque\else\def\PC@c@est{borde}\fi\fi
+  \pgfkeysifdefined{/tcb/pc est/\PC@c@est/.@cmd}{}{\PackageWarning{postercientifico}{Estilo de caja
+    desconocido: \PC@c@est}\def\PC@c@est{barra}}%
+  % ¿se ve el título?
+  \PC@c@tienetitfalse
+  \ifPC@c@mostrartit\ifx\PC@c@tit\@empty\else\PC@c@tienetittrue\fi\fi
+  % numeración automática de los bloques
+  \ifPC@c@esbloque\ifPC@numbloques\ifPC@c@tienetit\ifx\PC@c@num\@empty
+    \stepcounter{pcbloque}\edef\PC@c@num{\arabic{pcbloque}}\fi\fi\fi\fi
+  \ifPC@c@tienetit
+    \ifx\PC@c@num\@empty\let\PC@c@titfinal\PC@c@tit\else
+      \edef\PC@c@titfinal{\noexpand\PC@insignia{\PC@c@num}\noexpand\hspace{0.45em}\unexpanded\expandafter{\PC@c@tit}}\fi
+  \fi
+  % reparto del espacio entre cajas de una columna (fila v2)
+  \ifPC@c@esbloque\ifPC@encolumna
+    \ifPC@primeracaja\global\PC@primeracajafalse\else\ifdefstring\PC@coldist{repartir}{\par\vfill}{}\fi
+  \fi\fi
+  % «estirar»: la caja crece hasta el final de la columna (compilación anterior)
+  \def\PC@c@extra{}%
+  \ifPC@c@estirar\ifPC@encolumna\ifcsname PC@usado@\PC@colid\endcsname\else
+    \ifcsname PC@aux@extra@\PC@colid\endcsname\edef\PC@c@extra{\csname PC@aux@extra@\PC@colid\endcsname}%
+    \else\def\PC@c@extra{0pt}\fi
+    \expandafter\xdef\csname PC@usado@\PC@colid\endcsname{\PC@c@extra}\fi\fi\fi
+  \ifdefstring\PC@c@alintit{centro}{\def\PC@c@htval{center}}{\ifdefstring\PC@c@alintit{derecha}%
+    {\def\PC@c@htval{flush right}}{\def\PC@c@htval{flush left}}}%
+  \def\PC@c@alinopc{}%
+  \ifx\PC@c@alin\@empty\else\ifdefstring\PC@c@alin{justificado}{}%
+    {\edef\PC@c@alinopc{before upper app={\noexpand\PC@alintexto{\PC@c@alin}},}}\fi
+  \edef\PC@c@todas{pc base, left=\PC@relleno, right=\PC@relleno, top=\PC@relleno, bottom=\PC@relleno,
+    before skip=\PC@c@antes, after skip=\PC@c@despues,
+    pc est/\PC@c@est,
+    \ifPC@c@tienetit pc est/\PC@c@est/tit, title={\unexpanded\expandafter{\PC@c@titfinal}},
+      fonttitle=\noexpand\bfseries\noexpand\PC@fuentetit\noexpand\tam{\PC@c@esctit},
+      halign title=\PC@c@htval,\fi
+    \ifPC@c@sombra pc sombra,\fi
+    \unexpanded\expandafter{\PC@c@alinopc}%
+    \ifx\PC@c@id\@empty\else overlay app={\noexpand\PC@marcasmarco{\PC@c@id}},\fi
+    \unexpanded\expandafter{\PC@c@tcb}%
+    \ifx\PC@c@extra\@empty\else,bottom=\the\dimexpr\PC@c@rel+\PC@c@extra\relax\fi}%
+  \advance\PC@nivelcaja\@ne\PC@encolumnafalse
+  \expandafter\PC@c@abrir\expandafter{\PC@c@todas}{#1}}
+\newcommand\PC@c@abrir[2]{\begin{tcolorbox}[#1]\PC@c@cuerpo{#2}\end{tcolorbox}}
+\newcommand\PC@c@cuerpo[1]{\ifx\PC@c@cols\@empty#1\else
+  {\setlength{\columnsep}{1.3em}\setlength{\multicolsep}{0pt}\begin{multicols}{\PC@c@cols}#1\end{multicols}}\fi}
+
+%% ---- Estilos de caja ----------------------------------------------------------
+\tcbset{
+  pc base/.style={enhanced, width=\linewidth, before skip=0pt, after skip=\PC@sepbloque,
+    arc=\PC@radio, boxsep=0pt, left=\PC@relleno, right=\PC@relleno, top=\PC@relleno, bottom=\PC@relleno,
+    toptitle=0.42em, bottomtitle=0.36em, fonttitle=\bfseries\PC@fuentetit\tam{\PC@escbloque},
+    coltext=pcTexto, before upper={\PC@parrafos}, after upper={\PC@quitarespacio}},
+  pc sombra/.style={drop fuzzy shadow={black!60}},
+  pc transparente/.style={opacityback=0, opacityframe=0, opacitybacktitle=0},
+  % barra: barra de título del color primario sobre fondo claro
+  pc est/barra/.style={colback=pcBloque, colframe=pcPrimario, boxrule=0pt, titlerule=0pt,
+    coltitle=pcContraste, colbacktitle=pcPrimario},
+  pc est/barra/tit/.style={},
+  % linea: título subrayado con el color de acento, sin fondo
+  pc est/linea/.style={pc transparente, colback=pcFondo, colframe=pcFondo, boxrule=0pt, titlerule=0pt,
+    left=0pt, right=0pt, coltitle=pcPrimario, colbacktitle=pcFondo, toptitle=0pt},
+  pc est/linea/tit/.style={top=0.6em,
+    overlay app={\draw[pcAcento,line width=0.11em] (title.south west)--(title.south east);}},
+  % caja: recuadro con el título en una etiqueta
+  pc est/caja/.style={colback=pcFondo, colframe=pcPrimario, boxrule=0.07em, coltitle=pcContraste},
+  pc est/caja/tit/.style={attach boxed title to top left={xshift=0.9em,yshift=-\tcboxedtitleheight/2},
+    boxed title style={colback=pcPrimario,colframe=pcPrimario,arc=\PC@radio,boxrule=0pt},
+    top=\dimexpr\PC@relleno+0.7em\relax, before skip=\dimexpr\PC@c@antes+0.9em\relax},
+  % simple: fondo claro, título de color sin barra
+  pc est/simple/.style={colback=pcBloque, colframe=pcBloque, boxrule=0pt, titlerule=0pt,
+    coltitle=pcPrimario, colbacktitle=pcBloque},
+  pc est/simple/tit/.style={bottomtitle=0pt},
+  % borde: fondo del lienzo, borde de color, título de color
+  pc est/borde/.style={colback=pcFondo, colframe=pcPrimario, boxrule=0.07em, titlerule=0.04em,
+    coltitle=pcPrimario, colbacktitle=pcFondo},
+  pc est/borde/tit/.style={},
+  % sombra: como barra, con sombra
+  pc est/sombra/.style={pc est/barra, pc sombra},
+  pc est/sombra/tit/.style={},
+  % resaltado: fondo del color de acento muy claro
+  pc est/resaltado/.style={colback=pcAcento!18!pcFondo, colframe=pcAcento!18!pcFondo, boxrule=0pt, titlerule=0pt,
+    coltitle=pcAcento!70!pcTexto, colbacktitle=pcAcento!18!pcFondo},
+  pc est/resaltado/tit/.style={bottomtitle=0pt},
+  % invertido: texto claro sobre el color primario
+  pc est/invertido/.style={colback=pcPrimario, colframe=pcPrimario, boxrule=0pt, titlerule=0pt,
+    coltext=pcContraste, coltitle=pcContraste, colbacktitle=pcPrimario},
+  pc est/invertido/tit/.style={bottomtitle=0pt},
+  % contorno: fondo del lienzo, borde y barra de título del color secundario
+  pc est/contorno/.style={colback=pcFondo, colframe=pcSecundario, boxrule=0.07em, titlerule=0pt,
+    coltitle=pcContraste, colbacktitle=pcSecundario},
+  pc est/contorno/tit/.style={},
+  % cita: barra de acento a la izquierda y texto en cursiva
+  pc est/cita/.style={pc transparente, colback=pcFondo, colframe=pcFondo, boxrule=0pt, titlerule=0pt,
+    left=1em, right=0pt, top=0.2em, bottom=0.2em, coltitle=pcAcento!70!pcTexto, colbacktitle=pcFondo,
+    before upper app={\itshape},
+    overlay app={\fill[pcAcento] (frame.south west) rectangle ($(frame.north west)+(0.25em,0)$);}},
+  pc est/cita/tit/.style={toptitle=0pt, lefttitle=1.4em},
+  % nota: fondo claro con barra lateral del color secundario
+  pc est/nota/.style={colback=pcBloque, colframe=pcBloque, boxrule=0pt, titlerule=0pt,
+    coltitle=pcSecundario, colbacktitle=pcBloque,
+    overlay app={\fill[pcSecundario] (frame.south west) rectangle ($(frame.north west)+(0.25em,0)$);}},
+  pc est/nota/tit/.style={bottomtitle=0pt},
+  % ninguno: sin fondo ni borde
+  pc est/ninguno/.style={pc transparente, colback=pcFondo, colframe=pcFondo, boxrule=0pt, titlerule=0pt,
+    left=0pt, right=0pt, top=0pt, bottom=0pt, coltitle=pcPrimario, colbacktitle=pcFondo, toptitle=0pt},
+  pc est/ninguno/tit/.style={bottomtitle=0.3em},
+  % compatibilidad con la versión 1
+  pc barra/.style={pc base, pc est/barra},
+  pc linea/.style={pc base, pc est/linea, pc est/linea/tit},
+  pc caja/.style={pc base, pc est/caja, pc est/caja/tit},
+  pc bloque/.style={pc base, pc est/barra},
+}
+%% bloque y bloquesimple (v1): ahora son cajas
+\NewDocumentEnvironment{bloque}{O{}m+b}{\begin{caja}[titulo={#2},#1]#3\end{caja}}{}
+\NewDocumentEnvironment{bloquesimple}{O{}+b}{\begin{caja}[estilo=simple,sin titulo,#1]#2\end{caja}}{}
+
+%% ============================================================================
+%%  8. CABECERA Y PIE
+%% ============================================================================
+\newcommand{\titulo}[1]{\def\PC@titulo{#1}}             \def\PC@titulo{}
+\newcommand{\subtitulo}[1]{\def\PC@subtitulo{#1}}       \def\PC@subtitulo{}
+\newcommand{\autores}[1]{\def\PC@autores{#1}}           \def\PC@autores{}
+\newcommand{\afiliaciones}[1]{\def\PC@afil{#1}}         \def\PC@afil{}
+\newcommand{\logoizquierdo}[1]{\def\PC@logoL{#1}}       \def\PC@logoL{}
+\newcommand{\logoderecho}[1]{\def\PC@logoR{#1}}         \def\PC@logoR{}
+%% \PC@logo{\PC@logoL}{escala}{id}: el logo con su escala (sobre «alto logos») y, para
+%% la aplicación, las esquinas de la imagen (así se puede elegir y estirar en la vista previa)
+\newbox\PC@logobox \newdimen\PC@logowL \newdimen\PC@logowR \newdimen\PC@logowC
+\newcommand{\PC@logo}[3]{\ifdefempty{#1}{}{%
+  \setbox\PC@logobox=\hbox{\PCimg[width=\linewidth,height=#2\dimexpr\PC@logoh\relax,keepaspectratio]{#1}}%
+  \ifPC@posabierto
+    \dimen@=\ht\PC@logobox \dimen@ii=\dp\PC@logobox
+    \edef\PC@tmpa{\noexpand\PC@marca{#3}{a}}\edef\PC@tmpb{\noexpand\PC@marca{#3}{b}}% el id ya escrito
+    \hbox{\raise\dimen@\hbox to\z@{\PC@tmpa\hss}\box\PC@logobox\lower\dimen@ii\hbox to\z@{\PC@tmpb\hss}}%
+  \else\box\PC@logobox\fi}}
+%% el hueco de cada logo mide siempre «ancho logos»: la escala de un logo cambia solo
+%% el logo (su alto, hasta llenar el ancho del hueco), no el sitio del título
+\newcommand\PC@anchoslogos{%
+  \PC@logowL=\PC@logow\linewidth \PC@logowR=\PC@logowL \PC@logowC=\PC@logowL}
+\newcommand{\PC@textocab}{%
+  {\PC@fuentetit\tam{\PC@esctit}\bfseries\PC@titulo\par}%
+  \ifdefempty{\PC@subtitulo}{}{\vspace{0.25em}{\tam{\PC@escsub}\PC@subtitulo\par}}%
+  \ifdefempty{\PC@autores}{}{\vspace{0.7em}{\tam{\PC@escaut}\bfseries\PC@autores\par}}%
+  \ifdefempty{\PC@afil}{}{\vspace{0.25em}{\tam{\PC@escafi}\PC@afil\par}}}
+%% centrada: los dos huecos miden lo mismo, así el título queda en el centro
+\newcommand{\PC@cuerpocab@centro}{\PC@anchoslogos
+  \begin{minipage}[c]{\PC@logowC}\centering\PC@logo{\PC@logoL}{\PC@logoescL}{\PC@cab@id-logo-izq}\end{minipage}\hfill
+  \begin{minipage}[c]{\dimexpr\linewidth-2\PC@logowC-2.4em\relax}\centering\PC@textocab\end{minipage}\hfill
+  \begin{minipage}[c]{\PC@logowC}\centering\PC@logo{\PC@logoR}{\PC@logoescR}{\PC@cab@id-logo-der}\end{minipage}}
+\newcommand{\PC@cuerpocab@izquierda}{\PC@anchoslogos
+  \dimen@=\z@
+  \ifdefempty{\PC@logoL}{}{\advance\dimen@\PC@logowL}\ifdefempty{\PC@logoR}{}{\advance\dimen@\PC@logowR}%
+  \ifdim\dimen@=\z@ \begin{minipage}[c]{\linewidth}\raggedright\PC@textocab\end{minipage}%
+  \else
+  \begin{minipage}[c]{\dimexpr\linewidth-\dimen@-2.4em\relax}\raggedright\PC@textocab\end{minipage}\hfill
+  \ifdefempty{\PC@logoL}{}{\begin{minipage}[c]{\PC@logowL}\centering\PC@logo{\PC@logoL}{\PC@logoescL}{\PC@cab@id-logo-izq}\end{minipage}}%
+  \ifdefempty{\PC@logoR}{}{\hspace{1.2em}\begin{minipage}[c]{\PC@logowR}\centering\PC@logo{\PC@logoR}{\PC@logoescR}{\PC@cab@id-logo-der}\end{minipage}}%
+  \fi}
+\newif\ifPC@cab@visible \newif\ifPC@cab@linea
+\pgfkeys{/pc/cab/.is family, /pc/cab/.cd,
+  estilo/.store in=\PC@cab@est, alineacion/.store in=\PC@cab@alin,
+  fondo/.code={\PC@defcolor{pc@cab@fondo}{#1}\def\PC@cab@fondo{pc@cab@fondo}},
+  color texto/.code={\PC@defcolor{pc@cab@texto}{#1}\def\PC@cab@texto{pc@cab@texto}},
+  imagen/.store in=\PC@cab@img, oscurecer/.store in=\PC@cab@osc,
+  relleno/.store in=\PC@cab@rel, id/.store in=\PC@cab@id, visible/.is if=PC@cab@visible,
+  .unknown/.code={\edef\PC@k{/poster/\pgfkeyscurrentname}\expandafter\PC@fwd\expandafter{\PC@k}{#1}}}
+%%  \cabecera[estilo=banda|clara|minima|degradado|imagen, alineacion=centro|izquierda,
+%%            fondo=..., color texto=..., imagen=<archivo>, oscurecer=0.45, relleno=1.1em]
+\newcommand{\cabecera}[1][]{\par\begingroup
+  \def\PC@cab@est{\PC@estcab}\def\PC@cab@alin{\PC@alincab}\def\PC@cab@img{}\def\PC@cab@osc{0.45}%
+  \def\PC@cab@rel{1.1em}\def\PC@cab@id{cabecera}\def\PC@cab@fondo{}\def\PC@cab@texto{}\PC@cab@visibletrue
+  \pgfkeys{/pc/cab/.cd,#1}%
+  \ifPC@cab@visible
+    \edef\PC@cab@est{\PC@cab@est}\edef\PC@cab@alin{\PC@cab@alin}%
+    \ifcsname PC@cuerpocab@\PC@cab@alin\endcsname\else\def\PC@cab@alin{centro}\fi
+    \ifcsname PC@cabest@\PC@cab@est\endcsname\else\def\PC@cab@est{banda}\fi
+    \csname PC@cabest@\PC@cab@est\endcsname
+    \edef\PC@tmp{\noexpand\begin{tcolorbox}[pc base, \unexpanded\expandafter{\PC@cab@opc},
+      \ifx\PC@cab@fondo\@empty\else colback=\PC@cab@fondo, colframe=\PC@cab@fondo,\fi
+      \ifx\PC@cab@texto\@empty\else coltext=\PC@cab@texto,\fi
+      overlay app={\noexpand\PC@marcasmarco{\PC@cab@id}}]}%
+    \PC@tmp\csname PC@cuerpocab@\PC@cab@alin\endcsname\end{tcolorbox}%
+  \fi\endgroup}
+\@namedef{PC@cabest@banda}{\edef\PC@cab@opc{colback=pcPrimario, colframe=pcPrimario, boxrule=0pt, coltext=pcContraste,
+  left=\PC@cab@rel, right=\PC@cab@rel, top=\PC@cab@rel, bottom=\PC@cab@rel}}
+\@namedef{PC@cabest@clara}{\edef\PC@cab@opc{pc transparente, colback=pcFondo, colframe=pcFondo, boxrule=0pt,
+  coltext=pcPrimario, left=0pt, right=0pt, top=0pt, bottom=0.9em,
+  underlay={\noexpand\draw[pcAcento,line width=0.18em] (frame.south west)--(frame.south east);}}}
+\@namedef{PC@cabest@minima}{\edef\PC@cab@opc{pc transparente, colback=pcFondo, colframe=pcFondo, boxrule=0pt,
+  coltext=pcTexto, left=0pt, right=0pt, top=0pt, bottom=0.8em,
+  underlay={\noexpand\draw[pcTenue,line width=0.05em] (frame.south west)--(frame.south east);}}}
+\@namedef{PC@cabest@degradado}{\edef\PC@cab@opc{colframe=pcPrimario, boxrule=0pt, coltext=pcContraste,
+  interior style={left color=pcPrimario, right color=pcSecundario},
+  left=\PC@cab@rel, right=\PC@cab@rel, top=\PC@cab@rel, bottom=\PC@cab@rel}}
+\@namedef{PC@cabest@imagen}{\pgfmathsetmacro\PC@cab@opimg{1-\PC@cab@osc}%
+  \IfFileExists{\PC@cab@img}{\edef\PC@cab@marca{watermark graphics={\PC@cab@img}, watermark overzoom=1,
+    watermark opacity=\PC@cab@opimg,}}{\def\PC@cab@marca{}}%
+  \edef\PC@cab@opc{colback=black, colframe=black, boxrule=0pt, coltext=white, \PC@cab@marca
+    left=\PC@cab@rel, right=\PC@cab@rel, top=\PC@cab@rel, bottom=\PC@cab@rel}}
+%%  \piedeposter[estilo=banda|clara|ninguno, fondo=..., color texto=...]{izquierda}{centro}{derecha}
+\newif\ifPC@pie@visible
+\pgfkeys{/pc/pie/.is family, /pc/pie/.cd,
+  estilo/.store in=\PC@pie@est,
+  fondo/.code={\PC@defcolor{pc@pie@fondo}{#1}\def\PC@pie@fondo{pc@pie@fondo}},
+  color texto/.code={\PC@defcolor{pc@pie@texto}{#1}\def\PC@pie@texto{pc@pie@texto}},
+  id/.store in=\PC@pie@id, visible/.is if=PC@pie@visible,
+  .unknown/.code={\edef\PC@k{/poster/\pgfkeyscurrentname}\expandafter\PC@fwd\expandafter{\PC@k}{#1}}}
+\NewDocumentCommand\piedeposter{O{}mmm}{\par\vfill\begingroup
+  \def\PC@pie@est{\PC@estpie}\def\PC@pie@fondo{}\def\PC@pie@texto{}\def\PC@pie@id{pie}\PC@pie@visibletrue
+  \pgfkeys{/pc/pie/.cd,#1}%
+  \ifPC@pie@visible
+    \edef\PC@pie@est{\PC@pie@est}%
+    \ifdefstring\PC@pie@est{clara}{\def\PC@pie@opc{pc transparente, colback=pcFondo, colframe=pcFondo, coltext=pcTenue,
+        left=0pt, right=0pt, top=0.6em, bottom=0pt,
+        underlay={\draw[pcTenue,line width=0.05em] (frame.north west)--(frame.north east);}}}%
+     {\ifdefstring\PC@pie@est{ninguno}{\def\PC@pie@opc{pc transparente, colback=pcFondo, colframe=pcFondo,
+        coltext=pcTenue, left=0pt, right=0pt, top=0pt, bottom=0pt}}%
+       {\def\PC@pie@opc{colback=pcPrimario, colframe=pcPrimario, coltext=pcContraste, top=0.5em, bottom=0.5em}}}%
+    \edef\PC@tmp{\noexpand\begin{tcolorbox}[pc base, boxrule=0pt, after skip=0pt,
+      fontupper=\noexpand\tam{\PC@escpiepos}, \unexpanded\expandafter{\PC@pie@opc},
+      \ifx\PC@pie@fondo\@empty\else colback=\PC@pie@fondo, colframe=\PC@pie@fondo,\fi
+      \ifx\PC@pie@texto\@empty\else coltext=\PC@pie@texto,\fi
+      overlay app={\noexpand\PC@marcasmarco{\PC@pie@id}}]}%
+    \setbox\PC@boxpie\vbox{\PC@tmp
+      \begin{minipage}[c]{0.32\linewidth}\raggedright#2\end{minipage}\hfill
+      \begin{minipage}[c]{0.32\linewidth}\centering#3\end{minipage}\hfill
+      \begin{minipage}[c]{0.32\linewidth}\raggedleft#4\end{minipage}%
+    \end{tcolorbox}}%
+    \ifinner\else\PC@sumar{\ht\PC@boxpie+\dp\PC@boxpie}\fi
+    \nointerlineskip\box\PC@boxpie
+  \fi\endgroup}
+\newbox\PC@boxpie
+
+%% ============================================================================
+%%  9. PIEZAS BÁSICAS
+%% ============================================================================
+\newcounter{pcfig}
+%% Imagen de reserva: se dibuja si el archivo no existe (la plantilla siempre compila).
+%% Se dibuja ya con el tamaño pedido en vez de escalarla: así mide exactamente lo mismo
+%% que mediría la imagen (escalar con \resizebox deja medio punto de más y desborda).
+%% Entiende width, height, totalheight, keepaspectratio y scale; el resto se ignora.
+\newlength\PC@rw \newlength\PC@rh \newif\ifPC@rkeep
+\pgfkeys{/pc/reserva/.cd,
+  width/.code={\setlength\PC@rw{#1}}, height/.code={\setlength\PC@rh{#1}},
+  totalheight/.code={\setlength\PC@rh{#1}}, keepaspectratio/.code={\PC@rkeeptrue},
+  scale/.code={\setlength\PC@rw{8cm}\setlength\PC@rw{#1\PC@rw}}, .unknown/.code={}}
+\newcommand{\PC@reserva}[1]{\begingroup
+  \setlength\PC@rw{0pt}\setlength\PC@rh{0pt}\PC@rkeepfalse
+  \pgfkeys{/pc/reserva/.cd,#1}%
+  \ifdim\PC@rw>\z@
+    \ifdim\PC@rh>\z@
+      \ifPC@rkeep   % lo más grande que quepa en ancho × alto con proporción 4:3
+        \ifdim\dimexpr\PC@rw*3/4\relax>\PC@rh \setlength\PC@rw{\dimexpr\PC@rh*4/3\relax}%
+        \else\setlength\PC@rh{\dimexpr\PC@rw*3/4\relax}\fi
+      \fi
+    \else\setlength\PC@rh{\dimexpr\PC@rw*3/4\relax}\fi
+  \else
+    \ifdim\PC@rh>\z@\setlength\PC@rw{\dimexpr\PC@rh*4/3\relax}\else\setlength\PC@rw{8cm}\setlength\PC@rh{6cm}\fi
+  \fi
+  \pgfmathsetmacro\PC@rk{max(0.1,min(\PC@rw/8cm,\PC@rh/6cm))}%
+  \pgfmathsetlengthmacro\PC@rl{\PC@rk*1pt}\pgfmathsetlengthmacro\PC@rm{\PC@rk*0.5pt}%
+  \pgfmathsetlengthmacro\PC@rf{\PC@rk*20pt}\pgfmathsetlengthmacro\PC@rb{\PC@rk*24pt}%
+  \begin{tikzpicture}[x=\PC@rw,y=\PC@rh,line width=\PC@rl,every node/.style={}]
+    \path[use as bounding box] (0,0) rectangle (1,1);
+    \begin{scope}\clip (0,0) rectangle (1,1);
+      \fill[pcBloque] (0,0) rectangle (1,1);
+      \draw[pcTenue] (0,0)--(1,1) (0,1)--(1,0);
+      \draw[pcTenue] ([shift={(\PC@rm,\PC@rm)}]0,0) rectangle ([shift={(-\PC@rm,-\PC@rm)}]1,1);
+    \end{scope}
+    \node[fill=pcBloque,text=pcTenue,inner sep=0.3333em,font=\fontsize{\PC@rf}{\PC@rb}\selectfont] at (0.5,0.5) {imagen};
+  \end{tikzpicture}\endgroup}
+%% \PCimg[opciones de \includegraphics]{archivo}
+\newcommand{\PCimg}[2][]{\IfFileExists{#2}{\includegraphics[#1]{#2}}{\ifstrequal{#2}{imagen-pendiente}{}%
+  {\PackageWarning{postercientifico}{No encuentro la imagen #2}}\PC@reserva{#1}}}
+%% \pie{texto}: pie de figura, numerado si «numerar figuras=true»
+\newcommand{\pie}[1]{\ifstrempty{#1}{}{\par\vspace{0.3em}{\tam{\PC@escpie}\color{pcTenue}\raggedright
+  \ifPC@numfig\stepcounter{pcfig}{\bfseries\color{pcPrimario}\PC@nomfig\ \thepcfig.}\ \fi#1\par}}}
+%% \PCrecorte[opciones de recorte]{ancho}{alto}{archivo}[etiqueta]
+%% Rellena exactamente un rectángulo de ancho × alto, recortando lo que sobre.
+\NewDocumentCommand{\PCrecorte}{O{} m m m O{}}{\begingroup
+  \setlength{\PC@w}{#2}\setlength{\PC@h}{#3}%
+  \sbox{\PC@box}{\PCimg[width=10cm]{#4}}\setlength{\PC@bw}{\wd\PC@box}\setlength{\PC@bh}{\ht\PC@box}%
+  \pgfmathsetmacro{\PC@s}{max(\PC@w/\PC@bw,\PC@h/\PC@bh)}%
+  \begin{tikzpicture}
+    \path[use as bounding box] (0,0) rectangle (\PC@w,\PC@h);
+    \begin{scope}\clip[#1] (0,0) rectangle (\PC@w,\PC@h);
+      \node[inner sep=0pt,outer sep=0pt] at (0.5\PC@w,0.5\PC@h) {\scalebox{\PC@s}{\usebox{\PC@box}}};\end{scope}
+    \ifstrempty{#5}{}{\node[anchor=north west,fill=pcPrimario,text=pcContraste,font=\bfseries\tam{0.75},
+      inner xsep=0.5em,inner ysep=0.3em,outer sep=0pt] at (0,\PC@h) {#5};}
+  \end{tikzpicture}\endgroup}
+%% \codigo{texto}: nombres de genes, dominios o clases en letra de máquina
+\providecommand{\codigo}[1]{{\ttfamily\bfseries#1}}
+\newcommand{\PC@antes}{\par\addvspace{\PC@sepelem}\noindent}
+\newcommand{\PC@antesT}{\par\addvspace{\PC@sepelem}\nointerlineskip\noindent}  % para cajas alineadas por arriba
+\newcommand{\PC@antesV}{\par\addvspace{\PC@sepelem}}
+\newcommand{\PC@despues}{\par\addvspace{\PC@sepelem}}
+\newcommand{\PC@gap}{\hspace{\PC@gapimg}}
+
+%% ============================================================================
+%%  10. IMÁGENES · 34 variantes  (I01 – I34)
+%%      El argumento opcional es siempre el tamaño (ancho, alto, fracción o ángulo).
+%% ============================================================================
+%% I01 · a todo el ancho, pie debajo                  \imgAncho[ancho]{archivo}{pie}
+\newcommand{\imgAncho}[3][\linewidth]{\PC@antes{\centering\PCimg[width=#1]{#2}\par}\pie{#3}\PC@despues}
+%% I02 · pie encima de la imagen                      \imgPieArriba[ancho]{archivo}{pie}
+\newcommand{\imgPieArriba}[3][\linewidth]{\PC@antesV\pie{#3}\vspace{0.3em}{\centering\PCimg[width=#1]{#2}\par}\PC@despues}
+%% I03 · centrada y estrecha                          \imgCentro[ancho]{archivo}{pie}
+\newcommand{\imgCentro}[3][0.6\linewidth]{\PC@antes{\centering\PCimg[width=#1]{#2}\par}%
+  {\centering\begin{minipage}{#1}\pie{#3}\end{minipage}\par}\PC@despues}
+%% I04 · alineada a la izquierda                      \imgIzquierda[ancho]{archivo}{pie}
+\newcommand{\imgIzquierda}[3][0.6\linewidth]{\PC@antes\begin{minipage}{#1}\PCimg[width=\linewidth]{#2}\pie{#3}\end{minipage}\PC@despues}
+%% I05 · alineada a la derecha                        \imgDerecha[ancho]{archivo}{pie}
+\newcommand{\imgDerecha}[3][0.6\linewidth]{\PC@antes\hfill\begin{minipage}{#1}\PCimg[width=\linewidth]{#2}\pie{#3}\end{minipage}\PC@despues}
+%% I06 · imagen a la izquierda, texto a la derecha    \imgTextoDerecha[fracción]{archivo}{pie}{texto}
+\newcommand{\imgTextoDerecha}[4][0.45]{\PC@antesT
+  \begin{minipage}[t]{#1\linewidth}\vspace{0pt}\PCimg[width=\linewidth]{#2}\pie{#3}\end{minipage}\hfill
+  \begin{minipage}[t]{\dimexpr\linewidth-#1\linewidth-1em\relax}\vspace{0pt}\PC@parrafos#4\end{minipage}\PC@despues}
+%% I07 · imagen a la derecha, texto a la izquierda    \imgTextoIzquierda[fracción]{archivo}{pie}{texto}
+\newcommand{\imgTextoIzquierda}[4][0.45]{\PC@antesT
+  \begin{minipage}[t]{\dimexpr\linewidth-#1\linewidth-1em\relax}\vspace{0pt}\PC@parrafos#4\end{minipage}\hfill
+  \begin{minipage}[t]{#1\linewidth}\vspace{0pt}\PCimg[width=\linewidth]{#2}\pie{#3}\end{minipage}\PC@despues}
+%% I08 · el texto que sigue rodea la imagen (izquierda)   \imgEnvueltaIzquierda[fracción]{archivo}{pie}
+\newcommand{\PC@envuelta}[4]{\par\setlength{\intextsep}{0.2em}\setlength{\columnsep}{0.9em}%
+  \begin{wrapfigure}{#1}{#2\linewidth}\PCimg[width=\linewidth]{#3}\pie{#4}\end{wrapfigure}}
+\newcommand{\imgEnvueltaIzquierda}[3][0.42]{\PC@envuelta{l}{#1}{#2}{#3}}
+%% I09 · el texto que sigue rodea la imagen (derecha)     \imgEnvueltaDerecha[fracción]{archivo}{pie}
+\newcommand{\imgEnvueltaDerecha}[3][0.42]{\PC@envuelta{r}{#1}{#2}{#3}}
+%% I10 · dos en fila                                  \imgDos[alto]{a}{b}{pie}
+\newcommand{\imgDos}[4][0.36\linewidth]{\PC@antes\setlength{\PC@g}{\PC@gapimg}%
+  \PCrecorte{0.5\linewidth-0.5\PC@g}{#1}{#2}\hfill\PCrecorte{0.5\linewidth-0.5\PC@g}{#1}{#3}\pie{#4}\PC@despues}
+%% I11 · tres en fila                                 \imgTres[alto]{a}{b}{c}{pie}
+\newcommand{\imgTres}[5][0.27\linewidth]{\PC@antes\setlength{\PC@g}{\PC@gapimg}%
+  \PCrecorte{0.33333\linewidth-0.66667\PC@g}{#1}{#2}\hfill\PCrecorte{0.33333\linewidth-0.66667\PC@g}{#1}{#3}\hfill
+  \PCrecorte{0.33333\linewidth-0.66667\PC@g}{#1}{#4}\pie{#5}\PC@despues}
+%% I12 · cuatro en fila                               \imgCuatro[alto]{a}{b}{c}{d}{pie}
+\newcommand{\imgCuatro}[6][0.22\linewidth]{\PC@antes\setlength{\PC@g}{\PC@gapimg}%
+  \PCrecorte{0.25\linewidth-0.75\PC@g}{#1}{#2}\hfill\PCrecorte{0.25\linewidth-0.75\PC@g}{#1}{#3}\hfill
+  \PCrecorte{0.25\linewidth-0.75\PC@g}{#1}{#4}\hfill\PCrecorte{0.25\linewidth-0.75\PC@g}{#1}{#5}\pie{#6}\PC@despues}
+%% I13 · rejilla 2 × 2 con paneles (a)–(d)            \imgRejilla[alto de celda]{a}{b}{c}{d}{pie}
+\newcommand{\imgRejilla}[6][0.34\linewidth]{\PC@antes\setlength{\PC@g}{\PC@gapimg}%
+  \PCrecorte{0.5\linewidth-0.5\PC@g}{#1}{#2}[a]\hfill\PCrecorte{0.5\linewidth-0.5\PC@g}{#1}{#3}[b]\par\nointerlineskip\vspace{\PC@g}\noindent
+  \PCrecorte{0.5\linewidth-0.5\PC@g}{#1}{#4}[c]\hfill\PCrecorte{0.5\linewidth-0.5\PC@g}{#1}{#5}[d]\pie{#6}\PC@despues}
+%% I14 · rejilla 3 × 2 con paneles (a)–(f)            \imgRejillaSeis[alto de celda]{a}{b}{c}{d}{e}{f}{pie}
+\newcommand{\imgRejillaSeis}[8][0.25\linewidth]{\PC@antes\setlength{\PC@g}{\PC@gapimg}%
+  \PCrecorte{0.33333\linewidth-0.66667\PC@g}{#1}{#2}[a]\hfill\PCrecorte{0.33333\linewidth-0.66667\PC@g}{#1}{#3}[b]\hfill
+  \PCrecorte{0.33333\linewidth-0.66667\PC@g}{#1}{#4}[c]\par\nointerlineskip\vspace{\PC@g}\noindent
+  \PCrecorte{0.33333\linewidth-0.66667\PC@g}{#1}{#5}[d]\hfill\PCrecorte{0.33333\linewidth-0.66667\PC@g}{#1}{#6}[e]\hfill
+  \PCrecorte{0.33333\linewidth-0.66667\PC@g}{#1}{#7}[f]\pie{#8}\PC@despues}
+%% I15 · una grande y dos pequeñas a la derecha       \imgGrandeDosDerecha[alto]{grande}{b}{c}{pie}
+\newcommand{\imgGrandeDosDerecha}[5][0.5\linewidth]{\PC@antes\setlength{\PC@g}{\PC@gapimg}\setlength{\PC@h}{#1}%
+  \PCrecorte{0.64\linewidth-0.5\PC@g}{#1}{#2}\hfill
+  \begin{minipage}[b]{0.36\linewidth-0.5\PC@g}\PCrecorte{\linewidth}{0.5\PC@h-0.5\PC@g}{#3}\par\nointerlineskip\vspace{\PC@g}%
+    \PCrecorte{\linewidth}{0.5\PC@h-0.5\PC@g}{#4}\end{minipage}\pie{#5}\PC@despues}
+%% I16 · dos pequeñas a la izquierda y una grande     \imgDosIzquierdaGrande[alto]{a}{b}{grande}{pie}
+\newcommand{\imgDosIzquierdaGrande}[5][0.5\linewidth]{\PC@antes\setlength{\PC@g}{\PC@gapimg}\setlength{\PC@h}{#1}%
+  \begin{minipage}[b]{0.36\linewidth-0.5\PC@g}\PCrecorte{\linewidth}{0.5\PC@h-0.5\PC@g}{#2}\par\nointerlineskip\vspace{\PC@g}%
+    \PCrecorte{\linewidth}{0.5\PC@h-0.5\PC@g}{#3}\end{minipage}\hfill
+  \PCrecorte{0.64\linewidth-0.5\PC@g}{#1}{#4}\pie{#5}\PC@despues}
+%% I17 · una grande arriba y tres pequeñas debajo     \imgGrandeTresAbajo[alto de la grande]{grande}{a}{b}{c}{pie}
+\newcommand{\imgGrandeTresAbajo}[6][0.5\linewidth]{\PC@antes\setlength{\PC@g}{\PC@gapimg}\setlength{\PC@h}{#1}%
+  \PCrecorte{\linewidth}{#1}{#2}\par\nointerlineskip\vspace{\PC@g}\noindent
+  \PCrecorte{0.33333\linewidth-0.66667\PC@g}{0.45\PC@h}{#3}\hfill\PCrecorte{0.33333\linewidth-0.66667\PC@g}{0.45\PC@h}{#4}\hfill
+  \PCrecorte{0.33333\linewidth-0.66667\PC@g}{0.45\PC@h}{#5}\pie{#6}\PC@despues}
+%% I18 · pie al lado de la imagen                     \imgPieLateral[fracción]{archivo}{pie}
+\newcommand{\imgPieLateral}[3][0.62]{\PC@antes
+  \begin{minipage}[c]{#1\linewidth}\PCimg[width=\linewidth]{#2}\end{minipage}\hfill
+  \begin{minipage}[c]{\dimexpr\linewidth-#1\linewidth-0.8em\relax}\pie{#3}\end{minipage}\PC@despues}
+%% I19 · pie sobre la imagen, en una banda            \imgPieSobre[ancho]{archivo}{pie}
+\newcommand{\imgPieSobre}[3][\linewidth]{\PC@antes{\centering
+  \begin{tikzpicture}\node[inner sep=0pt,outer sep=0pt] (i) {\PCimg[width=#1]{#2}};
+    \fill[black,opacity=0.62] (i.south west) rectangle ($(i.south east)+(0,2.1em)$);
+    \node[anchor=west,text=white,font=\tam{\PC@escpie},inner xsep=0.7em,text width=\dimexpr#1-1.4em\relax] at ($(i.south west)+(0,1.05em)$) {#3};
+  \end{tikzpicture}\par}\PC@despues}
+%% I20 · con marco                                    \imgMarco[ancho]{archivo}{pie}
+\newcommand{\imgMarco}[3][\linewidth]{\PC@antes{\centering
+  \begin{tikzpicture}\node[inner sep=0.35em,draw=pcPrimario,line width=0.08em,fill=white] {\PCimg[width=\dimexpr#1-0.86em\relax]{#2}};\end{tikzpicture}\par}\pie{#3}\PC@despues}
+%% I21 · esquinas redondeadas                         \imgRedondeada[alto]{archivo}{pie}
+\newcommand{\imgRedondeada}[3][0.62\linewidth]{\PC@antes\PCrecorte[rounded corners=0.9em]{\linewidth}{#1}{#2}\pie{#3}\PC@despues}
+%% I22 · recorte circular                             \imgCirculo[diámetro]{archivo}{pie}
+\newcommand{\imgCirculo}[3][0.6\linewidth]{\PC@antes{\centering\begingroup\setlength{\PC@w}{#1}%
+  \sbox{\PC@box}{\PCimg[width=10cm]{#2}}\setlength{\PC@bw}{\wd\PC@box}\setlength{\PC@bh}{\ht\PC@box}%
+  \pgfmathsetmacro{\PC@s}{max(\PC@w/\PC@bw,\PC@w/\PC@bh)}%
+  \begin{tikzpicture}\path[use as bounding box] (-0.5\PC@w,-0.5\PC@w) rectangle (0.5\PC@w,0.5\PC@w);
+    \begin{scope}\clip (0,0) circle (0.5\PC@w);
+      \node[inner sep=0pt] at (0,0) {\scalebox{\PC@s}{\usebox{\PC@box}}};\end{scope}
+    \draw[pcPrimario,line width=0.12em] (0,0) circle (0.5\PC@w);\end{tikzpicture}\endgroup\par}%
+  {\centering\begin{minipage}{#1}\centering\pie{#3}\end{minipage}\par}\PC@despues}
+%% I23 · con sombra                                   \imgSombra[ancho]{archivo}{pie}
+\newcommand{\imgSombra}[3][0.94\linewidth]{\PC@antes{\centering
+  \begin{tikzpicture}\node[inner sep=0pt,drop shadow={shadow xshift=0.25em,shadow yshift=-0.25em,opacity=0.35,fill=black}] {\PCimg[width=#1]{#2}};\end{tikzpicture}\par}%
+  \vspace{0.2em}\pie{#3}\PC@despues}
+%% I24 · inclinada, tipo fotografía                   \imgInclinada[ángulo]{archivo}{pie}
+\newcommand{\imgInclinada}[3][4]{\PC@antes{\centering
+  \begin{tikzpicture}\node[rotate=#1,inner sep=0.4em,fill=white,draw=pcTenue!40,line width=0.03em,
+      drop shadow={shadow xshift=0.2em,shadow yshift=-0.2em,opacity=0.3,fill=black}] {\PCimg[width=0.8\linewidth]{#2}};\end{tikzpicture}\par}\pie{#3}\PC@despues}
+%% I25 · con un detalle ampliado en la esquina        \imgDetalle[fracción del detalle]{archivo}{detalle}{pie}
+\newcommand{\imgDetalle}[4][0.36]{\PC@antes{\centering
+  \begin{tikzpicture}\node[inner sep=0pt,outer sep=0pt] (i) {\PCimg[width=\linewidth]{#2}};
+    \node[anchor=north east,inner sep=0.2em,fill=white,draw=pcAcento,line width=0.1em] at ($(i.north east)+(-0.6em,-0.6em)$) {\PCimg[width=#1\linewidth]{#3}};
+  \end{tikzpicture}\par}\pie{#4}\PC@despues}
+%% I26 · con flechas y etiquetas (coordenadas de 0 a 1 sobre la imagen)
+%%       \imgAnotada[ancho]{archivo}{pie}{ \PCflecha{x0,y0}{x1,y1}{texto} ... }
+\newcommand{\PCflecha}[3]{\draw[-latex,pcAcento,line width=0.14em] (#1)--(#2);
+  \node[fill=pcFondo,text=pcTexto,font=\bfseries\tam{0.8},inner sep=0.3em,rounded corners=0.15em,draw=pcAcento,line width=0.06em] at (#1) {#3};}
+\newcommand{\imgAnotada}[4][\linewidth]{\PC@antes{\centering
+  \begin{tikzpicture}\node[anchor=south west,inner sep=0pt,outer sep=0pt] (i) at (0,0) {\PCimg[width=#1]{#2}};
+    \begin{scope}[x={(i.south east)},y={(i.north west)}]#4\end{scope}\end{tikzpicture}\par}\pie{#3}\PC@despues}
+%% I27 · franja panorámica                            \imgPanoramica[alto]{archivo}{pie}
+\newcommand{\imgPanoramica}[3][0.24\linewidth]{\PC@antes\PCrecorte{\linewidth}{#1}{#2}\pie{#3}\PC@despues}
+%% I28 · dos apiladas con etiquetas A y B             \imgPila[alto de cada una]{a}{b}{pie}
+\newcommand{\imgPila}[4][0.38\linewidth]{\PC@antes\setlength{\PC@g}{\PC@gapimg}%
+  \PCrecorte{\linewidth}{#1}{#2}[A]\par\nointerlineskip\vspace{\PC@g}\noindent\PCrecorte{\linewidth}{#1}{#3}[B]\pie{#4}\PC@despues}
+%% I29 · collage de tres imágenes superpuestas        \imgCollage[alto total]{a}{b}{c}{pie}
+\newcommand{\imgCollage}[5][0.62\linewidth]{\PC@antes{\centering\begingroup\setlength{\PC@h}{#1}%
+  \begin{tikzpicture}[foto/.style={inner sep=0.3em,fill=white,draw=pcTenue!40,line width=0.03em,
+      drop shadow={shadow xshift=0.15em,shadow yshift=-0.15em,opacity=0.3,fill=black}}]
+    \node[foto,rotate=-5] at (-0.27\linewidth,0.05\PC@h) {\PCrecorte{0.38\linewidth}{0.6\PC@h}{#2}};
+    \node[foto,rotate=4] at (0.27\linewidth,0.07\PC@h) {\PCrecorte{0.38\linewidth}{0.6\PC@h}{#4}};
+    \node[foto,rotate=-1] at (0,-0.09\PC@h) {\PCrecorte{0.36\linewidth}{0.6\PC@h}{#3}};
+  \end{tikzpicture}\endgroup\par}\pie{#5}\PC@despues}
+%% I30 · posición absoluta en el lienzo (x, y de 0 a 1 desde la esquina superior izquierda)
+%%       \imgEn[ancla]{x}{y}{ancho}{archivo}            (se pinta en la capa «frente»)
+\newcommand{\imgEn}[5][center]{\edef\PC@tmp{\noexpand\colocarimagen[capa=frente,ancla=#1,x=#2,y=#3,
+  ancho={\unexpanded{#4}},pagina=\the\value{page}]}\PC@tmp{#5}}
+%% I31 · imagen de fondo de todo el lienzo            \imgFondo[opacidad]{archivo}     (capa «fondo»)
+\newcommand{\imgFondo}[2][0.12]{\edef\PC@tmp{\noexpand\colocarimagen[capa=fondo,ancla=north west,x=0,y=0,
+  ancho=1,alto=1,ajuste=cubrir,opacidad=#1,pagina=\the\value{page}]}\PC@tmp{#2}}
+%% I32 · imagen con título encima                     \imgTituloSobre[alto]{archivo}{título}{subtítulo}
+\newcommand{\imgTituloSobre}[4][0.5\linewidth]{\PC@antes
+  \begin{tikzpicture}\node[inner sep=0pt,outer sep=0pt] (i) {\PCrecorte[rounded corners=\PC@radio]{\linewidth}{#1}{#2}};
+    \fill[black,opacity=0.45,rounded corners=\PC@radio] (i.south west) rectangle (i.north east);
+    \node[text=white,align=center,text width=0.86\linewidth] at (i.center) {{\bfseries\tam{1.9}#3\par}\vspace{0.2em}{\tam{1.05}#4\par}};
+  \end{tikzpicture}\PC@despues}
+%% I33 · comparación de dos imágenes con rótulos      \imgComparar[alto]{a}{b}{rótulo a}{rótulo b}{pie}
+\newcommand{\imgComparar}[6][0.4\linewidth]{\PC@antes\setlength{\PC@g}{\PC@gapimg}%
+  \PCrecorte{0.5\linewidth-0.5\PC@g}{#1}{#2}[#4]\hfill\PCrecorte{0.5\linewidth-0.5\PC@g}{#1}{#3}[#5]\pie{#6}\PC@despues}
+%% I34 · miniatura con texto, para listas de resultados   \imgMiniatura[lado]{archivo}{título}{texto}
+\newcommand{\imgMiniatura}[4][4.2em]{\PC@antes
+  \begin{minipage}[c]{#1}\PCrecorte[rounded corners=0.35em]{#1}{#1}{#2}\end{minipage}\hspace{0.7em}%
+  \begin{minipage}[c]{\dimexpr\linewidth-#1-0.7em\relax}{\bfseries\color{pcPrimario}#3\par}\vspace{0.1em}#4\end{minipage}\PC@despues}
+
+%% ============================================================================
+%%  11. TEXTO · 35 variantes  (T01 – T35)
+%%      Las cajas de texto (T15–T19, T27, T29, T32, T35) aceptan, en el argumento
+%%      opcional, todas las claves de una caja: titulo, mostrar titulo, estilo,
+%%      fondo, borde ...   p. ej. \txtResaltado[titulo={Nota}, mostrar titulo=false]{...}
+%% ============================================================================
+%% T01 · justificado                                  \txtJustificado{texto}
+\newcommand{\txtJustificado}[1]{\PC@antes#1\PC@despues}
+%% T02 · alineado a la izquierda                      \txtIzquierda{texto}
+\newcommand{\txtIzquierda}[1]{\PC@antes{\raggedright#1\par}\PC@despues}
+%% T03 · alineado a la derecha                        \txtDerecha{texto}
+\newcommand{\txtDerecha}[1]{\PC@antes{\raggedleft#1\par}\PC@despues}
+%% T04 · centrado                                     \txtCentrado[ancho]{texto}
+\newcommand{\txtCentrado}[2][\linewidth]{\PC@antes{\centering\begin{minipage}{#1}\centering#2\end{minipage}\par}\PC@despues}
+%% T05 · dos columnas                                 \txtDosColumnas{texto}
+\newcommand{\PC@multi}[3]{\PC@antesV{\setlength{\columnsep}{1.3em}\setlength{\columnseprule}{#3}\setlength{\multicolsep}{0pt}%
+  \renewcommand{\columnseprulecolor}{\color{pcTenue}}\begin{multicols}{#1}#2\end{multicols}}\PC@despues}
+\newcommand{\txtDosColumnas}[1]{\PC@multi{2}{#1}{0pt}}
+%% T06 · tres columnas                                \txtTresColumnas{texto}
+\newcommand{\txtTresColumnas}[1]{\PC@multi{3}{#1}{0pt}}
+%% T07 · dos columnas con filete central              \txtDosColumnasFilete{texto}
+\newcommand{\txtDosColumnasFilete}[1]{\PC@multi{2}{#1}{0.06em}}
+%% T08 · dos columnas desiguales                      \txtAsimetrico[fracción izquierda]{izquierda}{derecha}
+\newcommand{\txtAsimetrico}[3][0.33]{\PC@antes
+  \begin{minipage}[t]{#1\linewidth}\PC@parrafos\raggedright#2\end{minipage}\hfill
+  \begin{minipage}[t]{\dimexpr\linewidth-#1\linewidth-1.2em\relax}\PC@parrafos#3\end{minipage}\PC@despues}
+%% T09 · letra capitular                              \txtCapitular[líneas]{L}{resto de la palabra}{texto}
+\newcommand{\txtCapitular}[4][3]{\PC@antes\lettrine[lines=#1,nindent=0.1em,findent=0.1em]{\color{pcPrimario}#2}{#3}#4\PC@despues}
+%% T10 · entradilla destacada y cuerpo                \txtEntradilla[escala]{entradilla}{cuerpo}
+\newcommand{\txtEntradilla}[3][1.3]{\PC@antes{\tam{#1}\bfseries\color{pcPrimario}\raggedright#2\par}\vspace{0.3em}#3\PC@despues}
+%% T11 · lista con viñetas                            \txtVinetas{\item ... \item ...}
+\newcommand{\txtVinetas}[1]{\PC@antesV\begin{itemize}[label={\color{pcAcento}\rule[0.15em]{0.42em}{0.42em}},labelsep=0.45em]#1\end{itemize}\PC@despues}
+%% T12 · lista numerada                               \txtNumerada{\item ... \item ...}
+\newcommand{\txtNumerada}[1]{\PC@antesV\begin{enumerate}[label={\color{pcPrimario}\bfseries\arabic*.}]#1\end{enumerate}\PC@despues}
+%% T13 · lista de definiciones                        \txtDefiniciones{\item[término] ... }
+\newcommand{\txtDefiniciones}[1]{\PC@antesV\begin{description}[font=\bfseries\color{pcPrimario},leftmargin=1.25em,labelsep=0.5em]#1\end{description}\PC@despues}
+%% T14 · cita grande centrada                         \txtCitaGrande{cita}{autor}
+\newcommand{\txtCitaGrande}[2]{\PC@antes{\centering{\tam{\PC@esccita}\itshape\color{pcPrimario}\PC@abrecom#1\PC@cierracom\par}%
+  \ifstrempty{#2}{}{\vspace{0.25em}{\tam{0.85}\color{pcTenue}--- #2\par}}}\PC@despues}
+%% T15 · cita con barra lateral                       \txtCitaBarra[claves]{texto}
+\NewDocumentCommand{\txtCitaBarra}{O{}+m}{\begin{caja}[estilo=cita,sin titulo,antes=\PC@sepelem,despues=\PC@sepelem,#1]#2\end{caja}}
+%% T16 · texto resaltado sobre fondo de color         \txtResaltado[color o claves]{texto}
+\NewDocumentCommand{\txtResaltado}{O{}+m}{\ifstrempty{#1}%
+  {\begin{caja}[estilo=resaltado,sin titulo,antes=\PC@sepelem,despues=\PC@sepelem]#2\end{caja}}%
+  {\PC@siclaves{#1}{\begin{caja}[estilo=resaltado,sin titulo,antes=\PC@sepelem,despues=\PC@sepelem,#1]#2\end{caja}}%
+                   {\begin{caja}[estilo=resaltado,sin titulo,antes=\PC@sepelem,despues=\PC@sepelem,fondo=#1,borde=#1]#2\end{caja}}}}
+%% T17 · recuadro con borde                           \txtRecuadro[claves]{texto}
+\NewDocumentCommand{\txtRecuadro}{O{}+m}{\begin{caja}[estilo=borde,sin titulo,antes=\PC@sepelem,despues=\PC@sepelem,#1]#2\end{caja}}
+%% T18 · caja con título                              \txtCajaTitulo[claves]{título}{texto}
+\NewDocumentCommand{\txtCajaTitulo}{O{}m+m}{\begin{caja}[estilo=contorno,titulo={#2},con titulo,escala titulo=1.05,
+  antes=\PC@sepelem,despues=\PC@sepelem,#1]#3\end{caja}}
+%% T19 · texto en negativo (claro sobre oscuro)       \txtInvertido[claves]{texto}
+\NewDocumentCommand{\txtInvertido}{O{}+m}{\begin{caja}[estilo=invertido,sin titulo,antes=\PC@sepelem,despues=\PC@sepelem,#1]#2\end{caja}}
+%% T20 · nota lateral junto al texto                  \txtNotaLateral[fracción de la nota]{nota}{texto}
+\newcommand{\txtNotaLateral}[3][0.28]{\PC@antes
+  \begin{minipage}[t]{\dimexpr\linewidth-#1\linewidth-1.4em\relax}\PC@parrafos#3\end{minipage}\hfill
+  \begin{minipage}[t]{#1\linewidth}\PC@parrafos\raggedright\tam{0.8}\itshape\color{pcTenue}%
+    {\color{pcAcento}\rule{\linewidth}{0.1em}}\par#2\end{minipage}\PC@despues}
+%% T21 · cifra destacada                              \txtCifra{cifra}{explicación}
+\newcommand{\txtCifra}[2]{\PC@antes{\centering{\tam{\PC@esccifra}\bfseries\color{pcAcento}#1\par}\vspace{0.1em}{\tam{0.9}\color{pcTenue}#2\par}}\PC@despues}
+%% T22 · tres cifras en fila                          \txtCifras{c1}{t1}{c2}{t2}{c3}{t3}
+\newcommand{\PC@cifra}[2]{\begin{minipage}[t]{0.31\linewidth}\centering{\tam{2.3}\bfseries\color{pcAcento}#1\par}\vspace{0.1em}{\tam{0.8}\color{pcTenue}#2\par}\end{minipage}}
+\newcommand{\txtCifras}[6]{\PC@antes\PC@cifra{#1}{#2}\hfill\PC@cifra{#3}{#4}\hfill\PC@cifra{#5}{#6}\PC@despues}
+%% T23 · texto sobre una imagen                       \txtSobreImagen[alto]{archivo}{texto}
+\newcommand{\txtSobreImagen}[3][0.55\linewidth]{\PC@antes
+  \begin{tikzpicture}\node[inner sep=0pt,outer sep=0pt] (i) {\PCrecorte[rounded corners=\PC@radio]{\linewidth}{#1}{#2}};
+    \node[anchor=south west,fill=pcFondo,fill opacity=0.9,text opacity=1,text=pcTexto,text width=0.6\linewidth,inner sep=0.7em,
+      rounded corners=\PC@radio] at ($(i.south west)+(0.8em,0.8em)$) {#3};\end{tikzpicture}\PC@despues}
+%% T24 · rótulo vertical junto al texto               \txtVertical{rótulo}{texto}
+\newcommand{\txtVertical}[2]{\settowidth{\PC@w}{\bfseries\tam{0.9}#1}\addtolength{\PC@w}{1em}%
+  \begin{tcolorbox}[pc base,colback=pcFondo,colframe=pcFondo,boxrule=0pt,left=2.6em,right=0pt,top=0.2em,bottom=0.2em,
+  before skip=\PC@sepelem,after skip=\PC@sepelem,pc transparente,
+  overlay={\fill[pcPrimario] (frame.south west) rectangle ($(frame.north west)+(1.9em,0)$);
+    \node[rotate=90,text=pcContraste,font=\bfseries\tam{0.9}] at ($(frame.west)+(0.95em,0)$) {#1};}]%
+  \sbox{\PC@box}{\parbox{\linewidth}{\PC@parrafos#2}}%   el recuadro nunca es más bajo que el rótulo
+  \ifdim\dimexpr\ht\PC@box+\dp\PC@box\relax<\PC@w\parbox[c][\PC@w][c]{\linewidth}{\PC@parrafos#2}\else#2\fi
+  \end{tcolorbox}}
+%% T25 · texto dentro de un círculo                   \txtCirculo[diámetro]{texto}
+\newcommand{\txtCirculo}[2][0.5\linewidth]{\PC@antes{\centering\begingroup\setlength{\PC@w}{#1}%
+  \begin{tikzpicture}\node[circle,fill=pcPrimario,text=pcContraste,minimum size=\PC@w,inner sep=0pt,align=center,text width=0.72\PC@w] {#2};\end{tikzpicture}\endgroup\par}\PC@despues}
+%% T26 · tabla                                        \txtTabla{pie}{tabular}
+\newcommand{\txtTabla}[2]{\PC@antes{\centering\renewcommand{\arraystretch}{1.25}\tam{0.9}#2\par}%
+  \ifstrempty{#1}{}{\vspace{0.3em}{\tam{\PC@escpie}\color{pcTenue}\raggedright#1\par}}\PC@despues}
+%% T27 · ecuación con su explicación                  \txtEcuacion[claves]{ecuación}{explicación}
+\NewDocumentCommand{\txtEcuacion}{O{}m+m}{\begin{caja}[estilo=nota,sin titulo,antes=\PC@sepelem,despues=\PC@sepelem,#1]%
+  {\centering$\displaystyle#2$\par}\ifstrempty{#3}{}{\vspace{0.3em}{\tam{0.85}\color{pcTenue}#3\par}}\end{caja}}
+%% T28 · tres pasos numerados en fila                 \txtPasos{paso 1}{paso 2}{paso 3}
+\newcommand{\PC@paso}[2]{\begin{minipage}[t]{0.31\linewidth}\centering
+  \tikz[baseline=(n.base)]\node[circle,fill=pcAcento,text=white,font=\bfseries\tam{1.2},inner sep=0.2em,minimum size=1.9em] (n) {#1};\par
+  \vspace{0.3em}{\tam{0.9}#2\par}\end{minipage}}
+\newcommand{\txtPasos}[3]{\PC@antes\PC@paso{1}{#1}\hfill\PC@paso{2}{#2}\hfill\PC@paso{3}{#3}\PC@despues}
+%% T29 · línea de tiempo vertical                     \txtLineaTiempo[claves]{ \hito{fecha}{texto} ... }
+\newcommand{\hito}[2]{\par\noindent\llap{\makebox[1.7em][l]{\hspace{0.12em}\tikz[baseline=-0.6ex]\fill[pcAcento] (0,0) circle (0.28em);}}%
+  {\bfseries\color{pcPrimario}#1}\quad#2\par}
+\newcommand{\PC@lineatiempo}[1]{\begin{tcolorbox}[enhanced,breakable=false,frame hidden,interior hidden,boxrule=0pt,boxsep=0pt,
+  left=1.7em,right=0pt,top=0.1em,bottom=0.1em,before skip=0pt,after skip=0pt,coltext=pcTexto,
+  overlay={\fill[pcTenue!60] ($(frame.south west)+(0.36em,0)$) rectangle ($(frame.north west)+(0.44em,0)$);},before upper={\setlength{\parindent}{0pt}\setlength{\parskip}{0.4em}}]#1\end{tcolorbox}}
+\NewDocumentCommand{\txtLineaTiempo}{O{}+m}{\begin{caja}[estilo=ninguno,sin titulo,antes=\PC@sepelem,despues=\PC@sepelem,#1]%
+  \PC@lineatiempo{#2}\end{caja}}
+%% T30 · referencias en letra pequeña                 \txtReferencias{\item ... \item ...}
+\newcommand{\txtReferencias}[1]{\PC@antesV{\tam{\PC@escref}\raggedright
+  \begin{enumerate}[label={[\arabic*]},leftmargin=2.1em,itemsep=0.15em]#1\end{enumerate}}\PC@despues}
+%% T31 · rótulo al margen y texto                     \txtEtiquetaMargen[fracción del rótulo]{rótulo}{texto}
+\newcommand{\txtEtiquetaMargen}[3][0.24]{\PC@antes
+  \begin{minipage}[t]{#1\linewidth}\raggedleft\bfseries\color{pcPrimario}#2\end{minipage}\hfill
+  \begin{minipage}[t]{\dimexpr\linewidth-#1\linewidth-1em\relax}\PC@parrafos#3\end{minipage}\PC@despues}
+%% T32 · banda a todo el ancho                        \txtBanda[escala o claves]{texto}
+\NewDocumentCommand{\txtBanda}{O{1.5}+m}{\PC@siclaves{#1}%
+  {\begin{caja}[sin titulo,fondo=pcAcento,borde=pcAcento,color texto=white,tcb={halign=center,fontupper=\bfseries\tam{1.5}},
+     antes=0pt,despues=\PC@sepbloque,#1]#2\end{caja}}%
+  {\begin{caja}[sin titulo,fondo=pcAcento,borde=pcAcento,color texto=white,tcb={halign=center,fontupper=\bfseries\tam{#1}},
+     antes=0pt,despues=\PC@sepbloque]#2\end{caja}}}
+%% T33 · posición absoluta en el lienzo (x, y de 0 a 1 desde la esquina superior izquierda)
+%%       \txtEn[opciones de TikZ]{x}{y}{ancho}{texto}     p. ej. [anchor=north east, align=right, rotate=90]
+\newcommand{\txtEn}[5][anchor=center]{\edef\PC@tmp{\noexpand\colocar[capa=frente,x=#2,y=#3,ancla=center,
+  pagina=\the\value{page}]}\PC@tmp{\begin{tikzpicture}[overlay]\node[inner sep=0pt,text width=#4,#1] at (0,0) {#5};\end{tikzpicture}}}
+%% T34 · tarjeta de contacto con código QR            \txtContacto[lado del QR]{archivo del QR}{texto}
+\newcommand{\txtContacto}[3][5.5em]{\PC@antes
+  \begin{minipage}[c]{\dimexpr\linewidth-#1-1em\relax}\PC@parrafos\raggedright#3\end{minipage}\hfill
+  \begin{minipage}[c]{#1}\PCimg[width=\linewidth]{#2}\end{minipage}\PC@despues}
+%% T36 · referencias armadas por el gestor de DocsLab en el estilo elegido (APA, Vancouver…)
+%%       \PCbibliografia[numerica|autor][columnas]{\PCref{etiqueta}{texto} ...}
+%%       Las citas del texto llegan ya escritas: \PCcita{(García, 2020)} o \PCcitasup{1,3}.
+\newcommand{\PCcita}[1]{#1}
+\newcommand{\PCcitasup}[1]{\textsuperscript{#1}}
+\newcommand{\PCcitadesconocida}[1]{\textbf{\color{red!70!black}[?#1]}%
+  \PackageWarning{postercientifico}{Cita desconocida: #1 (no está en las referencias)}}
+\newcommand{\PCurl}[1]{#1}
+\newcommand{\PCref}[2]{\item[{#1}]#2}
+\NewDocumentCommand{\PCbibliografia}{O{numerica} O{1} +m}{\PC@antesV{\tam{\PC@escref}\raggedright
+  \ifnum#2>1 \setlength{\columnsep}{1.2em}\setlength{\multicolsep}{0pt}\begin{multicols}{#2}\fi
+  \ifstrequal{#1}{autor}%
+    {\begin{list}{}{\setlength{\leftmargin}{1.5em}\setlength{\itemindent}{-1.5em}\setlength{\labelwidth}{0pt}%
+       \setlength{\labelsep}{0pt}\setlength{\itemsep}{0.3em}\setlength{\parsep}{0pt}\setlength{\topsep}{0pt}%
+       \setlength{\partopsep}{0pt}}#3\end{list}}%
+    {\begin{list}{}{\settowidth{\labelwidth}{[99]}\setlength{\leftmargin}{\dimexpr\labelwidth+0.45em\relax}%
+       \setlength{\labelsep}{0.45em}\setlength{\itemsep}{0.3em}\setlength{\parsep}{0pt}\setlength{\topsep}{0pt}%
+       \setlength{\partopsep}{0pt}\renewcommand{\makelabel}[1]{\hfil##1}}#3\end{list}}%
+  \ifnum#2>1 \end{multicols}\fi\par}\PC@despues}
+\newcommand{\PCbibliografiavacia}{\PC@antesV{\tam{\PC@escref}\color{pcTenue}\itshape
+  Aún no hay referencias citadas. Agrégalas en el panel Referencias y cítalas en el texto con [@clave].\par}\PC@despues}
+%% Componentes propios (Componente Lab de DocsLab): cada uso se define en el
+%% preámbulo como \PCk@<id>. Si un componente no se puede dibujar, se avisa así:
+\newcommand{\PCcomponenteroto}[1]{\PC@antesV{\tam{0.8}\bfseries\color{red!70!black}[Componente: #1]\par}\PC@despues
+  \PackageWarning{postercientifico}{Componente: #1}}
+%% T35 · caja de texto con cualquier estilo            \txtCaja[claves]{texto}
+%%       p. ej. \txtCaja[estilo=nota, titulo={Recuerda}, mostrar titulo=true]{...}
+\NewDocumentCommand{\txtCaja}{O{}+m}{\begin{caja}[estilo=borde,antes=\PC@sepelem,despues=\PC@sepelem,#1]#2\end{caja}}
+
+\endinput

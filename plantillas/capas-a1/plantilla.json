@@ -1,0 +1,11 @@
+{
+ "nombre": "Capas (demostración)",
+ "orden": 3,
+ "descripcion": "A1 con capa de fondo, una capa propia de notas y un sello en el frente; cajas con título oculto y caja estirada.",
+ "tipo": "estructurado",
+ "etiquetas": [
+  "A1",
+  "capas"
+ ],
+ "cuadernos": []
+}

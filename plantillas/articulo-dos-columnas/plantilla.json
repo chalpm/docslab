@@ -1,0 +1,12 @@
+{
+ "nombre": "Artículo a dos columnas",
+ "orden": 10,
+ "clase": "paper",
+ "descripcion": "Artículo científico genérico: título y resumen a todo el ancho, texto a dos columnas, figura, tabla, ecuación y referencias.",
+ "tipo": "estructurado",
+ "etiquetas": [
+  "A4",
+  "2 columnas"
+ ],
+ "cuadernos": []
+}

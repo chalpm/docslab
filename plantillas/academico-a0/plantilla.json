@@ -1,0 +1,12 @@
+{
+ "nombre": "Académico A0 vertical",
+ "orden": 1,
+ "descripcion": "Tres columnas con texto de relleno e imágenes de prueba: muestra muchas de las variantes de imagen y de texto.",
+ "tipo": "estructurado",
+ "etiquetas": [
+  "A0",
+  "vertical",
+  "3 columnas"
+ ],
+ "cuadernos": []
+}

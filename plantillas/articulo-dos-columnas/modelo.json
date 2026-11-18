@@ -1,0 +1,356 @@
+{
+ "clase": "paper",
+ "esquema": 2,
+ "formato_texto": "simple",
+ "idioma": "es",
+ "lienzo": {
+  "tamano": "A4",
+  "orientacion": "vertical",
+  "ancho": "210mm",
+  "alto": "297mm",
+  "margen": "20mm",
+  "margen_superior": "",
+  "margen_inferior": "",
+  "margen_izquierdo": "",
+  "margen_derecho": "",
+  "libre": false
+ },
+ "tipografia": {
+  "fuente": 10,
+  "interlinea": 1.25,
+  "familia": "times",
+  "familia_titulos": "",
+  "propias": [],
+  "escalas": {
+   "titulo": 1.9,
+   "subtitulo": 1.25,
+   "autores": 1.1,
+   "afiliaciones": 0.92,
+   "bloque": 1.05,
+   "pie": 0.9,
+   "cita": 1.25,
+   "cifra": 2.2,
+   "referencias": 0.92,
+   "piedeposter": 0.8
+  }
+ },
+ "colores": {
+  "tema": "grafito",
+  "primario": "33393E",
+  "secundario": "6B747C",
+  "acento": "5C7F99",
+  "fondo": "FFFFFF",
+  "fondo_bloque": "F3F4F4",
+  "texto": "1F2326",
+  "tenue": "5C646B",
+  "contraste": "FFFFFF"
+ },
+ "estilo": {
+  "bloque": "borde",
+  "radio": "0.2em",
+  "relleno": "0.6em",
+  "separacion_columnas": "7mm",
+  "separacion_filas": "",
+  "separacion_bloques": "0.9em",
+  "separacion_imagenes": "0.45em",
+  "separacion_elementos": "0.55em",
+  "mostrar_titulos": true,
+  "numerar_bloques": false,
+  "alineacion_titulos": "izquierda",
+  "alinear_texto": "justificado",
+  "sombra": false,
+  "numerar_figuras": true,
+  "nombre_figura": "Figura"
+ },
+ "cabecera": {
+  "visible": true,
+  "estilo": "banda",
+  "alineacion": "centro",
+  "titulo": "Título del artículo",
+  "subtitulo": "",
+  "autores": "Nombre Apellido^1^, Nombre Apellido^2^",
+  "afiliaciones": "^1^Institución · ^2^Institución",
+  "logo_izquierdo": "",
+  "logo_derecho": "",
+  "ancho_logos": 0.15,
+  "alto_logos": "5.5em",
+  "tam_logo_izquierdo": 100,
+  "tam_logo_derecho": 100,
+  "fondo": "",
+  "color_texto": "",
+  "imagen": "",
+  "oscurecer": 0.45
+ },
+ "filas": [
+  {
+   "visible": true,
+   "alto": "auto",
+   "rejilla": 1,
+   "separacion": "",
+   "despues": "",
+   "igualar": true,
+   "columnas": [
+    {
+     "abarca": 1,
+     "distribucion": "arriba",
+     "bloques": [
+      {
+       "visible": true,
+       "titulo": "Introducción",
+       "mostrar_titulo": true,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-rdbb6b",
+         "tipo": "txtJustificado",
+         "visible": true,
+         "texto": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut purus elit, vestibulum ut, placerat ac, adipiscing vitae, felis. Curabitur dictum gravida mauris. Nam arcu libero, nonummy eget, consectetuer id, vulputate a, magna.\n\nDonec vehicula augue eu neque. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Mauris ut leo. Cras viverra metus rhoncus sem. Nulla et lectus vestibulum urna fringilla ultrices."
+        }
+       ],
+       "id": "b-8ijb76"
+      },
+      {
+       "visible": true,
+       "titulo": "Métodos",
+       "mostrar_titulo": true,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-a3yvad",
+         "tipo": "txtJustificado",
+         "visible": true,
+         "texto": "Phasellus eu tellus sit amet tortor gravida placerat. Integer sapien est, iaculis in, pretium quis, viverra ac, nunc. Praesent eget sem vel leo ultrices bibendum. Aenean faucibus. Morbi dolor nulla, malesuada eu, pulvinar at, mollis ac, nulla."
+        },
+        {
+         "id": "e-yiohtl",
+         "tipo": "txtEcuacion",
+         "visible": true,
+         "titulo": "Ecuación",
+         "mostrar_titulo": false,
+         "ecuacion": "\\bar{x} = \\frac{1}{n}\\sum_{i=1}^{n} x_i",
+         "texto": "Donde $n$ es el número de muestras."
+        }
+       ],
+       "id": "b-sz7db8"
+      },
+      {
+       "visible": true,
+       "titulo": "Resultados",
+       "mostrar_titulo": true,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-ge0pyb",
+         "tipo": "txtJustificado",
+         "visible": true,
+         "texto": "Donec vehicula augue eu neque. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Mauris ut leo. Cras viverra metus rhoncus sem. Nulla et lectus vestibulum urna fringilla ultrices."
+        },
+        {
+         "id": "e-09gu07",
+         "tipo": "imgAncho",
+         "visible": true,
+         "archivo": "recursos/prueba2.png",
+         "pie": "Resultado principal del estudio.",
+         "tam": 100
+        },
+        {
+         "id": "e-glj8rd",
+         "tipo": "txtTabla",
+         "visible": true,
+         "pie": "Resumen de los grupos.",
+         "tabla": {
+          "columnas": "lrr",
+          "encabezado": true,
+          "filas": [
+           [
+            "Grupo",
+            "Media",
+            "Desviación"
+           ],
+           [
+            "Control",
+            "12.4",
+            "1.8"
+           ],
+           [
+            "Tratamiento A",
+            "18.9",
+            "2.1"
+           ],
+           [
+            "Tratamiento B",
+            "21.3",
+            "2.6"
+           ]
+          ]
+         }
+        },
+        {
+         "id": "e-qi0si4",
+         "tipo": "txtJustificado",
+         "visible": true,
+         "texto": "Curabitur auctor semper nulla. Donec varius orci eget risus. Duis nibh mi, congue eu, accumsan eleifend, sagittis quis, diam. Duis eget orci sit amet orci dignissim rutrum."
+        }
+       ],
+       "id": "b-zc156w"
+      },
+      {
+       "visible": true,
+       "titulo": "Discusión",
+       "mostrar_titulo": true,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-8oy3ag",
+         "tipo": "txtJustificado",
+         "visible": true,
+         "texto": "Phasellus eu tellus sit amet tortor gravida placerat. Integer sapien est, iaculis in, pretium quis, viverra ac, nunc. Praesent eget sem vel leo ultrices bibendum. Aenean faucibus. Morbi dolor nulla, malesuada eu, pulvinar at, mollis ac, nulla.\n\nLorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut purus elit, vestibulum ut, placerat ac, adipiscing vitae, felis. Curabitur dictum gravida mauris. Nam arcu libero, nonummy eget, consectetuer id, vulputate a, magna."
+        }
+       ],
+       "id": "b-7e0u5m"
+      },
+      {
+       "visible": true,
+       "titulo": "Conclusiones",
+       "mostrar_titulo": true,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-w9wln0",
+         "tipo": "txtJustificado",
+         "visible": true,
+         "texto": "Curabitur auctor semper nulla. Donec varius orci eget risus. Duis nibh mi, congue eu, accumsan eleifend, sagittis quis, diam. Duis eget orci sit amet orci dignissim rutrum."
+        }
+       ],
+       "id": "b-luba3f"
+      },
+      {
+       "visible": true,
+       "titulo": "Referencias",
+       "mostrar_titulo": true,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-aw35qz",
+         "tipo": "bibliografia",
+         "visible": true,
+         "incluir": "citadas",
+         "columnas": 1
+        }
+       ],
+       "id": "b-wjuw06",
+       "numerar": false
+      }
+     ],
+     "id": "c-p6szgi"
+    }
+   ],
+   "id": "f-ukxl8n"
+  }
+ ],
+ "pie": {
+  "visible": true,
+  "estilo": "banda",
+  "izquierda": "",
+  "centro": "",
+  "derecha": "",
+  "fondo": "",
+  "color_texto": ""
+ },
+ "contenido_visible": true,
+ "capas": [
+  {
+   "id": "fondo",
+   "nombre": "Fondo",
+   "z": -10,
+   "visible": true,
+   "opacidad": 1,
+   "elementos": []
+  },
+  {
+   "id": "frente",
+   "nombre": "Frente",
+   "z": 10,
+   "visible": true,
+   "opacidad": 1,
+   "elementos": []
+  }
+ ],
+ "latex": {
+  "preambulo": "",
+  "antes": "",
+  "despues": ""
+ },
+ "bibliografia": {
+  "estilo": "apa",
+  "referencias": []
+ },
+ "componentes": {},
+ "paginas": [],
+ "presentacion": {
+  "pie": "",
+  "numerar": true,
+  "titulo": "banda",
+  "progreso": false,
+  "escala_titulo": 1.5
+ },
+ "documento": {
+  "columnas": 2,
+  "parrafos": "sangria",
+  "numerar_paginas": true,
+  "numerar_secciones": true,
+  "encabezado": "",
+  "resumen": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut purus elit, vestibulum ut, placerat ac, adipiscing vitae, felis. Curabitur dictum gravida mauris. Nam arcu libero, nonummy eget, consectetuer id, vulputate a, magna. Curabitur auctor semper nulla. Donec varius orci eget risus. Duis nibh mi, congue eu, accumsan eleifend, sagittis quis, diam. Duis eget orci sit amet orci dignissim rutrum.",
+  "titulo_resumen": "Resumen",
+  "palabras_clave": "primera, segunda, tercera",
+  "titulo_palabras": "Palabras clave",
+  "resumen2": "",
+  "titulo_resumen2": "Abstract",
+  "palabras_clave2": "",
+  "titulo_palabras2": "Keywords",
+  "indice": false,
+  "titulo_indice": "Índice",
+  "lista_figuras": false,
+  "titulo_figuras": "Índice de figuras",
+  "lista_tablas": false,
+  "titulo_tablas": "Índice de tablas",
+  "numerar_tablas": true,
+  "nombre_tabla": "Tabla",
+  "nombre_capitulo": "Capítulo",
+  "nombre_apendice": "Apéndice",
+  "escala_seccion": 1.2,
+  "escala_capitulo": 2.2,
+  "dedicatoria": "",
+  "agradecimientos": "",
+  "titulo_agradecimientos": "Agradecimientos",
+  "portada": {
+   "visible": false,
+   "institucion": "",
+   "dependencia": "",
+   "tipo": "TESIS",
+   "grado": "",
+   "presenta": "",
+   "director": "",
+   "lugar": "",
+   "fecha": ""
+  }
+ }
+}

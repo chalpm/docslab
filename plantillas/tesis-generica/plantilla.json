@@ -1,0 +1,12 @@
+{
+ "nombre": "Tesis",
+ "orden": 11,
+ "clase": "tesis",
+ "descripcion": "Plantilla genérica y configurable: portada, agradecimientos, resumen, índices, capítulos con secciones, referencias y un apéndice.",
+ "tipo": "estructurado",
+ "etiquetas": [
+  "A4",
+  "capítulos"
+ ],
+ "cuadernos": []
+}

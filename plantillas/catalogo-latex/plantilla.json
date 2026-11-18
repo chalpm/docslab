@@ -1,0 +1,12 @@
+{
+ "nombre": "Catálogo de variantes (LaTeX)",
+ "orden": 7,
+ "descripcion": "Proyecto LaTeX libre: el catálogo de la plantilla (34 imágenes, 35 textos, 12 estilos de caja, filas, capas y configuración). Se edita el código.",
+ "tipo": "latex",
+ "principal": "catalogo.tex",
+ "etiquetas": [
+  "LaTeX",
+  "A2"
+ ],
+ "cuadernos": []
+}

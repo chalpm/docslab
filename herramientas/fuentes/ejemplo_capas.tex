@@ -1,0 +1,106 @@
+%% ============================================================================
+%%  ejemplo_capas.tex · Póster de ejemplo con la plantilla postercientifico.sty v2
+%%  ---------------------------------------------------------------------------
+%%  Muestra lo nuevo de la versión 2:
+%%    · capas (fondo, frente y una capa propia) con elementos en posición absoluta
+%%    · filas de columnas que terminan a la misma altura y llenan la página
+%%    · cajas con 12 estilos, cuyo título se puede mostrar u ocultar
+%%    · cajas de texto (T15–T19, T27, T29, T32, T35) con título opcional
+%%  Compila con pdfLaTeX (Overleaf y latexmk repiten las pasadas solos).
+%% ============================================================================
+\documentclass{article}
+\usepackage{postercientifico}
+
+%% ---- Lienzo, letra, colores y estilo de las cajas ---------------------------
+\posterconfig{
+  tamano = A1, margen = 20mm,                % A1 vertical: 594 × 841 mm
+  columnas = 3, separacion = 14mm,
+  fuente = 27pt, familia = helvetica,
+  idioma = spanish,                          % separación de palabras: spanish, english, portuguese…
+  tema = ciruela,                            % sobrios: pizarra, salvia, niebla, ciruela, grafito;
+                                             % vivos: azul, verde, burdeos, morado, gris, arena, oscuro
+  cabecera = degradado, alineacion cabecera = izquierda,
+  estilo bloque = caja,                      % barra, linea, caja, simple, borde, sombra, ...
+  numerar bloques = true,
+  mostrar titulos = true,                    % false oculta los títulos de todas las cajas
+}
+
+\titulo{Un póster por capas}
+\subtitulo{Fondo, contenido y frente: cada capa se oculta, se atenúa y se ordena}
+\autores{Nombre Apellido\textsuperscript{1}, Nombre Apellido\textsuperscript{2}}
+\afiliaciones{\textsuperscript{1}Institución \quad \textsuperscript{2}Institución}
+\logoderecho{img/logo1.png}
+
+%% ---- Capas --------------------------------------------------------------------
+%% Detrás del contenido (z < 0): una imagen muy tenue y dos formas de color
+\colocarimagen[capa=fondo, x=0, y=0, ancla=north west, ancho=1, alto=1, ajuste=cubrir, opacidad=0.05]{img/prueba2.png}
+\colocarforma[capa=fondo, forma=circulo, x=0.98, y=0.04, ancho=0.32, fondo=pcSecundario!14]
+\colocarforma[capa=fondo, forma=rectangulo, x=0, y=1, ancla=south west, ancho=1, alto=0.012, fondo=pcAcento]
+
+%% Una capa propia entre el contenido y el frente
+\nuevacapa[z=5]{notas}
+\colocartexto[capa=notas, x=0.632, y=0.262, ancla=north east, ancho=0.19, rotacion=3, fondo=FFF1A8, borde=E3C341,
+  relleno=0.6em, alineacion=izquierda, escala=0.8, color=4A3B00]{\textbf{Nota adhesiva.} Está en la capa
+  «notas» (z = 5): encima del contenido y debajo del frente.}
+
+%% Delante de todo (z ≥ 0)
+\colocartexto[capa=frente, x=0.5, y=0.55, rotacion=30, escala=9, opacidad=0.10, color=pcAcento, negrita]{BORRADOR}
+%% Para quitar la marca de agua sin borrarla: \ocultarcapa{frente} oculta toda la capa;
+%% o crea una capa solo para ella y ocúltala:  \nuevacapa[z=20, visible=false]{borrador}
+
+\begin{document}
+\cabecera
+
+\begin{fila}[columnas=3, alto=llenar]
+  \begin{columna}[distribucion=arriba]
+    \begin{caja}[titulo={Introducción}]
+      \txtEntradilla{Una frase que resume el mensaje del póster.}{\lipsum[1][1-7]}
+    \end{caja}
+    \begin{caja}[titulo={Objetivos}, estilo=linea]
+      \txtNumerada{\item \lipsum[2][1-2] \item \lipsum[2][3-4] \item \lipsum[2][5-6]}
+    \end{caja}
+    \begin{caja}[titulo={Este título no se ve}, mostrar titulo=false, estilo=simple, estirar]
+      \textbf{Caja sin título.} El título se guarda en el código (\texttt{mostrar titulo=false}) por si quieres
+      recuperarlo. \lipsum[3][1-3]
+      \imgPieLateral[0.5]{img/prueba4.png}{Una imagen con el pie al lado, centrado en vertical.}
+      \lipsum[3][4-7]
+    \end{caja}
+  \end{columna}
+  \begin{columna}[distribucion=arriba]
+    \begin{caja}[titulo={Métodos}]
+      \lipsum[4][1-3]
+      \imgAncho{img/prueba1.png}{Figura principal de los métodos.}
+      \txtResaltado[titulo={Idea clave}, mostrar titulo=true]{Un resaltado con su propio título. \lipsum[5][1]}
+      \txtRecuadro{Un recuadro sin título (así es por defecto). \lipsum[5][2]}
+    \end{caja}
+    \begin{caja}[titulo={Resultados}, estilo=borde, estirar]
+      \txtCifras{87\,\%}{precisión}{1\,234}{muestras}{0.92}{AUC}
+      \imgDos{img/prueba6.png}{img/prueba3.png}{Dos paneles a la misma altura.}
+      \txtTabla{Tabla 1. Resultados de relleno.}{%
+        \begin{tabular}{lrrr}\toprule
+          Grupo & Precisión & Recall & $n$\\\midrule
+          Alfa & 0.91 & 0.88 & 134\\ Beta & 0.87 & 0.84 & 98\\ Gamma & 0.93 & 0.90 & 211\\\bottomrule
+        \end{tabular}}
+      \lipsum[6][1-4]
+    \end{caja}
+  \end{columna}
+  \begin{columna}[distribucion=arriba]
+    \begin{caja}[titulo={Discusión}, estilo=resaltado]
+      \lipsum[7][1-6]
+      \txtCaja[estilo=nota, titulo={Limitaciones}]{\lipsum[8][1-3]}
+      \txtCaja[estilo=nota, titulo={Oculto}, mostrar titulo=false]{La misma caja, con el título oculto.}
+      \txtLineaTiempo[titulo={Próximos pasos}, mostrar titulo=true]{
+        \hito{2026}{Ampliar el conjunto de datos.}
+        \hito{2027}{Validación externa.}
+        \hito{2028}{Publicación del modelo.}}
+    \end{caja}
+    \begin{caja}[titulo={Conclusiones}, estilo=invertido, estirar]
+      \txtVinetas{\item \lipsum[9][1-2] \item \lipsum[9][3-4] \item \lipsum[9][5-6]}
+      \vfill
+      \txtContacto[4.5em]{img/qr_prueba.png}{\textbf{Contacto}\par nombre.apellido\par @institucion.example}
+    \end{caja}
+  \end{columna}
+\end{fila}
+
+\piedeposter{Congreso de ejemplo \quad Ciudad, 2026}{}{Plantilla \texttt{postercientifico.sty} v2}
+\end{document}

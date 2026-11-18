@@ -1,0 +1,12 @@
+{
+ "nombre": "Informe",
+ "orden": 12,
+ "clase": "documento",
+ "descripcion": "Documento general: título, secciones numeradas, viñetas, una figura y un texto destacado.",
+ "tipo": "estructurado",
+ "etiquetas": [
+  "A4",
+  "documento"
+ ],
+ "cuadernos": []
+}

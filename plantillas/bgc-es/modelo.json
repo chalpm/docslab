@@ -1,0 +1,527 @@
+{
+ "esquema": 2,
+ "formato_texto": "simple",
+ "idioma": "es",
+ "lienzo": {
+  "tamano": "A0",
+  "orientacion": "vertical",
+  "ancho": "841mm",
+  "alto": "1189mm",
+  "margen": "26mm"
+ },
+ "tipografia": {
+  "fuente": 24,
+  "interlinea": 1.27,
+  "familia": "helvetica",
+  "familia_titulos": "",
+  "propias": [],
+  "escalas": {
+   "titulo": 2.65,
+   "subtitulo": 1.3,
+   "autores": 1.3,
+   "afiliaciones": 1.0,
+   "bloque": 1.3,
+   "pie": 0.78,
+   "cita": 1.5,
+   "cifra": 3.2,
+   "referencias": 0.75,
+   "piedeposter": 0.8
+  }
+ },
+ "colores": {
+  "tema": "azul",
+  "primario": "1F4E79",
+  "secundario": "2A78D6",
+  "acento": "E8743B",
+  "fondo": "FFFFFF",
+  "fondo_bloque": "F3F5F8",
+  "texto": "1E2329",
+  "tenue": "59636E",
+  "contraste": "FFFFFF"
+ },
+ "estilo": {
+  "bloque": "barra",
+  "radio": "0.3em",
+  "relleno": "0.65em",
+  "separacion_columnas": "18mm",
+  "separacion_filas": "",
+  "separacion_bloques": "0.75em",
+  "separacion_imagenes": "0.45em",
+  "separacion_elementos": "0.35em",
+  "mostrar_titulos": true,
+  "numerar_bloques": false,
+  "alineacion_titulos": "izquierda",
+  "alinear_texto": "justificado",
+  "sombra": false,
+  "numerar_figuras": true,
+  "nombre_figura": "Figura"
+ },
+ "cabecera": {
+  "visible": true,
+  "estilo": "banda",
+  "alineacion": "centro",
+  "titulo": "Clasificación de clústeres biosintéticos de *Stutzerimonas*\npor su perfil de dominios Pfam",
+  "subtitulo": "BORRADOR · [Nombre del congreso] · [Ciudad, fecha]",
+  "autores": "[Nombre Apellido]^1^, [Nombre Apellido]^1^, [Nombre Apellido]^2^",
+  "afiliaciones": "^1^[Institución · departamento · ciudad]  ^2^[Institución · departamento · ciudad]",
+  "logo_izquierdo": "",
+  "logo_derecho": "",
+  "ancho_logos": 0.001,
+  "alto_logos": "5.5em",
+  "fondo": "",
+  "color_texto": "",
+  "imagen": "",
+  "oscurecer": 0.45
+ },
+ "filas": [
+  {
+   "visible": true,
+   "alto": "llenar",
+   "rejilla": 3,
+   "separacion": "",
+   "despues": "",
+   "igualar": true,
+   "columnas": [
+    {
+     "abarca": 1,
+     "distribucion": "repartir",
+     "bloques": [
+      {
+       "visible": true,
+       "titulo": "1 · Introducción",
+       "mostrar_titulo": true,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-2pzsuc",
+         "tipo": "txtJustificado",
+         "visible": true,
+         "texto": "Los clústeres de genes biosintéticos (BGCs) codifican las rutas de los metabolitos especializados. antiSMASH los detecta y les asigna una clase de producto con reglas basadas en dominios proteicos.\n\n**Preguntas.** ¿Cómo son los BGCs de *Stutzerimonas* en cuanto a dominios Pfam? ¿Basta el perfil de dominios de un BGC para predecir su clase? ¿Qué dominios y genes se repiten y qué tan conservado está el orden de los genes?"
+        }
+       ],
+       "id": "b-36esin"
+      },
+      {
+       "visible": true,
+       "titulo": "2 · Los datos",
+       "mostrar_titulo": true,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-wwqaia",
+         "tipo": "txtJustificado",
+         "visible": true,
+         "texto": "Una tabla con 1 272 regiones de antiSMASH. 81 genomas aparecen dos veces (GenBank y RefSeq); al unir las copias quedan 652 BGCs de 85 genomas. Se excluyen 7 clases con menos de 10 BGCs."
+        },
+        {
+         "id": "e-rkn6e9",
+         "tipo": "imgAncho",
+         "visible": true,
+         "archivo": "recursos/cuadernos/nb-bgc/resultados/1_datos/1.3_bgcs_por_clase.pdf",
+         "pie": "631 BGCs en 9 clases retenidas, de `betalactone` (146) a `nrp-metallophore` (25).",
+         "tam": 100
+        },
+        {
+         "id": "e-ns82xo",
+         "tipo": "txtJustificado",
+         "visible": true,
+         "texto": "La matriz de dominios tiene 631 BGCs × 1 251 dominios Pfam; el 4.3 % de sus celdas contiene un dominio y hay 364 perfiles de presencia/ausencia distintos. La mediana de dominios por BGC va de 37 (`naggn`) a 86 (`arylpolyene`)."
+        }
+       ],
+       "id": "b-q96ote"
+      },
+      {
+       "visible": true,
+       "titulo": "3 · Las clases se separan por sus dominios",
+       "mostrar_titulo": true,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-ivek35",
+         "tipo": "imgAncho",
+         "visible": true,
+         "archivo": "recursos/cuadernos/nb-bgc/resultados/1_datos/1.5_a_tsne_por_clase.pdf",
+         "pie": "t-SNE de los 1 251 dominios, coloreado por clase. La mayoría de las clases forman grupos compactos; `nrps` y `nrp-metallophore` se solapan (en la tabla hay 34 pares de BGCs del mismo genoma que se solapan).",
+         "tam": 100
+        }
+       ],
+       "id": "b-sqmhie"
+      },
+      {
+       "visible": true,
+       "titulo": "4 · Método",
+       "mostrar_titulo": true,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-eilqmz",
+         "tipo": "txtNumerada",
+         "visible": true,
+         "items": [
+          "**Partición 70/30** estratificada: 441 BGCs para entrenar y 190 apartados hasta el final.",
+          "**Modelo.** SVM lineal con eliminación recursiva de dominios (RFE), validación *leave-one-out* y regla de un error estándar.",
+          "**Exploración.** Grupos de Ward sobre el t-SNE, árbol de decisión y arquitectura gen a gen.",
+          "**Comparación.** Familias de genes por similitud de secuencia (≥ 0.5), índice de sintenia y alineamiento de los clústeres gen a gen."
+         ]
+        }
+       ],
+       "id": "b-f7wn55"
+      }
+     ],
+     "id": "c-zzq88m"
+    },
+    {
+     "abarca": 1,
+     "distribucion": "repartir",
+     "bloques": [
+      {
+       "visible": true,
+       "titulo": "5 · ¿Cuántos dominios necesita?",
+       "mostrar_titulo": true,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-pvb0b4",
+         "tipo": "imgAncho",
+         "visible": true,
+         "archivo": "recursos/cuadernos/nb-bgc/resultados/2_entrenamiento/2.2_curva_seleccion_dominios.pdf",
+         "pie": "La exactitud de validación llega a su máximo (0.978) con 75 dominios; ningún modelo más pequeño queda a menos de un error estándar.",
+         "tam": 100
+        }
+       ],
+       "id": "b-1sydnw"
+      },
+      {
+       "visible": true,
+       "titulo": "6 · Resultado en BGCs nuevos",
+       "mostrar_titulo": true,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-ft60gp",
+         "tipo": "imgCentro",
+         "visible": true,
+         "archivo": "recursos/cuadernos/nb-bgc/resultados/3_evaluacion/3.2_matriz_confusion_prueba.pdf",
+         "pie": "186 de 190 BGCs de prueba bien clasificados (exactitud 0.979, IC 95 % 0.947–0.992; exactitud balanceada 0.956; MCC 0.976). Tres de los cuatro errores son BGCs `nrps` que están dentro de las coordenadas de un BGC `nrp-metallophore` del mismo genoma.",
+         "tam": 80
+        }
+       ],
+       "id": "b-zoxfsg"
+      },
+      {
+       "visible": true,
+       "titulo": "7 · Las clases forman tres grupos",
+       "mostrar_titulo": true,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-pfobtv",
+         "tipo": "imgAncho",
+         "visible": true,
+         "archivo": "recursos/cuadernos/nb-bgc/resultados/4_grupos_arquitectura/4.1_a_grupos_tsne.pdf",
+         "pie": "Agrupamiento de Ward sobre el mapa t-SNE: G1 (398 BGCs, 8 clases), G2 (118: `betalactone` y `ni-siderophore`) y G3 (115: `terpene`, `arylpolyene` y 1 `ni-siderophore`). La silueta sigue subiendo hasta $k = 8$.",
+         "tam": 100
+        }
+       ],
+       "id": "b-o4nscr"
+      },
+      {
+       "visible": true,
+       "titulo": "8 · Pocos dominios separan los grupos",
+       "mostrar_titulo": true,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-mboe7c",
+         "tipo": "imgAncho",
+         "visible": true,
+         "archivo": "recursos/cuadernos/nb-bgc/resultados/4_grupos_arquitectura/4.2_b_arbol_decision.pdf",
+         "pie": "Un árbol de profundidad 3, solo con presencia o ausencia de dominios, reproduce los grupos (exactitud balanceada 0.981). `TrkA_C` está en el 98 % de G3 y en ningún BGC fuera de él; `Glyoxalase`, en el 96 % de G2 y el 6 % del resto.",
+         "tam": 100
+        }
+       ],
+       "id": "b-k8znma"
+      }
+     ],
+     "id": "c-5zptkk"
+    },
+    {
+     "abarca": 1,
+     "distribucion": "repartir",
+     "bloques": [
+      {
+       "visible": true,
+       "titulo": "9 · Dominios característicos de cada clase",
+       "mostrar_titulo": true,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-h0d3o5",
+         "tipo": "imgAncho",
+         "visible": true,
+         "archivo": "recursos/cuadernos/nb-bgc/resultados/5_comparacion_clusteres/5.1_mapa_calor_clusters_dominios.pdf",
+         "pie": "Los 631 clústeres frente a los dominios característicos de cada clase. 56 de los 1 251 dominios son frecuentes (≥ 50 % de los BGCs) en dos o más clases y ninguno en más de cinco; `MFS_1` (280 BGCs) y `KR` (262) son los más extendidos.",
+         "tam": 100
+        }
+       ],
+       "id": "b-5m4esc"
+      },
+      {
+       "visible": true,
+       "titulo": "10 · Sintenia: el orden de los genes",
+       "mostrar_titulo": true,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-qzskyv",
+         "tipo": "imgCentro",
+         "visible": true,
+         "archivo": "recursos/cuadernos/nb-bgc/resultados/5_comparacion_clusteres/5.4_a_matriz_sintenia.pdf",
+         "pie": "Índice de sintenia medio 0.400 dentro de una clase y 0.002 entre clases. `betalactone` se reparte en 6 loci sin genes vecinos en común; `terpene` (0.79) y `ectoine` (0.64) son las clases con el orden más conservado.",
+         "tam": 80
+        }
+       ],
+       "id": "b-ju66ak"
+      },
+      {
+       "visible": true,
+       "titulo": "11 · Clústeres alineados en orden",
+       "mostrar_titulo": true,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-s7buid",
+         "tipo": "imgAncho",
+         "visible": true,
+         "archivo": "recursos/cuadernos/nb-bgc/resultados/5_comparacion_clusteres/5.5_alineamiento_terpene_locus1.pdf",
+         "pie": "Los 65 BGCs `terpene` alineados gen a gen; cada columna es una familia de genes. 21 columnas tienen la misma familia en ≥ 90 % de los BGCs.",
+         "tam": 100
+        }
+       ],
+       "id": "b-k33pmi"
+      },
+      {
+       "visible": true,
+       "titulo": "12 · Genes que se repiten en un clúster",
+       "mostrar_titulo": true,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-jmutku",
+         "tipo": "imgAncho",
+         "visible": true,
+         "archivo": "recursos/cuadernos/nb-bgc/resultados/5_comparacion_clusteres/5.3_a_genes_repetidos.pdf",
+         "pie": "Los 19 390 genes forman 1 788 familias. 171 de 631 BGCs tienen un gen repetido, sobre todo `DctP` (61 BGCs) y `OprD` (43); en 18 casos las copias son casi idénticas (similitud ≥ 0.9).",
+         "tam": 100
+        }
+       ],
+       "id": "b-bsnm8v"
+      }
+     ],
+     "id": "c-ssq9op"
+    }
+   ],
+   "id": "f-52d34t"
+  },
+  {
+   "visible": true,
+   "alto": "auto",
+   "rejilla": 3,
+   "separacion": "",
+   "despues": "",
+   "igualar": true,
+   "columnas": [
+    {
+     "abarca": 1,
+     "distribucion": "repartir",
+     "bloques": [
+      {
+       "visible": true,
+       "titulo": "Conclusiones",
+       "mostrar_titulo": true,
+       "estilo": "linea",
+       "numero": "",
+       "estirar": false,
+       "opciones": {
+        "escala_texto": 0.85
+       },
+       "elementos": [
+        {
+         "id": "e-adi2v1",
+         "tipo": "txtVinetas",
+         "visible": true,
+         "items": [
+          "Con 75 de 1 251 dominios, un SVM lineal reproduce la clase de antiSMASH de BGCs no vistos.",
+          "Los grupos se distinguen por la presencia o ausencia de pocos dominios.",
+          "El orden de los genes se conserva dentro de cada clase y casi nunca entre clases; `nrps` y `nrp-metallophore` comparten orden (0.23).",
+          "Conviene revisar las etiquetas `nrps` que comparten locus con un `nrp-metallophore`."
+         ]
+        }
+       ],
+       "id": "b-t72oos"
+      }
+     ],
+     "id": "c-g5ecbw"
+    },
+    {
+     "abarca": 1,
+     "distribucion": "repartir",
+     "bloques": [
+      {
+       "visible": true,
+       "titulo": "Limitaciones",
+       "mostrar_titulo": true,
+       "estilo": "linea",
+       "numero": "",
+       "estirar": false,
+       "opciones": {
+        "escala_texto": 0.85
+       },
+       "elementos": [
+        {
+         "id": "e-frfrmy",
+         "tipo": "txtJustificado",
+         "visible": true,
+         "texto": "La partición es por BGC, no por genoma: 93 de los 190 BGCs de prueba tienen un perfil idéntico en el entrenamiento (exactitud 0.989 en ellos y 0.969 en el resto). El modelo reproduce las clases que antiSMASH asigna con reglas. La tabla no guarda la hebra ni las coordenadas de cada gen, así que la sintenia asume el orden de la tabla. t-SNE es descriptivo."
+        }
+       ],
+       "id": "b-l3kih8"
+      }
+     ],
+     "id": "c-whyfd4"
+    },
+    {
+     "abarca": 1,
+     "distribucion": "repartir",
+     "bloques": [
+      {
+       "visible": true,
+       "titulo": "Referencias",
+       "mostrar_titulo": true,
+       "estilo": "linea",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-53b8cm",
+         "tipo": "txtReferencias",
+         "visible": true,
+         "items": [
+          "Blin K, *et al.* (2023) antiSMASH 7.0. *Nucleic Acids Res* 51: W46–W50.",
+          "Mistry J, *et al.* (2021) Pfam. *Nucleic Acids Res* 49: D412–D419.",
+          "Guyon I, *et al.* (2002) *Mach Learn* 46: 389–422.",
+          "van der Maaten L, Hinton G (2008) *J Mach Learn Res* 9: 2579–2605.",
+          "Navarro-Muñoz JC, *et al.* (2020) BiG-SCAPE. *Nat Chem Biol* 16: 60–68."
+         ]
+        }
+       ],
+       "id": "b-owr0gl"
+      }
+     ],
+     "id": "c-gjgd5s"
+    }
+   ],
+   "id": "f-rokqd6"
+  }
+ ],
+ "pie": {
+  "visible": true,
+  "estilo": "banda",
+  "izquierda": "Código y figuras: `modelo_bgc_pfam_es.ipynb`",
+  "centro": "BORRADOR · [URL del repositorio]",
+  "derecha": "[correo@institución]",
+  "fondo": "",
+  "color_texto": ""
+ },
+ "contenido_visible": true,
+ "capas": [
+  {
+   "id": "fondo",
+   "nombre": "Fondo",
+   "z": -10,
+   "visible": true,
+   "opacidad": 1,
+   "elementos": []
+  },
+  {
+   "id": "frente",
+   "nombre": "Frente",
+   "z": 10,
+   "visible": true,
+   "opacidad": 1,
+   "elementos": [
+    {
+     "id": "a-sello",
+     "tipo": "texto",
+     "texto": "BORRADOR",
+     "x": 0.5,
+     "y": 0.52,
+     "rotacion": 30,
+     "escala": 11,
+     "opacidad": 0.08,
+     "color": "acento",
+     "negrita": true,
+     "visible": false,
+     "ancla": "center",
+     "ancho": "",
+     "alto": "",
+     "pagina": "",
+     "fondo": "",
+     "borde": "",
+     "grosor": "0.08em",
+     "radio": "0pt",
+     "relleno": "0.4em",
+     "alineacion": "centro",
+     "cursiva": false
+    }
+   ]
+  }
+ ],
+ "latex": {
+  "preambulo": "",
+  "antes": "",
+  "despues": ""
+ },
+ "bibliografia": {
+  "estilo": "apa",
+  "referencias": []
+ },
+ "componentes": {}
+}

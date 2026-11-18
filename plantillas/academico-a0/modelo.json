@@ -1,0 +1,553 @@
+{
+ "esquema": 2,
+ "formato_texto": "simple",
+ "idioma": "es",
+ "lienzo": {
+  "tamano": "A0",
+  "orientacion": "vertical",
+  "ancho": "841mm",
+  "alto": "1189mm",
+  "margen": "28mm"
+ },
+ "tipografia": {
+  "fuente": 30,
+  "interlinea": 1.28,
+  "familia": "helvetica",
+  "familia_titulos": "",
+  "propias": [],
+  "escalas": {
+   "titulo": 3.1,
+   "subtitulo": 1.7,
+   "autores": 1.4,
+   "afiliaciones": 1.0,
+   "bloque": 1.35,
+   "pie": 0.8,
+   "cita": 1.5,
+   "cifra": 3.2,
+   "referencias": 0.75,
+   "piedeposter": 0.8
+  }
+ },
+ "colores": {
+  "tema": "pizarra",
+  "primario": "3E5468",
+  "secundario": "6A8196",
+  "acento": "A9803A",
+  "fondo": "FFFFFF",
+  "fondo_bloque": "F2F4F6",
+  "texto": "22272C",
+  "tenue": "5D666E",
+  "contraste": "FFFFFF"
+ },
+ "estilo": {
+  "bloque": "barra",
+  "radio": "0.3em",
+  "relleno": "0.75em",
+  "separacion_columnas": "20mm",
+  "separacion_filas": "",
+  "separacion_bloques": "0.9em",
+  "separacion_imagenes": "0.45em",
+  "separacion_elementos": "0.35em",
+  "mostrar_titulos": true,
+  "numerar_bloques": false,
+  "alineacion_titulos": "izquierda",
+  "alinear_texto": "justificado",
+  "sombra": false,
+  "numerar_figuras": true,
+  "nombre_figura": "Figura"
+ },
+ "cabecera": {
+  "visible": true,
+  "estilo": "banda",
+  "alineacion": "centro",
+  "titulo": "Título del póster científico: lorem ipsum dolor sit amet consectetuer",
+  "subtitulo": "Subtítulo o mensaje principal del trabajo en una sola línea",
+  "autores": "Nombre Apellido^1^, Nombre Apellido^2^, Nombre Apellido^1,2^",
+  "afiliaciones": "^1^Departamento, Institución, Ciudad  ^2^Departamento, Institución, Ciudad",
+  "logo_izquierdo": "recursos/logo1.png",
+  "logo_derecho": "recursos/logo2.png",
+  "ancho_logos": 0.15,
+  "alto_logos": "5.5em",
+  "fondo": "",
+  "color_texto": "",
+  "imagen": "",
+  "oscurecer": 0.45
+ },
+ "filas": [
+  {
+   "visible": true,
+   "alto": "llenar",
+   "rejilla": 3,
+   "separacion": "",
+   "despues": "",
+   "igualar": true,
+   "columnas": [
+    {
+     "abarca": 1,
+     "distribucion": "repartir",
+     "bloques": [
+      {
+       "visible": true,
+       "titulo": "Introducción",
+       "mostrar_titulo": true,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-axh6cb",
+         "tipo": "txtCapitular",
+         "visible": true,
+         "letra": "L",
+         "resto": "orem",
+         "texto": " ipsum dolor sit amet, Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut purus elit, vestibulum ut, placerat ac, adipiscing vitae, felis. Curabitur dictum gravida mauris. Nam arcu libero, nonummy eget, consectetuer id, vulputate a, magna.",
+         "tam": 3
+        },
+        {
+         "id": "e-2izxyb",
+         "tipo": "imgEnvueltaDerecha",
+         "visible": true,
+         "archivo": "recursos/prueba3.png",
+         "pie": "Imagen envuelta por el texto.",
+         "texto": "Donec vehicula augue eu neque. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Mauris ut leo. Cras viverra metus rhoncus sem. Nulla et lectus vestibulum urna fringilla ultrices. Phasellus eu tellus sit amet tortor gravida placerat. Integer sapien est, iaculis in, pretium quis, viverra ac, nunc. Praesent eget sem vel leo ultrices bibendum. Aenean faucibus. Morbi dolor nulla, malesuada eu, pulvinar at, mollis ac, nulla.",
+         "tam": 0.44
+        },
+        {
+         "id": "e-oil1e0",
+         "tipo": "txtVinetas",
+         "visible": true,
+         "items": [
+          "Nulla malesuada porttitor diam.",
+          "Donec felis erat, congue non, volutpat at, tincidunt tristique, libero.",
+          "Vivamus viverra fermentum felis."
+         ]
+        }
+       ],
+       "id": "b-fa5u10"
+      },
+      {
+       "visible": true,
+       "titulo": "Objetivos",
+       "mostrar_titulo": true,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-f3e3oj",
+         "tipo": "txtCitaGrande",
+         "visible": true,
+         "cita": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit",
+         "autor": ""
+        },
+        {
+         "id": "e-sfffob",
+         "tipo": "txtNumerada",
+         "visible": true,
+         "items": [
+          "Quisque ullamcorper placerat ipsum.",
+          "Cras nibh.",
+          "Morbi vel justo vitae lacus tincidunt ultrices."
+         ]
+        }
+       ],
+       "id": "b-ahqif1"
+      },
+      {
+       "visible": true,
+       "titulo": "Métodos",
+       "mostrar_titulo": true,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-z04rlb",
+         "tipo": "imgTextoDerecha",
+         "visible": true,
+         "archivo": "recursos/prueba1.png",
+         "pie": "Montaje experimental.",
+         "texto": "Curabitur auctor semper nulla. Donec varius orci eget risus. Duis nibh mi, congue eu, accumsan eleifend, sagittis quis, diam. Duis eget orci sit amet orci dignissim rutrum.",
+         "tam": 0.46
+        },
+        {
+         "id": "e-0heegv",
+         "tipo": "txtPasos",
+         "visible": true,
+         "p1": "Lorem ipsum dolor sit amet",
+         "p2": "Consectetuer adipiscing elit",
+         "p3": "Ut purus elit vestibulum"
+        },
+        {
+         "id": "e-3n0rgl",
+         "tipo": "txtEcuacion",
+         "visible": true,
+         "titulo": "",
+         "mostrar_titulo": false,
+         "ecuacion": "\\hat{y} = \\operatorname{sign}\\Bigl(\\sum_{i=1}^{n} w_i x_i + b\\Bigr)",
+         "texto": "Donde $w_i$ son los pesos, $x_i$ las variables y $b$ el término independiente."
+        },
+        {
+         "id": "e-mmehx2",
+         "tipo": "imgTres",
+         "visible": true,
+         "a": "recursos/prueba6.png",
+         "b": "recursos/prueba2.png",
+         "c": "recursos/prueba4.png",
+         "pie": "Tres imágenes en fila, recortadas a la misma altura.",
+         "tam": 27
+        }
+       ],
+       "id": "b-yutkuo"
+      }
+     ],
+     "id": "c-43y1zl"
+    },
+    {
+     "abarca": 1,
+     "distribucion": "repartir",
+     "bloques": [
+      {
+       "visible": true,
+       "titulo": "Resultados",
+       "mostrar_titulo": true,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-tydcuf",
+         "tipo": "txtEntradilla",
+         "visible": true,
+         "entradilla": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit ut purus elit.",
+         "texto": "Donec vehicula augue eu neque. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Mauris ut leo. Cras viverra metus rhoncus sem. Nulla et lectus vestibulum urna fringilla ultrices.",
+         "tam": 1.3
+        },
+        {
+         "id": "e-aw76o4",
+         "tipo": "imgAncho",
+         "visible": true,
+         "archivo": "recursos/prueba2.png",
+         "pie": "Imagen a todo el ancho de la columna, con el pie debajo.",
+         "tam": 100
+        },
+        {
+         "id": "e-w7jfre",
+         "tipo": "txtCifras",
+         "visible": true,
+         "c1": "87 %",
+         "t1": "lorem ipsum dolor",
+         "c2": "1 234",
+         "t2": "sit amet consectetuer",
+         "c3": "0.92",
+         "t3": "adipiscing elit"
+        },
+        {
+         "id": "e-wrp8zk",
+         "tipo": "imgRejilla",
+         "visible": true,
+         "a": "recursos/prueba1.png",
+         "b": "recursos/prueba6.png",
+         "c": "recursos/prueba3.png",
+         "d": "recursos/prueba4.png",
+         "pie": "Rejilla de cuatro paneles: (a) lorem, (b) ipsum, (c) dolor y (d) sit amet.",
+         "tam": 34
+        },
+        {
+         "id": "e-fxz7f5",
+         "tipo": "txtDosColumnas",
+         "visible": true,
+         "texto": "Phasellus eu tellus sit amet tortor gravida placerat. Integer sapien est, iaculis in, pretium quis, viverra ac, nunc. Praesent eget sem vel leo ultrices bibendum. Aenean faucibus. Morbi dolor nulla, malesuada eu, pulvinar at, mollis ac, nulla. Curabitur auctor semper nulla. Donec varius orci eget risus. Duis nibh mi, congue eu, accumsan eleifend, sagittis quis, diam. Duis eget orci sit amet orci dignissim rutrum."
+        },
+        {
+         "id": "e-qb13bn",
+         "tipo": "txtResaltado",
+         "visible": true,
+         "titulo": "Resultado principal",
+         "mostrar_titulo": false,
+         "texto": "**Resultado principal.** Suspendisse vitae elit. Aliquam arcu neque, ornare in, ullamcorper quis, commodo eu, libero.",
+         "fondo": "",
+         "borde": ""
+        }
+       ],
+       "id": "b-fkhvee"
+      },
+      {
+       "visible": true,
+       "titulo": "Trabajo futuro",
+       "mostrar_titulo": true,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-la6lha",
+         "tipo": "txtLineaTiempo",
+         "visible": true,
+         "titulo": "",
+         "mostrar_titulo": false,
+         "hitos": [
+          [
+           "Fase 1",
+           "Curabitur tellus magna, porttitor a, commodo a, commodo in, tortor."
+          ],
+          [
+           "Fase 2",
+           "Donec interdum."
+          ],
+          [
+           "Fase 3",
+           "Praesent scelerisque."
+          ]
+         ]
+        }
+       ],
+       "id": "b-yawnw6"
+      }
+     ],
+     "id": "c-ihwl6b"
+    },
+    {
+     "abarca": 1,
+     "distribucion": "repartir",
+     "bloques": [
+      {
+       "visible": true,
+       "titulo": "Resultados (continuación)",
+       "mostrar_titulo": true,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-s0hdii",
+         "tipo": "imgGrandeDosDerecha",
+         "visible": true,
+         "grande": "recursos/prueba1.png",
+         "b": "recursos/prueba3.png",
+         "c": "recursos/prueba6.png",
+         "pie": "Una imagen grande y dos pequeñas a la derecha.",
+         "tam": 50
+        },
+        {
+         "id": "e-xcj5lg",
+         "tipo": "txtTabla",
+         "visible": true,
+         "pie": "Tabla 1. Valores de relleno para mostrar el formato de la tabla.",
+         "tabla": {
+          "columnas": "lrrr",
+          "encabezado": true,
+          "filas": [
+           [
+            "Grupo",
+            "Lorem",
+            "Ipsum",
+            "Dolor"
+           ],
+           [
+            "Alfa",
+            "12.4",
+            "0.81",
+            "134"
+           ],
+           [
+            "Beta",
+            "9.7",
+            "0.76",
+            "98"
+           ],
+           [
+            "Gamma",
+            "15.2",
+            "0.93",
+            "211"
+           ],
+           [
+            "Delta",
+            "7.3",
+            "0.64",
+            "57"
+           ]
+          ]
+         }
+        },
+        {
+         "id": "e-883s0n",
+         "tipo": "imgAnotada",
+         "visible": true,
+         "archivo": "recursos/prueba5.png",
+         "pie": "Imagen panorámica con anotaciones.",
+         "flechas": [
+          [
+           0.22,
+           0.8,
+           0.44,
+           0.52,
+           "zona A"
+          ],
+          [
+           0.82,
+           0.22,
+           0.62,
+           0.46,
+           "zona B"
+          ]
+         ],
+         "tam": 100
+        }
+       ],
+       "id": "b-ef4yw9"
+      },
+      {
+       "visible": true,
+       "titulo": "Discusión",
+       "mostrar_titulo": true,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-4mxk9z",
+         "tipo": "imgTextoIzquierda",
+         "visible": true,
+         "archivo": "recursos/prueba4.png",
+         "pie": "Imagen a la derecha.",
+         "texto": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut purus elit, vestibulum ut, placerat ac, adipiscing vitae, felis. Curabitur dictum gravida mauris. Nam arcu libero, nonummy eget, consectetuer id, vulputate a, magna.",
+         "tam": 0.4
+        },
+        {
+         "id": "e-2rs2gm",
+         "tipo": "txtCitaBarra",
+         "visible": true,
+         "titulo": "",
+         "mostrar_titulo": false,
+         "texto": "Etiam euismod. Fusce facilisis lacinia dui."
+        }
+       ],
+       "id": "b-ywk63b"
+      },
+      {
+       "visible": true,
+       "titulo": "Conclusiones",
+       "mostrar_titulo": true,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-c2o0ye",
+         "tipo": "txtVinetas",
+         "visible": true,
+         "items": [
+          "Etiam ac leo a risus tristique nonummy.",
+          "Donec dignissim tincidunt nulla.",
+          "Vestibulum rhoncus molestie odio."
+         ]
+        },
+        {
+         "id": "e-n97u4m",
+         "tipo": "txtInvertido",
+         "visible": true,
+         "titulo": "",
+         "mostrar_titulo": false,
+         "texto": "**Mensaje para llevar.** Nulla in ipsum."
+        }
+       ],
+       "id": "b-bfgkwq"
+      },
+      {
+       "visible": true,
+       "titulo": "Referencias",
+       "mostrar_titulo": true,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-suq1y3",
+         "tipo": "txtReferencias",
+         "visible": true,
+         "items": [
+          "Apellido N, Apellido N. Título del artículo de relleno. *Revista*. Año; vol(n): páginas.",
+          "Apellido N, Apellido N, Apellido N. Título del artículo de relleno. *Revista*. Año; vol(n): páginas.",
+          "Apellido N. *Título del libro de relleno*. Editorial; Año."
+         ]
+        }
+       ],
+       "id": "b-wz6zow"
+      },
+      {
+       "visible": true,
+       "titulo": "Agradecimientos y contacto",
+       "mostrar_titulo": true,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-rskttq",
+         "tipo": "txtContacto",
+         "visible": true,
+         "archivo": "recursos/qr_prueba.png",
+         "texto": "Nulla mattis luctus nulla. Duis commodo velit at leo.\n\n**Contacto:**\nnombre@institucion.example",
+         "tam": "6.5em"
+        }
+       ],
+       "id": "b-ud4n36"
+      }
+     ],
+     "id": "c-nltlvl"
+    }
+   ],
+   "id": "f-n20su9"
+  }
+ ],
+ "pie": {
+  "visible": true,
+  "estilo": "banda",
+  "izquierda": "Nombre del congreso · Ciudad, año",
+  "centro": "Texto e imágenes de relleno",
+  "derecha": "nombre.apellido@institucion.example",
+  "fondo": "",
+  "color_texto": ""
+ },
+ "contenido_visible": true,
+ "capas": [
+  {
+   "id": "fondo",
+   "nombre": "Fondo",
+   "z": -10,
+   "visible": true,
+   "opacidad": 1,
+   "elementos": []
+  },
+  {
+   "id": "frente",
+   "nombre": "Frente",
+   "z": 10,
+   "visible": true,
+   "opacidad": 1,
+   "elementos": []
+  }
+ ],
+ "latex": {
+  "preambulo": "",
+  "antes": "",
+  "despues": ""
+ },
+ "bibliografia": {
+  "estilo": "apa",
+  "referencias": []
+ },
+ "componentes": {}
+}

@@ -1,0 +1,11 @@
+{
+ "nombre": "Mínima A1",
+ "orden": 4,
+ "descripcion": "Dos columnas sobrias: cabecera mínima, cajas con línea, Palatino para el texto y Helvetica para los títulos.",
+ "tipo": "estructurado",
+ "etiquetas": [
+  "A1",
+  "2 columnas"
+ ],
+ "cuadernos": []
+}

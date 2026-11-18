@@ -1,0 +1,12 @@
+{
+ "nombre": "Póster por capas (LaTeX)",
+ "orden": 8,
+ "descripcion": "Proyecto LaTeX libre: un póster A1 escrito a mano con capas, filas que llenan la página y cajas con título opcional.",
+ "tipo": "latex",
+ "principal": "ejemplo_capas.tex",
+ "etiquetas": [
+  "LaTeX",
+  "A1"
+ ],
+ "cuadernos": []
+}

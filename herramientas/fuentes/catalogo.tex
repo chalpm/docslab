@@ -1,0 +1,893 @@
+%% ============================================================================
+%%  catalogo.tex · Catálogo de la plantilla postercientifico.sty (versión 2)
+%%    Páginas 1-2  34 formas de colocar imágenes (I01–I34)
+%%    Página 3     35 formas de colocar texto (T01–T35)
+%%    Página 4     cajas: 12 estilos, con y sin título; filas y columnas
+%%    Página 5     capas: fondo, contenido, frente y capas propias; posiciones absolutas
+%%    Página 6     configuración global: claves, temas, familias, cabeceras, pies y un ejemplo mínimo
+%%  Compilar mientras salga el aviso «Rerun» (2 o 3 veces):  pdflatex catalogo.tex   (Overleaf y latexmk repiten solos)
+%%  El catálogo usa la misma plantilla con OTRO lienzo (A2) y OTRA letra (12 pt):
+%%  sirve también de ejemplo de cómo cambia todo con \posterconfig.
+%% ============================================================================
+\documentclass{article}
+\usepackage{postercientifico}
+\posterconfig{
+  tamano = A2, margen = 14mm,                       % A2 vertical (420 × 594 mm)
+  columnas = 3, separacion = 8mm,
+  fuente = 12pt, escala titulo = 2.6, escala bloque = 1.1,
+  separacion bloques = 0.8em, separacion filas = 0.8em,
+  alto logos = 4em, idioma = spanish,
+}
+\titulo{Catálogo de la plantilla}
+\subtitulo{34 imágenes (I01--I34), 35 textos (T01--T35), 12 estilos de caja, filas y capas}
+\autores{Plantilla \texttt{postercientifico.sty} · versión 2}
+\afiliaciones{Imágenes de prueba y texto de relleno. El argumento opcional [\,] de cada orden es su tamaño.}
+\logoizquierdo{img/logo1.png}
+\logoderecho{img/logo2.png}
+
+%% Caja de cada variante: número, nombre, forma de uso y demostración
+\newcommand{\uso}[2]{{\tam{0.74}\ttfamily\bfseries\color{pcTenue}\raggedright\textbackslash #1#2\par}\vspace{0.5em}}
+\newenvironment{variante}[4]
+  {\begin{bloque}{#1 · #2}\uso{#3}{#4}}
+  {\end{bloque}}
+\newcommand{\pa}[1]{\{#1\}}          % argumento obligatorio, para escribir el uso
+\newcommand{\relleno}[1][1-3]{\lipsum[1][#1]}
+\newcommand{\bs}{\textbackslash}
+\newcommand{\cod}[1]{{\ttfamily\tam{0.8}#1}}  % código de ejemplo
+\setlength{\columnsep}{8mm}
+%% Las tipografías libres de TeX Live que estén instaladas (para las muestras de la página 6)
+\makeatletter
+\newcommand{\cargarlibre}[2]{\IfFileExists{#2.sty}{\csname PC@paq@#1\endcsname\@namedef{muestra@#1}{}}{}}
+\cargarlibre{sourcesans}{sourcesanspro}\cargarlibre{fira}{FiraSans}\cargarlibre{roboto}{roboto}
+\cargarlibre{lato}{lato}\cargarlibre{opensans}{opensans}\cargarlibre{notosans}{noto-sans}
+\cargarlibre{plexsans}{plex-sans}\cargarlibre{atkinson}{atkinson}\cargarlibre{montserrat}{montserrat}
+\cargarlibre{raleway}{raleway}\cargarlibre{cabin}{cabin}\cargarlibre{inter}{inter}
+\cargarlibre{libertinus}{libertinus}\cargarlibre{ebgaramond}{ebgaramond}\cargarlibre{merriweather}{merriweather}
+\cargarlibre{sourceserif}{sourceserifpro}\cargarlibre{crimson}{crimson}\cargarlibre{notoserif}{noto-serif}
+\cargarlibre{plexserif}{plex-serif}
+%% \muestralibre{nombre}: el nombre escrito con su letra (o «no instalada»)
+\newcommand{\muestralibre}[1]{\ifcsname muestra@#1\endcsname
+  {\fontfamily{\csname PC@cod@#1\endcsname}\selectfont #1 \textbf{0123}}\else{\color{pcTenue}#1 (no instalada)}\fi\par}
+\makeatother
+
+\begin{document}
+\cabecera
+
+%% ===========================================================================
+\txtBanda{Imágenes · I01--I34}
+\begin{multicols}{3}\raggedcolumns
+
+\begin{variante}{I01}{A todo el ancho, pie debajo}{imgAncho}{[ancho]\pa{archivo}\pa{pie}}
+  \imgAncho{img/prueba2.png}{Pie de figura debajo de la imagen.}
+\end{variante}
+
+\begin{variante}{I02}{Pie encima de la imagen}{imgPieArriba}{[ancho]\pa{archivo}\pa{pie}}
+  \imgPieArriba{img/prueba2.png}{Pie de figura encima de la imagen.}
+\end{variante}
+
+\begin{variante}{I03}{Centrada y estrecha}{imgCentro}{[ancho]\pa{archivo}\pa{pie}}
+  \imgCentro[0.6\linewidth]{img/prueba1.png}{Imagen centrada al 60\,\% del ancho.}
+\end{variante}
+
+\begin{variante}{I04}{Alineada a la izquierda}{imgIzquierda}{[ancho]\pa{archivo}\pa{pie}}
+  \imgIzquierda[0.6\linewidth]{img/prueba1.png}{Imagen a la izquierda.}
+\end{variante}
+
+\begin{variante}{I05}{Alineada a la derecha}{imgDerecha}{[ancho]\pa{archivo}\pa{pie}}
+  \imgDerecha[0.6\linewidth]{img/prueba1.png}{Imagen a la derecha.}
+\end{variante}
+
+\begin{variante}{I06}{Imagen a la izquierda, texto a la derecha}{imgTextoDerecha}{[fracción]\pa{archivo}\pa{pie}\pa{texto}}
+  \imgTextoDerecha[0.45]{img/prueba1.png}{Pie de figura.}{\relleno[1-3]}
+\end{variante}
+
+\begin{variante}{I07}{Imagen a la derecha, texto a la izquierda}{imgTextoIzquierda}{[fracción]\pa{archivo}\pa{pie}\pa{texto}}
+  \imgTextoIzquierda[0.45]{img/prueba1.png}{Pie de figura.}{\relleno[1-3]}
+\end{variante}
+
+\begin{variante}{I08}{Texto que rodea la imagen (izquierda)}{imgEnvueltaIzquierda}{[fracción]\pa{archivo}\pa{pie}}
+  \imgEnvueltaIzquierda[0.4]{img/prueba3.png}{Pie de figura.}
+  \lipsum[2][1-8]
+\end{variante}
+
+\begin{variante}{I09}{Texto que rodea la imagen (derecha)}{imgEnvueltaDerecha}{[fracción]\pa{archivo}\pa{pie}}
+  \imgEnvueltaDerecha[0.4]{img/prueba3.png}{Pie de figura.}
+  \lipsum[2][1-8]
+\end{variante}
+
+\begin{variante}{I10}{Dos en fila}{imgDos}{[alto]\pa{a}\pa{b}\pa{pie}}
+  \imgDos{img/prueba1.png}{img/prueba6.png}{Dos imágenes recortadas a la misma altura.}
+\end{variante}
+
+\begin{variante}{I11}{Tres en fila}{imgTres}{[alto]\pa{a}\pa{b}\pa{c}\pa{pie}}
+  \imgTres{img/prueba1.png}{img/prueba6.png}{img/prueba3.png}{Tres imágenes en fila.}
+\end{variante}
+
+\begin{variante}{I12}{Cuatro en fila}{imgCuatro}{[alto]\pa{a}\pa{b}\pa{c}\pa{d}\pa{pie}}
+  \imgCuatro{img/prueba1.png}{img/prueba6.png}{img/prueba3.png}{img/prueba4.png}{Cuatro imágenes en fila.}
+\end{variante}
+
+\begin{variante}{I13}{Rejilla 2 × 2 con paneles}{imgRejilla}{[alto]\pa{a}\pa{b}\pa{c}\pa{d}\pa{pie}}
+  \imgRejilla[0.3\linewidth]{img/prueba1.png}{img/prueba6.png}{img/prueba3.png}{img/prueba4.png}{Paneles (a) a (d).}
+\end{variante}
+
+\begin{variante}{I14}{Rejilla 3 × 2 con paneles}{imgRejillaSeis}{[alto]\pa{a}\pa{b}\pa{c}\pa{d}\pa{e}\pa{f}\pa{pie}}
+  \imgRejillaSeis{img/prueba1.png}{img/prueba6.png}{img/prueba3.png}{img/prueba4.png}{img/prueba2.png}{img/prueba5.png}{Paneles (a) a (f).}
+\end{variante}
+
+\begin{variante}{I15}{Una grande y dos pequeñas a la derecha}{imgGrandeDosDerecha}{[alto]\pa{grande}\pa{b}\pa{c}\pa{pie}}
+  \imgGrandeDosDerecha{img/prueba1.png}{img/prueba3.png}{img/prueba6.png}{Mosaico con la imagen principal a la izquierda.}
+\end{variante}
+
+\begin{variante}{I16}{Dos pequeñas a la izquierda y una grande}{imgDosIzquierdaGrande}{[alto]\pa{a}\pa{b}\pa{grande}\pa{pie}}
+  \imgDosIzquierdaGrande{img/prueba3.png}{img/prueba6.png}{img/prueba1.png}{Mosaico con la imagen principal a la derecha.}
+\end{variante}
+
+\begin{variante}{I17}{Una grande arriba y tres debajo}{imgGrandeTresAbajo}{[alto]\pa{grande}\pa{a}\pa{b}\pa{c}\pa{pie}}
+  \imgGrandeTresAbajo[0.42\linewidth]{img/prueba2.png}{img/prueba1.png}{img/prueba6.png}{img/prueba3.png}{Imagen principal y tres detalles.}
+\end{variante}
+
+\begin{variante}{I18}{Pie al lado de la imagen}{imgPieLateral}{[fracción]\pa{archivo}\pa{pie}}
+  \imgPieLateral[0.62]{img/prueba1.png}{Pie de figura colocado al lado de la imagen, centrado en vertical.}
+\end{variante}
+
+\begin{variante}{I19}{Pie sobre la imagen, en una banda}{imgPieSobre}{[ancho]\pa{archivo}\pa{pie}}
+  \imgPieSobre{img/prueba2.png}{Pie de figura sobre la imagen.}
+\end{variante}
+
+\begin{variante}{I20}{Con marco}{imgMarco}{[ancho]\pa{archivo}\pa{pie}}
+  \imgMarco[0.8\linewidth]{img/prueba6.png}{Imagen con marco.}
+\end{variante}
+
+\begin{variante}{I21}{Esquinas redondeadas}{imgRedondeada}{[alto]\pa{archivo}\pa{pie}}
+  \imgRedondeada[0.5\linewidth]{img/prueba2.png}{Imagen con las esquinas redondeadas.}
+\end{variante}
+
+\begin{variante}{I22}{Recorte circular}{imgCirculo}{[diámetro]\pa{archivo}\pa{pie}}
+  \imgCirculo[0.5\linewidth]{img/prueba3.png}{Recorte circular.}
+\end{variante}
+
+\begin{variante}{I23}{Con sombra}{imgSombra}{[ancho]\pa{archivo}\pa{pie}}
+  \imgSombra[0.8\linewidth]{img/prueba6.png}{Imagen con sombra.}
+\end{variante}
+
+\begin{variante}{I24}{Inclinada, tipo fotografía}{imgInclinada}{[ángulo]\pa{archivo}\pa{pie}}
+  \imgInclinada[4]{img/prueba6.png}{Imagen inclinada 4 grados.}
+\end{variante}
+
+\begin{variante}{I25}{Con un detalle ampliado en la esquina}{imgDetalle}{[fracción]\pa{archivo}\pa{detalle}\pa{pie}}
+  \imgDetalle[0.34]{img/prueba2.png}{img/prueba3.png}{Imagen con un detalle en la esquina.}
+\end{variante}
+
+\begin{variante}{I26}{Con flechas y etiquetas}{imgAnotada}{[ancho]\pa{archivo}\pa{pie}\pa{\textbackslash PCflecha\pa{x0,y0}\pa{x1,y1}\pa{texto} ...}}
+  \imgAnotada{img/prueba2.png}{Coordenadas de 0 a 1 sobre la imagen.}{%
+    \PCflecha{0.16,0.80}{0.40,0.56}{zona A}
+    \PCflecha{0.84,0.22}{0.62,0.44}{zona B}}
+\end{variante}
+
+\begin{variante}{I27}{Franja panorámica}{imgPanoramica}{[alto]\pa{archivo}\pa{pie}}
+  \imgPanoramica{img/prueba5.png}{Franja panorámica.}
+\end{variante}
+
+\begin{variante}{I28}{Dos apiladas con etiquetas A y B}{imgPila}{[alto]\pa{a}\pa{b}\pa{pie}}
+  \imgPila[0.3\linewidth]{img/prueba2.png}{img/prueba6.png}{Dos imágenes apiladas.}
+\end{variante}
+
+\begin{variante}{I29}{Collage de tres imágenes superpuestas}{imgCollage}{[alto]\pa{a}\pa{b}\pa{c}\pa{pie}}
+  \imgCollage[0.6\linewidth]{img/prueba1.png}{img/prueba3.png}{img/prueba6.png}{Collage de tres imágenes.}
+\end{variante}
+
+\begin{variante}{I30}{Posición absoluta en el lienzo}{imgEn}{[ancla]\pa{x}\pa{y}\pa{ancho}\pa{archivo}}
+  Coloca la imagen en cualquier punto del lienzo: \textit{x}, \textit{y} van de 0 a 1 desde la esquina superior izquierda. La demostración está en la página~\pageref{pag:capas}, con las capas.
+\end{variante}
+
+\begin{variante}{I31}{Imagen de fondo de todo el lienzo}{imgFondo}{[opacidad]\pa{archivo}}
+  Cubre el lienzo entero, por detrás del contenido. La demostración está en la página~\pageref{pag:capas}, con las capas.
+\end{variante}
+
+\begin{variante}{I32}{Imagen con título encima}{imgTituloSobre}{[alto]\pa{archivo}\pa{título}\pa{subtítulo}}
+  \imgTituloSobre[0.46\linewidth]{img/prueba2.png}{Título sobre la imagen}{Subtítulo de relleno}
+\end{variante}
+
+\begin{variante}{I33}{Comparación con rótulos}{imgComparar}{[alto]\pa{a}\pa{b}\pa{rótulo a}\pa{rótulo b}\pa{pie}}
+  \imgComparar{img/prueba1.png}{img/prueba6.png}{Antes}{Después}{Comparación de dos imágenes.}
+\end{variante}
+
+\begin{variante}{I34}{Miniatura con texto}{imgMiniatura}{[lado]\pa{archivo}\pa{título}\pa{texto}}
+  \imgMiniatura{img/prueba1.png}{Primer resultado}{Lorem ipsum dolor sit amet, consectetuer adipiscing elit.}
+  \imgMiniatura{img/prueba3.png}{Segundo resultado}{Ut purus elit, vestibulum ut, placerat ac.}
+  \imgMiniatura{img/prueba6.png}{Tercer resultado}{Curabitur dictum gravida mauris.}
+\end{variante}
+
+\end{multicols}
+
+%% ===========================================================================
+\newpage
+\txtBanda{Texto · T01--T35}
+\begin{multicols}{3}\raggedcolumns
+
+\begin{variante}{T01}{Justificado}{txtJustificado}{\pa{texto}}
+  \txtJustificado{\relleno[1-4]}
+\end{variante}
+
+\begin{variante}{T02}{Alineado a la izquierda}{txtIzquierda}{\pa{texto}}
+  \txtIzquierda{\relleno[1-4]}
+\end{variante}
+
+\begin{variante}{T03}{Alineado a la derecha}{txtDerecha}{\pa{texto}}
+  \txtDerecha{\relleno[1-4]}
+\end{variante}
+
+\begin{variante}{T04}{Centrado}{txtCentrado}{[ancho]\pa{texto}}
+  \txtCentrado[0.8\linewidth]{\relleno[1-3]}
+\end{variante}
+
+\begin{variante}{T05}{Dos columnas}{txtDosColumnas}{\pa{texto}}
+  \txtDosColumnas{\lipsum[2][1-7]}
+\end{variante}
+
+\begin{variante}{T06}{Tres columnas}{txtTresColumnas}{\pa{texto}}
+  \txtTresColumnas{\raggedright\lipsum[2][1-7]}
+\end{variante}
+
+\begin{variante}{T07}{Dos columnas con filete central}{txtDosColumnasFilete}{\pa{texto}}
+  \txtDosColumnasFilete{\lipsum[2][1-7]}
+\end{variante}
+
+\begin{variante}{T08}{Dos columnas desiguales}{txtAsimetrico}{[fracción]\pa{izquierda}\pa{derecha}}
+  \txtAsimetrico[0.3]{\textbf{Texto corto en la columna estrecha.}}{\relleno[1-4]}
+\end{variante}
+
+\begin{variante}{T09}{Letra capitular}{txtCapitular}{[líneas]\pa{L}\pa{resto de la palabra}\pa{texto}}
+  \txtCapitular[3]{L}{orem}{ ipsum dolor sit amet, consectetuer adipiscing elit. \lipsum[1][2-5]}
+\end{variante}
+
+\begin{variante}{T10}{Entradilla destacada y cuerpo}{txtEntradilla}{[escala]\pa{entradilla}\pa{cuerpo}}
+  \txtEntradilla[1.3]{Lorem ipsum dolor sit amet, consectetuer adipiscing elit.}{\relleno[2-4]}
+\end{variante}
+
+\begin{variante}{T11}{Lista con viñetas}{txtVinetas}{\pa{\textbackslash item ... \textbackslash item ...}}
+  \txtVinetas{\item \lipsum[3][1] \item \lipsum[3][2] \item \lipsum[3][3]}
+\end{variante}
+
+\begin{variante}{T12}{Lista numerada}{txtNumerada}{\pa{\textbackslash item ... \textbackslash item ...}}
+  \txtNumerada{\item \lipsum[3][1] \item \lipsum[3][2] \item \lipsum[3][3]}
+\end{variante}
+
+\begin{variante}{T13}{Lista de definiciones}{txtDefiniciones}{\pa{\textbackslash item[término] ...}}
+  \txtDefiniciones{\item[Lorem] \lipsum[3][1] \item[Ipsum] \lipsum[3][2] \item[Dolor] \lipsum[3][3]}
+\end{variante}
+
+\begin{variante}{T14}{Cita grande centrada}{txtCitaGrande}{\pa{cita}\pa{autor}}
+  \txtCitaGrande{Lorem ipsum dolor sit amet, consectetuer adipiscing elit}{Nombre Apellido}
+\end{variante}
+
+\begin{variante}{T15}{Cita con barra lateral}{txtCitaBarra}{\pa{texto}}
+  \txtCitaBarra{\relleno[1-3]}
+\end{variante}
+
+\begin{variante}{T16}{Resaltado sobre fondo de color}{txtResaltado}{[color]\pa{texto}}
+  \txtResaltado{\relleno[1-2]}
+\end{variante}
+
+\begin{variante}{T17}{Recuadro con borde}{txtRecuadro}{\pa{texto}}
+  \txtRecuadro{\relleno[1-2]}
+\end{variante}
+
+\begin{variante}{T18}{Caja con título}{txtCajaTitulo}{\pa{título}\pa{texto}}
+  \txtCajaTitulo{Título de la caja}{\relleno[1-2]}
+\end{variante}
+
+\begin{variante}{T19}{Texto en negativo}{txtInvertido}{\pa{texto}}
+  \txtInvertido{\relleno[1-2]}
+\end{variante}
+
+\begin{variante}{T20}{Nota lateral junto al texto}{txtNotaLateral}{[fracción]\pa{nota}\pa{texto}}
+  \txtNotaLateral[0.28]{Nota breve al margen del texto principal.}{\relleno[1-4]}
+\end{variante}
+
+\begin{variante}{T21}{Cifra destacada}{txtCifra}{\pa{cifra}\pa{explicación}}
+  \txtCifra{87\,\%}{lorem ipsum dolor sit amet}
+\end{variante}
+
+\begin{variante}{T22}{Tres cifras en fila}{txtCifras}{\pa{c1}\pa{t1}\pa{c2}\pa{t2}\pa{c3}\pa{t3}}
+  \txtCifras{87\,\%}{lorem ipsum}{1\,234}{dolor sit amet}{0.92}{adipiscing elit}
+\end{variante}
+
+\begin{variante}{T23}{Texto sobre una imagen}{txtSobreImagen}{[alto]\pa{archivo}\pa{texto}}
+  \txtSobreImagen[0.5\linewidth]{img/prueba2.png}{\textbf{Lorem ipsum.} Dolor sit amet, consectetuer adipiscing elit.}
+\end{variante}
+
+\begin{variante}{T24}{Rótulo vertical junto al texto}{txtVertical}{\pa{rótulo}\pa{texto}}
+  \txtVertical{RÓTULO}{\relleno[1-3]}
+\end{variante}
+
+\begin{variante}{T25}{Texto dentro de un círculo}{txtCirculo}{[diámetro]\pa{texto}}
+  \txtCirculo[0.42\linewidth]{\textbf{Lorem ipsum}\\dolor sit amet consectetuer}
+\end{variante}
+
+\begin{variante}{T26}{Tabla}{txtTabla}{\pa{pie}\pa{tabular}}
+  \txtTabla{Tabla de relleno.}{%
+    \begin{tabular}{lrrr}\toprule
+      Grupo & Lorem & Ipsum & Dolor\\\midrule
+      Alfa & 12.4 & 0.81 & 134\\ Beta & 9.7 & 0.76 & 98\\ Gamma & 15.2 & 0.93 & 211\\\bottomrule
+    \end{tabular}}
+\end{variante}
+
+\begin{variante}{T27}{Ecuación con su explicación}{txtEcuacion}{\pa{ecuación}\pa{explicación}}
+  \txtEcuacion{E = m c^{2}}{Donde $E$ es la energía, $m$ la masa y $c$ la velocidad de la luz.}
+\end{variante}
+
+\begin{variante}{T28}{Tres pasos numerados en fila}{txtPasos}{\pa{paso 1}\pa{paso 2}\pa{paso 3}}
+  \txtPasos{Lorem ipsum dolor}{Consectetuer adipiscing}{Ut purus elit}
+\end{variante}
+
+\begin{variante}{T29}{Línea de tiempo vertical}{txtLineaTiempo}{\pa{\textbackslash hito\pa{fecha}\pa{texto} ...}}
+  \txtLineaTiempo{
+    \hito{Mes 1}{Lorem ipsum dolor sit amet.}
+    \hito{Mes 2}{Consectetuer adipiscing elit.}
+    \hito{Mes 3}{Ut purus elit, vestibulum ut.}}
+\end{variante}
+
+\begin{variante}{T30}{Referencias en letra pequeña}{txtReferencias}{\pa{\textbackslash item ... \textbackslash item ...}}
+  \txtReferencias{
+    \item Apellido N, Apellido N. Título de relleno. \textit{Revista}. Año;\,vol:\,páginas.
+    \item Apellido N. \textit{Título del libro de relleno}. Editorial; Año.
+    \item Apellido N, Apellido N. Título de relleno. \textit{Revista}. Año;\,vol:\,páginas.}
+\end{variante}
+
+\begin{variante}{T31}{Rótulo al margen y texto}{txtEtiquetaMargen}{[fracción]\pa{rótulo}\pa{texto}}
+  \txtEtiquetaMargen{Lorem}{\relleno[1-2]}
+  \txtEtiquetaMargen{Ipsum}{\relleno[3-4]}
+\end{variante}
+
+\begin{variante}{T32}{Banda a todo el ancho}{txtBanda}{[escala]\pa{texto}}
+  \txtBanda[1.2]{Lorem ipsum dolor sit amet}
+\end{variante}
+
+\begin{variante}{T33}{Posición absoluta en el lienzo}{txtEn}{[opciones]\pa{x}\pa{y}\pa{ancho}\pa{texto}}
+  Coloca el texto en cualquier punto del lienzo; admite \texttt{anchor=} y \texttt{rotate=}. La demostración está en la página~\pageref{pag:capas}, con las capas.
+\end{variante}
+
+\begin{variante}{T34}{Tarjeta de contacto con código QR}{txtContacto}{[lado del QR]\pa{archivo del QR}\pa{texto}}
+  \txtContacto[5em]{img/qr_prueba.png}{\textbf{Nombre Apellido}\par nombre.apellido@institucion.example\par Lorem ipsum dolor sit amet.}
+\end{variante}
+
+\begin{variante}{T35}{Caja de texto con cualquier estilo}{txtCaja}{[claves]\pa{texto}}
+  \txtCaja[estilo=nota, titulo={Con título}]{\relleno[1-2]}
+  \txtCaja[estilo=nota, titulo={Sin título}, mostrar titulo=false]{Misma caja con \texttt{mostrar titulo=false}.}
+\end{variante}
+
+\end{multicols}
+
+
+
+
+%% ===========================================================================
+%%  Página 3 · Cajas y filas
+%% ===========================================================================
+\newpage
+\posterconfig{alinear texto=izquierda}   % desde aquí, el texto de las cajas va alineado a la izquierda
+\txtBanda{Cajas · 12 estilos, cada uno con título o sin él}
+
+%% Una caja de muestra por estilo: el título es el nombre del estilo
+\newcommand{\muestra}[2]{%
+  \begin{caja}[estilo=#1, titulo={#1}]
+    \cod{\bs begin\{caja\}[estilo=#1,\\ \hspace*{1em}titulo=\{...\}]}\par\vspace{0.35em}#2
+  \end{caja}}
+\begin{fila}[columnas=4]
+  \begin{columna}
+    \muestra{barra}{Estilo por defecto: barra de título del color primario.}
+    \muestra{simple}{Fondo claro y título de color, sin barra.}
+    \muestra{invertido}{Texto claro sobre el color primario.}
+  \end{columna}
+  \begin{columna}
+    \muestra{linea}{Título subrayado con el color de acento, sin fondo.}
+    \muestra{borde}{Recuadro con borde y título del color primario.}
+    \muestra{contorno}{Borde y barra de título del color secundario.}
+  \end{columna}
+  \begin{columna}
+    \muestra{caja}{Recuadro con el título en una etiqueta.}
+    \muestra{sombra}{Como «barra», con sombra difusa.}
+    \muestra{cita}{Barra de acento a la izquierda y texto en cursiva.}
+  \end{columna}
+  \begin{columna}
+    \muestra{resaltado}{Fondo del color de acento muy claro.}
+    \muestra{nota}{Fondo claro con barra lateral del color secundario.}
+    \muestra{ninguno}{Sin fondo ni borde: solo título y texto.}
+  \end{columna}
+\end{fila}
+
+%% Los mismos estilos con el título oculto
+\newcommand{\sintit}[1]{%
+  \begin{caja}[estilo=#1, titulo={#1}, mostrar titulo=false]
+    \cod{estilo=#1}\par\vspace{0.2em}\lipsum[2][1]
+  \end{caja}}
+\begin{caja}[estilo=linea, titulo={El mismo estilo, sin título: \texttt{mostrar titulo=false}}]
+  Cada caja guarda su título aunque no se vea: \cod{\bs begin\{caja\}[titulo=\{Métodos\}, mostrar titulo=false]}.
+  También vale \cod{sin titulo} (y \cod{con titulo} para volver a mostrarlo). Para ocultar todos los
+  títulos del póster: \cod{\bs posterconfig\{mostrar titulos=false\}}. Las cajas de texto T15--T19, T27, T29, T32 y T35
+  aceptan las mismas claves: \cod{\bs txtResaltado[titulo=\{Nota\}, mostrar titulo=true]\{...\}}.
+\end{caja}
+\begin{fila}[columnas=6]
+  \begin{columna}\sintit{barra}\sintit{invertido}\end{columna}
+  \begin{columna}\sintit{linea}\sintit{contorno}\end{columna}
+  \begin{columna}\sintit{caja}\sintit{sombra}\end{columna}
+  \begin{columna}\sintit{simple}\sintit{cita}\end{columna}
+  \begin{columna}\sintit{borde}\sintit{nota}\end{columna}
+  \begin{columna}\sintit{resaltado}\sintit{ninguno}\end{columna}
+\end{fila}
+
+\txtBanda{Opciones de una caja}
+\begin{fila}[columnas=4]
+  \begin{columna}
+    \begin{caja}[titulo={Caja numerada}, numero=1]
+      \cod{numero=1}\par\vspace{0.2em}O numera todas: \cod{\bs posterconfig\{numerar bloques=true\}}.
+    \end{caja}
+    \begin{caja}[titulo={Título centrado y grande}, alineacion titulo=centro, escala titulo=1.5]
+      \cod{alineacion titulo=centro, escala titulo=1.5}
+    \end{caja}
+    \begin{caja}[titulo={Texto centrado y pequeño}, alinear texto=centro, escala texto=0.8]
+      \cod{alinear texto=centro, escala texto=0.8}\par \lipsum[3][1-2]
+    \end{caja}
+  \end{columna}
+  \begin{columna}
+    \begin{caja}[titulo={Colores y bordes propios}, fondo=FFF7E6, borde=E8743B, fondo titulo=E8743B,
+        color titulo=FFFFFF, color texto=5A3410, grosor borde=0.12em, radio=1em]
+      \cod{fondo=FFF7E6, borde=E8743B, fondo titulo=E8743B, color titulo=FFFFFF, color texto=5A3410,
+        grosor borde=0.12em, radio=1em}\par\vspace{0.2em}
+      Colores en hexadecimal o de xcolor (\cod{pcAcento!20}).
+    \end{caja}
+    \begin{caja}[titulo={Semitransparente}, estilo=invertido, opacidad=0.55]
+      \cod{opacidad=0.55}: deja ver lo que haya en la capa de fondo.
+    \end{caja}
+  \end{columna}
+  \begin{columna}
+    \begin{caja}[titulo={Texto en dos columnas}, columnas=2]
+      \cod{columnas=2}\par \lipsum[4][1-4]
+    \end{caja}
+    \begin{caja}[titulo={Con sombra}, estilo=borde, sombra]
+      \cod{estilo=borde, sombra}
+    \end{caja}
+  \end{columna}
+  \begin{columna}
+    \begin{caja}[titulo={Cajas dentro de cajas}]
+      Una caja dentro de otra usa el estilo «borde» y un título más pequeño.
+      \begin{caja}[titulo={Caja interior}]\lipsum[5][1]\end{caja}
+      \begin{caja}[estilo=nota, sin titulo]Interior, estilo «nota», sin título.\end{caja}
+    \end{caja}
+    \begin{caja}[titulo={Cualquier opción de tcolorbox}, colframe=pcAcento, boxrule=0.1em, sharp corners]
+      \cod{colframe=pcAcento, boxrule=0.1em, sharp corners}
+    \end{caja}
+  \end{columna}
+\end{fila}
+
+\txtBanda{Filas y columnas}
+\newcommand{\cajita}[1]{\begin{caja}[estilo=simple, sin titulo, alinear texto=centro]#1\end{caja}}
+\begin{caja}[estilo=ninguno, sin titulo]
+  Una fila con \cod{alto=13em} y cuatro columnas, cada una con su \cod{distribucion}; las cajas grises muestran
+  dónde queda cada una:
+\end{caja}
+\begin{fila}[columnas=4, alto=13em]
+  \begin{columna}[distribucion=repartir]
+    \cajita{\cod{distribucion=repartir}\par (por defecto)}\cajita{las cajas se reparten el alto}\cajita{tercera caja}
+  \end{columna}
+  \begin{columna}[distribucion=arriba]
+    \cajita{\cod{distribucion=arriba}}\cajita{todo arriba}\cajita{y el hueco abajo}
+  \end{columna}
+  \begin{columna}[distribucion=centro]
+    \cajita{\cod{distribucion=centro}}\cajita{centradas en vertical}
+  \end{columna}
+  \begin{columna}[distribucion=abajo]
+    \cajita{\cod{distribucion=abajo}}\cajita{todo abajo}
+  \end{columna}
+\end{fila}
+\begin{fila}[columnas=4]
+  \begin{columna}[abarca=2]
+    \begin{caja}[estilo=borde, titulo={\texttt{abarca=2}: la columna ocupa dos de las cuatro}]
+      \cod{\bs begin\{fila\}[columnas=4] \bs begin\{columna\}[abarca=2] ...}\par\vspace{0.2em}
+      Las columnas de una fila terminan siempre a la misma altura (\cod{igualar=true}). Con
+      \cod{alto=llenar} la fila ocupa todo el alto libre hasta el pie del póster.
+    \end{caja}
+  \end{columna}
+  \begin{columna}
+    \begin{caja}[estilo=borde, titulo={Caja normal}]\lipsum[6][1-2]\end{caja}
+  \end{columna}
+  \begin{columna}
+    \begin{caja}[estilo=resaltado, titulo={\texttt{estirar}}, estirar]
+      Esta caja crece hasta el final de la columna (dos compilaciones).
+    \end{caja}
+  \end{columna}
+\end{fila}
+
+\begin{fila}[columnas=3, alto=llenar]
+  \begin{columna}
+    \begin{caja}[estilo=simple, titulo={Claves de una caja}, escala texto=0.92, estirar]
+      \raggedright
+      \cod{titulo=\{...\}} · \cod{mostrar titulo=true|false} · \cod{sin titulo} · \cod{con titulo}\\
+      \cod{estilo=} barra, linea, caja, simple, borde, sombra, resaltado, invertido, contorno, cita, nota, ninguno\\
+      \cod{numero=} · \cod{alineacion titulo=} izquierda, centro, derecha · \cod{escala titulo=}\\
+      \cod{fondo=} · \cod{borde=} · \cod{fondo titulo=} · \cod{color titulo=} · \cod{color texto=}\\
+      \cod{grosor borde=} · \cod{radio=} · \cod{relleno=} · \cod{opacidad=} · \cod{sombra}\\
+      \cod{alinear texto=} izquierda, centro, derecha · \cod{escala texto=} · \cod{columnas=}\\
+      \cod{alto=} · \cod{estirar} · \cod{antes=} · \cod{despues=} · \cod{visible=false} · \cod{id=}\\
+      y cualquier opción de tcolorbox, directa o en \cod{tcb=\{...\}}.\\[0.3em]
+      Para todas las cajas a la vez: \cod{\bs posterconfig\{estilo bloque=nota, mostrar titulos=false,
+      alinear texto=izquierda\}}.
+    \end{caja}
+  \end{columna}
+  \begin{columna}
+    \begin{caja}[estilo=simple, titulo={Claves de una fila}, escala texto=0.92, estirar]
+      \raggedright
+      \cod{columnas=3} · número de columnas de la retícula\\
+      \cod{alto=auto|llenar|30cm} · alto de la fila\\
+      \cod{separacion=20mm} · espacio entre columnas\\
+      \cod{despues=0.9em} · espacio después de la fila\\
+      \cod{igualar=true} · columnas de la misma altura\\
+      \cod{visible=false} · ocultar la fila\quad \cod{id=} · nombre\\[0.5em]
+      \textbf{Esta fila tiene \cod{alto=llenar} y sus tres cajas \cod{estirar}:} llegan justo hasta el final de
+      la página, aunque cambie lo que hay encima.
+    \end{caja}
+  \end{columna}
+  \begin{columna}
+    \begin{caja}[estilo=simple, titulo={Claves de una columna}, escala texto=0.92, estirar]
+      \raggedright
+      \cod{abarca=2} · ocupa varias columnas de la retícula\\
+      \cod{ancho=12cm} · o un ancho fijo\\
+      \cod{distribucion=} repartir, arriba, centro, abajo\\
+      \cod{id=} · nombre\\[0.3em]
+      Las órdenes de la versión 1 (\cod{columnas}, \cod{columna}, \cod{bloque}, \cod{bloquesimple})
+      siguen funcionando igual.
+    \end{caja}
+  \end{columna}
+\end{fila}
+
+
+%% ===========================================================================
+%%  Página 4 · Capas y posiciones absolutas
+%% ===========================================================================
+\newpage
+\edef\pagcapas{\the\value{page}}   % los elementos de capa de esta página solo se pintan en ella
+\txtBanda{Capas · fondo, contenido, frente y las que tú crees}\label{pag:capas}
+
+\newenvironment{codigoej}{\par\begingroup\ttfamily\tam{0.84}\raggedright\setlength{\parskip}{0.12em}%
+  \setlength{\leftskip}{0.6em}\color{pcTexto}}{\par\endgroup\vspace{0.3em}}
+\newcommand{\pilacapas}{%
+\begin{tikzpicture}[x=1em, y=1em, line join=round]
+  \foreach \i/\nom/\z/\col/\txt in {0/fondo/--10/pcSecundario/{imágenes, formas y textos detrás de todo},
+      1/contenido/0/pcPrimario/{cabecera, filas, columnas, cajas y pie},
+      2/notas/5/pcAcento/{una capa propia, creada con \texttt{\bs nuevacapa}},
+      3/frente/10/pcTexto/{sellos, logotipos y notas encima de todo}} {
+    \begin{scope}[yshift=\i*2.7em]
+      \filldraw[draw=\col, fill=\col!14, line width=0.08em] (0,0) -- (8,0) -- (10.4,2) -- (2.4,2) -- cycle;
+      \node[anchor=west, font=\bfseries, text=\col] at (11.2,1) {\nom};
+      \node[anchor=west, text=pcTenue] at (17.4,1) {z = \z};
+      \node[anchor=west, text=pcTexto, font=\tam{0.85}] at (22.4,1) {\txt};
+    \end{scope}}
+\end{tikzpicture}}
+
+\begin{fila}[columnas=5, alto=242mm]
+  \begin{columna}[abarca=3, distribucion=arriba]
+    \begin{caja}[titulo={Cómo se pinta el póster}]
+      El póster se pinta por capas, de atrás hacia delante, según su número \cod{z}: las capas con \cod{z} negativa
+      van detrás del contenido y las demás, delante. Hay dos capas hechas, \cod{fondo} y \cod{frente}, y puedes crear las que quieras.
+      \par\vspace{0.6em}{\centering\pilacapas\par}\vspace{0.4em}
+      En esta página: el círculo está en la capa \cod{fondo} (detrás del texto), la nota amarilla y la flecha en
+      una capa nueva \cod{notas}, y el sello y la marca de agua «BORRADOR» en \cod{frente}, encima del texto. La imagen tenue que cubre toda la
+      página también está en \cod{fondo}.
+    \end{caja}
+    \begin{caja}[titulo={Elementos con posición absoluta}]
+      \begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.41\linewidth}>{\raggedright\arraybackslash}p{0.56\linewidth}@{}}
+        \cod{\bs colocarimagen[claves]\{archivo\}} & una imagen; \cod{ajuste=} ajustar, cubrir o estirar\\[0.25em]
+        \cod{\bs colocartexto[claves]\{texto\}} & un texto; \cod{escala}, \cod{color}, \cod{fondo}, \cod{borde},
+          \cod{radio}, \cod{relleno}, \cod{alineacion}, \cod{negrita}, \cod{cursiva}\\[0.25em]
+        \cod{\bs colocarforma[claves]} & \cod{forma=} rectangulo, circulo, elipse, linea o flecha;
+          \cod{fondo}, \cod{borde}, \cod{grosor}; la línea y la flecha van hasta \cod{x2}, \cod{y2}\\[0.25em]
+        \cod{\bs colocar[claves]\{LaTeX\}} & cualquier contenido
+      \end{tabular}\par\vspace{0.4em}
+      Claves comunes: \cod{capa}, \cod{x}, \cod{y} (de 0 a 1 desde la esquina superior izquierda, o con
+      unidades: \cod{12cm}), \cod{ancla} (center, north west, south east\ldots), \cod{ancho}, \cod{alto}
+      (fracción del lienzo o con unidades), \cod{rotacion}, \cod{opacidad}, \cod{pagina}, \cod{visible} e \cod{id}.
+      \par\vspace{0.4em}
+      \begin{codigoej}
+        \bs colocarimagen[capa=fondo, x=0, y=0, ancla=north west, ancho=1, alto=1,\\
+        \hspace*{2em}ajuste=cubrir, opacidad=0.1]\{img/fondo.jpg\}\\
+        \bs colocartexto[capa=frente, x=0.5, y=0.5, rotacion=30, escala=8,\\
+        \hspace*{2em}opacidad=0.15, color=pcAcento, negrita]\{BORRADOR\}\\
+        \bs colocarforma[capa=notas, forma=flecha, x=0.74, y=0.26, x2=0.77, y2=0.21,\\
+        \hspace*{2em}grosor=0.14em, color=pcAcento]
+      \end{codigoej}
+    \end{caja}
+    \begin{caja}[titulo={Crear, ordenar, atenuar y ocultar capas}]
+      \begin{codigoej}
+        \bs nuevacapa[z=5]\{notas\}\hfill{\normalfont\color{pcTenue}capa nueva entre el contenido y «frente»}\\
+        \bs configcapa\{fondo\}\{opacidad=0.5\}\hfill{\normalfont\color{pcTenue}atenúa toda la capa}\\
+        \bs configcapa\{frente\}\{z=-20\}\hfill{\normalfont\color{pcTenue}la manda detrás de todo}\\
+        \bs ocultarcapa\{frente\}\quad\bs mostrarcapa\{frente\}\hfill{\normalfont\color{pcTenue}o \texttt{visible=false}}\\
+        \bs posterconfig\{contenido visible=false\}\hfill{\normalfont\color{pcTenue}solo se ven las capas}
+      \end{codigoej}
+      Esta página tiene además una capa \cod{oculta} (\cod{visible=false}) con un texto rojo enorme que no se ve.
+    \end{caja}
+  \end{columna}
+\end{fila}
+
+%% ---- Elementos de capa de esta página ---------------------------------------
+\nuevacapa[z=5]{notas}
+\nuevacapa[z=20, visible=false]{oculta}
+\imgFondo[0.06]{img/prueba2.png}
+\colocarforma[capa=fondo, forma=circulo, x=0.795, y=0.155, ancho=0.29, fondo=pcSecundario!16, pagina=\pagcapas]
+\colocartexto[capa=fondo, x=0.795, y=0.155, ancho=0.2, escala=0.85, color=pcSecundario!60!black, pagina=\pagcapas]{%
+  \textbf{Capa «fondo»} (z = --10)\par\vspace{0.4em}{\ttfamily\tam{0.64}\bs colocarforma[capa=fondo,\\
+  forma=circulo, x=0.795, y=0.155,\\ ancho=0.29, fondo=pcSecundario!16]\par}}
+\colocartexto[capa=notas, x=0.715, y=0.335, ancho=0.18, rotacion=4, fondo=FFF1A8, borde=E3C341, relleno=0.7em,
+  alineacion=izquierda, escala=0.85, color=4A3B00, pagina=\pagcapas]{\textbf{Nota adhesiva} en la capa «notas»
+  (z = 5), creada con \texttt{\bs nuevacapa[z=5]\{notas\}}: queda encima del contenido y debajo de «frente».}
+\colocarforma[capa=notas, forma=flecha, x=0.728, y=0.309, x2=0.752, y2=0.262, grosor=0.14em, color=pcAcento,
+  pagina=\pagcapas]
+\colocartexto[capa=frente, x=0.885, y=0.375, rotacion=-14, fondo=pcAcento, color=white, radio=0.4em, relleno=0.6em,
+  escala=1.5, negrita, pagina=\pagcapas]{Capa «frente»}
+\colocartexto[capa=frente, x=0.31, y=0.265, rotacion=18, escala=9, opacidad=0.10, color=pcAcento, negrita,
+  pagina=\pagcapas]{BORRADOR}
+\colocartexto[capa=oculta, x=0.5, y=0.5, escala=6, color=red, negrita, pagina=\pagcapas]{NO SE VE}
+
+%% ---- Atajos de la versión 1: I30, I31 y T33 --------------------------------
+\txtBanda{Posiciones absolutas · atajos I30, I31 y T33}
+\begin{caja}[estilo=simple, sin titulo]
+  Las coordenadas son fracciones del lienzo: \textit{x} de 0 (borde izquierdo) a 1 (borde derecho) e \textit{y} de 0
+  (borde superior) a 1 (borde inferior), así que siguen valiendo si cambias el tamaño del póster.
+  \cod{\bs imgEn} y \cod{\bs txtEn} ponen el elemento en la capa \cod{frente} y \cod{\bs imgFondo} en la capa
+  \cod{fondo}; esta página tiene de fondo \cod{\bs imgFondo[0.06]\{img/prueba2.png\}}. Necesitan dos compilaciones.
+\end{caja}
+
+\imgEn{0.21}{0.665}{0.30\paperwidth}{img/prueba1.png}
+\txtEn[anchor=north,align=center]{0.21}{0.753}{0.34\paperwidth}{\texttt{\bs imgEn\{0.21\}\{0.665\}\{0.30\bs paperwidth\}\{...\}}\par centro de la imagen en x = 0.21, y = 0.665}
+
+\imgEn[north east]{0.965}{0.545}{0.20\paperwidth}{img/prueba3.png}
+\txtEn[anchor=north east,align=right]{0.965}{0.692}{0.40\paperwidth}{\texttt{\bs imgEn[north east]\{0.965\}\{0.545\}\{0.20\bs paperwidth\}\{...\}}\par esquina superior derecha de la imagen en x = 0.965, y = 0.545}
+
+\imgEn[south west]{0.035}{0.975}{0.36\paperwidth}{img/prueba5.png}
+\txtEn[anchor=south west,align=left]{0.035}{0.882}{0.44\paperwidth}{\texttt{\bs imgEn[south west]\{0.035\}\{0.975\}\{0.36\bs paperwidth\}\{...\}}\par esquina inferior izquierda de la imagen en x = 0.035, y = 0.975}
+
+\txtEn[anchor=center,align=center]{0.585}{0.605}{0.30\paperwidth}{{\tam{2}\bfseries\color{pcPrimario}Texto centrado en\\x = 0.585, y = 0.605\par}\vspace{0.3em}{\tam{0.85}\texttt{\bs txtEn[align=center]\{0.585\}\{0.605\}\{0.30\bs paperwidth\}\{...\}}}}
+
+\txtEn[anchor=north west]{0.45}{0.72}{0.36\paperwidth}{\textbf{Bloque de texto anclado por su esquina superior izquierda en x = 0.45, y = 0.72.} \lipsum[1][1-4]\par\texttt{\bs txtEn[anchor=north west]\{0.45\}\{0.72\}\{0.36\bs paperwidth\}\{...\}}}
+
+\colocar[capa=frente, x=0.70, y=0.89, ancho=0.40, pagina=\pagcapas]{%
+  {\centering\ttfamily\tam{0.8}\color{pcTenue}\bs colocar[x=0.70, y=0.89, ancho=0.40]\{\bs txtCifras\{...\}\}\par}\vspace{0.4em}%
+  \txtCifras{87\,\%}{cualquier}{1\,234}{contenido}{0.92}{LaTeX}}
+
+\txtEn[anchor=center,align=center,rotate=90]{0.982}{0.85}{0.24\paperheight}{\tam{1.1}\bfseries\color{pcAcento}Texto girado · \texttt{\bs txtEn[rotate=90]\{0.982\}\{0.85\}...}}
+
+\txtEn[anchor=south east,align=right]{0.95}{0.975}{0.30\paperwidth}{\tam{0.9}\color{pcTenue}Esquina inferior derecha del texto en x = 0.95, y = 0.975}
+
+
+%% ===========================================================================
+%%  Página 5 · Configuración global
+%% ===========================================================================
+\newpage
+\txtBanda{Configuración global · \texttt{\bs posterconfig\{clave=valor, ...\}}}
+
+\newcommand{\clave}[2]{\cod{#1} & #2\\}
+\newcommand{\grupo}[1]{\multicolumn{2}{@{}l}{\bfseries\color{pcPrimario}#1}\\\midrule}
+\newcommand{\tablaclaves}[1]{\tam{0.9}\renewcommand{\arraystretch}{1.15}%
+  \begin{tabular}[t]{@{}>{\raggedright\arraybackslash}p{0.46\linewidth}>{\raggedright\arraybackslash}p{0.5\linewidth}@{}}
+  #1\end{tabular}}
+\begin{fila}[columnas=3]
+  \begin{columna}
+    \begin{caja}[estilo=simple, titulo={Lienzo y retícula}]
+      \tablaclaves{%
+        \clave{tamano}{A0, A1, A2, A3, A4, B0, B1, 24x36in, 36x48in, 42x56in, 48x72in, 70x100cm, 90x120cm, 100x140cm}
+        \clave{orientacion}{vertical u horizontal}
+        \clave{ancho, alto (841mm, 1189mm)}{medidas libres del lienzo}
+        \clave{margen (28mm)}{margen exterior}
+        \clave{margen superior, inferior, izquierdo, derecho}{un margen distinto por lado}
+        \clave{columnas (3)}{columnas de la retícula}
+        \clave{separacion (20mm)}{espacio entre columnas}
+        \clave{separacion filas}{entre filas (vacío = separacion bloques)}
+        \clave{separacion bloques (0.9em)}{entre cajas}
+        \clave{separacion imagenes (0.45em)}{entre imágenes de un mosaico}
+        \clave{separacion elementos (0.35em)}{entre elementos de una caja}}
+    \end{caja}
+  \end{columna}
+  \begin{columna}
+    \begin{caja}[estilo=simple, titulo={Tipografía (múltiplos de «fuente»)}]
+      \tablaclaves{%
+        \clave{fuente (30pt)}{cuerpo del texto}
+        \clave{interlinea (1.28)}{interlineado}
+        \clave{familia (helvetica)}{una clásica o una libre de TeX Live (abajo, en «Familias»)}
+        \clave{familia titulos}{otra familia para los títulos}
+        \clave{\bs posterfamilia}{tipografía propia (.ttf, .otf), con LuaLaTeX}
+        \clave{idioma}{spanish, english, portuguese, french, ngerman, italian: separación de palabras}
+        \clave{escala titulo (3.3)}{título del póster}
+        \clave{escala subtitulo (1.75)}{subtítulo}
+        \clave{escala autores (1.4)}{autores}
+        \clave{escala afiliaciones (1.0)}{afiliaciones}
+        \clave{escala bloque (1.35)}{título de las cajas}
+        \clave{escala pie (0.8)}{pies de figura}
+        \clave{escala cita, cifra, referencias}{1.5, 3.2 y 0.75}
+        \clave{escala piedeposter (0.8)}{pie del póster}}
+    \end{caja}
+  \end{columna}
+  \begin{columna}
+    \begin{caja}[estilo=simple, titulo={Aspecto, cajas y colores}]
+      \tablaclaves{%
+        \clave{tema}{sobrios: pizarra, salvia, niebla, ciruela, grafito; vivos: azul, verde, burdeos, morado, gris, arena, oscuro}
+        \clave{primario, secundario, acento}{hexadecimal: \cod{primario=1F4E79}}
+        \clave{fondo, fondo bloque, texto, tenue, contraste}{lienzo, cajas, texto, texto secundario y texto sobre el primario}
+        \clave{cabecera (banda)}{banda, clara, minima, degradado, imagen}
+        \clave{alineacion cabecera}{centro o izquierda}
+        \clave{ancho logos (0.15), alto logos (5.5em)}{tamaño base de los logos}
+        \clave{escala logo izquierdo (1), escala logo derecho (1)}{tamaño de cada logo}
+        \clave{pie (banda)}{banda, clara o ninguno}
+        \clave{estilo bloque (barra)}{estilo de todas las cajas}
+        \clave{mostrar titulos (true)}{títulos de todas las cajas}
+        \clave{numerar bloques (false)}{insignia con el número}
+        \clave{alineacion titulos}{izquierda, centro o derecha}
+        \clave{alinear texto (justificado)}{izquierda, centro, derecha o justificado}
+        \clave{sombra, radio, relleno}{false; 0.3em; 0.75em}
+        \clave{numerar figuras, nombre figura}{true; Figura}
+        \clave{contenido visible, marcas, depurar}{true; false; false}
+        \clave{sangrado, marcas corte}{0pt; false (para la imprenta)}}
+    \end{caja}
+  \end{columna}
+\end{fila}
+
+%% ---- Temas de color: cada columna cambia el tema solo para ella ------------
+\newcommand{\muestratema}[1]{%
+  \posterconfig{tema=#1}%
+  \begin{caja}[titulo={tema=#1}, escala titulo=1]
+    \tam{0.85}\textcolor{pcPrimario}{\rule{1.6em}{1.1em}}\,\textcolor{pcSecundario}{\rule{1.6em}{1.1em}}\,%
+    \textcolor{pcAcento}{\rule{1.6em}{1.1em}}\,\textcolor{pcTenue}{\rule{1.6em}{1.1em}}\par\vspace{0.3em}
+    Texto normal y {\color{pcTenue}texto tenue}.
+  \end{caja}}
+\begin{caja}[estilo=linea, titulo={Temas de color}]
+  Un tema fija los nueve colores de una vez: \cod{\bs posterconfig\{tema=verde\}}; después se puede cambiar
+  cualquier color suelto: \cod{\bs posterconfig\{tema=verde, acento=C2410C\}}.
+\end{caja}
+\begin{fila}[columnas=6, separacion=5mm]
+  \begin{columna}\muestratema{pizarra}\end{columna}
+  \begin{columna}\muestratema{salvia}\end{columna}
+  \begin{columna}\muestratema{niebla}\end{columna}
+  \begin{columna}\muestratema{ciruela}\end{columna}
+  \begin{columna}\muestratema{grafito}\end{columna}
+  \begin{columna}\muestratema{gris}\end{columna}
+\end{fila}
+\begin{fila}[columnas=6, separacion=5mm]
+  \begin{columna}\muestratema{azul}\end{columna}
+  \begin{columna}\muestratema{verde}\end{columna}
+  \begin{columna}\muestratema{burdeos}\end{columna}
+  \begin{columna}\muestratema{morado}\end{columna}
+  \begin{columna}\muestratema{arena}\end{columna}
+  \begin{columna}\muestratema{oscuro}\end{columna}
+\end{fila}
+
+%% ---- Familias tipográficas y tamaños ------------------------------------------
+\newcommand{\muestrafamilia}[2]{{\fontfamily{#2}\selectfont\textbf{#1} · Póster científico 0123 · \textit{Lorem ipsum}\par}}
+\begin{fila}[columnas=2]
+  \begin{columna}
+    \begin{caja}[titulo={Familias · \texttt{familia=palatino}}, estilo=borde]
+      \muestrafamilia{helvetica}{phv}\muestrafamilia{avantgarde}{pag}\muestrafamilia{palatino}{ppl}
+      \muestrafamilia{times}{ptm}\muestrafamilia{bookman}{pbk}\muestrafamilia{charter}{bch}
+      \vspace{0.3em}{\color{pcTenue}Libres de TeX Live (con pdfLaTeX):}\par
+      \begin{multicols}{5}\raggedright\tam{0.85}
+        \muestralibre{sourcesans}\muestralibre{fira}\muestralibre{roboto}\muestralibre{lato}\muestralibre{opensans}
+        \muestralibre{notosans}\muestralibre{plexsans}\muestralibre{atkinson}\muestralibre{montserrat}
+        \muestralibre{raleway}\muestralibre{cabin}\muestralibre{inter}\muestralibre{libertinus}
+        \muestralibre{ebgaramond}\muestralibre{merriweather}\muestralibre{sourceserif}\muestralibre{crimson}
+        \muestralibre{notoserif}\muestralibre{plexserif}
+      \end{multicols}
+    \end{caja}
+  \end{columna}
+  \begin{columna}
+    \begin{caja}[titulo={Tamaños de letra, todos relativos a «fuente»}, estilo=borde]
+      \raggedright {\tiny\textbackslash tiny (0.5)}\quad {\scriptsize\textbackslash scriptsize (0.6)}\quad
+      {\footnotesize\textbackslash footnotesize (0.7)}\quad {\small\textbackslash small (0.85)}\quad
+      {\normalsize\textbackslash normalsize (1)}\quad {\large\textbackslash large (1.2)}\quad
+      {\Large\textbackslash Large (1.44)}\quad {\LARGE\textbackslash LARGE (1.73)}\quad
+      {\huge\textbackslash huge (2.07)}\quad {\Huge\textbackslash Huge (2.49)}\quad {\tam{3}\textbackslash tam\{3\}}
+    \end{caja}
+  \end{columna}
+\end{fila}
+
+%% ---- Cabeceras y pies ----------------------------------------------------------
+\begin{caja}[estilo=linea, titulo={Cabeceras y pies}]
+  \cod{\bs cabecera[estilo=banda|clara|minima|degradado|imagen, alineacion=centro|izquierda, fondo=..., color texto=...]}
+  usa \cod{\bs titulo}, \cod{\bs subtitulo}, \cod{\bs autores}, \cod{\bs afiliaciones}, \cod{\bs logoizquierdo} y
+  \cod{\bs logoderecho}. Acepta también cualquier clave de \cod{\bs posterconfig}, solo para ella (aquí, escalas más pequeñas).
+\end{caja}
+\begingroup
+\titulo{Título del póster}\subtitulo{Subtítulo de relleno}\autores{Nombre Apellido, Nombre Apellido}
+\afiliaciones{Institución · Institución}
+\begin{fila}[columnas=3]
+  \begin{columna}
+    {\cod{estilo=banda}\par\vspace{0.25em}}\cabecera[estilo=banda, escala titulo=1.25, escala subtitulo=0.85, escala autores=0.75,
+      escala afiliaciones=0.65, alto logos=2.6em, relleno=0.7em]
+    {\cod{estilo=degradado, alineacion=izquierda}\par\vspace{0.25em}}\cabecera[estilo=degradado, alineacion=izquierda,
+      escala titulo=1.25, escala subtitulo=0.85, escala autores=0.75, escala afiliaciones=0.65, alto logos=2.6em, relleno=0.7em]
+  \end{columna}
+  \begin{columna}
+    {\cod{estilo=clara}\par\vspace{0.25em}}\cabecera[estilo=clara, escala titulo=1.25, escala subtitulo=0.85, escala autores=0.75,
+      escala afiliaciones=0.65, alto logos=2.6em]
+    \vspace{0.6em}
+    {\cod{estilo=minima}\par\vspace{0.25em}}\cabecera[estilo=minima, escala titulo=1.25, escala subtitulo=0.85, escala autores=0.75,
+      escala afiliaciones=0.65, alto logos=2.6em]
+  \end{columna}
+  \begin{columna}
+    {\cod{estilo=imagen, imagen=img/prueba2.png}\par\vspace{0.25em}}\cabecera[estilo=imagen, imagen=img/prueba2.png,
+      escala titulo=1.25, escala subtitulo=0.85, escala autores=0.75, escala afiliaciones=0.65, alto logos=2.6em,
+      relleno=0.7em]
+    {\cod{fondo=..., color texto=...}\par\vspace{0.25em}}\cabecera[fondo=FFF7E6, color texto=7C4A1E, escala titulo=1.25,
+      escala subtitulo=0.85, escala autores=0.75, escala afiliaciones=0.65, alto logos=2.6em, relleno=0.7em]
+  \end{columna}
+\end{fila}
+\endgroup
+
+\begin{fila}[columnas=3]
+  \begin{columna}
+    {\cod{\bs piedeposter[estilo=banda]\{izq.\}\{centro\}\{der.\}}\par}\vspace{0.2em}
+    \piedeposter[estilo=banda]{Izquierda}{Centro}{Derecha}
+  \end{columna}
+  \begin{columna}
+    {\cod{\bs piedeposter[estilo=clara]\{...\}\{...\}\{...\}}\par}\vspace{0.2em}
+    \piedeposter[estilo=clara]{Izquierda}{Centro}{Derecha}
+  \end{columna}
+  \begin{columna}
+    {\cod{\bs piedeposter[estilo=ninguno]\{...\}\{...\}\{...\}}\par}\vspace{0.2em}
+    \piedeposter[estilo=ninguno]{Izquierda}{Centro}{Derecha}
+  \end{columna}
+\end{fila}
+
+\begin{fila}[columnas=5]
+  \begin{columna}[abarca=3]
+    \begin{caja}[titulo={Ejemplo mínimo de un póster}, estilo=borde]
+      \begin{codigoej}
+        \bs documentclass\{article\}\\
+        \bs usepackage\{postercientifico\}\\
+        \bs posterconfig\{tamano=A0, tema=verde, columnas=3, fuente=30pt\}\\
+        \bs titulo\{Título del póster\}\quad\bs subtitulo\{Subtítulo\}\\
+        \bs autores\{Nombre Apellido\bs textsuperscript\{1\}\}\quad\bs afiliaciones\{\bs textsuperscript\{1\}Institución\}\\
+        \bs logoizquierdo\{img/logo.png\}\\
+        \bs colocartexto[capa=frente, x=0.5, y=0.5, rotacion=30, escala=9, opacidad=0.1]\{BORRADOR\}\\
+        \bs begin\{document\}\\
+        \bs cabecera\\
+        \bs begin\{fila\}[columnas=3, alto=llenar]\\
+        \hspace*{1em}\bs begin\{columna\}\\
+        \hspace*{2em}\bs begin\{caja\}[titulo=\{Introducción\}] ... \bs end\{caja\}\\
+        \hspace*{2em}\bs begin\{caja\}[titulo=\{Métodos\}, mostrar titulo=false] ... \bs end\{caja\}\\
+        \hspace*{1em}\bs end\{columna\}\\
+        \hspace*{1em}\bs begin\{columna\}[abarca=2]\\
+        \hspace*{2em}\bs begin\{caja\}[titulo=\{Resultados\}]\\
+        \hspace*{3em}\bs imgAncho\{img/figura1.png\}\{Pie de la figura.\}\\
+        \hspace*{2em}\bs end\{caja\}\\
+        \hspace*{1em}\bs end\{columna\}\\
+        \bs end\{fila\}\\
+        \bs piedeposter\{correo@institucion\}\{Congreso 2026\}\{Financiación\}\\
+        \bs end\{document\}
+      \end{codigoej}
+    \end{caja}
+  \end{columna}
+  \begin{columna}[abarca=2]
+    \begin{caja}[titulo={Cómo compilar}, estilo=borde]
+      \begin{itemize}[leftmargin=1.1em, itemsep=0.3em]
+        \item Pon junto a tu \cod{.tex} el archivo \cod{postercientifico.sty} y la carpeta de imágenes.
+        \item Compila con \textbf{pdfLaTeX} (con \textbf{LuaLaTeX} si usas una tipografía propia). Overleaf y
+          latexmk repiten las pasadas solos; a mano, repite \cod{pdflatex poster.tex} mientras salga el aviso «Rerun»
+          (2 o 3 veces).
+        \item Necesita paquetes habituales de TeX Live: tcolorbox, TikZ, multicol, wrapfig, lettrine, enumitem,
+          booktabs, adjustbox y lipsum.
+        \item Si falta una imagen se dibuja un recuadro gris en su lugar: el póster siempre compila.
+        \item Las filas con \cod{alto=llenar} y las cajas con \cod{estirar} se ajustan en las pasadas siguientes.
+        \item Con la aplicación web (DocsLab) todo esto se edita con formularios y se compila solo.
+      \end{itemize}
+    \end{caja}
+  \end{columna}
+\end{fila}
+
+\begin{caja}[estilo=nota, titulo={Todo se puede cambiar en cualquier momento}]
+  \cod{\bs posterconfig} se puede usar en el preámbulo (para todo el póster) o dentro de un grupo
+  \cod{\{...\}} para cambiar solo una parte, como hacen las muestras de temas de esta página. En cualquier punto,
+  \cod{\bs tam\{1.5\}} cambia la letra a 1.5 veces el cuerpo del texto. La aplicación web escribe estas mismas
+  claves desde sus formularios y añade \cod{marcas=true} para saber dónde está cada elemento.
+\end{caja}
+
+\end{document}

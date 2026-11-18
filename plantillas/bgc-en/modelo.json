@@ -1,0 +1,527 @@
+{
+ "esquema": 2,
+ "formato_texto": "simple",
+ "idioma": "en",
+ "lienzo": {
+  "tamano": "A0",
+  "orientacion": "vertical",
+  "ancho": "841mm",
+  "alto": "1189mm",
+  "margen": "26mm"
+ },
+ "tipografia": {
+  "fuente": 24.5,
+  "interlinea": 1.27,
+  "familia": "helvetica",
+  "familia_titulos": "",
+  "propias": [],
+  "escalas": {
+   "titulo": 2.65,
+   "subtitulo": 1.3,
+   "autores": 1.3,
+   "afiliaciones": 1.0,
+   "bloque": 1.3,
+   "pie": 0.78,
+   "cita": 1.5,
+   "cifra": 3.2,
+   "referencias": 0.75,
+   "piedeposter": 0.8
+  }
+ },
+ "colores": {
+  "tema": "azul",
+  "primario": "1F4E79",
+  "secundario": "2A78D6",
+  "acento": "E8743B",
+  "fondo": "FFFFFF",
+  "fondo_bloque": "F3F5F8",
+  "texto": "1E2329",
+  "tenue": "59636E",
+  "contraste": "FFFFFF"
+ },
+ "estilo": {
+  "bloque": "barra",
+  "radio": "0.3em",
+  "relleno": "0.65em",
+  "separacion_columnas": "18mm",
+  "separacion_filas": "",
+  "separacion_bloques": "0.75em",
+  "separacion_imagenes": "0.45em",
+  "separacion_elementos": "0.35em",
+  "mostrar_titulos": true,
+  "numerar_bloques": false,
+  "alineacion_titulos": "izquierda",
+  "alinear_texto": "justificado",
+  "sombra": false,
+  "numerar_figuras": true,
+  "nombre_figura": "Figure"
+ },
+ "cabecera": {
+  "visible": true,
+  "estilo": "banda",
+  "alineacion": "centro",
+  "titulo": "Classifying biosynthetic gene clusters of *Stutzerimonas*\nby their Pfam domain profile",
+  "subtitulo": "DRAFT · [Meeting name] · [City, date]",
+  "autores": "[First Last]^1^, [First Last]^1^, [First Last]^2^",
+  "afiliaciones": "^1^[Institution · department · city]  ^2^[Institution · department · city]",
+  "logo_izquierdo": "",
+  "logo_derecho": "",
+  "ancho_logos": 0.001,
+  "alto_logos": "5.5em",
+  "fondo": "",
+  "color_texto": "",
+  "imagen": "",
+  "oscurecer": 0.45
+ },
+ "filas": [
+  {
+   "visible": true,
+   "alto": "llenar",
+   "rejilla": 3,
+   "separacion": "",
+   "despues": "",
+   "igualar": true,
+   "columnas": [
+    {
+     "abarca": 1,
+     "distribucion": "repartir",
+     "bloques": [
+      {
+       "visible": true,
+       "titulo": "1 · Introduction",
+       "mostrar_titulo": true,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-z4hrs9",
+         "tipo": "txtJustificado",
+         "visible": true,
+         "texto": "Biosynthetic gene clusters (BGCs) encode the pathways of specialised metabolites. antiSMASH detects them and assigns a product class with rules based on protein domains.\n\n**Questions.** What do the BGCs of *Stutzerimonas* look like in terms of Pfam domains? Is a BGC's domain profile enough to predict its class? Which domains and genes recur, and how conserved is gene order?"
+        }
+       ],
+       "id": "b-svfg8n"
+      },
+      {
+       "visible": true,
+       "titulo": "2 · The data",
+       "mostrar_titulo": true,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-9d4jxb",
+         "tipo": "txtJustificado",
+         "visible": true,
+         "texto": "One table of 1 272 antiSMASH regions. 81 genomes appear twice (GenBank and RefSeq); merging the copies leaves 652 BGCs from 85 genomes. Seven classes with fewer than 10 BGCs are excluded."
+        },
+        {
+         "id": "e-xwns5r",
+         "tipo": "imgAncho",
+         "visible": true,
+         "archivo": "recursos/cuadernos/nb-bgc/results/1_data/1.3_bgcs_per_class.pdf",
+         "pie": "631 BGCs in 9 retained classes, from `betalactone` (146) to `nrp-metallophore` (25).",
+         "tam": 100
+        },
+        {
+         "id": "e-ijpqss",
+         "tipo": "txtJustificado",
+         "visible": true,
+         "texto": "The domain matrix has 631 BGCs × 1 251 Pfam domains; 4.3 % of its cells hold a domain, and there are 364 distinct presence/absence profiles. The median number of domains per BGC ranges from 37 (`naggn`) to 86 (`arylpolyene`)."
+        }
+       ],
+       "id": "b-hjyeqi"
+      },
+      {
+       "visible": true,
+       "titulo": "3 · Classes separate by their domains",
+       "mostrar_titulo": true,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-5w2d46",
+         "tipo": "imgAncho",
+         "visible": true,
+         "archivo": "recursos/cuadernos/nb-bgc/results/1_data/1.5_a_tsne_by_class.pdf",
+         "pie": "t-SNE of the 1 251 domains, coloured by class. Most classes form compact groups; `nrps` and `nrp-metallophore` overlap (34 pairs of BGCs from the same genome overlap in the table).",
+         "tam": 100
+        }
+       ],
+       "id": "b-vz62vt"
+      },
+      {
+       "visible": true,
+       "titulo": "4 · Method",
+       "mostrar_titulo": true,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-vr37ye",
+         "tipo": "txtNumerada",
+         "visible": true,
+         "items": [
+          "**Split 70/30**, stratified: 441 BGCs to train, 190 held out until the end.",
+          "**Model.** Linear SVM with recursive feature elimination (RFE), leave-one-out validation and the one-standard-error rule.",
+          "**Exploration.** Ward groups on t-SNE, decision tree and gene-by-gene architecture.",
+          "**Comparison.** Gene families by sequence similarity (≥ 0.5), synteny index and gene-by-gene alignment of the clusters."
+         ]
+        }
+       ],
+       "id": "b-mdtvhz"
+      }
+     ],
+     "id": "c-brcrk3"
+    },
+    {
+     "abarca": 1,
+     "distribucion": "repartir",
+     "bloques": [
+      {
+       "visible": true,
+       "titulo": "5 · How many domains does it need?",
+       "mostrar_titulo": true,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-35i5ew",
+         "tipo": "imgAncho",
+         "visible": true,
+         "archivo": "recursos/cuadernos/nb-bgc/results/2_training/2.2_feature_selection_curve.pdf",
+         "pie": "Validation accuracy peaks (0.978) at 75 domains; no smaller model lies within one standard error.",
+         "tam": 100
+        }
+       ],
+       "id": "b-79ift5"
+      },
+      {
+       "visible": true,
+       "titulo": "6 · Performance on unseen BGCs",
+       "mostrar_titulo": true,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-04vvx5",
+         "tipo": "imgCentro",
+         "visible": true,
+         "archivo": "recursos/cuadernos/nb-bgc/results/3_evaluation/3.2_confusion_matrix_test.pdf",
+         "pie": "186 of 190 held-out BGCs are classified correctly (accuracy 0.979, 95 % CI 0.947–0.992; balanced accuracy 0.956; MCC 0.976). Three of the four errors are `nrps` BGCs that lie inside the coordinates of an `nrp-metallophore` BGC of the same genome.",
+         "tam": 80
+        }
+       ],
+       "id": "b-o14o42"
+      },
+      {
+       "visible": true,
+       "titulo": "7 · The classes form three groups",
+       "mostrar_titulo": true,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-lrceq3",
+         "tipo": "imgAncho",
+         "visible": true,
+         "archivo": "recursos/cuadernos/nb-bgc/results/4_groups_architecture/4.1_a_groups_tsne.pdf",
+         "pie": "Ward clustering on the t-SNE map: G1 (398 BGCs, 8 classes), G2 (118: `betalactone` and `ni-siderophore`) and G3 (115: `terpene`, `arylpolyene` and 1 `ni-siderophore`). The silhouette keeps rising up to $k = 8$.",
+         "tam": 100
+        }
+       ],
+       "id": "b-v0lxmi"
+      },
+      {
+       "visible": true,
+       "titulo": "8 · A few domains separate the groups",
+       "mostrar_titulo": true,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-e3pb51",
+         "tipo": "imgAncho",
+         "visible": true,
+         "archivo": "recursos/cuadernos/nb-bgc/results/4_groups_architecture/4.2_b_decision_tree.pdf",
+         "pie": "A depth-3 tree using only domain presence or absence reproduces the groups (balanced accuracy 0.981). `TrkA_C` is in 98 % of G3 and in no BGC outside it; `Glyoxalase` is in 96 % of G2 and 6 % of the rest.",
+         "tam": 100
+        }
+       ],
+       "id": "b-n435xu"
+      }
+     ],
+     "id": "c-7aj3py"
+    },
+    {
+     "abarca": 1,
+     "distribucion": "repartir",
+     "bloques": [
+      {
+       "visible": true,
+       "titulo": "9 · Characteristic domains of each class",
+       "mostrar_titulo": true,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-uv95n2",
+         "tipo": "imgAncho",
+         "visible": true,
+         "archivo": "recursos/cuadernos/nb-bgc/results/5_cluster_comparison/5.1_cluster_domain_heatmap.pdf",
+         "pie": "The 631 clusters against the characteristic domains of each class. 56 of the 1 251 domains are frequent (≥ 50 % of BGCs) in two or more classes and none in more than five; `MFS_1` (280 BGCs) and `KR` (262) are the most widespread.",
+         "tam": 100
+        }
+       ],
+       "id": "b-v2mofl"
+      },
+      {
+       "visible": true,
+       "titulo": "10 · Synteny: gene order",
+       "mostrar_titulo": true,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-bxrxh7",
+         "tipo": "imgCentro",
+         "visible": true,
+         "archivo": "recursos/cuadernos/nb-bgc/results/5_cluster_comparison/5.4_a_synteny_matrix.pdf",
+         "pie": "Mean synteny index 0.400 within a class and 0.002 between classes. `betalactone` splits into 6 loci with no neighbouring genes in common; `terpene` (0.79) and `ectoine` (0.64) have the most conserved order.",
+         "tam": 80
+        }
+       ],
+       "id": "b-zboij8"
+      },
+      {
+       "visible": true,
+       "titulo": "11 · Clusters aligned in order",
+       "mostrar_titulo": true,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-onv399",
+         "tipo": "imgAncho",
+         "visible": true,
+         "archivo": "recursos/cuadernos/nb-bgc/results/5_cluster_comparison/5.5_alignment_terpene_locus1.pdf",
+         "pie": "The 65 `terpene` BGCs aligned gene by gene; each column is a gene family. 21 columns hold the same family in ≥ 90 % of the BGCs.",
+         "tam": 100
+        }
+       ],
+       "id": "b-noj717"
+      },
+      {
+       "visible": true,
+       "titulo": "12 · Genes repeated within a cluster",
+       "mostrar_titulo": true,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-l646cf",
+         "tipo": "imgAncho",
+         "visible": true,
+         "archivo": "recursos/cuadernos/nb-bgc/results/5_cluster_comparison/5.3_a_repeated_genes.pdf",
+         "pie": "The 19 390 genes form 1 788 families. 171 of 631 BGCs carry a repeated gene, mostly `DctP` (61 BGCs) and `OprD` (43); in 18 cases the copies are near-identical (similarity ≥ 0.9).",
+         "tam": 100
+        }
+       ],
+       "id": "b-7id6z7"
+      }
+     ],
+     "id": "c-vtxc7u"
+    }
+   ],
+   "id": "f-t4fax8"
+  },
+  {
+   "visible": true,
+   "alto": "auto",
+   "rejilla": 3,
+   "separacion": "",
+   "despues": "",
+   "igualar": true,
+   "columnas": [
+    {
+     "abarca": 1,
+     "distribucion": "repartir",
+     "bloques": [
+      {
+       "visible": true,
+       "titulo": "Conclusions",
+       "mostrar_titulo": true,
+       "estilo": "linea",
+       "numero": "",
+       "estirar": false,
+       "opciones": {
+        "escala_texto": 0.85
+       },
+       "elementos": [
+        {
+         "id": "e-54dkbz",
+         "tipo": "txtVinetas",
+         "visible": true,
+         "items": [
+          "With 75 of 1 251 domains, a linear SVM reproduces the antiSMASH class of unseen BGCs.",
+          "The groups differ by the presence or absence of a few domains.",
+          "Gene order is conserved within classes and almost never between them; `nrps` and `nrp-metallophore` share order (0.23).",
+          "`nrps` labels that share a locus with an `nrp-metallophore` deserve review."
+         ]
+        }
+       ],
+       "id": "b-t8n8ve"
+      }
+     ],
+     "id": "c-6aq6x6"
+    },
+    {
+     "abarca": 1,
+     "distribucion": "repartir",
+     "bloques": [
+      {
+       "visible": true,
+       "titulo": "Limitations",
+       "mostrar_titulo": true,
+       "estilo": "linea",
+       "numero": "",
+       "estirar": false,
+       "opciones": {
+        "escala_texto": 0.85
+       },
+       "elementos": [
+        {
+         "id": "e-o5wszn",
+         "tipo": "txtJustificado",
+         "visible": true,
+         "texto": "The split is by BGC, not by genome: 93 of the 190 test BGCs have an identical profile in training (accuracy 0.989 on them, 0.969 on the rest). The model reproduces classes that antiSMASH assigns by rules. The table stores neither strand nor gene coordinates, so synteny assumes table order. t-SNE is descriptive."
+        }
+       ],
+       "id": "b-gic3h4"
+      }
+     ],
+     "id": "c-dgln0u"
+    },
+    {
+     "abarca": 1,
+     "distribucion": "repartir",
+     "bloques": [
+      {
+       "visible": true,
+       "titulo": "References",
+       "mostrar_titulo": true,
+       "estilo": "linea",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-amzwri",
+         "tipo": "txtReferencias",
+         "visible": true,
+         "items": [
+          "Blin K, *et al.* (2023) antiSMASH 7.0. *Nucleic Acids Res* 51: W46–W50.",
+          "Mistry J, *et al.* (2021) Pfam. *Nucleic Acids Res* 49: D412–D419.",
+          "Guyon I, *et al.* (2002) *Mach Learn* 46: 389–422.",
+          "van der Maaten L, Hinton G (2008) *J Mach Learn Res* 9: 2579–2605.",
+          "Navarro-Muñoz JC, *et al.* (2020) BiG-SCAPE. *Nat Chem Biol* 16: 60–68."
+         ]
+        }
+       ],
+       "id": "b-535nli"
+      }
+     ],
+     "id": "c-gmp4vv"
+    }
+   ],
+   "id": "f-y7fckl"
+  }
+ ],
+ "pie": {
+  "visible": true,
+  "estilo": "banda",
+  "izquierda": "Code and figures: `modelo_bgc_pfam_en.ipynb`",
+  "centro": "DRAFT · [Repository URL]",
+  "derecha": "[email@institution]",
+  "fondo": "",
+  "color_texto": ""
+ },
+ "contenido_visible": true,
+ "capas": [
+  {
+   "id": "fondo",
+   "nombre": "Fondo",
+   "z": -10,
+   "visible": true,
+   "opacidad": 1,
+   "elementos": []
+  },
+  {
+   "id": "frente",
+   "nombre": "Frente",
+   "z": 10,
+   "visible": true,
+   "opacidad": 1,
+   "elementos": [
+    {
+     "id": "a-sello",
+     "tipo": "texto",
+     "texto": "DRAFT",
+     "x": 0.5,
+     "y": 0.52,
+     "rotacion": 30,
+     "escala": 11,
+     "opacidad": 0.08,
+     "color": "acento",
+     "negrita": true,
+     "visible": false,
+     "ancla": "center",
+     "ancho": "",
+     "alto": "",
+     "pagina": "",
+     "fondo": "",
+     "borde": "",
+     "grosor": "0.08em",
+     "radio": "0pt",
+     "relleno": "0.4em",
+     "alineacion": "centro",
+     "cursiva": false
+    }
+   ]
+  }
+ ],
+ "latex": {
+  "preambulo": "",
+  "antes": "",
+  "despues": ""
+ },
+ "bibliografia": {
+  "estilo": "apa",
+  "referencias": []
+ },
+ "componentes": {}
+}

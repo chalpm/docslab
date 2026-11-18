@@ -1,0 +1,12 @@
+{
+ "nombre": "Presentación 16:9",
+ "orden": 9,
+ "clase": "presentacion",
+ "descripcion": "Diapositivas sobrias: portada, contenido con viñetas, una figura con su texto, una diapositiva con lienzo libre y el cierre.",
+ "tipo": "estructurado",
+ "etiquetas": [
+  "16:9",
+  "diapositivas"
+ ],
+ "cuadernos": []
+}

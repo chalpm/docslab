@@ -1,0 +1,73 @@
+grupo,tratamiento,tiempo,valor,peso,altura
+A,Control,1,10.59,63.1,177.3
+A,Control,2,11.42,54.4,173.4
+A,Control,3,14.03,62.5,183.3
+A,Control,4,13.9,62.4,179.0
+A,Control,5,12.5,65.1,181.8
+A,Control,6,16.0,49.9,163.7
+A,Control,7,15.23,57.2,177.3
+A,Control,8,17.14,63.1,175.2
+A,Dosis baja,1,15.27,62.4,174.8
+A,Dosis baja,2,17.86,63.3,184.5
+A,Dosis baja,3,15.96,55.6,173.3
+A,Dosis baja,4,17.47,63.8,180.0
+A,Dosis baja,5,17.96,54.3,171.8
+A,Dosis baja,6,20.87,55.2,176.1
+A,Dosis baja,7,20.81,51.1,173.2
+A,Dosis baja,8,22.77,47.9,169.9
+A,Dosis alta,1,19.77,55.1,177.3
+A,Dosis alta,2,20.73,51.2,177.2
+A,Dosis alta,3,22.5,65.7,186.8
+A,Dosis alta,4,23.03,60.7,170.8
+A,Dosis alta,5,24.24,56.3,173.1
+A,Dosis alta,6,22.88,54.2,171.7
+A,Dosis alta,7,26.85,47.8,164.2
+A,Dosis alta,8,26.49,68.7,183.8
+B,Control,1,10.12,50.9,174.7
+B,Control,2,12.42,59.3,181.6
+B,Control,3,15.52,66.9,181.3
+B,Control,4,15.62,75.6,187.1
+B,Control,5,16.62,69.3,173.3
+B,Control,6,18.44,71.7,184.9
+B,Control,7,15.43,62.2,182.2
+B,Control,8,16.53,64.9,184.3
+B,Dosis baja,1,14.83,75.7,186.8
+B,Dosis baja,2,17.12,67.9,183.8
+B,Dosis baja,3,18.34,72.9,179.5
+B,Dosis baja,4,18.6,72.3,182.7
+B,Dosis baja,5,18.94,71.7,189.6
+B,Dosis baja,6,20.37,57.7,175.3
+B,Dosis baja,7,21.62,64.2,185.9
+B,Dosis baja,8,21.47,73.6,176.8
+B,Dosis alta,1,20.46,69.8,187.1
+B,Dosis alta,2,23.33,68.1,181.4
+B,Dosis alta,3,23.38,69.5,180.4
+B,Dosis alta,4,24.43,69.4,181.2
+B,Dosis alta,5,25.92,69.4,191.3
+B,Dosis alta,6,26.29,63.4,176.7
+B,Dosis alta,7,26.78,71.5,180.5
+B,Dosis alta,8,28.16,77.0,171.8
+C,Control,1,12.55,73.5,185.1
+C,Control,2,15.09,69.4,184.5
+C,Control,3,16.04,68.9,193.2
+C,Control,4,17.03,68.7,180.4
+C,Control,5,17.23,71.6,168.6
+C,Control,6,17.82,78.1,179.3
+C,Control,7,19.22,77.7,189.2
+C,Control,8,21.99,61.8,176.0
+C,Dosis baja,1,17.49,75.7,189.5
+C,Dosis baja,2,15.58,78.5,178.1
+C,Dosis baja,3,20.52,63.0,179.2
+C,Dosis baja,4,22.03,71.1,183.0
+C,Dosis baja,5,22.46,72.8,182.3
+C,Dosis baja,6,24.24,78.3,183.8
+C,Dosis baja,7,26.59,65.1,183.9
+C,Dosis baja,8,23.88,72.8,186.3
+C,Dosis alta,1,23.17,75.8,176.5
+C,Dosis alta,2,21.99,75.7,179.2
+C,Dosis alta,3,23.47,63.2,184.8
+C,Dosis alta,4,26.5,80.8,181.7
+C,Dosis alta,5,26.5,65.2,183.2
+C,Dosis alta,6,29.31,66.7,187.8
+C,Dosis alta,7,29.49,70.9,172.0
+C,Dosis alta,8,30.89,71.4,179.1

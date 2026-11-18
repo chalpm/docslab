@@ -1,0 +1,432 @@
+{
+ "esquema": 2,
+ "formato_texto": "simple",
+ "idioma": "es",
+ "lienzo": {
+  "tamano": "A1",
+  "orientacion": "vertical",
+  "ancho": "594mm",
+  "alto": "841mm",
+  "margen": "20mm"
+ },
+ "tipografia": {
+  "fuente": 22,
+  "interlinea": 1.28,
+  "familia": "helvetica",
+  "familia_titulos": "",
+  "propias": [],
+  "escalas": {
+   "titulo": 3.0,
+   "subtitulo": 1.75,
+   "autores": 1.4,
+   "afiliaciones": 1.0,
+   "bloque": 1.35,
+   "pie": 0.8,
+   "cita": 1.5,
+   "cifra": 3.2,
+   "referencias": 0.75,
+   "piedeposter": 0.8
+  }
+ },
+ "colores": {
+  "tema": "ciruela",
+  "primario": "5A4660",
+  "secundario": "8C7891",
+  "acento": "967639",
+  "fondo": "FFFEFC",
+  "fondo_bloque": "F4F1F3",
+  "texto": "2A242B",
+  "tenue": "655D66",
+  "contraste": "FFFFFF"
+ },
+ "estilo": {
+  "bloque": "caja",
+  "radio": "0.3em",
+  "relleno": "0.75em",
+  "separacion_columnas": "14mm",
+  "separacion_filas": "",
+  "separacion_bloques": "0.9em",
+  "separacion_imagenes": "0.45em",
+  "separacion_elementos": "0.35em",
+  "mostrar_titulos": true,
+  "numerar_bloques": true,
+  "alineacion_titulos": "izquierda",
+  "alinear_texto": "justificado",
+  "sombra": false,
+  "numerar_figuras": true,
+  "nombre_figura": "Figura"
+ },
+ "cabecera": {
+  "visible": true,
+  "estilo": "degradado",
+  "alineacion": "izquierda",
+  "titulo": "Un póster por capas",
+  "subtitulo": "Fondo, contenido y frente: cada capa se oculta, se atenúa y se ordena",
+  "autores": "Nombre Apellido^1^, Nombre Apellido^2^",
+  "afiliaciones": "^1^Institución  ^2^Institución",
+  "logo_izquierdo": "",
+  "logo_derecho": "recursos/logo1.png",
+  "ancho_logos": 0.15,
+  "alto_logos": "5.5em",
+  "fondo": "",
+  "color_texto": "",
+  "imagen": "",
+  "oscurecer": 0.45
+ },
+ "filas": [
+  {
+   "visible": true,
+   "alto": "llenar",
+   "rejilla": 2,
+   "separacion": "",
+   "despues": "",
+   "igualar": true,
+   "columnas": [
+    {
+     "abarca": 1,
+     "distribucion": "repartir",
+     "bloques": [
+      {
+       "visible": true,
+       "titulo": "Capa de fondo",
+       "mostrar_titulo": true,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-amsd2a",
+         "tipo": "txtJustificado",
+         "visible": true,
+         "texto": "Detrás del contenido hay una imagen muy atenuada, un círculo y una franja de color. Están en la capa «Fondo»."
+        },
+        {
+         "id": "e-kxevuy",
+         "tipo": "imgAncho",
+         "visible": true,
+         "archivo": "recursos/prueba1.png",
+         "pie": "Figura dentro de una caja: forma parte del contenido.",
+         "tam": 100
+        }
+       ],
+       "id": "b-t7sh8b"
+      },
+      {
+       "visible": true,
+       "titulo": "Título oculto",
+       "mostrar_titulo": false,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-b2ripv",
+         "tipo": "txtJustificado",
+         "visible": true,
+         "texto": "Esta caja tiene título, pero está oculto: «Mostrar el título» está desactivado. Donec vehicula augue eu neque. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Mauris ut leo. Cras viverra metus rhoncus sem. Nulla et lectus vestibulum urna fringilla ultrices."
+        }
+       ],
+       "id": "b-p6yma3"
+      },
+      {
+       "visible": true,
+       "titulo": "Cajas de texto",
+       "mostrar_titulo": true,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-18dd49",
+         "tipo": "txtResaltado",
+         "visible": true,
+         "titulo": "Nota con título",
+         "mostrar_titulo": true,
+         "texto": "Curabitur auctor semper nulla. Donec varius orci eget risus. Duis nibh mi, congue eu, accumsan eleifend, sagittis quis, diam. Duis eget orci sit amet orci dignissim rutrum.",
+         "fondo": "",
+         "borde": ""
+        },
+        {
+         "id": "e-8kamrf",
+         "tipo": "txtCaja",
+         "visible": true,
+         "titulo": "Recuerda",
+         "mostrar_titulo": true,
+         "estilo": "nota",
+         "texto": "Cada caja de texto puede mostrar u ocultar su título.",
+         "fondo": "",
+         "borde": ""
+        }
+       ],
+       "id": "b-3cnqlh"
+      }
+     ],
+     "id": "c-fgmy7t"
+    },
+    {
+     "abarca": 1,
+     "distribucion": "repartir",
+     "bloques": [
+      {
+       "visible": true,
+       "titulo": "Capa de frente",
+       "mostrar_titulo": true,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-kjk78s",
+         "tipo": "txtJustificado",
+         "visible": true,
+         "texto": "El sello «BORRADOR» y el código QR están en la capa «Frente», encima de todo. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut purus elit, vestibulum ut, placerat ac, adipiscing vitae, felis. Curabitur dictum gravida mauris. Nam arcu libero, nonummy eget, consectetuer id, vulputate a, magna."
+        },
+        {
+         "id": "e-uq23xp",
+         "tipo": "imgRedondeada",
+         "visible": true,
+         "archivo": "recursos/prueba6.png",
+         "pie": "Imagen con esquinas redondeadas.",
+         "tam": 62
+        }
+       ],
+       "id": "b-k5kf45"
+      },
+      {
+       "visible": true,
+       "titulo": "Capa propia",
+       "mostrar_titulo": true,
+       "estilo": "",
+       "numero": "",
+       "estirar": false,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-dvg1kd",
+         "tipo": "txtJustificado",
+         "visible": true,
+         "texto": "La nota y la flecha de la derecha están en una capa nueva, «Notas», entre el contenido y el frente. Phasellus eu tellus sit amet tortor gravida placerat. Integer sapien est, iaculis in, pretium quis, viverra ac, nunc. Praesent eget sem vel leo ultrices bibendum. Aenean faucibus. Morbi dolor nulla, malesuada eu, pulvinar at, mollis ac, nulla."
+        }
+       ],
+       "id": "b-c2u5p9"
+      },
+      {
+       "visible": true,
+       "titulo": "Estirada hasta abajo",
+       "mostrar_titulo": true,
+       "estilo": "resaltado",
+       "numero": "",
+       "estirar": true,
+       "opciones": {},
+       "elementos": [
+        {
+         "id": "e-xqfzxd",
+         "tipo": "txtJustificado",
+         "visible": true,
+         "texto": "La última caja de cada columna puede crecer hasta el final de la fila."
+        }
+       ],
+       "id": "b-4mq8u3"
+      }
+     ],
+     "id": "c-68pq9b"
+    }
+   ],
+   "id": "f-35z1vi"
+  }
+ ],
+ "pie": {
+  "visible": true,
+  "estilo": "clara",
+  "izquierda": "Plantilla «Capas» de DocsLab",
+  "centro": "",
+  "derecha": "nombre.apellido@institucion.example",
+  "fondo": "",
+  "color_texto": ""
+ },
+ "contenido_visible": true,
+ "capas": [
+  {
+   "id": "fondo",
+   "nombre": "Fondo",
+   "z": -10,
+   "visible": true,
+   "opacidad": 1,
+   "elementos": [
+    {
+     "id": "a-fondoimg",
+     "tipo": "imagen",
+     "archivo": "recursos/prueba2.png",
+     "x": 0,
+     "y": 0,
+     "ancla": "north west",
+     "ancho": 1,
+     "alto": 1,
+     "ajuste": "cubrir",
+     "opacidad": 0.07,
+     "visible": true,
+     "rotacion": 0,
+     "pagina": ""
+    },
+    {
+     "id": "a-circulo",
+     "tipo": "forma",
+     "forma": "circulo",
+     "x": 1.0,
+     "y": 0.0,
+     "ancho": 0.55,
+     "fondo": "secundario!14",
+     "ancla": "center",
+     "visible": true,
+     "alto": "",
+     "rotacion": 0,
+     "opacidad": 1,
+     "pagina": "",
+     "borde": "",
+     "grosor": "0.08em",
+     "radio": "0pt",
+     "x2": "",
+     "y2": "",
+     "color": ""
+    },
+    {
+     "id": "a-franja",
+     "tipo": "forma",
+     "forma": "rectangulo",
+     "x": 0,
+     "y": 1,
+     "ancla": "south west",
+     "ancho": 1,
+     "alto": 0.012,
+     "fondo": "acento",
+     "visible": true,
+     "rotacion": 0,
+     "opacidad": 1,
+     "pagina": "",
+     "borde": "",
+     "grosor": "0.08em",
+     "radio": "0pt",
+     "x2": "",
+     "y2": "",
+     "color": ""
+    }
+   ]
+  },
+  {
+   "id": "notas",
+   "nombre": "Notas",
+   "z": 5,
+   "visible": true,
+   "opacidad": 1,
+   "elementos": [
+    {
+     "id": "a-nota",
+     "tipo": "texto",
+     "x": 0.975,
+     "y": 0.455,
+     "ancla": "north east",
+     "ancho": 0.25,
+     "texto": "**Esta nota está en la capa «Notas».** Ocúltala desde el panel de capas.",
+     "fondo": "acento!15",
+     "borde": "acento",
+     "radio": "0.4em",
+     "alineacion": "izquierda",
+     "escala": 0.85,
+     "visible": true,
+     "alto": "",
+     "rotacion": 0,
+     "opacidad": 1,
+     "pagina": "",
+     "color": "",
+     "grosor": "0.08em",
+     "relleno": "0.4em",
+     "negrita": false,
+     "cursiva": false
+    },
+    {
+     "id": "a-flecha",
+     "tipo": "forma",
+     "forma": "flecha",
+     "x": 0.8,
+     "y": 0.5,
+     "x2": 0.7,
+     "y2": 0.545,
+     "color": "acento",
+     "grosor": "0.18em",
+     "visible": true,
+     "ancla": "center",
+     "ancho": "",
+     "alto": "",
+     "rotacion": 0,
+     "opacidad": 1,
+     "pagina": "",
+     "fondo": "",
+     "borde": "",
+     "radio": "0pt"
+    }
+   ]
+  },
+  {
+   "id": "frente",
+   "nombre": "Frente",
+   "z": 10,
+   "visible": true,
+   "opacidad": 1,
+   "elementos": [
+    {
+     "id": "a-sello",
+     "tipo": "texto",
+     "texto": "BORRADOR",
+     "x": 0.5,
+     "y": 0.6,
+     "rotacion": 28,
+     "escala": 9,
+     "opacidad": 0.1,
+     "color": "acento",
+     "negrita": true,
+     "visible": true,
+     "ancla": "center",
+     "ancho": "",
+     "alto": "",
+     "pagina": "",
+     "fondo": "",
+     "borde": "",
+     "grosor": "0.08em",
+     "radio": "0pt",
+     "relleno": "0.4em",
+     "alineacion": "centro",
+     "cursiva": false
+    },
+    {
+     "id": "a-qr",
+     "tipo": "imagen",
+     "archivo": "recursos/qr_prueba.png",
+     "x": 0.975,
+     "y": 0.955,
+     "ancla": "south east",
+     "ancho": 0.07,
+     "visible": true,
+     "alto": "",
+     "rotacion": 0,
+     "opacidad": 1,
+     "pagina": "",
+     "ajuste": "ajustar"
+    }
+   ]
+  }
+ ],
+ "latex": {
+  "preambulo": "",
+  "antes": "",
+  "despues": ""
+ },
+ "bibliografia": {
+  "estilo": "apa",
+  "referencias": []
+ },
+ "componentes": {}
+}

@@ -1,0 +1,35 @@
+{
+ "nombre": "BGC Stutzerimonas (ES)",
+ "orden": 6,
+ "descripcion": "Borrador del póster de clasificación de BGCs. Las figuras salen del cuaderno incluido: añádele tabla_bgc-5.csv y ejecútalo para regenerarlas.",
+ "tipo": "estructurado",
+ "etiquetas": [
+  "A0",
+  "cuaderno",
+  "BGC"
+ ],
+ "cuadernos": [
+  {
+   "patrones_ext": [
+    "pdf",
+    "png",
+    "jpg"
+   ],
+   "carpeta_figuras": "resultados",
+   "preferir_pdf": true,
+   "recoger_mostradas": false,
+   "omitir_colab": false,
+   "parametros": {
+    "despues_de": -1,
+    "codigo": ""
+   },
+   "tiempo_celda": 3600,
+   "recompilar": true,
+   "kernel": "",
+   "id": "nb-bgc",
+   "nombre": "modelo_bgc_pfam_es.ipynb",
+   "archivo": "modelo_bgc_pfam_es.ipynb",
+   "origen": "subido"
+  }
+ ]
+}
