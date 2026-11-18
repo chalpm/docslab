@@ -12,6 +12,14 @@ Tipos de entrada: **Añadido**, **Cambiado**, **Obsoleto**, **Eliminado**, **Cor
 
 _Nada todavía._
 
+## [1.6.1] - 2026-11-18
+
+Huella: [`huella/v1.6.1.json`](huella/v1.6.1.json). Versiones: aplicación 1.6.1 · `.sty` 1.1.0 (sin cambios) · esquema 1. Contrato sin cambios.
+
+### Corregido
+- **La página entera se desplazaba al usar la rueda en el editor** y dejaba un hueco vacío debajo, sin la barra de arriba. La causa eran las casillas invisibles de los interruptores del panel derecho (`position: absolute` sin un contenedor posicionado): el navegador las situaba respecto a la página, no al panel, y alargaban la página hasta casi 3 veces la ventana. Ahora el interruptor, los paneles y el editor son su contenedor, así que no salen del panel.
+- `tests/auditoria_navegador.py` comprueba que la rueda no desplaza la página en el editor, el LAB y el Componente Lab. Con 1.6.0 esta comprobación falla (alto de 2509 px en una ventana de 900).
+
 ## [1.6.0] - 2026-11-18
 
 Huella: [`huella/v1.6.0.json`](huella/v1.6.0.json). Versiones: aplicación 1.6.0 · `.sty` 1.1.0 (sin cambios) · esquema 1. Rutas de la API sin cambios (95).
@@ -288,7 +296,8 @@ Línea base. Es la primera versión con versionado formal. Huella: [`huella/v1.0
 - En un TeX Live sin `texlive-lang-spanish` ni `luatex85.sty` fallan 11 pruebas (las 9 de compilación de plantillas, una de la API y una de LuaLaTeX). Verificado como problema de entorno en 1.2.1.
 - La API no tiene autenticación y los cuadernos ejecutan código arbitrario (ver `SECURITY.md`).
 
-[Sin publicar]: ../../compare/v1.6.0...HEAD
+[Sin publicar]: ../../compare/v1.6.1...HEAD
+[1.6.1]: ../../compare/v1.6.0...v1.6.1
 [1.6.0]: ../../compare/v1.5.1...v1.6.0
 [1.5.1]: ../../compare/v1.5.0...v1.5.1
 [1.5.0]: ../../compare/v1.4.0...v1.5.0

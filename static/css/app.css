@@ -144,9 +144,11 @@ select.entrada { padding-right: 26px; appearance: none; cursor: pointer;
 .fila-campos.tres { grid-template-columns: 1fr 1fr 1fr; }
 .deslizador { display: grid; grid-template-columns: 1fr 64px; gap: 8px; align-items: center; }
 input[type=range] { width: 100%; accent-color: var(--acento); }
-.interruptor { display: flex; align-items: center; justify-content: space-between; gap: 10px; cursor: pointer; min-height: 30px; }
+.interruptor { display: flex; align-items: center; justify-content: space-between; gap: 10px; cursor: pointer; min-height: 30px; position: relative; }
 .interruptor .texto { font-size: var(--t-s); }
-.interruptor input { position: absolute; opacity: 0; pointer-events: none; }
+/* La casilla real va encima de la pista, invisible. Su bloque contenedor es el propio interruptor: si fuera la
+   página, al desplazarse el panel la casilla quedaría fuera de él y alargaría la página entera (bug de 1.6.0). */
+.interruptor input { position: absolute; right: 0; top: 50%; width: 34px; height: 20px; margin: -10px 0 0; opacity: 0; pointer-events: none; }
 .interruptor .pista { width: 34px; height: 20px; border-radius: 10px; background: var(--linea); position: relative; flex: none; transition: background .15s; }
 .interruptor .pista::after { content: ""; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 50%; background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.25); transition: transform .15s; }
 .interruptor input:checked + .pista { background: var(--acento); }
@@ -310,7 +312,7 @@ button.chip { border: 0; cursor: pointer; }
 .estilo-caja svg { width: 100%; height: 46px; display: block; }
 
 /* ---------------------------------------------------------------- editor */
-.editor { height: 100%; display: grid; grid-template-rows: var(--barra) 1fr; overflow: hidden; }
+.editor { height: 100%; display: grid; grid-template-rows: var(--barra) 1fr; overflow: hidden; position: relative; }   /* relative: recorta también lo absoluto de dentro */
 .editor .cuerpo-editor { display: grid; grid-template-columns: var(--ancho-izq, 316px) minmax(0, 1fr) var(--ancho-der, 352px); min-height: 0; }
 .editor .cuerpo-editor.sin-izq { grid-template-columns: 0 minmax(0, 1fr) var(--ancho-der, 352px); }
 .editor .cuerpo-editor.sin-der { grid-template-columns: var(--ancho-izq, 316px) minmax(0, 1fr) 0; }
@@ -331,7 +333,7 @@ button.chip { border: 0; cursor: pointer; }
 .panel.izq .pestanas button:not(.activo) .nombre-pestana { display: none; }
 @container (min-width: 470px) { .panel.izq .pestanas button:not(.activo) .nombre-pestana { display: inline; } }
 .pestanas .cuenta { font-size: 11px; background: var(--linea-2); border-radius: 8px; padding: 0 6px; color: var(--tinta-2); }
-.panel .contenido-panel { flex: 1; overflow: auto; min-height: 0; }
+.panel .contenido-panel { flex: 1; overflow: auto; min-height: 0; position: relative; }
 .panel .pie-panel { flex: none; border-top: 1px solid var(--linea); padding: 8px; display: flex; gap: 6px; flex-wrap: wrap; }
 
 /* árbol */

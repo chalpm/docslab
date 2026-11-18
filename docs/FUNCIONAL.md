@@ -1,4 +1,4 @@
-# Especificación funcional · DocsLab 1.6.0
+# Especificación funcional · DocsLab 1.6.1
 
 Catálogo de funciones con identificadores estables (**F-NN**). Cada versión futura indica en el CHANGELOG qué F-NN añade, cambia o retira. Los identificadores no se reutilizan.
 

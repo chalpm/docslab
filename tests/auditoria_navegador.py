@@ -11,6 +11,8 @@ Comprueba:
   3. Una salida HTML maliciosa guardada en un cuaderno no ejecuta código en la página de DocsLab.
   4. Otra web (otro origen) no puede crear proyectos (CSRF) y un nombre ajeno que apunta a 127.0.0.1
      (DNS rebinding, simulado con --host-resolver-rules) recibe 403.
+  5. En el editor, el LAB y el Componente Lab, desplazar los paneles con la rueda no desplaza la página
+     entera (en 1.6.0 las casillas de los interruptores la alargaban y dejaba un hueco abajo).
 """
 from __future__ import annotations
 
@@ -108,6 +110,19 @@ def main():
             pg.on("pageerror", lambda e: errores.append(str(e)))
             axe = Axe()
 
+            def revisar_pagina_fija(nombre):
+                """Rueda sobre cada panel desplazable: la página no debe moverse ni ser más alta que la ventana."""
+                for caja in pg.evaluate("""() => [...document.querySelectorAll('*')].filter(e => {
+                        const c = getComputedStyle(e); return /(auto|scroll)/.test(c.overflowY) && e.scrollHeight > e.clientHeight + 4; })
+                    .map(e => { const r = e.getBoundingClientRect(); return [r.x + r.width / 2, r.y + Math.min(r.height / 2, 200)]; })"""):
+                    pg.mouse.move(*caja)
+                    for _ in range(8):
+                        pg.mouse.wheel(0, 900)
+                    pg.wait_for_timeout(150)
+                d = pg.evaluate("() => [scrollY, document.documentElement.scrollHeight, innerHeight]")
+                ok(d[0] == 0 and d[1] <= d[2], f"la página no se desplaza al usar la rueda: {nombre} (scrollY {d[0]}, alto {d[1]} de {d[2]})")
+                pg.evaluate("() => window.scrollTo(0, 0)")
+
             def revisar_axe(nombre):
                 r = axe.run(pg, options={"runOnly": {"type": "tag", "values": REGLAS}})
                 v = r.response["violations"]
@@ -144,6 +159,7 @@ def main():
             pg.goto(base + f"#/p/{pid}", wait_until="networkidle")
             pg.wait_for_timeout(2500)
             revisar_axe("editor")
+            revisar_pagina_fija("editor")
             pg.click('button[role="tab"]:has-text("LAB")')
             pg.wait_for_timeout(1500)
             if pg.locator("text=ataque").count():
@@ -155,9 +171,11 @@ def main():
             hay_tabla = marco.content_frame().locator("#tabla").count() == 1
             ok(hay_tabla, "la salida HTML se sigue viendo")
             revisar_axe("LAB con un cuaderno")
+            revisar_pagina_fija("LAB")
             pg.goto(base + "#/lab", wait_until="networkidle")
             pg.wait_for_timeout(1500)
             revisar_axe("Componente Lab")
+            revisar_pagina_fija("Componente Lab")
 
             # 4: otra web y DNS rebinding
             otra = nav.new_page()

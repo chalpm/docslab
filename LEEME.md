@@ -4,7 +4,7 @@
 
 Funciona **en tu equipo** (Windows, macOS o Linux, con un pequeño servidor local) o **en Google Colab**. Una vez instalado no necesita internet, salvo para buscar referencias por DOI.
 
-**Versión 1.6.0** · Licencia [AGPL-3.0](LICENSE) (plantilla LaTeX: [LPPL-1.3c](latex/LICENSE-LPPL-1.3c.txt)) · [Registro de cambios](CHANGELOG.md) · [Documentación técnica y funcional](docs/README.md) · [Seguridad](SECURITY.md)
+**Versión 1.6.1** · Licencia [AGPL-3.0](LICENSE) (plantilla LaTeX: [LPPL-1.3c](latex/LICENSE-LPPL-1.3c.txt)) · [Registro de cambios](CHANGELOG.md) · [Documentación técnica y funcional](docs/README.md) · [Seguridad](SECURITY.md)
 
 ---
 
