@@ -1019,7 +1019,7 @@ def crear_app(datos: Path, raices: list[Path] | None = None, colab: bool = False
         elif accion == "limpiar":
             s.limpiar_salidas()
         elif accion == "ejemplo":
-            return jsonify({"archivo": lab.copiar_ejemplo(pid, nb)})
+            return jsonify({"archivo": lab.copiar_ejemplo(pid, nb, json_body().get("archivos"))})
         elif accion == "variables":
             return jsonify({"variables": s.consulta(LAB.CONSULTA_VARIABLES)})
         elif accion == "columnas":
@@ -1045,7 +1045,10 @@ def crear_app(datos: Path, raices: list[Path] | None = None, colab: bool = False
             t["miniatura"] = (f"static/img/graficos/{t['id']}.png" if t.get("incluida")
                               else (f"api/graficos/{t['id']}/miniatura?v={t.get('modificado', '')}"
                                     if graficos.miniatura(t["id"]) else ""))
+            if t.get("incluida"):
+                t["ejemplo"] = GR.archivos_ejemplo(t)
         return sin_cache(jsonify({"plantillas": lista, "tipos": list(GR.TIPOS), "bibliotecas": list(GR.BIBLIOTECAS),
+                                  "categorias": GR.CATEGORIAS,
                                   "paletas": GR.PALETAS, "nueva": GR.normalizar(GR.NUEVA)}))
 
     @app.post("/api/graficos")

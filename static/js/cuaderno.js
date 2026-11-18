@@ -118,11 +118,14 @@ const DialogoGrafico = {
   emits: ['insertar', 'cerrar', 'plantillas'],
   setup() { return { ed: inject('ed') }; },
   data: () => ({
-    cat: null, t: null, valores: {}, filtro: '', archivos: [], variables: null, columnas: null, filas: null,
+    cat: null, t: null, valores: {}, filtro: '', categoria: '', archivos: [], variables: null, columnas: null, filas: null,
     cargandoCols: false, errorCols: '', codigo: '', verCodigo: false, trabajando: false, subiendo: false,
   }),
   computed: {
-    lista() { return (this.cat ? this.cat.plantillas : []).filter((t) => !this.filtro || t.biblioteca === this.filtro); },
+    lista() {
+      return (this.cat ? this.cat.plantillas : []).filter((t) => (!this.filtro || t.biblioteca === this.filtro)
+        && (!this.categoria || t.categoria === this.categoria));
+    },
     datos() { const p = this.t && this.t.parametros.find((x) => x.tipo === 'datos'); return p ? this.valores[p.nombre] : null; },
     colores() { return (this.ed.modelo && this.ed.modelo.colores) || {}; },
     archivosDatos() { return this.archivos.filter((a) => EXT_DATOS.test(a.ruta)); },
@@ -167,7 +170,7 @@ const DialogoGrafico = {
     },
     async usarEjemplo() {
       try {
-        const r = await post(`api/proyectos/${this.ed.pid}/lab/${this.nb}/ejemplo`);
+        const r = await post(`api/proyectos/${this.ed.pid}/lab/${this.nb}/ejemplo`, { archivos: (this.t && this.t.ejemplo) || [] });
         await this.cargarArchivos();
         Object.assign(this.datos, { modo: 'archivo', archivo: r.archivo });
         this.leerColumnas(true);
@@ -257,11 +260,16 @@ const DialogoGrafico = {
       <header>
         <div style="flex:1"><h2 id="tit-grafico">{{ t ? t.nombre : 'Gráfico desde una plantilla' }}</h2>
           <p v-if="!t">Elige el tipo de gráfico. Después eliges tus datos y sus opciones; el código queda en una celda y se puede editar.</p>
-          <p v-else>{{ t.descripcion }}</p></div>
+          <p v-else>{{ t.descripcion }}
+            <a v-if="t.referencia" :href="t.referencia" target="_blank" rel="noopener">Este tipo de gráfico en The R Graph Gallery</a></p></div>
         <button class="btn icono fantasma" @click="$emit('cerrar')" aria-label="Cerrar"><icono n="cerrar"/></button>
       </header>
 
       <div class="cuerpo" v-if="!t">
+        <div v-if="cat && cat.categorias" class="filtro-clases" role="group" aria-label="Filtrar por tipo de gráfico">
+          <button type="button" :class="{activo: !categoria}" @click="categoria = ''">Todos los tipos</button>
+          <button v-for="c in cat.categorias" :key="c" type="button" :class="{activo: categoria === c}" @click="categoria = c">{{ c }}</button>
+        </div>
         <div class="filtro-clases" role="group" aria-label="Filtrar por biblioteca">
           <button type="button" :class="{activo: !filtro}" @click="filtro = ''">Todas</button>
           <button v-for="b in (cat ? cat.bibliotecas : [])" :key="b" type="button" :class="{activo: filtro === b}" @click="filtro = b">{{ b }}</button>
@@ -270,7 +278,7 @@ const DialogoGrafico = {
           <button v-for="g in lista" :key="g.id" class="tarjeta-grafico" @click="elegir(g)">
             <span class="mini"><img v-if="g.miniatura" :src="g.miniatura" alt="" loading="lazy"><icono v-else n="imagen"/></span>
             <strong>{{ g.nombre }}</strong>
-            <span class="detalle">{{ g.biblioteca }}{{ g.incluida ? '' : ' · tuya' }}</span>
+            <span class="detalle">{{ g.categoria ? g.categoria + ' · ' : '' }}{{ g.biblioteca }}{{ g.incluida ? '' : ' · tuya' }}</span>
           </button>
         </div>
         <p class="ayuda">¿Falta alguno? En «Plantillas de gráficos» puedes crear las tuyas o copiar una de estas y cambiar su código.
@@ -771,7 +779,7 @@ const PlantillasGraficos = {
           </template>
           <template v-else>
             <span class="mini grande" v-if="t.miniatura"><img :src="t.miniatura" alt=""></span>
-            <p class="ayuda">«Probar» ejecuta el código con los valores iniciales y los datos de ejemplo (<code>ejemplo.csv</code>: grupo, tratamiento, tiempo, valor, peso y altura).</p>
+            <p class="ayuda">«Probar» ejecuta el código con los valores iniciales y los datos de ejemplo: <code>ejemplo.csv</code> (grupo, tratamiento, tiempo, valor, peso y altura), <code>ejemplo_series.csv</code>, <code>ejemplo_paises.csv</code>, <code>ejemplo_puntos.csv</code>, <code>ejemplo_conexiones.csv</code>, <code>ejemplo_red.csv</code>, <code>ejemplo_flujos.csv</code>, <code>ejemplo_jerarquia.csv</code>, <code>ejemplo_puntuaciones.csv</code>, <code>ejemplo_palabras.csv</code> y el mapa <code>mundo.geojson</code>.</p>
           </template>
         </aside>
       </div>

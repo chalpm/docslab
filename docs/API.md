@@ -22,18 +22,18 @@ Parámetros de ruta: `<pid>` proyecto · `<tid>` plantilla o trabajo · `<cid>` 
 
 | Método | Ruta | Función (app.py) | Descripción |
 |---|---|---|---|
-| `GET` | `/api/proyectos/<pid>/cuadernos` | `lista_cuadernos` (L1089) | — |
-| `POST` | `/api/proyectos/<pid>/cuadernos` | `cuaderno_nuevo` (L1100) | — |
-| `DELETE` | `/api/proyectos/<pid>/cuadernos/<nb>` | `cuaderno_borrar` (L1117) | — |
-| `PATCH` | `/api/proyectos/<pid>/cuadernos/<nb>` | `cuaderno_cambiar` (L1113) | — |
-| `GET` | `/api/proyectos/<pid>/cuadernos/<nb>/archivos` | `cuaderno_archivos` (L1127) | — |
-| `GET` | `/api/proyectos/<pid>/cuadernos/<nb>/celda-colab` | `cuaderno_celda` (L1159) | — |
-| `GET` | `/api/proyectos/<pid>/cuadernos/<nb>/celdas` | `cuaderno_celdas` (L1123) | — |
-| `POST` | `/api/proyectos/<pid>/cuadernos/<nb>/datos` | `cuaderno_datos` (L1131) | — |
-| `GET` | `/api/proyectos/<pid>/cuadernos/<nb>/ejecutado` | `cuaderno_ejecutado` (L1163) | — |
-| `POST` | `/api/proyectos/<pid>/cuadernos/<nb>/ejecutar` | `cuaderno_ejecutar` (L1135) | — |
-| `GET` | `/api/proyectos/<pid>/cuadernos/<nb>/figuras` | `cuaderno_figuras` (L1155) | — |
-| `POST` | `/api/proyectos/<pid>/cuadernos/<nb>/importar` | `cuaderno_importar` (L1148) | — |
+| `GET` | `/api/proyectos/<pid>/cuadernos` | `lista_cuadernos` (L1092) | — |
+| `POST` | `/api/proyectos/<pid>/cuadernos` | `cuaderno_nuevo` (L1103) | — |
+| `DELETE` | `/api/proyectos/<pid>/cuadernos/<nb>` | `cuaderno_borrar` (L1120) | — |
+| `PATCH` | `/api/proyectos/<pid>/cuadernos/<nb>` | `cuaderno_cambiar` (L1116) | — |
+| `GET` | `/api/proyectos/<pid>/cuadernos/<nb>/archivos` | `cuaderno_archivos` (L1130) | — |
+| `GET` | `/api/proyectos/<pid>/cuadernos/<nb>/celda-colab` | `cuaderno_celda` (L1162) | — |
+| `GET` | `/api/proyectos/<pid>/cuadernos/<nb>/celdas` | `cuaderno_celdas` (L1126) | — |
+| `POST` | `/api/proyectos/<pid>/cuadernos/<nb>/datos` | `cuaderno_datos` (L1134) | — |
+| `GET` | `/api/proyectos/<pid>/cuadernos/<nb>/ejecutado` | `cuaderno_ejecutado` (L1166) | — |
+| `POST` | `/api/proyectos/<pid>/cuadernos/<nb>/ejecutar` | `cuaderno_ejecutar` (L1138) | — |
+| `GET` | `/api/proyectos/<pid>/cuadernos/<nb>/figuras` | `cuaderno_figuras` (L1158) | — |
+| `POST` | `/api/proyectos/<pid>/cuadernos/<nb>/importar` | `cuaderno_importar` (L1151) | — |
 
 ## LAB (núcleo interactivo, celda a celda)
 
@@ -86,7 +86,7 @@ Parámetros de ruta: `<pid>` proyecto · `<tid>` plantilla o trabajo · `<cid>` 
 | `GET` | `/api/proyectos/<pid>/recursos` | `recursos` (L914) | — |
 | `POST` | `/api/proyectos/<pid>/recursos` | `recursos_subir` (L918) | — |
 | `POST` | `/api/proyectos/<pid>/revisar` | `revisar` (L599) | — |
-| `GET` | `/api/proyectos/<pid>/trabajos` | `trabajos_proyecto` (L1176) | — |
+| `GET` | `/api/proyectos/<pid>/trabajos` | `trabajos_proyecto` (L1179) | — |
 | `GET` | `/api/proyectos/<pid>/vista` | `vista_recurso` (L942) | Miniatura de un recurso (PNG/JPG reducidos con Pillow, PDF con pdftoppm). |
 | `POST` | `/api/proyectos/importar` | `proyecto_importar` (L309) | — |
 
@@ -125,11 +125,11 @@ Parámetros de ruta: `<pid>` proyecto · `<tid>` plantilla o trabajo · `<cid>` 
 | Método | Ruta | Función (app.py) | Descripción |
 |---|---|---|---|
 | `GET` | `/api/graficos` | `graficos_lista` (L1042) | — |
-| `POST` | `/api/graficos` | `graficos_guardar` (L1052) | — |
-| `DELETE` | `/api/graficos/<gid>` | `graficos_borrar` (L1056) | — |
-| `GET` | `/api/graficos/<gid>/miniatura` | `graficos_miniatura` (L1061) | — |
-| `POST` | `/api/graficos/generar` | `graficos_generar` (L1068) | — |
-| `POST` | `/api/graficos/probar` | `graficos_probar` (L1074) | — |
+| `POST` | `/api/graficos` | `graficos_guardar` (L1055) | — |
+| `DELETE` | `/api/graficos/<gid>` | `graficos_borrar` (L1059) | — |
+| `GET` | `/api/graficos/<gid>/miniatura` | `graficos_miniatura` (L1064) | — |
+| `POST` | `/api/graficos/generar` | `graficos_generar` (L1071) | — |
+| `POST` | `/api/graficos/probar` | `graficos_probar` (L1077) | — |
 
 ## LAB (recursos)
 
@@ -150,14 +150,14 @@ Parámetros de ruta: `<pid>` proyecto · `<tid>` plantilla o trabajo · `<cid>` 
 
 | Método | Ruta | Función (app.py) | Descripción |
 |---|---|---|---|
-| `GET` | `/api/trabajos/<tid>` | `trabajo` (L1180) | — |
-| `POST` | `/api/trabajos/<tid>/cancelar` | `trabajo_cancelar` (L1187) | — |
+| `GET` | `/api/trabajos/<tid>` | `trabajo` (L1183) | — |
+| `POST` | `/api/trabajos/<tid>/cancelar` | `trabajo_cancelar` (L1190) | — |
 
 ## Explorador de carpetas
 
 | Método | Ruta | Función (app.py) | Descripción |
 |---|---|---|---|
-| `GET` | `/api/explorar` | `explorar` (L1171) | — |
+| `GET` | `/api/explorar` | `explorar` (L1174) | — |
 
 ## Aplicación web
 

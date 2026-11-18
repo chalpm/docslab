@@ -24,9 +24,13 @@ DESTINO = RAIZ / "static" / "img" / "graficos"
 COLORES = {"primario": "2F4858", "acento": "C8553D"}
 
 
-def main():
+def main(argv=None):
+    """Sin argumentos, todas; con identificadores (python herramientas/construir_graficos.py radar sankey), solo esas."""
+    solo = set(sys.argv[1:] if argv is None else argv)
     DESTINO.mkdir(parents=True, exist_ok=True)
     for t in G.INCLUIDAS:
+        if solo and t["id"] not in solo:
+            continue
         r = G.probar(G.generar(t, {}, COLORES))
         if not r["ok"]:
             raise SystemExit(f"{t['id']}: {r['error']}")

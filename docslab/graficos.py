@@ -27,62 +27,13 @@ TIPOS = ("datos", "columna", "columnas", "texto", "numero", "interruptor", "opci
 BIBLIOTECAS = ("matplotlib", "seaborn", "plotly")
 PALETAS = ["documento", "deep", "muted", "colorblind", "Set2", "tab10", "viridis", "magma", "Blues", "Greys"]
 HUECO = re.compile(r"\{\{\s*([A-Za-z_][A-Za-z0-9_]*)\s*\}\}")
-EJEMPLO = Path(__file__).resolve().parent / "datos_ejemplo" / "ejemplo.csv"
+DIR_EJEMPLOS = Path(__file__).resolve().parent / "datos_ejemplo"
+EJEMPLO = DIR_EJEMPLOS / "ejemplo.csv"
 COLORES_DEFECTO = ["#2F4858", "#C8553D", "#588157", "#E0A458", "#6D597A", "#33658A"]
 
 
-def _p(nombre, etiqueta, tipo, defecto=None, **mas):
-    return dict(nombre=nombre, etiqueta=etiqueta, tipo=tipo, defecto=defecto, **mas)
-
-
-DATOS = _p("datos", "Datos", "datos", {"modo": "archivo", "archivo": "ejemplo.csv"})
-
-
-def _comunes(nombre, x="", y="", alto=9):
-    return [
-        _p("titulo", "Título", "texto", ""),
-        _p("etiqueta_x", "Rótulo del eje x", "texto", x, ayuda="Vacío = el nombre de la columna."),
-        _p("etiqueta_y", "Rótulo del eje y", "texto", y),
-        _p("ancho", "Ancho (cm)", "numero", 14, min=3, max=60),
-        _p("alto", "Alto (cm)", "numero", alto, min=3, max=60),
-        _p("letra", "Tamaño de letra (pt)", "numero", 10, min=5, max=30),
-        _p("salida", "Guardar como", "texto", f"figuras/{nombre}.pdf",
-           ayuda="Dentro de la carpeta del cuaderno. Con .pdf queda vectorial; también vale .png."),
-    ]
-
-
-CABEZA_MPL = '''import os
-import pandas as pd
-import matplotlib.pyplot as plt
-
-plt.rcParams.update({"font.size": {{letra}}})
-datos = {{datos}}
-'''
-PIE_MPL = '''
-ax.set_title({{titulo}})
-ax.spines[["top", "right"]].set_visible(False)
-fig.tight_layout()
-os.makedirs(os.path.dirname({{salida}}) or ".", exist_ok=True)
-fig.savefig({{salida}}, bbox_inches="tight", dpi=300)
-plt.show()
-'''
-CABEZA_SNS = CABEZA_MPL.replace("import matplotlib.pyplot as plt", "import matplotlib.pyplot as plt\nimport seaborn as sns")
-CABEZA_PX = '''import os
-import pandas as pd
-import plotly.express as px
-
-datos = {{datos}}
-'''
-PIE_PX = '''
-fig.update_layout(template="simple_white", font_size={{letra}}, width={{ancho}} * 38, height={{alto}} * 38,
-                  title={{titulo}} or None)
-os.makedirs(os.path.dirname({{salida}}) or ".", exist_ok=True)
-try:
-    fig.write_image({{salida}})          # imagen fija para el documento
-except Exception as error:               # hace falta kaleido (pip install kaleido) y Chrome
-    print("No se pudo guardar la imagen:", error)
-fig.show()
-'''
+from .graficos_comun import (  # noqa: E402,F401  (también se usan desde fuera)
+    CABEZA_MPL, CABEZA_PX, CABEZA_SNS, DATOS, PIE_MPL, PIE_PX, _comunes, _p)
 
 INCLUIDAS = [
     dict(id="barras", nombre="Barras", biblioteca="matplotlib",
@@ -285,6 +236,23 @@ fig = px.bar(media, x={{x}}, y={{y}}, color={{grupo}} or None, barmode="group",
              labels={ {{x}}: {{etiqueta_x}} or {{x}}, {{y}}: {{etiqueta_y}} or {{y}} })
 ''' + PIE_PX),
 ]
+CATEGORIAS = ["Distribución", "Correlación", "Ranking", "Partes de un todo", "Evolución", "Mapas", "Flujos"]
+_CATEGORIA = {  # las incluidas desde el principio, en las categorías de The R Graph Gallery
+    "barras": ("Ranking", "barplot.html"), "barras-agrupadas": ("Partes de un todo", "stacked-barplot.html"),
+    "lineas": ("Evolución", "line-plot.html"), "dispersion": ("Correlación", "scatterplot.html"),
+    "histograma": ("Distribución", "histogram.html"), "cajas": ("Distribución", "boxplot.html"),
+    "violin": ("Distribución", "violin.html"), "barras-error": ("Ranking", "barplot.html"),
+    "regresion": ("Correlación", "scatterplot.html"), "correlacion": ("Correlación", "correlogram.html"),
+    "px-dispersion": ("Correlación", "scatterplot.html"), "px-lineas": ("Evolución", "line-plot.html"),
+    "px-barras": ("Ranking", "barplot.html"),
+}
+for _t in INCLUIDAS:
+    _t["categoria"], _ref = _CATEGORIA[_t["id"]]
+    _t["referencia"] = "https://r-graph-gallery.com/" + _ref
+
+from .graficos_galeria import GALERIA  # noqa: E402  (usa CABEZA_MPL, PIE_MPL… definidos arriba)
+
+INCLUIDAS += GALERIA
 for _t in INCLUIDAS:
     _t["incluida"] = True
 
@@ -311,6 +279,17 @@ plt.show()
 
 
 # ---------------------------------------------------------------------- validar y guardar
+def archivos_ejemplo(t: dict) -> list[str]:
+    """Los archivos de datos_ejemplo/ que necesita una plantilla para probarse (tabla y, si tiene, mapa base)."""
+    nombres = []
+    for p in t.get("parametros") or []:
+        d = p.get("defecto")
+        valor = d.get("archivo") if p.get("tipo") == "datos" and isinstance(d, dict) else (d if p.get("nombre") == "mapa" else None)
+        if isinstance(valor, str) and (DIR_EJEMPLOS / valor).is_file() and valor not in nombres:
+            nombres.append(valor)
+    return nombres or [EJEMPLO.name]
+
+
 def normalizar(t: dict) -> dict:
     if not isinstance(t, dict):
         raise ErrorAlmacen("Plantilla de gráfico no válida")
@@ -533,7 +512,9 @@ def probar(codigo: str, tiempo: int = 90) -> dict:
     """Ejecuta el código en una carpeta temporal con los datos de ejemplo y devuelve lo que dibuja."""
     d = Path(tempfile.mkdtemp(prefix="docslab-grafico-"))
     try:
-        shutil.copy2(EJEMPLO, d / EJEMPLO.name)
+        for f in DIR_EJEMPLOS.iterdir():          # todos los datos de ejemplo (tablas y mapa base)
+            if f.is_file() and not f.name.startswith("."):
+                shutil.copy2(f, d / f.name)
         prologo = ("import plotly.graph_objects as _g\n_g.Figure.show = lambda *a, **k: None\n"
                    if "plotly" in codigo else "")       # en la prueba no se abre nada: se devuelve la figura
         (d / "_prueba.py").write_text(prologo + codigo + EPILOGO, encoding="utf-8")

@@ -12,6 +12,34 @@ Tipos de entrada: **Añadido**, **Cambiado**, **Obsoleto**, **Eliminado**, **Cor
 
 _Nada todavía._
 
+## [1.3.0] - 2026-11-18
+
+Huella: [`huella/v1.3.0.json`](huella/v1.3.0.json). Versiones: aplicación 1.3.0 · `.sty` 1.1.0 (sin cambios) · esquema 1.
+
+### Añadido
+- **Galería de gráficos (F-26):** 35 plantillas nuevas para el LAB que cubren, con las 13 anteriores, los 41 tipos de gráfico de [The R Graph Gallery](https://r-graph-gallery.com/), adaptados a Python. Total: 48 plantillas.
+  - Distribución: densidad, crestas (ridgeline) y enjambre (beeswarm).
+  - Correlación: mapa de calor, correlograma, burbujas, dispersión conectada y densidad 2D.
+  - Ranking: radar, nube de palabras, coordenadas paralelas, piruleta, barras circulares y tabla.
+  - Partes de un todo: treemap, dona, pastel, dendrograma, empaquetado circular y gofre (waffle).
+  - Evolución: área, áreas apiladas, flujo (streamgraph) y serie temporal.
+  - Mapas: mapa con puntos, coropletas, mapa de hexágonos, cartograma de Dorling, conexiones y mapa de burbujas.
+  - Flujos: cuerdas, red, Sankey, arcos y agrupamiento de aristas (edge bundling).
+- Todas usan matplotlib o seaborn (el dendrograma, también scipy): funcionan sin conexión y sin Chrome. Los algoritmos (treemap, empaquetado, disposición por fuerzas, Dorling, círculo máximo, nube de palabras) van en el propio código, que se puede editar.
+- **Categorías** en el diálogo de gráficos (las 7 de la galería), además del filtro por biblioteca, y enlace a la página de la galería de cada tipo.
+- **Datos de ejemplo por plantilla** (`docslab/datos_ejemplo/`): series, países, puntos, conexiones, red, flujos, jerarquía, puntuaciones y palabras, y el mapa base `mundo.geojson`. Los países y sus datos de población y PIB son de Natural Earth (dominio público); el resto es sintético. Su origen se documenta en `datos_ejemplo/LEEME.md`, y se regeneran con `herramientas/datos_ejemplo.py`.
+- `tests/test_galeria.py`: cobertura de los 41 tipos, ejecución de las 35 con sus datos, código válido en Python 3.9 y copia segura de los datos de ejemplo.
+- `herramientas/construir_graficos.py` acepta identificadores para regenerar solo algunas miniaturas.
+
+### Cambiado
+- **Nueva dependencia obligatoria:** `scipy>=1.9` (dendrograma). Los lanzadores la instalan solos.
+- «Usar datos de ejemplo» (`POST …/lab/<nb>/ejemplo`) acepta `archivos` y copia los datos de la plantilla (y el mapa si lo necesita). Solo admite nombres de `datos_ejemplo/`; por defecto copia `ejemplo.csv`, como antes.
+- «Probar con los datos de ejemplo» ejecuta el código en una carpeta con todos los datos de ejemplo.
+- `GET /api/graficos` devuelve `categorias` y, en cada plantilla incluida, `categoria`, `referencia` y `ejemplo`.
+- Las piezas comunes de las plantillas pasan a `docslab/graficos_comun.py`. `graficos.py` sigue exportando los mismos nombres.
+- `SECURITY.md`: con soporte solo 1.3.x.
+
+
 ## [1.2.3] - 2026-11-18
 
 Huella: [`huella/v1.2.3.json`](huella/v1.2.3.json). Versiones: aplicación 1.2.3 · `.sty` 1.1.0 (sin cambios) · esquema 1.
@@ -151,7 +179,8 @@ Línea base. Es la primera versión con versionado formal. Huella: [`huella/v1.0
 - En un TeX Live sin `texlive-lang-spanish` ni `luatex85.sty` fallan 11 pruebas (las 9 de compilación de plantillas, una de la API y una de LuaLaTeX). Verificado como problema de entorno en 1.2.1.
 - La API no tiene autenticación y los cuadernos ejecutan código arbitrario (ver `SECURITY.md`).
 
-[Sin publicar]: ../../compare/v1.2.3...HEAD
+[Sin publicar]: ../../compare/v1.3.0...HEAD
+[1.3.0]: ../../compare/v1.2.3...v1.3.0
 [1.2.3]: ../../compare/v1.2.2...v1.2.3
 [1.2.2]: ../../compare/v1.2.1...v1.2.2
 [1.2.1]: ../../compare/v1.2.0...v1.2.1

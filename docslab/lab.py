@@ -532,10 +532,15 @@ class Lab:
         for s in sesiones:
             s.apagar()
 
-    def copiar_ejemplo(self, pid: str, nb_id: str) -> str:
+    def copiar_ejemplo(self, pid: str, nb_id: str, archivos=None) -> str:
+        """Copia a la carpeta del cuaderno los datos de ejemplo pedidos (por defecto, ejemplo.csv) y
+        devuelve el primero. Solo valen nombres de archivos que existen en datos_ejemplo/."""
         conf = C._buscar(self.alm.meta(pid), nb_id)
         d = C.dir_trabajo(self.alm, pid, conf)
         d.mkdir(parents=True, exist_ok=True)
-        if not (d / EJEMPLO.name).exists():
-            shutil.copy2(EJEMPLO, d / EJEMPLO.name)
-        return EJEMPLO.name
+        pedidos = [a for a in (archivos if isinstance(archivos, list) else []) if isinstance(a, str)
+                   and a == Path(a).name and (EJEMPLO.parent / a).is_file()] or [EJEMPLO.name]
+        for a in pedidos:
+            if not (d / a).exists():
+                shutil.copy2(EJEMPLO.parent / a, d / a)
+        return pedidos[0]

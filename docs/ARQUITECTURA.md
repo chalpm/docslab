@@ -1,4 +1,4 @@
-# Arquitectura · DocsLab 1.2.0
+# Arquitectura · DocsLab 1.3.0
 
 ## 1. Vista general
 
@@ -44,7 +44,9 @@ Flask  docslab/app.py ──────────────┐
 | `fuentes.py` | 172 | Tipografías propias .ttf/.otf: lectura de metadatos, familias, licencia de incrustación |
 | `cuadernos.py` | 502 | Ejecución completa de `.ipynb`, recogida de figuras y celda para Colab |
 | `lab.py` | 540 | Núcleos Jupyter persistentes por cuaderno del LAB |
-| `graficos.py` | 556 | Plantillas de gráficos (`{{param}}`) → código Python |
+| `graficos.py` | 538 | Catálogo de plantillas de gráficos (`{{param}}`) → código Python; categorías; probar con los datos de ejemplo |
+| `graficos_comun.py` | 60 | Piezas comunes de las plantillas (parámetros, cabeceras y pies de código) |
+| `graficos_galeria.py` | 1219 | Las 35 plantillas de la galería (F-26) |
 | `trabajos.py` | 116 | Cola de trabajos en hilos, con progreso, registro (400 líneas) y cancelación |
 
 ## 3. Frontend (`static/js`)
@@ -84,7 +86,8 @@ Las plantillas incluidas viven en `plantillas/` dentro de la aplicación y son d
 
 | Tipo | Componente | Obligatorio |
 |---|---|---|
-| Python | flask, pillow, python-pptx, nbclient, nbformat, ipykernel, pandas, matplotlib, seaborn, plotly, kaleido | Sí (`requirements.txt`) |
+| Python | flask, pillow, python-pptx, nbclient, nbformat, ipykernel, pandas, matplotlib, seaborn, plotly, kaleido, scipy | Sí (`requirements.txt`) |
+| Datos | Natural Earth 1:110m (países), en `docslab/datos_ejemplo/mundo.geojson` | Incluido (dominio público) |
 | Sistema | pdfLaTeX (TeX Live / MacTeX / MiKTeX) | Sí |
 | Sistema | Poppler (`pdftoppm`, `pdftohtml`) | Para la revisión, las miniaturas y PowerPoint |
 | Sistema | Ghostscript | Para CMYK y PowerPoint editable |
@@ -101,5 +104,6 @@ Las plantillas incluidas viven en `plantillas/` dentro de la aplicación y son d
 | `imagenes_prueba.py` | Imágenes de prueba |
 | `crear_lanzador_colab.py` | Genera `abrir_docslab_en_colab.ipynb` |
 | `empaquetar.py` | Zip de distribución |
+| `datos_ejemplo.py` | Regenera `docslab/datos_ejemplo/` (necesita el GeoJSON de Natural Earth) |
 | `huella.py` | Huella digital de la versión (ver `VERSIONADO.md`) |
 | `doc_api.py` | Genera `docs/API.md` |

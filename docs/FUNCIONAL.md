@@ -1,4 +1,4 @@
-# Especificación funcional · DocsLab 1.2.0
+# Especificación funcional · DocsLab 1.3.0
 
 Catálogo de funciones con identificadores estables (**F-NN**). Cada versión futura indica en el CHANGELOG qué F-NN añade, cambia o retira. Los identificadores no se reutilizan.
 
@@ -85,8 +85,8 @@ Columnas: **Módulos** (backend), **API** (grupo de `docs/API.md`), **Pruebas** 
 **Módulos.** `lab.py`. **API.** LAB. **Pruebas.** `test_lab.py` · `test_cuaderno_nuevo_y_edicion`, `test_ejecutar_celda_a_celda_conserva_las_variables`. **Estado.** Estable.
 
 ## F-19 · Plantillas de gráficos
-**Descripción.** Gráficos con formulario (barras, líneas, dispersión, histograma, cajas, violín, mapa de calor… con matplotlib, seaborn o plotly). Datos: CSV, TSV, Excel, JSON, Parquet o un DataFrame del cuaderno. El código generado se inserta en una celda editable. Plantillas propias en `datos/graficos/`, con prueba sobre `ejemplo.csv`.
-**Módulos.** `graficos.py`. **API.** Plantillas de gráficos. **Pruebas.** `test_lab.py` · `test_generar_codigo_de_plantilla`, `test_las_plantillas_incluidas_generan_python_valido`, `test_plantillas_propias`, `test_un_grafico_de_plantilla_llega_al_documento`. **Estado.** Estable.
+**Descripción.** Gráficos con formulario: 48 plantillas incluidas (ver F-26) con matplotlib, seaborn o plotly, filtrables por categoría y por biblioteca. Datos: CSV, TSV, Excel, JSON, Parquet o un DataFrame del cuaderno. El código generado se inserta en una celda editable. Plantillas propias en `datos/graficos/`; «Probar» las ejecuta con todos los datos de ejemplo.
+**Módulos.** `graficos.py`, `graficos_comun.py`. **API.** Plantillas de gráficos. **Pruebas.** `test_lab.py` · `test_generar_codigo_de_plantilla`, `test_las_plantillas_incluidas_generan_python_valido`, `test_plantillas_propias`, `test_un_grafico_de_plantilla_llega_al_documento`. **Estado.** Estable.
 
 ## F-20 · Modo LaTeX
 **Descripción.** Convierte un proyecto estructurado a `.tex` editable con resaltado y vista previa, y guarda una copia previa del modelo. La línea `% !TEX program = lualatex|xelatex` elige el motor.
@@ -113,6 +113,12 @@ Columnas: **Módulos** (backend), **API** (grupo de `docs/API.md`), **Pruebas** 
 **Descripción.** Al abrir un proyecto guardado con un esquema anterior, DocsLab lo lleva al esquema actual aplicando migraciones en cadena (N→N+1) y guarda antes una copia en `historial/modelo-antes-de-esquema-<N>.json`. Los proyectos heredados (PosterLab, DocsLab 2.1.0 y 1.0.x) se reconocen como esquema 1. Un proyecto de un esquema más nuevo no se abre y muestra «Actualiza DocsLab para abrirlo».
 **Reglas.** Leer no reescribe el archivo; la versión migrada se guarda al primer cambio. Ninguna migración pierde datos en silencio.
 **Módulos.** `migraciones.py`, `modelo.py`, `almacen.py`. **API.** `GET`/`PUT /api/proyectos/<pid>/modelo` (400 si el esquema es más nuevo). **Pruebas.** `test_migraciones.py` (15 funciones; las de cadena usan un registro simulado porque aún no hay migraciones reales). **Estado.** Estable.
+
+## F-26 · Galería de gráficos
+**Introducida en.** 1.3.0.
+**Descripción.** Las 7 categorías y los 41 tipos de gráfico de The R Graph Gallery (Distribución, Correlación, Ranking, Partes de un todo, Evolución, Mapas y Flujos), adaptados a Python. Son 35 plantillas nuevas más las 13 anteriores, ahora con categoría y enlace a su página de la galería. Las nuevas usan matplotlib o seaborn (y scipy para el dendrograma), sin conexión ni Chrome. Los mapas usan `mundo.geojson` (Natural Earth, dominio público) con proyección Equal Earth o longitud/latitud, y zonas predefinidas. «Usar datos de ejemplo» copia al cuaderno los datos de cada plantilla (y el mapa base si lo necesita), solo desde `datos_ejemplo/`.
+**Reglas.** Código válido en Python 3.9 o posterior. Ninguna plantilla depende de geopandas, networkx, squarify, wordcloud ni circlify: los algoritmos (squarify, empaquetado circular, Fruchterman-Reingold, Dorling, círculo máximo, Chaikin, espiral de palabras) van en el propio código, editable.
+**Módulos.** `graficos_galeria.py`, `graficos.py` (`CATEGORIAS`, `archivos_ejemplo`), `lab.py` (`copiar_ejemplo`), `datos_ejemplo/`, `herramientas/datos_ejemplo.py`, `herramientas/construir_graficos.py`; frontend `cuaderno.js`. **API.** `GET /api/graficos` (`categorias`, `ejemplo` por plantilla), `POST …/lab/<nb>/ejemplo` (`archivos`). **Pruebas.** `test_galeria.py` · `test_cada_tipo_de_la_galeria_tiene_plantilla`, `test_las_plantillas_de_la_galeria_dibujan_con_sus_datos_de_ejemplo`, `test_el_codigo_vale_en_python_3_9` (48), `test_usar_datos_de_ejemplo_copia_los_de_la_plantilla`. **Estado.** Estable.
 
 ---
 

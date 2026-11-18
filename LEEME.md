@@ -4,7 +4,7 @@
 
 Funciona **en tu equipo** (Windows, macOS o Linux, con un pequeño servidor local) o **en Google Colab**. Una vez instalado no necesita internet, salvo para buscar referencias por DOI.
 
-**Versión 1.2.3** · Licencia [AGPL-3.0](LICENSE) (plantilla LaTeX: [LPPL-1.3c](latex/LICENSE-LPPL-1.3c.txt)) · [Registro de cambios](CHANGELOG.md) · [Documentación técnica y funcional](docs/README.md) · [Seguridad](SECURITY.md)
+**Versión 1.3.0** · Licencia [AGPL-3.0](LICENSE) (plantilla LaTeX: [LPPL-1.3c](latex/LICENSE-LPPL-1.3c.txt)) · [Registro de cambios](CHANGELOG.md) · [Documentación técnica y funcional](docs/README.md) · [Seguridad](SECURITY.md)
 
 ---
 
@@ -486,9 +486,25 @@ flowchart LR
 
 **¿Prefieres ejecutarlo en Colab?** «Traer figuras desde Colab» te da una celda: pégala al final de tu cuaderno de Colab, ejecútala y sube el zip que descarga.
 
-**Gráfico de plantilla.** Eliges el tipo de gráfico, los datos (CSV, TSV, Excel, JSON o Parquet de la carpeta del cuaderno, o un `DataFrame` del cuaderno), las columnas y las opciones (rótulos, tamaño y colores, por defecto los del documento). «Insertar y ejecutar» añade una celda con el código ya escrito, que puedes editar. Los gráficos de plotly entran al documento como imagen fija; guardarlos necesita `kaleido` (y, en sus versiones 1.x, Chrome).
+**Gráfico de plantilla.** Hay **48 plantillas** en las 7 categorías de [The R Graph Gallery](https://r-graph-gallery.com/), adaptadas a Python. Cada uno de los 41 tipos de la galería tiene al menos una:
 
-**Plantillas de gráficos.** Código Python con huecos `{{nombre}}` y un formulario que los rellena. Abre una incluida para ver cómo está hecha, cópiala para modificarla o crea una desde cero; «Probar con los datos de ejemplo» la ejecuta con `ejemplo.csv`. Se guardan en `datos/graficos/`.
+| Categoría | Plantillas |
+|---|---|
+| Distribución | Histograma, cajas, violín, densidad, crestas (ridgeline), enjambre (beeswarm) |
+| Correlación | Dispersión (también con recta e interactiva), mapa de calor, mapa de calor de correlaciones, correlograma, burbujas, dispersión conectada, densidad 2D |
+| Ranking | Barras (también con error e interactivas), radar, nube de palabras, coordenadas paralelas, piruleta, barras circulares, tabla |
+| Partes de un todo | Barras agrupadas o apiladas, treemap, dona, pastel, dendrograma, empaquetado circular, gofre (waffle) |
+| Evolución | Líneas (también interactivas), área, áreas apiladas, flujo (streamgraph), serie temporal |
+| Mapas | Mapa con puntos, coropletas, mapa de hexágonos, cartograma (Dorling), conexiones, mapa de burbujas |
+| Flujos | Cuerdas, red, Sankey, arcos, agrupamiento de aristas (edge bundling) |
+
+Las nuevas usan solo matplotlib y seaborn (el dendrograma, también scipy): funcionan sin conexión y no necesitan Chrome. Los mapas traen su mapa base (`mundo.geojson`, de Natural Earth), con proyección Equal Earth y zonas para acercar (América, América Latina, México, Europa…). Cada plantilla enlaza a su página de la galería.
+
+Eliges el tipo de gráfico (filtrado por categoría o por biblioteca), los datos (CSV, TSV, Excel, JSON o Parquet de la carpeta del cuaderno, o un `DataFrame` del cuaderno), las columnas y las opciones (rótulos, tamaño y colores, por defecto los del documento). «Insertar y ejecutar» añade una celda con el código ya escrito, que puedes editar. Los gráficos de plotly entran al documento como imagen fija; guardarlos necesita `kaleido` (y, en sus versiones 1.x, Chrome).
+
+**Plantillas de gráficos.** Código Python con huecos `{{nombre}}` y un formulario que los rellena. Abre una incluida para ver cómo está hecha, cópiala para modificarla o crea una desde cero; «Probar con los datos de ejemplo» la ejecuta en una carpeta con todos los datos de ejemplo. Se guardan en `datos/graficos/`.
+
+**Datos de ejemplo.** «Usar datos de ejemplo» copia a la carpeta del cuaderno los datos de esa plantilla: series temporales, países (población y PIB de Natural Earth), puntos, conexiones, redes, flujos, jerarquías, puntuaciones o palabras, y el mapa base cuando hace falta. La lista y su origen están en [`docslab/datos_ejemplo/LEEME.md`](docslab/datos_ejemplo/LEEME.md).
 
 > **Un cuaderno ejecuta código Python con tus permisos.** Ejecuta solo cuadernos en los que confíes. Si te falta un paquete: `.venv/bin/python -m pip install …` (Windows: `.venv\Scripts\python -m pip install …`).
 
@@ -620,7 +636,10 @@ docslab/                    (carpeta del proyecto)
 │   ├── fuentes.py          tipografías propias
 │   ├── lab.py              núcleos de Python del LAB (celda a celda)
 │   ├── cuadernos.py        ejecución completa de .ipynb y recogida de figuras
-│   ├── graficos.py         plantillas de gráficos
+│   ├── graficos.py         plantillas de gráficos: catálogo, generar código y probar
+│   ├── graficos_galeria.py las 35 plantillas inspiradas en The R Graph Gallery
+│   ├── graficos_comun.py   piezas comunes de las plantillas
+│   ├── datos_ejemplo/      datos de ejemplo de las plantillas y mapa base
 │   └── trabajos.py         tareas en segundo plano (compilar, ejecutar)
 ├── static/                 la interfaz web (Vue 3; librerías en static/vendor)
 ├── latex/                  postercientifico.sty y su licencia (LPPL-1.3c)
@@ -639,7 +658,7 @@ Más detalle en [docs/ARQUITECTURA.md](docs/ARQUITECTURA.md).
 Con el entorno `.venv` activado:
 ```
 python -m pip install pytest
-python -m pytest                 # 317 pruebas
+python -m pytest                 # 404 pruebas
 python tests/e2e_navegador.py    # opcional: necesita playwright y chromium
 ```
 Las pruebas que necesitan LaTeX, Poppler, LuaLaTeX o Ghostscript se saltan si faltan esas herramientas. Para que pasen todas hace falta un TeX Live completo: en Ubuntu/Debian, `texlive-latex-extra`, `texlive-lang-spanish` y `texlive-luatex`, además de `poppler-utils` y `ghostscript`.
@@ -702,7 +721,7 @@ DocsLab sigue [Versionado Semántico](https://semver.org/lang/es/): `MAYOR.MENOR
 | Documento | Para qué |
 |---|---|
 | [CHANGELOG.md](CHANGELOG.md) | Qué cambió en cada versión |
-| [docs/FUNCIONAL.md](docs/FUNCIONAL.md) | Especificación funcional (F-01…F-25) |
+| [docs/FUNCIONAL.md](docs/FUNCIONAL.md) | Especificación funcional (F-01…F-26) |
 | [docs/ARQUITECTURA.md](docs/ARQUITECTURA.md) | Componentes, almacenamiento y dependencias |
 | [docs/API.md](docs/API.md) | Las 95 rutas HTTP del servidor |
 | [docs/MIGRACIONES.md](docs/MIGRACIONES.md) | Cómo se actualizan los proyectos antiguos |
@@ -730,4 +749,4 @@ En la práctica:
 
 Cada archivo de código propio lleva su cabecera `SPDX-License-Identifier` (`AGPL-3.0-only`, o `LPPL-1.3c` en la plantilla LaTeX).
 
-**Licencias de terceros** (incluidos en `static/vendor/`, con su licencia completa junto a cada archivo): Vue 3 (MIT), pdf.js (Apache 2.0), CodeMirror 5 (MIT) y las tipografías Atkinson Hyperlegible Next y Mono (SIL Open Font License 1.1).
+**Licencias de terceros** (incluidos en `static/vendor/`, con su licencia completa junto a cada archivo): Vue 3 (MIT), pdf.js (Apache 2.0), CodeMirror 5 (MIT) y las tipografías Atkinson Hyperlegible Next y Mono (SIL Open Font License 1.1). El mapa base y los datos de países de los ejemplos son de [Natural Earth](https://www.naturalearthdata.com/) (dominio público). Las plantillas de gráficos toman de [The R Graph Gallery](https://r-graph-gallery.com/) solo la lista de tipos de gráfico; su código es propio.

@@ -1,0 +1,20 @@
+origen,destino,lat_origen,lon_origen,lat_destino,lon_destino,valor
+Ciudad de México,Nueva York,19.43,-99.13,40.71,-74.01,25
+Ciudad de México,Bogotá,19.43,-99.13,4.71,-74.07,35
+Ciudad de México,Buenos Aires,19.43,-99.13,-34.6,-58.38,51
+Ciudad de México,São Paulo,19.43,-99.13,-23.55,-46.63,35
+Ciudad de México,Madrid,19.43,-99.13,40.42,-3.7,14
+Ciudad de México,Londres,19.43,-99.13,51.51,-0.13,11
+Ciudad de México,París,19.43,-99.13,48.86,2.35,5
+Ciudad de México,El Cairo,19.43,-99.13,30.04,31.24,55
+Ciudad de México,Nairobi,19.43,-99.13,-1.29,36.82,40
+Ciudad de México,Ciudad del Cabo,19.43,-99.13,-33.92,18.42,57
+Ciudad de México,Moscú,19.43,-99.13,55.76,37.62,20
+Ciudad de México,Bombay,19.43,-99.13,19.08,72.88,50
+Ciudad de México,Pekín,19.43,-99.13,39.9,116.41,55
+Ciudad de México,Tokio,19.43,-99.13,35.68,139.69,26
+Ciudad de México,Sídney,19.43,-99.13,-33.87,151.21,33
+Madrid,Buenos Aires,40.42,-3.7,-34.6,-58.38,52
+Londres,Nueva York,51.51,-0.13,40.71,-74.01,53
+Tokio,Sídney,35.68,139.69,-33.87,151.21,41
+París,El Cairo,48.86,2.35,30.04,31.24,53

@@ -1,0 +1,748 @@
+lat,lon,ciudad
+18.212,-92.351,Ciudad de México
+20.341,-103.192,Ciudad de México
+18.821,-92.611,Ciudad de México
+17.734,-99.472,Ciudad de México
+17.223,-93.014,Ciudad de México
+19.151,-100.063,Ciudad de México
+22.111,-96.426,Ciudad de México
+22.074,-97.276,Ciudad de México
+28.043,-93.307,Ciudad de México
+16.433,-94.713,Ciudad de México
+19.081,-96.357,Ciudad de México
+18.719,-97.64,Ciudad de México
+18.017,-99.602,Ciudad de México
+15.011,-100.782,Ciudad de México
+16.727,-98.3,Ciudad de México
+19.776,-101.258,Ciudad de México
+21.672,-95.034,Ciudad de México
+18.212,-102.763,Ciudad de México
+16.549,-101.5,Ciudad de México
+21.264,-92.83,Ciudad de México
+22.575,-100.85,Ciudad de México
+22.83,-102.028,Ciudad de México
+17.666,-101.43,Ciudad de México
+23.114,-99.706,Ciudad de México
+22.184,-99.382,Ciudad de México
+40.048,-78.456,Nueva York
+46.614,-78.22,Nueva York
+42.62,-70.419,Nueva York
+46.328,-80.253,Nueva York
+40.247,-76.67,Nueva York
+46.317,-66.669,Nueva York
+41.217,-75.399,Nueva York
+39.689,-70.928,Nueva York
+45.303,-75.123,Nueva York
+44.125,-81.92,Nueva York
+39.892,-69.877,Nueva York
+43.823,-78.102,Nueva York
+41.128,-74.242,Nueva York
+42.716,-74.272,Nueva York
+38.866,-76.504,Nueva York
+40.552,-62.914,Nueva York
+43.105,-79.165,Nueva York
+36.696,-75.406,Nueva York
+46.266,-71.972,Nueva York
+37.606,-76.145,Nueva York
+38.891,-79.631,Nueva York
+44.735,-71.796,Nueva York
+42.124,-75.923,Nueva York
+44.238,-75.952,Nueva York
+35.412,-75.119,Nueva York
+35.758,-75.587,Nueva York
+36.611,-80.326,Nueva York
+41.451,-78.158,Nueva York
+41.608,-74.543,Nueva York
+37.945,-76.632,Nueva York
+42.997,-77.357,Nueva York
+45.562,-67.913,Nueva York
+45.592,-81.669,Nueva York
+40.51,-71.038,Nueva York
+41.023,-71.313,Nueva York
+44.029,-74.394,Nueva York
+40.104,-75.876,Nueva York
+40.479,-78.899,Nueva York
+38.929,-70.789,Nueva York
+6.057,-72.102,Bogotá
+3.199,-75.576,Bogotá
+4.725,-77.354,Bogotá
+6.363,-78.668,Bogotá
+5.625,-70.239,Bogotá
+8.28,-80.678,Bogotá
+0.884,-78.18,Bogotá
+0.506,-76.831,Bogotá
+-0.44,-73.625,Bogotá
+6.906,-74.469,Bogotá
+8.451,-78.345,Bogotá
+5.529,-79.005,Bogotá
+7.746,-79.235,Bogotá
+6.001,-69.977,Bogotá
+5.66,-67.291,Bogotá
+8.504,-76.428,Bogotá
+1.479,-73.15,Bogotá
+10.258,-76.707,Bogotá
+3.685,-81.391,Bogotá
+3.252,-79.372,Bogotá
+3.691,-65.787,Bogotá
+0.2,-72.701,Bogotá
+7.419,-72.444,Bogotá
+1.562,-74.743,Bogotá
+4.192,-72.459,Bogotá
+3.944,-77.148,Bogotá
+3.709,-78.74,Bogotá
+9.727,-66.991,Bogotá
+7.152,-82.31,Bogotá
+6.946,-75.056,Bogotá
+4.481,-74.655,Bogotá
+4.329,-71.68,Bogotá
+9.409,-77.012,Bogotá
+3.177,-62.757,Bogotá
+4.748,-87.001,Bogotá
+8.093,-71.795,Bogotá
+4.475,-70.937,Bogotá
+7.693,-73.872,Bogotá
+7.118,-71.951,Bogotá
+4.86,-80.19,Bogotá
+4.704,-74.19,Bogotá
+5.216,-73.829,Bogotá
+3.821,-79.556,Bogotá
+4.324,-74.651,Bogotá
+-0.417,-73.62,Bogotá
+3.514,-75.13,Bogotá
+4.933,-76.716,Bogotá
+5.287,-76.268,Bogotá
+5.351,-71.392,Bogotá
+4.167,-73.331,Bogotá
+8.278,-72.969,Bogotá
+1.436,-74.167,Bogotá
+-0.339,-75.313,Bogotá
+10.927,-80.383,Bogotá
+3.735,-73.123,Bogotá
+7.107,-71.587,Bogotá
+3.955,-72.781,Bogotá
+5.594,-71.31,Bogotá
+4.762,-72.945,Bogotá
+4.896,-74.414,Bogotá
+6.705,-64.655,Bogotá
+3.623,-70.366,Bogotá
+4.963,-84.383,Bogotá
+7.193,-77.348,Bogotá
+3.256,-70.892,Bogotá
+5.593,-76.827,Bogotá
+-25.273,-51.368,Buenos Aires
+-35.369,-57.805,Buenos Aires
+-36.08,-65.081,Buenos Aires
+-33.625,-66.238,Buenos Aires
+-35.178,-58.126,Buenos Aires
+-36.474,-54.397,Buenos Aires
+-35.29,-63.602,Buenos Aires
+-36.085,-60.216,Buenos Aires
+-33.951,-59.6,Buenos Aires
+-33.201,-60.19,Buenos Aires
+-40.332,-57.961,Buenos Aires
+-30.054,-58.764,Buenos Aires
+-32.077,-55.912,Buenos Aires
+-38.722,-52.364,Buenos Aires
+-31.979,-54.399,Buenos Aires
+-31.697,-62.157,Buenos Aires
+-27.109,-64.288,Buenos Aires
+-30.645,-61.064,Buenos Aires
+-37.293,-57.714,Buenos Aires
+-34.999,-49.735,Buenos Aires
+-31.779,-56.985,Buenos Aires
+-29.202,-59.904,Buenos Aires
+-31.703,-55.705,Buenos Aires
+-33.78,-63.089,Buenos Aires
+-29.119,-58.959,Buenos Aires
+-36.326,-59.678,Buenos Aires
+-35.85,-58.908,Buenos Aires
+-18.879,-40.879,São Paulo
+-16.375,-54.181,São Paulo
+-24.341,-50.369,São Paulo
+-22.129,-35.05,São Paulo
+-20.54,-46.71,São Paulo
+-20.368,-40.676,São Paulo
+-32.064,-52.196,São Paulo
+-20.193,-52.135,São Paulo
+-21.858,-42.282,São Paulo
+-18.021,-52.485,São Paulo
+-24.284,-49.935,São Paulo
+-24.026,-47.318,São Paulo
+-24.384,-42.719,São Paulo
+-30.706,-47.931,São Paulo
+-23.791,-47.476,São Paulo
+-19.666,-51.555,São Paulo
+-25.457,-49.468,São Paulo
+-28.082,-41.103,São Paulo
+-25.807,-50.625,São Paulo
+-27.982,-47.411,São Paulo
+-25.952,-45.583,São Paulo
+-24.835,-42.515,São Paulo
+-28.969,-48.291,São Paulo
+-23.028,-40.009,São Paulo
+-19.81,-40.349,São Paulo
+-25.682,-44.095,São Paulo
+-23.718,-53.094,São Paulo
+-22.077,-41.217,São Paulo
+-29.07,-47.842,São Paulo
+-21.406,-43.165,São Paulo
+-25.008,-52.031,São Paulo
+-20.489,-42.086,São Paulo
+-27.142,-49.591,São Paulo
+-22.663,-44.315,São Paulo
+-20.601,-47.616,São Paulo
+-24.128,-46.411,São Paulo
+-20.945,-43.018,São Paulo
+-18.962,-46.79,São Paulo
+-28.591,-41.252,São Paulo
+-22.953,-43.914,São Paulo
+-28.734,-46.226,São Paulo
+-19.45,-52.374,São Paulo
+45.961,-0.463,Madrid
+40.384,-5.715,Madrid
+39.391,-14.869,Madrid
+42.281,-2.845,Madrid
+42.957,-6.825,Madrid
+44.724,-0.954,Madrid
+42.841,-6.89,Madrid
+41.913,-4.222,Madrid
+40.884,-11.599,Madrid
+41.044,1.878,Madrid
+42.869,-2.095,Madrid
+37.713,0.283,Madrid
+37.545,-5.112,Madrid
+35.467,-5.635,Madrid
+39.468,-1.201,Madrid
+39.756,-2.938,Madrid
+46.494,-8.271,Madrid
+42.134,-0.767,Madrid
+41.976,-0.585,Madrid
+41.985,-0.487,Madrid
+40.168,-5.343,Madrid
+38.823,-4.131,Madrid
+37.197,-9.751,Madrid
+43.525,-14.608,Madrid
+39.48,1.324,Madrid
+41.45,-5.34,Madrid
+41.219,0.951,Madrid
+53.482,1.024,Londres
+53.003,-6.31,Londres
+52.82,-1.327,Londres
+52.461,2.357,Londres
+52.85,-4.651,Londres
+50.018,-3.479,Londres
+45.094,0.467,Londres
+52.34,-4.458,Londres
+49.545,1.885,Londres
+54.062,0.126,Londres
+54.248,6.648,Londres
+48.87,-0.566,Londres
+50.519,-2.908,Londres
+51.636,-4.371,Londres
+52.091,-1.448,Londres
+50.362,-5.434,Londres
+54.892,-3.493,Londres
+49.212,0.058,Londres
+49.459,-3.142,Londres
+56.985,1.72,Londres
+54.465,-2.279,Londres
+51.862,2.706,Londres
+50.8,-5.943,Londres
+50.187,2.628,Londres
+45.763,5.885,Londres
+54.6,0.149,Londres
+50.277,2.543,Londres
+51.889,2.519,Londres
+46.351,1.38,Londres
+50.668,-2.269,Londres
+48.188,-1.38,Londres
+54.755,3.416,Londres
+54.192,-2.036,Londres
+51.422,3.908,Londres
+47.067,-4.313,Londres
+53.666,0.702,Londres
+52.639,2.995,Londres
+46.128,-1.943,Londres
+56.399,-3.811,Londres
+48.049,3.738,Londres
+54.239,-0.036,Londres
+44.323,-0.36,Londres
+49.641,3.129,Londres
+51.177,1.181,Londres
+49.79,-1.076,Londres
+48.182,-7.262,Londres
+49.861,-1.209,Londres
+53.179,4.652,Londres
+48.34,-1.012,Londres
+49.482,-1.479,Londres
+55.57,-3.477,Londres
+50.045,-0.103,Londres
+55.349,0.712,Londres
+48.634,-2.862,Londres
+51.153,-0.984,Londres
+51.755,-7.439,Londres
+51.746,0.419,Londres
+44.352,0.276,Londres
+47.768,-5.341,Londres
+53.133,-0.697,Londres
+49.786,-2.228,Londres
+52.883,4.197,Londres
+54.407,4.75,Londres
+50.97,-7.396,Londres
+51.118,2.975,Londres
+51.847,-3.311,París
+47.842,11.594,París
+47.315,4.167,París
+47.841,0.938,París
+46.818,-5.848,París
+47.193,3.108,París
+47.803,8.384,París
+49.918,-0.057,París
+58.582,1.902,París
+47.545,7.811,París
+45.375,-1.216,París
+44.872,4.485,París
+49.56,1.248,París
+52.31,-0.152,París
+49.478,-0.32,París
+53.211,5.206,París
+47.871,-2.243,París
+50.511,1.558,París
+51.28,-0.754,París
+51.961,4.961,París
+50.326,1.877,París
+50.588,0.136,París
+50.041,1.597,París
+45.62,-4.933,París
+46.8,-2.65,París
+49.178,-1.498,París
+48.099,1.447,París
+48.117,5.833,París
+52.245,1.106,París
+30.545,32.922,El Cairo
+29.359,28.592,El Cairo
+28.574,35.003,El Cairo
+31.403,25.233,El Cairo
+31.867,29.331,El Cairo
+35.965,31.43,El Cairo
+32.608,33.057,El Cairo
+32.39,30.236,El Cairo
+36.402,33.007,El Cairo
+27.471,32.848,El Cairo
+28.405,28.8,El Cairo
+29.592,22.324,El Cairo
+34.214,32.228,El Cairo
+29.417,27.803,El Cairo
+33.147,28.425,El Cairo
+31.476,30.898,El Cairo
+30.392,29.863,El Cairo
+30.674,27.094,El Cairo
+29.816,37.293,El Cairo
+24.69,28.711,El Cairo
+32.894,28.334,El Cairo
+33.419,28.116,El Cairo
+32.515,25.131,El Cairo
+32.873,29.447,El Cairo
+30.502,30.897,El Cairo
+33.671,33.237,El Cairo
+35.519,29.327,El Cairo
+28.337,21.862,El Cairo
+32.429,29.951,El Cairo
+31.318,31.972,El Cairo
+27.916,34.901,El Cairo
+29.932,28.228,El Cairo
+28.954,29.657,El Cairo
+34.085,33.74,El Cairo
+27.722,35.432,El Cairo
+29.89,23.401,El Cairo
+25.645,26.373,El Cairo
+35.49,28.75,El Cairo
+26.662,29.774,El Cairo
+32.284,25.42,El Cairo
+29.189,36.563,El Cairo
+30.043,32.827,El Cairo
+29.4,33.935,El Cairo
+28.573,29.255,El Cairo
+27.173,34.721,El Cairo
+27.568,32.434,El Cairo
+33.157,31.096,El Cairo
+26.69,39.811,El Cairo
+32.149,34.69,El Cairo
+29.575,37.581,El Cairo
+33.993,31.624,El Cairo
+33.563,30.777,El Cairo
+29.727,27.422,El Cairo
+27.263,30.727,El Cairo
+25.008,34.027,El Cairo
+31.774,33.955,El Cairo
+27.447,30.508,El Cairo
+1.943,39.046,Nairobi
+3.343,35.859,Nairobi
+-1.607,42.561,Nairobi
+-2.977,38.477,Nairobi
+-4.131,36.943,Nairobi
+-5.228,40.143,Nairobi
+1.088,41.658,Nairobi
+-3.581,32.874,Nairobi
+0.576,39.175,Nairobi
+-0.99,38.342,Nairobi
+-6.32,31.125,Nairobi
+0.589,35.499,Nairobi
+1.072,37.386,Nairobi
+-4.114,38.014,Nairobi
+-3.71,30.624,Nairobi
+-4.321,36.33,Nairobi
+-4.691,34.789,Nairobi
+-3.205,43.475,Nairobi
+-1.684,35.33,Nairobi
+-2.308,37.448,Nairobi
+0.74,31.684,Nairobi
+-1.825,35.822,Nairobi
+1.402,34.61,Nairobi
+-3.377,33.679,Nairobi
+-0.152,47.58,Nairobi
+0.208,41.722,Nairobi
+0.46,33.837,Nairobi
+-1.783,40.83,Nairobi
+-1.07,32.043,Nairobi
+-2.17,27.787,Nairobi
+-3.182,40.297,Nairobi
+1.373,39.872,Nairobi
+1.067,36.041,Nairobi
+-3.205,38.991,Nairobi
+-0.481,38.798,Nairobi
+5.687,35.659,Nairobi
+0.958,43.804,Nairobi
+-2.792,36.198,Nairobi
+4.256,36.086,Nairobi
+0.447,37.144,Nairobi
+-4.113,40.972,Nairobi
+-0.84,29.625,Nairobi
+-2.311,37.32,Nairobi
+-4.895,37.234,Nairobi
+-3.583,36.942,Nairobi
+-8.128,32.181,Nairobi
+-1.069,34.819,Nairobi
+-4.401,34.043,Nairobi
+0.957,34.685,Nairobi
+-4.373,37.072,Nairobi
+1.597,37.098,Nairobi
+1.14,36.091,Nairobi
+-31.821,25.616,Ciudad del Cabo
+-30.348,14.428,Ciudad del Cabo
+-29.777,14.887,Ciudad del Cabo
+-36.128,14.846,Ciudad del Cabo
+-38.574,16.798,Ciudad del Cabo
+-35.856,18.384,Ciudad del Cabo
+-35.422,20.04,Ciudad del Cabo
+-32.869,10.316,Ciudad del Cabo
+-37.261,19.703,Ciudad del Cabo
+-34.338,26.949,Ciudad del Cabo
+-32.588,23.801,Ciudad del Cabo
+-31.986,19.118,Ciudad del Cabo
+-30.053,18.845,Ciudad del Cabo
+-39.24,21.076,Ciudad del Cabo
+-35.425,16.604,Ciudad del Cabo
+-35.189,21.656,Ciudad del Cabo
+-34.26,19.507,Ciudad del Cabo
+-32.581,14.304,Ciudad del Cabo
+-28.606,17.376,Ciudad del Cabo
+-34.886,14.919,Ciudad del Cabo
+-34.546,17.914,Ciudad del Cabo
+-28.012,17.238,Ciudad del Cabo
+-37.335,15.826,Ciudad del Cabo
+-32.099,17.076,Ciudad del Cabo
+-34.257,13.519,Ciudad del Cabo
+-33.098,19.754,Ciudad del Cabo
+-40.519,19.419,Ciudad del Cabo
+-34.527,20.312,Ciudad del Cabo
+-34.166,15.681,Ciudad del Cabo
+-32.961,16.869,Ciudad del Cabo
+-37.062,16.284,Ciudad del Cabo
+-35.854,18.186,Ciudad del Cabo
+-38.18,22.302,Ciudad del Cabo
+-31.912,6.9,Ciudad del Cabo
+-36.474,18.786,Ciudad del Cabo
+-35.522,18.863,Ciudad del Cabo
+-27.282,24.13,Ciudad del Cabo
+-34.127,20.564,Ciudad del Cabo
+-28.815,17.83,Ciudad del Cabo
+-40.178,15.682,Ciudad del Cabo
+-36.05,18.803,Ciudad del Cabo
+-34.243,15.272,Ciudad del Cabo
+-30.16,13.377,Ciudad del Cabo
+-35.507,25.572,Ciudad del Cabo
+-36.723,16.622,Ciudad del Cabo
+-33.096,20.509,Ciudad del Cabo
+-27.79,16.741,Ciudad del Cabo
+-33.496,20.381,Ciudad del Cabo
+-34.557,21.045,Ciudad del Cabo
+-34.608,19.933,Ciudad del Cabo
+-32.289,10.107,Ciudad del Cabo
+-32.959,23.019,Ciudad del Cabo
+-36.927,13.729,Ciudad del Cabo
+-28.687,16.87,Ciudad del Cabo
+-34.937,24.976,Ciudad del Cabo
+-35.291,25.153,Ciudad del Cabo
+-35.636,22.823,Ciudad del Cabo
+-38.533,23.21,Ciudad del Cabo
+57.208,38.598,Moscú
+55.162,35.486,Moscú
+57.394,31.72,Moscú
+53.771,34.608,Moscú
+56.69,36.588,Moscú
+53.455,31.275,Moscú
+55.332,35.166,Moscú
+59.228,34.469,Moscú
+59.505,37.594,Moscú
+51.392,44.794,Moscú
+54.961,36.714,Moscú
+54.597,37.892,Moscú
+58.598,37.525,Moscú
+50.734,35.939,Moscú
+53.358,41.807,Moscú
+53.364,39.136,Moscú
+60.374,41.706,Moscú
+54.792,37.531,Moscú
+59.94,36.861,Moscú
+53.277,38.625,Moscú
+51.231,42.949,Moscú
+58.951,36.618,Moscú
+56.553,39.817,Moscú
+57.855,33.646,Moscú
+53.608,37.21,Moscú
+57.443,36.655,Moscú
+53.536,39.776,Moscú
+55.168,36.94,Moscú
+54.198,36.328,Moscú
+56.239,44.802,Moscú
+57.119,44.483,Moscú
+52.815,43.765,Moscú
+55.713,37.317,Moscú
+49.901,41.619,Moscú
+59.573,42.844,Moscú
+54.266,39.75,Moscú
+53.921,42.116,Moscú
+55.931,40.74,Moscú
+53.185,37.659,Moscú
+53.37,42.008,Moscú
+57.901,35.578,Moscú
+60.223,35.084,Moscú
+53.033,41.981,Moscú
+55.236,29.799,Moscú
+49.807,32.103,Moscú
+52.516,36.507,Moscú
+55.864,34.998,Moscú
+52.223,40.745,Moscú
+54.573,33.591,Moscú
+58.011,37.83,Moscú
+51.838,43.602,Moscú
+55.452,37.869,Moscú
+50.681,37.872,Moscú
+60.381,39.723,Moscú
+59.196,41.585,Moscú
+14.2,70.559,Bombay
+21.261,69.407,Bombay
+21.148,75.282,Bombay
+15.737,70.385,Bombay
+20.853,71.907,Bombay
+17.611,75.845,Bombay
+19.148,73.955,Bombay
+18.936,70.274,Bombay
+15.187,72.857,Bombay
+11.638,70.48,Bombay
+17.052,73.827,Bombay
+14.192,76.408,Bombay
+17.449,77.008,Bombay
+22.172,72.173,Bombay
+18.653,72.689,Bombay
+19.332,74.058,Bombay
+18.596,71.135,Bombay
+19.798,74.319,Bombay
+18.442,70.89,Bombay
+14.66,82.761,Bombay
+20.747,72.362,Bombay
+27.312,78.541,Bombay
+17.483,76.308,Bombay
+18.916,69.116,Bombay
+20.778,72.399,Bombay
+16.702,74.98,Bombay
+16.983,67.228,Bombay
+15.549,72.138,Bombay
+16.081,78.577,Bombay
+19.552,68.08,Bombay
+20.753,68.044,Bombay
+18.328,62.276,Bombay
+18.3,73.241,Bombay
+25.143,78.424,Bombay
+15.738,74.381,Bombay
+24.943,69.811,Bombay
+21.956,74.048,Bombay
+16.593,76.06,Bombay
+14.2,78.628,Bombay
+22.696,70.502,Bombay
+21.142,71.762,Bombay
+15.489,75.094,Bombay
+19.294,70.887,Bombay
+18.671,66.63,Bombay
+18.52,70.4,Bombay
+18.702,74.888,Bombay
+12.447,80.29,Bombay
+12.379,68.189,Bombay
+17.709,74.622,Bombay
+18.021,70.214,Bombay
+16.89,74.063,Bombay
+17.74,73.351,Bombay
+22.569,72.626,Bombay
+18.016,70.461,Bombay
+20.013,75.898,Bombay
+17.994,70.35,Bombay
+21.937,71.755,Bombay
+19.316,72.292,Bombay
+20.115,69.758,Bombay
+16.056,76.03,Bombay
+23.805,76.993,Bombay
+20.002,70.223,Bombay
+22.107,75.754,Bombay
+21.239,70.879,Bombay
+24.024,73.193,Bombay
+16.582,68.834,Bombay
+40.189,118.237,Pekín
+38.189,112.435,Pekín
+35.297,117.699,Pekín
+38.825,122.401,Pekín
+35.306,106.451,Pekín
+39.133,115.081,Pekín
+40.504,123.083,Pekín
+36.706,122.178,Pekín
+45.421,110.001,Pekín
+38.752,112.854,Pekín
+36.572,111.748,Pekín
+38.761,113.201,Pekín
+35.242,118.882,Pekín
+42.045,119.408,Pekín
+46.896,118.828,Pekín
+42.707,120.904,Pekín
+41.242,119.959,Pekín
+41.491,121.367,Pekín
+40.747,120.613,Pekín
+34.117,120.227,Pekín
+39.007,115.414,Pekín
+36.745,120.474,Pekín
+39.999,114.887,Pekín
+39.358,121.539,Pekín
+42.816,119.212,Pekín
+38.653,125.45,Pekín
+36.921,112.761,Pekín
+42.484,107.743,Pekín
+35.382,117.528,Pekín
+42.821,114.166,Pekín
+35.135,111.093,Pekín
+41.753,119.253,Pekín
+39.626,115.958,Pekín
+39.866,118.378,Pekín
+40.392,113.022,Pekín
+43.907,108.827,Pekín
+45.264,117.78,Pekín
+42.729,122.399,Pekín
+34.251,110.533,Pekín
+42.406,115.767,Pekín
+34.747,111.581,Pekín
+45.898,115.853,Pekín
+37.704,125.984,Pekín
+39.092,117.893,Pekín
+36.864,118.513,Pekín
+43.335,114.533,Pekín
+38.05,117.707,Pekín
+42.992,119.856,Pekín
+35.451,140.9,Tokio
+36.527,135.468,Tokio
+34.608,140.609,Tokio
+35.937,143.301,Tokio
+35.593,146.481,Tokio
+33.977,135.657,Tokio
+36.395,138.052,Tokio
+37.842,144.814,Tokio
+40.221,138.289,Tokio
+35.237,142.159,Tokio
+32.919,133.745,Tokio
+39.428,140.551,Tokio
+32.175,139.536,Tokio
+34.446,142.352,Tokio
+34.946,137.806,Tokio
+33.442,134.925,Tokio
+40.469,134.604,Tokio
+35.148,137.724,Tokio
+37.89,144.644,Tokio
+39.581,137.53,Tokio
+40.619,138.625,Tokio
+41.063,143.897,Tokio
+30.58,142.462,Tokio
+35.355,142.95,Tokio
+30.503,137.261,Tokio
+36.379,141.08,Tokio
+37.252,138.127,Tokio
+-33.206,147.365,Sídney
+-32.627,150.407,Sídney
+-34.734,147.091,Sídney
+-30.948,159.134,Sídney
+-33.977,153.162,Sídney
+-33.634,154.743,Sídney
+-32.523,155.406,Sídney
+-35.788,152.036,Sídney
+-32.991,151.457,Sídney
+-31.097,147.144,Sídney
+-30.026,141.135,Sídney
+-34.687,142.25,Sídney
+-35.652,153.68,Sídney
+-37.544,150.193,Sídney
+-32.725,151.563,Sídney
+-34.772,151.174,Sídney
+-32.285,150.867,Sídney
+-37.545,147.066,Sídney
+-31.166,152.633,Sídney
+-34.635,160.338,Sídney
+-31.377,147.88,Sídney
+-32.327,153.304,Sídney
+-33.53,148.893,Sídney
+-31.986,146.956,Sídney
+-38.187,151.607,Sídney
+-33.685,150.148,Sídney
+-34.516,159.042,Sídney
+-33.802,160.626,Sídney
+-32.519,152.023,Sídney
+-36.082,150.184,Sídney
+-33.37,143.127,Sídney
+-32.737,154.948,Sídney
+-33.4,150.406,Sídney
+-32.374,152.495,Sídney
+-32.15,156.335,Sídney
+-34.868,147.507,Sídney
+-35.395,152.195,Sídney
+-31.211,151.438,Sídney
+-35.845,155.646,Sídney
+-33.559,148.318,Sídney
+-32.948,152.945,Sídney
+-33.251,151.131,Sídney
+-36.339,145.007,Sídney
+-31.266,153.398,Sídney
+-34.899,151.695,Sídney
+-30.815,150.144,Sídney
+-34.584,148.327,Sídney
+-30.113,154.363,Sídney
+-35.318,150.55,Sídney
+-34.795,145.09,Sídney
+-37.036,144.668,Sídney
+-32.92,153.623,Sídney
+-33.2,147.692,Sídney
+-36.08,147.477,Sídney
+-38.051,149.778,Sídney
+-36.743,151.818,Sídney
+-32.449,143.981,Sídney
+-32.738,156.251,Sídney
+-35.271,150.768,Sídney
+-32.084,150.683,Sídney
+-34.998,156.487,Sídney
+-31.33,151.166,Sídney
+-27.744,150.752,Sídney
+-33.767,158.291,Sídney
