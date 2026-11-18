@@ -12,6 +12,21 @@ Tipos de entrada: **Añadido**, **Cambiado**, **Obsoleto**, **Eliminado**, **Cor
 
 _Nada todavía._
 
+## [1.0.1] - 2026-11-18
+
+Huella: [`huella/v1.0.1.json`](huella/v1.0.1.json). Versiones: aplicación 1.0.1 · `.sty` 1.0.0 (sin cambios) · esquema 1.
+
+### Corregido
+- `plantillas/catalogo-latex` y `plantillas/ejemplo-capas-latex` usan ahora la `postercientifico.sty` vigente (v1.0.0) en lugar de la copia antigua «v2.0». Ambas compilan; el catálogo mantiene las mismas 7 páginas que con la copia antigua.
+- `ejemplo_capas.tex` (plantilla y fuente en `herramientas/fuentes/`): la cabecera y el pie dicen «v1.0.0» en lugar de «v2».
+
+### Añadido
+- `tests/test_version.py`: comprueba que las versiones siguen SemVer, que `__version_sty__` coincide con `\ProvidesPackage`, que las copias de la `.sty` en las plantillas son idénticas a la vigente, que las plantillas usan el esquema actual, que la versión figura en el CHANGELOG y que `docs/API.md` está al día.
+
+### Problemas conocidos
+- Las miniaturas (`miniatura.png`) de las dos plantillas LaTeX no se regeneraron; el único cambio visible es el texto del pie de `ejemplo-capas-latex`.
+- El LEEME describe el catálogo como «de 6 páginas», pero en este entorno compila en 7, igual con la `.sty` antigua que con la vigente. [NO VERIFICADO] Puede deberse a la falta de separación de palabras en español en este TeX Live.
+
 ## [1.0.0] - 2026-11-18
 
 Línea base. Es la primera versión con versionado formal. Huella: [`huella/v1.0.0.json`](huella/v1.0.0.json).
@@ -47,11 +62,12 @@ Línea base. Es la primera versión con versionado formal. Huella: [`huella/v1.0
 - En `LEEME.md`, la cifra de pruebas pasa a 288 y se quita la referencia a la «v2» de la plantilla.
 
 ### Problemas conocidos
-- `plantillas/catalogo-latex` y `plantillas/ejemplo-capas-latex` llevan una copia antigua de `postercientifico.sty` (cabecera «v2.0», 2026/10/17) que difiere de `latex/postercientifico.sty`. `herramientas/construir_plantillas.py` las regenera.
+- ~~`plantillas/catalogo-latex` y `plantillas/ejemplo-capas-latex` llevan una copia antigua de `postercientifico.sty`.~~ Corregido en 1.0.1.
 - No hay migraciones del esquema del modelo: `modelo.normalizar()` solo completa los valores por defecto.
 - El proyecto no tiene archivo de licencia propio; solo están las licencias de las librerías incluidas en `static/vendor/`.
 - En un TeX Live sin `texlive-lang-spanish` ni `luatex85.sty` fallan 11 pruebas (las 9 de compilación de plantillas, una de la API y una de LuaLaTeX).
 - La API no tiene autenticación y los cuadernos ejecutan código arbitrario (ver `SECURITY.md`).
 
-[Sin publicar]: ../../compare/v1.0.0...HEAD
+[Sin publicar]: ../../compare/v1.0.1...HEAD
+[1.0.1]: ../../compare/v1.0.0...v1.0.1
 [1.0.0]: ../../releases/tag/v1.0.0

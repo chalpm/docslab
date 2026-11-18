@@ -1,0 +1,1764 @@
+{
+ "formato_huella": 1,
+ "producto": "DocsLab",
+ "versiones": {
+  "aplicacion": "1.0.1",
+  "postercientifico_sty": "1.0.0",
+  "esquema_modelo": 1
+ },
+ "generado_utc": "2026-11-18T15:17:56Z",
+ "contrato": {
+  "api": [
+   "DELETE /api/componentes/<cid>",
+   "DELETE /api/graficos/<gid>",
+   "DELETE /api/plantillas/<tid>",
+   "DELETE /api/proyectos/<pid>",
+   "DELETE /api/proyectos/<pid>/archivos/<path:ruta>",
+   "DELETE /api/proyectos/<pid>/cuadernos/<nb>",
+   "DELETE /api/proyectos/<pid>/fuentes",
+   "DELETE /api/proyectos/<pid>/recursos",
+   "GET /",
+   "GET /api/bibliografia/doi",
+   "GET /api/componentes",
+   "GET /api/componentes/<cid>",
+   "GET /api/componentes/<cid>/miniatura",
+   "GET /api/componentes/exportar",
+   "GET /api/componentes/vistas/<h>.pdf",
+   "GET /api/estado",
+   "GET /api/explorar",
+   "GET /api/graficos",
+   "GET /api/graficos/<gid>/miniatura",
+   "GET /api/lab/plotly.min.js",
+   "GET /api/plantillas",
+   "GET /api/plantillas/<tid>/exportar",
+   "GET /api/plantillas/<tid>/miniatura",
+   "GET /api/proyectos",
+   "GET /api/proyectos/<pid>",
+   "GET /api/proyectos/<pid>/archivos",
+   "GET /api/proyectos/<pid>/archivos/<path:ruta>",
+   "GET /api/proyectos/<pid>/bibliografia.bib",
+   "GET /api/proyectos/<pid>/compilacion",
+   "GET /api/proyectos/<pid>/cuadernos",
+   "GET /api/proyectos/<pid>/cuadernos/<nb>/archivos",
+   "GET /api/proyectos/<pid>/cuadernos/<nb>/celda-colab",
+   "GET /api/proyectos/<pid>/cuadernos/<nb>/celdas",
+   "GET /api/proyectos/<pid>/cuadernos/<nb>/ejecutado",
+   "GET /api/proyectos/<pid>/cuadernos/<nb>/figuras",
+   "GET /api/proyectos/<pid>/exportar",
+   "GET /api/proyectos/<pid>/f/<path:ruta>",
+   "GET /api/proyectos/<pid>/fuentes",
+   "GET /api/proyectos/<pid>/historial",
+   "GET /api/proyectos/<pid>/imprenta.pdf",
+   "GET /api/proyectos/<pid>/imprenta.png",
+   "GET /api/proyectos/<pid>/lab/<nb>",
+   "GET /api/proyectos/<pid>/lab/<nb>/estado",
+   "GET /api/proyectos/<pid>/latex",
+   "GET /api/proyectos/<pid>/miniatura",
+   "GET /api/proyectos/<pid>/pdf",
+   "GET /api/proyectos/<pid>/powerpoint.pptx",
+   "GET /api/proyectos/<pid>/recursos",
+   "GET /api/proyectos/<pid>/trabajos",
+   "GET /api/proyectos/<pid>/vista",
+   "GET /api/trabajos/<tid>",
+   "GET /api/variantes",
+   "GET /static/<path:ruta>",
+   "PATCH /api/plantillas/<tid>",
+   "PATCH /api/proyectos/<pid>",
+   "PATCH /api/proyectos/<pid>/cuadernos/<nb>",
+   "POST /api/bibliografia/formatear",
+   "POST /api/bibliografia/importar",
+   "POST /api/bibliografia/vista",
+   "POST /api/componentes",
+   "POST /api/componentes/<cid>/duplicar",
+   "POST /api/componentes/codigo",
+   "POST /api/componentes/importar",
+   "POST /api/componentes/recrear",
+   "POST /api/componentes/vista",
+   "POST /api/graficos",
+   "POST /api/graficos/generar",
+   "POST /api/graficos/probar",
+   "POST /api/plantillas",
+   "POST /api/proyectos",
+   "POST /api/proyectos/<pid>/ajustar",
+   "POST /api/proyectos/<pid>/archivos",
+   "POST /api/proyectos/<pid>/compilar",
+   "POST /api/proyectos/<pid>/convertir-latex",
+   "POST /api/proyectos/<pid>/cuadernos",
+   "POST /api/proyectos/<pid>/cuadernos/<nb>/datos",
+   "POST /api/proyectos/<pid>/cuadernos/<nb>/ejecutar",
+   "POST /api/proyectos/<pid>/cuadernos/<nb>/importar",
+   "POST /api/proyectos/<pid>/duplicar",
+   "POST /api/proyectos/<pid>/formato",
+   "POST /api/proyectos/<pid>/fuentes",
+   "POST /api/proyectos/<pid>/historial/<nombre>/restaurar",
+   "POST /api/proyectos/<pid>/imprenta",
+   "POST /api/proyectos/<pid>/lab/<nb>/<accion>",
+   "POST /api/proyectos/<pid>/lab/<nb>/ejecutar",
+   "POST /api/proyectos/<pid>/powerpoint",
+   "POST /api/proyectos/<pid>/recursos",
+   "POST /api/proyectos/<pid>/revisar",
+   "POST /api/proyectos/importar",
+   "POST /api/trabajos/<tid>/cancelar",
+   "PUT /api/componentes/<cid>",
+   "PUT /api/plantillas/<tid>",
+   "PUT /api/proyectos/<pid>/archivos/<path:ruta>",
+   "PUT /api/proyectos/<pid>/lab/<nb>",
+   "PUT /api/proyectos/<pid>/modelo"
+  ],
+  "variantes": [
+   "bibliografia",
+   "espacio",
+   "imgAncho",
+   "imgAnotada",
+   "imgCentro",
+   "imgCirculo",
+   "imgCollage",
+   "imgComparar",
+   "imgCuatro",
+   "imgDerecha",
+   "imgDetalle",
+   "imgDos",
+   "imgDosIzquierdaGrande",
+   "imgEnvueltaDerecha",
+   "imgEnvueltaIzquierda",
+   "imgGrandeDosDerecha",
+   "imgGrandeTresAbajo",
+   "imgInclinada",
+   "imgIzquierda",
+   "imgMarco",
+   "imgMiniatura",
+   "imgPanoramica",
+   "imgPieArriba",
+   "imgPieLateral",
+   "imgPieSobre",
+   "imgPila",
+   "imgRedondeada",
+   "imgRejilla",
+   "imgRejillaSeis",
+   "imgSombra",
+   "imgTextoDerecha",
+   "imgTextoIzquierda",
+   "imgTituloSobre",
+   "imgTres",
+   "latex",
+   "txtAsimetrico",
+   "txtBanda",
+   "txtCaja",
+   "txtCajaTitulo",
+   "txtCapitular",
+   "txtCentrado",
+   "txtCifra",
+   "txtCifras",
+   "txtCirculo",
+   "txtCitaBarra",
+   "txtCitaGrande",
+   "txtContacto",
+   "txtDefiniciones",
+   "txtDerecha",
+   "txtDosColumnas",
+   "txtDosColumnasFilete",
+   "txtEcuacion",
+   "txtEntradilla",
+   "txtEtiquetaMargen",
+   "txtInvertido",
+   "txtIzquierda",
+   "txtJustificado",
+   "txtLineaTiempo",
+   "txtNotaLateral",
+   "txtNumerada",
+   "txtPasos",
+   "txtRecuadro",
+   "txtReferencias",
+   "txtResaltado",
+   "txtSobreImagen",
+   "txtTabla",
+   "txtTresColumnas",
+   "txtVertical",
+   "txtVinetas"
+  ],
+  "estilos_caja": [
+   "barra",
+   "linea",
+   "caja",
+   "simple",
+   "borde",
+   "sombra",
+   "resaltado",
+   "invertido",
+   "contorno",
+   "cita",
+   "nota",
+   "ninguno"
+  ],
+  "estilos_bibliograficos": [
+   "acs",
+   "apa",
+   "chicago",
+   "harvard",
+   "ieee",
+   "mla",
+   "nature",
+   "vancouver"
+  ],
+  "clases_documento": [
+   "documento",
+   "paper",
+   "poster",
+   "presentacion",
+   "tesis"
+  ],
+  "tamanos": [
+   "100x140cm",
+   "16:10",
+   "16:9",
+   "24x36in",
+   "36x48in",
+   "42x56in",
+   "48x72in",
+   "4:3",
+   "70x100cm",
+   "90x120cm",
+   "A0",
+   "A1",
+   "A2",
+   "A3",
+   "A4",
+   "A5",
+   "B0",
+   "B1",
+   "B5",
+   "Carta",
+   "Oficio"
+  ],
+  "temas": [
+   "arena",
+   "azul",
+   "burdeos",
+   "ciruela",
+   "grafito",
+   "gris",
+   "morado",
+   "niebla",
+   "oscuro",
+   "pizarra",
+   "salvia",
+   "verde"
+  ],
+  "idiomas": [
+   "de",
+   "en",
+   "es",
+   "fr",
+   "it",
+   "pt"
+  ],
+  "familias_tipograficas": [
+   "atkinson",
+   "avantgarde",
+   "bookman",
+   "cabin",
+   "charter",
+   "crimson",
+   "ebgaramond",
+   "fira",
+   "helvetica",
+   "inter",
+   "lato",
+   "libertinus",
+   "merriweather",
+   "montserrat",
+   "notosans",
+   "notoserif",
+   "opensans",
+   "palatino",
+   "plexsans",
+   "plexserif",
+   "raleway",
+   "roboto",
+   "sourcesans",
+   "sourceserif",
+   "times"
+  ],
+  "plantillas_incluidas": {
+   "academico-a0": {
+    "tipo": "estructurado",
+    "clase": "poster"
+   },
+   "articulo-dos-columnas": {
+    "tipo": "estructurado",
+    "clase": "paper"
+   },
+   "bgc-en": {
+    "tipo": "estructurado",
+    "clase": "poster"
+   },
+   "bgc-es": {
+    "tipo": "estructurado",
+    "clase": "poster"
+   },
+   "capas-a1": {
+    "tipo": "estructurado",
+    "clase": "poster"
+   },
+   "catalogo-latex": {
+    "tipo": "latex",
+    "clase": "poster"
+   },
+   "ejemplo-capas-latex": {
+    "tipo": "latex",
+    "clase": "poster"
+   },
+   "horizontal-48x36": {
+    "tipo": "estructurado",
+    "clase": "poster"
+   },
+   "informe-a4": {
+    "tipo": "estructurado",
+    "clase": "documento"
+   },
+   "minima-a1": {
+    "tipo": "estructurado",
+    "clase": "poster"
+   },
+   "presentacion-16x9": {
+    "tipo": "estructurado",
+    "clase": "presentacion"
+   },
+   "tesis-generica": {
+    "tipo": "estructurado",
+    "clase": "tesis"
+   }
+  }
+ },
+ "dependencias": [
+  "flask>=2.3",
+  "ipykernel>=6.0",
+  "kaleido>=0.2.1",
+  "matplotlib>=3.6",
+  "nbclient>=0.7",
+  "nbformat>=5.7",
+  "pandas>=1.5",
+  "pillow>=9.0",
+  "plotly>=5.18",
+  "python-pptx>=0.6.21",
+  "seaborn>=0.13"
+ ],
+ "pruebas": {
+  "funciones_por_archivo": {
+   "test_api.py": 11,
+   "test_bibliografia.py": 17,
+   "test_clases.py": 9,
+   "test_componentes.py": 11,
+   "test_fuentes.py": 7,
+   "test_generador.py": 14,
+   "test_lab.py": 7,
+   "test_motores.py": 6,
+   "test_powerpoint.py": 9,
+   "test_revision.py": 11,
+   "test_texto.py": 6,
+   "test_version.py": 6
+  },
+  "total_funciones": 114,
+  "nota": "funciones def test_; pytest las expande con parametrize"
+ },
+ "codigo": {
+  "lineas_por_archivo": {
+   "docslab/__init__.py": 7,
+   "docslab/almacen.py": 661,
+   "docslab/app.py": 1189,
+   "docslab/bibliografia.py": 1837,
+   "docslab/compilador.py": 624,
+   "docslab/componentes.py": 1052,
+   "docslab/cuadernos.py": 502,
+   "docslab/fuentes.py": 172,
+   "docslab/generador.py": 1183,
+   "docslab/graficos.py": 556,
+   "docslab/lab.py": 540,
+   "docslab/modelo.py": 815,
+   "docslab/powerpoint.py": 584,
+   "docslab/revision.py": 1147,
+   "docslab/texto.py": 148,
+   "docslab/trabajos.py": 116,
+   "docslab/variantes.py": 360,
+   "static/js/api.js": 79,
+   "static/js/app.js": 90,
+   "static/js/arbol.js": 215,
+   "static/js/campos.js": 521,
+   "static/js/cuaderno.js": 863,
+   "static/js/cuadernos.js": 355,
+   "static/js/dibujos.js": 200,
+   "static/js/directa.js": 231,
+   "static/js/editor.js": 1064,
+   "static/js/iconos.js": 80,
+   "static/js/inicio.js": 412,
+   "static/js/inspector.js": 849,
+   "static/js/lab.js": 840,
+   "static/js/latex.js": 189,
+   "static/js/modeloed.js": 246,
+   "static/js/powerpoint.js": 88,
+   "static/js/recursos.js": 88,
+   "static/js/referencias.js": 573,
+   "static/js/registro.js": 102,
+   "static/js/revision.js": 326,
+   "static/js/tienda.js": 80,
+   "static/js/tipografias.js": 155,
+   "static/js/util.js": 106,
+   "static/js/variantes.js": 92,
+   "static/js/vista.js": 360,
+   "static/css/app.css": 993,
+   "latex/postercientifico.sty": 1857,
+   "servidor.py": 116
+  },
+  "total_lineas": 22663
+ },
+ "archivos": {
+  "total": 336,
+  "sha256_global": "800b05694d5fe90ce873764c5a733ddcbeef1d2f4cb4421e973b8287c09b37d7",
+  "detalle": {
+   ".gitignore": {
+    "sha256": "c1bbf6dfa6ba24aa6db4676055cb8e1492ed971fa9ada1fe33d66d53809c913a",
+    "bytes": 80
+   },
+   "CHANGELOG.md": {
+    "sha256": "5f42609a7bbf125668288503559d1fbb9224306f49081fb13c9e953367414c0d",
+    "bytes": 4952
+   },
+   "LEEME.md": {
+    "sha256": "4e552b38471c1e90533dfe98c0138ef7f3bc99370d1c45175179f8989fe5f7c7",
+    "bytes": 32815
+   },
+   "SECURITY.md": {
+    "sha256": "2d6a28c7143a49183ff225ee7c0c812738e952cf6e6570ceca27d19258bbc51f",
+    "bytes": 1688
+   },
+   "abrir_docslab_en_colab.ipynb": {
+    "sha256": "44fd22095dc4fa2ae051254c8c650c8c4a18734aa4e28a531cbbb67a87f52311",
+    "bytes": 6706
+   },
+   "docs/API.md": {
+    "sha256": "e657fe51d3d22b905b7f20a628bfd05ec5bee214d4e5ed0a3517a1efc6a4e3eb",
+    "bytes": 9157
+   },
+   "docs/ARQUITECTURA.md": {
+    "sha256": "0a831605deb101521a396ebd499679001b9638a49f08af0d0c3c4cfd3b9df496",
+    "bytes": 6504
+   },
+   "docs/FUNCIONAL.md": {
+    "sha256": "52c46fb159fe89dc56f051c25cd452ef32407e2bbfd7bba2ad0384c94f7a8067",
+    "bytes": 13055
+   },
+   "docs/README.md": {
+    "sha256": "3625cefd4414f33976f5673f010be11cc8195fe8f12df48db91d792615058f85",
+    "bytes": 818
+   },
+   "docs/VERSIONADO.md": {
+    "sha256": "03b8ee53330927ca41f63ac67a0ff59950be7ba4d8153c8c142dd60d0d4ebc56",
+    "bytes": 5260
+   },
+   "docslab/__init__.py": {
+    "sha256": "0b1e5eb69a31faeea609e7aa2e83713ad7d47ee74cb2f84ea028988366d571b0",
+    "bytes": 236
+   },
+   "docslab/almacen.py": {
+    "sha256": "7c19fd6a209b1cd8f97530e7e4d9cc8978cab103cbf170ca8de762d7ebaa445e",
+    "bytes": 29861
+   },
+   "docslab/app.py": {
+    "sha256": "b7d2a9eaf6377bc113dfbd68ded621328f887f852fb59646631ede1a49eb2efe",
+    "bytes": 56608
+   },
+   "docslab/bibliografia.py": {
+    "sha256": "74ec568870cb5d9d46fa827b09941440a308010e77923393163cc42d7936d429",
+    "bytes": 76344
+   },
+   "docslab/compilador.py": {
+    "sha256": "f9066bfcf457b37c020db21ef5afa37c94afffb88ca836487c35689ae8ebe8e0",
+    "bytes": 29328
+   },
+   "docslab/componentes.py": {
+    "sha256": "cff892738ea6eeb6d01a7e39fe3f0dd6a2e68147e1952aab2c58c0fdc4138e39",
+    "bytes": 47069
+   },
+   "docslab/cuadernos.py": {
+    "sha256": "bb8f01084acbe77dddf2cda47053db48b82303a4eba7204a1bbc939e26b1339b",
+    "bytes": 21288
+   },
+   "docslab/datos_ejemplo/ejemplo.csv": {
+    "sha256": "7c4153549cc3a43e533849bd0ab0febf5899c309e316b0f45d1eeac6f1d39db8",
+    "bytes": 2341
+   },
+   "docslab/fuentes.py": {
+    "sha256": "d3e9ee55af318a23712a8cdc920fcde364e41df16eea4e01cc317ff9e039abbe",
+    "bytes": 7519
+   },
+   "docslab/generador.py": {
+    "sha256": "f5f68cff6d25ebf9c1bdb9831d7823055515da875b93bf17d4d6c3f2e4dd351f",
+    "bytes": 53096
+   },
+   "docslab/graficos.py": {
+    "sha256": "b9fa44f7c3a2334f0881c29b9ceeb637bbd401ad98c66ef3d644aeb4b481f65a",
+    "bytes": 26994
+   },
+   "docslab/lab.py": {
+    "sha256": "3c0dfc4bc159acb5f2dcbaa6d5919195a43df5d868957658225eb66d78d497c9",
+    "bytes": 23143
+   },
+   "docslab/modelo.py": {
+    "sha256": "da31ee76e73e63b8ad0b2997a5ea3a02e4c4757acf0c70ca720da4268ed35106",
+    "bytes": 43472
+   },
+   "docslab/powerpoint.py": {
+    "sha256": "b073e53406652244459e97746f4cfd995cee7a6540d3c9df60be587fe1012489",
+    "bytes": 28559
+   },
+   "docslab/revision.py": {
+    "sha256": "23dc918a2860e61244e4bc566459e75407775e942908c33937a8c462e559f5b9",
+    "bytes": 60069
+   },
+   "docslab/texto.py": {
+    "sha256": "ee198957b4377cbcd5c8d81caa0ac5493ebf921a5532a9f6ddf3644b973c8a22",
+    "bytes": 5009
+   },
+   "docslab/trabajos.py": {
+    "sha256": "6f97d6e21261e7587793a043fdb6e0c824419384ea906bde6e3b5e842e4aa486",
+    "bytes": 4628
+   },
+   "docslab/variantes.py": {
+    "sha256": "f463b645e656e8eb27fef463d024d3dbf1d6bceeab343fc46751dd732bdfee7b",
+    "bytes": 28459
+   },
+   "herramientas/construir_graficos.py": {
+    "sha256": "3bdb6d1abf4a0653e0f8933b02a39aeb3c2c1f990c67d74f989aca226121edbe",
+    "bytes": 1348
+   },
+   "herramientas/construir_plantillas.py": {
+    "sha256": "1f7c57c92b00e186fc40ef2b60e15e37fcf9d6202dacfd32cb55f62994df5ccf",
+    "bytes": 52924
+   },
+   "herramientas/crear_lanzador_colab.py": {
+    "sha256": "4b960dbc46c7dde2e0c3a35a9687bb70bddb0e57e3604d48ac5946d97b864201",
+    "bytes": 5370
+   },
+   "herramientas/doc_api.py": {
+    "sha256": "08674ac6054a71ac2bf7f52fcc59ff9a772e0cffe9674a8ae3ca3a3f4543af9c",
+    "bytes": 4257
+   },
+   "herramientas/empaquetar.py": {
+    "sha256": "e8e7b7177ed14962a2a9384e98dd86f345829b3c84ac04dd7c0c83b41df49502",
+    "bytes": 3693
+   },
+   "herramientas/fuentes/bgc_en/1.3_bgcs_per_class.pdf": {
+    "sha256": "d1591975c7b46787cfa277e566265e6d2505460d1d9d44cba5b6824f775969de",
+    "bytes": 26457
+   },
+   "herramientas/fuentes/bgc_en/1.5_a_tsne_by_class.pdf": {
+    "sha256": "4b3bc96d509bd5bb834390d0ddcdc3678d93f2737717df7840b7bb06b7a4aa40",
+    "bytes": 79665
+   },
+   "herramientas/fuentes/bgc_en/2.2_feature_selection_curve.pdf": {
+    "sha256": "3fa8be2ae0f28a38f9d637fb19c624507ec54a7dda86970537c820ac62c142c0",
+    "bytes": 32006
+   },
+   "herramientas/fuentes/bgc_en/3.2_confusion_matrix_test.pdf": {
+    "sha256": "26d0678344ec057aa2a96389de65e43f8e23ca5ffe21bcff597aea48fd51a9fa",
+    "bytes": 28854
+   },
+   "herramientas/fuentes/bgc_en/4.1_a_groups_tsne.pdf": {
+    "sha256": "8a37f7735c5763e4b875ce913e1650439974945879133f4315e4e7e99f8b617e",
+    "bytes": 52272
+   },
+   "herramientas/fuentes/bgc_en/4.2_b_decision_tree.pdf": {
+    "sha256": "50ef5e6c5fd12aa6bbbccbbcf53169bd5fcfc0ab07aa3218c785f5e08a2ce040",
+    "bytes": 32414
+   },
+   "herramientas/fuentes/bgc_en/5.1_cluster_domain_heatmap.pdf": {
+    "sha256": "a4481ef7745c700d65510fdcdc6a92d4c80a206ba584f519bcdb066f7624d89e",
+    "bytes": 72204
+   },
+   "herramientas/fuentes/bgc_en/5.3_a_repeated_genes.pdf": {
+    "sha256": "4f32a6bdffe8a0abdf22076a4e4231cc91d944a76abb3e462b35e6e3391c4480",
+    "bytes": 37514
+   },
+   "herramientas/fuentes/bgc_en/5.4_a_synteny_matrix.pdf": {
+    "sha256": "572a18429d70047aea73f1b3dc1f135e59f43a0ef6bcabfebe29c4b15308e194",
+    "bytes": 64921
+   },
+   "herramientas/fuentes/bgc_en/5.5_alignment_terpene_locus1.pdf": {
+    "sha256": "80b7428941435aecedea3d5d56ed66f6345164ba3dccc052d422d5d97cb4e070",
+    "bytes": 77619
+   },
+   "herramientas/fuentes/bgc_es/1.3_bgcs_por_clase.pdf": {
+    "sha256": "85c963fd133d0ba57058202bb6fa35468a1fe41b15ee0875299c265ea150cf25",
+    "bytes": 26872
+   },
+   "herramientas/fuentes/bgc_es/1.5_a_tsne_por_clase.pdf": {
+    "sha256": "eb9af50a34c07ccade9ece303406488fbbb3fbd2d46e5fb5fcd8629b7108ece8",
+    "bytes": 78202
+   },
+   "herramientas/fuentes/bgc_es/2.2_curva_seleccion_dominios.pdf": {
+    "sha256": "dcc97a7cf1347775d359e70e23935e0507ef8bafcf2404d7d2a8f7656d9d5e11",
+    "bytes": 34024
+   },
+   "herramientas/fuentes/bgc_es/3.2_matriz_confusion_prueba.pdf": {
+    "sha256": "16c7e9754caba0c4fccac059fbba12054e70bab59ad0ac10a752bbf4606c38d2",
+    "bytes": 29835
+   },
+   "herramientas/fuentes/bgc_es/4.1_a_grupos_tsne.pdf": {
+    "sha256": "b342c4fc509ba0637197607945aa10c7d5f032842635c58eea615836a95b842f",
+    "bytes": 52499
+   },
+   "herramientas/fuentes/bgc_es/4.2_b_arbol_decision.pdf": {
+    "sha256": "2e533259ad3b9382795db0903385aeb58803d56d0ac9b1c5917b0573bc5c231d",
+    "bytes": 34002
+   },
+   "herramientas/fuentes/bgc_es/5.1_mapa_calor_clusters_dominios.pdf": {
+    "sha256": "127fcc1ff26fd0128a80a90126cd157c5243307b9936d408e33b2275ec2e0fea",
+    "bytes": 73191
+   },
+   "herramientas/fuentes/bgc_es/5.3_a_genes_repetidos.pdf": {
+    "sha256": "3ba2b428c4c55f3108a5fc635efef400580598c574f9262da844f42001fdf6b3",
+    "bytes": 39164
+   },
+   "herramientas/fuentes/bgc_es/5.4_a_matriz_sintenia.pdf": {
+    "sha256": "8184e4ff83bd7ec5019cbc3f622cf530da4fb7641ab839a06ebdba0a3727a741",
+    "bytes": 65407
+   },
+   "herramientas/fuentes/bgc_es/5.5_alineamiento_terpene_locus1.pdf": {
+    "sha256": "9488ba2d3b877138e0dcc11c35d5c5d3a4150a66f21f63f52e9aece250ec64f2",
+    "bytes": 78227
+   },
+   "herramientas/fuentes/catalogo.tex": {
+    "sha256": "f1d1948b2fb7456970d4c1c7cc73a3abcdc3f154bc670221f595e326e76d5d19",
+    "bytes": 48150
+   },
+   "herramientas/fuentes/ejemplo_capas.tex": {
+    "sha256": "66fa1970296615762024ea94cdf2672b91e1351f9b61b37a4d2ffc878462e5fd",
+    "bytes": 5744
+   },
+   "herramientas/fuentes/img/logo1.png": {
+    "sha256": "925911cc192bb933f893a39602a9a3a07363828cd4c13175d301354b33d04ee6",
+    "bytes": 15602
+   },
+   "herramientas/fuentes/img/logo2.png": {
+    "sha256": "41102351608759fc1612f76f5c624c8d6e48243dbced90be75737e4bbf9c13d1",
+    "bytes": 15190
+   },
+   "herramientas/fuentes/img/prueba1.png": {
+    "sha256": "f682c9318f3f982964197677cd29eef41f7a7947b5191df830dcbec7c04d9b55",
+    "bytes": 118761
+   },
+   "herramientas/fuentes/img/prueba2.png": {
+    "sha256": "3ff765afd719d7b6efc836b32778f2e838d467a086c33decef1c915815884933",
+    "bytes": 148499
+   },
+   "herramientas/fuentes/img/prueba3.png": {
+    "sha256": "a436859b7b865bc20a39adc5aa6662bc3c8d0c96aaae899c29790ab1ee81e6fb",
+    "bytes": 128810
+   },
+   "herramientas/fuentes/img/prueba4.png": {
+    "sha256": "1ce934ea5bd2ba04bc4b6a4946c9e286f0f26f619ce9925e6b5fd480c13862a2",
+    "bytes": 116021
+   },
+   "herramientas/fuentes/img/prueba5.png": {
+    "sha256": "7dbb8e2ee9772db793924255ca1c67439eb35a00d977107bfb54e8c12b306442",
+    "bytes": 152108
+   },
+   "herramientas/fuentes/img/prueba6.png": {
+    "sha256": "67cb9ea3007532d4d2954dc982fbe109fbb44c6610343b1fc66f040550f35b8b",
+    "bytes": 126580
+   },
+   "herramientas/fuentes/img/qr_prueba.png": {
+    "sha256": "2b87fa4c640da9fe5519541e5017f76e2027ec89e44aa131476a2b3ccd2125b4",
+    "bytes": 3806
+   },
+   "herramientas/fuentes/modelo_bgc_pfam_en.ipynb": {
+    "sha256": "c0f062afec2398ab830e2d11294e063a88c123f00594875abe4697339fad6273",
+    "bytes": 245889
+   },
+   "herramientas/fuentes/modelo_bgc_pfam_es.ipynb": {
+    "sha256": "fe4cd3eda35a26d5d4aab538a66127ad796631c1d183bfb7bfab76bdf015c6ab",
+    "bytes": 252027
+   },
+   "herramientas/huella.py": {
+    "sha256": "431c6903e8b95d315c06f81211e5f40fd193e3f529011fdb1b8c9dc10dde7298",
+    "bytes": 8248
+   },
+   "herramientas/imagenes_prueba.py": {
+    "sha256": "afa922176c8eff986aa7898152d5292030fa8e148187d9ea7afd17720843afcd",
+    "bytes": 3499
+   },
+   "herramientas/miniaturas_variantes.py": {
+    "sha256": "532067c1716ee5d6a67f42e5fa9bccbaae96e3e0fc39add1140af93c6c5a7d76",
+    "bytes": 5716
+   },
+   "iniciar.bat": {
+    "sha256": "7594f966cd757d124d61fc01e98203f8b4d38e49d8e60fd82e6e1c190a4f2cce",
+    "bytes": 2489
+   },
+   "iniciar.command": {
+    "sha256": "fb6928a6e048af5d8f8a7eda5a8e3e326b7b980dfe7203a35c705c4152620b3c",
+    "bytes": 2539
+   },
+   "latex/postercientifico.sty": {
+    "sha256": "92a72cb853db6983abd4f7b6370bac5d6a69edc0536602a64299516c5d89cccb",
+    "bytes": 124447
+   },
+   "plantillas/academico-a0/miniatura.png": {
+    "sha256": "b9693e9f159a122bd2d484d5d63bd1dfc6d55bba9b2588bf76fd8ed6db64d587",
+    "bytes": 121725
+   },
+   "plantillas/academico-a0/modelo.json": {
+    "sha256": "a68fb1f70d166241163016e07da66f32579851d25f1575131c9c82becaf4b599",
+    "bytes": 15124
+   },
+   "plantillas/academico-a0/plantilla.json": {
+    "sha256": "c6913839a1c0b56915b685fdbe3afee6bb825aa74c1aebb0d87c2c3aa53a198a",
+    "bytes": 283
+   },
+   "plantillas/academico-a0/recursos/logo1.png": {
+    "sha256": "925911cc192bb933f893a39602a9a3a07363828cd4c13175d301354b33d04ee6",
+    "bytes": 15602
+   },
+   "plantillas/academico-a0/recursos/logo2.png": {
+    "sha256": "41102351608759fc1612f76f5c624c8d6e48243dbced90be75737e4bbf9c13d1",
+    "bytes": 15190
+   },
+   "plantillas/academico-a0/recursos/prueba1.png": {
+    "sha256": "f682c9318f3f982964197677cd29eef41f7a7947b5191df830dcbec7c04d9b55",
+    "bytes": 118761
+   },
+   "plantillas/academico-a0/recursos/prueba2.png": {
+    "sha256": "3ff765afd719d7b6efc836b32778f2e838d467a086c33decef1c915815884933",
+    "bytes": 148499
+   },
+   "plantillas/academico-a0/recursos/prueba3.png": {
+    "sha256": "a436859b7b865bc20a39adc5aa6662bc3c8d0c96aaae899c29790ab1ee81e6fb",
+    "bytes": 128810
+   },
+   "plantillas/academico-a0/recursos/prueba4.png": {
+    "sha256": "1ce934ea5bd2ba04bc4b6a4946c9e286f0f26f619ce9925e6b5fd480c13862a2",
+    "bytes": 116021
+   },
+   "plantillas/academico-a0/recursos/prueba5.png": {
+    "sha256": "7dbb8e2ee9772db793924255ca1c67439eb35a00d977107bfb54e8c12b306442",
+    "bytes": 152108
+   },
+   "plantillas/academico-a0/recursos/prueba6.png": {
+    "sha256": "67cb9ea3007532d4d2954dc982fbe109fbb44c6610343b1fc66f040550f35b8b",
+    "bytes": 126580
+   },
+   "plantillas/academico-a0/recursos/qr_prueba.png": {
+    "sha256": "2b87fa4c640da9fe5519541e5017f76e2027ec89e44aa131476a2b3ccd2125b4",
+    "bytes": 3806
+   },
+   "plantillas/articulo-dos-columnas/miniatura.png": {
+    "sha256": "68e8ba982e7cf575bb2bcfad04b7d2796d248e2bf59d2e992ddc2b1b84ba375a",
+    "bytes": 63046
+   },
+   "plantillas/articulo-dos-columnas/modelo.json": {
+    "sha256": "814d1c26d84e89816e03243c12c3a3cb69d8b8bb55d2b9aea626f9c39781bc03",
+    "bytes": 9566
+   },
+   "plantillas/articulo-dos-columnas/plantilla.json": {
+    "sha256": "5f5abfb56c7067dd059e8d87ba1b9d7b2015c285736af345944943e8d39a8b5d",
+    "bytes": 309
+   },
+   "plantillas/articulo-dos-columnas/recursos/prueba2.png": {
+    "sha256": "3ff765afd719d7b6efc836b32778f2e838d467a086c33decef1c915815884933",
+    "bytes": 148499
+   },
+   "plantillas/bgc-en/cuadernos/nb-bgc/modelo_bgc_pfam_en.ipynb": {
+    "sha256": "c0f062afec2398ab830e2d11294e063a88c123f00594875abe4697339fad6273",
+    "bytes": 245889
+   },
+   "plantillas/bgc-en/miniatura.png": {
+    "sha256": "bfd6bb3872d91ff2710091c75a6bd0fd80060eeffd292b55990a9388d10703ff",
+    "bytes": 102354
+   },
+   "plantillas/bgc-en/modelo.json": {
+    "sha256": "ff1badc34a76e696d1ab5afa7f09a9405100f529d4b9e2537a8ab1f2b507f499",
+    "bytes": 15500
+   },
+   "plantillas/bgc-en/plantilla.json": {
+    "sha256": "52a3d772cf6a59f955076a4cedbec6e15a0e6e94bd732c2608f1fa89e34a0e6a",
+    "bytes": 760
+   },
+   "plantillas/bgc-en/recursos/cuadernos/nb-bgc/results/1_data/1.3_bgcs_per_class.pdf": {
+    "sha256": "d1591975c7b46787cfa277e566265e6d2505460d1d9d44cba5b6824f775969de",
+    "bytes": 26457
+   },
+   "plantillas/bgc-en/recursos/cuadernos/nb-bgc/results/1_data/1.5_a_tsne_by_class.pdf": {
+    "sha256": "4b3bc96d509bd5bb834390d0ddcdc3678d93f2737717df7840b7bb06b7a4aa40",
+    "bytes": 79665
+   },
+   "plantillas/bgc-en/recursos/cuadernos/nb-bgc/results/2_training/2.2_feature_selection_curve.pdf": {
+    "sha256": "3fa8be2ae0f28a38f9d637fb19c624507ec54a7dda86970537c820ac62c142c0",
+    "bytes": 32006
+   },
+   "plantillas/bgc-en/recursos/cuadernos/nb-bgc/results/3_evaluation/3.2_confusion_matrix_test.pdf": {
+    "sha256": "26d0678344ec057aa2a96389de65e43f8e23ca5ffe21bcff597aea48fd51a9fa",
+    "bytes": 28854
+   },
+   "plantillas/bgc-en/recursos/cuadernos/nb-bgc/results/4_groups_architecture/4.1_a_groups_tsne.pdf": {
+    "sha256": "8a37f7735c5763e4b875ce913e1650439974945879133f4315e4e7e99f8b617e",
+    "bytes": 52272
+   },
+   "plantillas/bgc-en/recursos/cuadernos/nb-bgc/results/4_groups_architecture/4.2_b_decision_tree.pdf": {
+    "sha256": "50ef5e6c5fd12aa6bbbccbbcf53169bd5fcfc0ab07aa3218c785f5e08a2ce040",
+    "bytes": 32414
+   },
+   "plantillas/bgc-en/recursos/cuadernos/nb-bgc/results/5_cluster_comparison/5.1_cluster_domain_heatmap.pdf": {
+    "sha256": "a4481ef7745c700d65510fdcdc6a92d4c80a206ba584f519bcdb066f7624d89e",
+    "bytes": 72204
+   },
+   "plantillas/bgc-en/recursos/cuadernos/nb-bgc/results/5_cluster_comparison/5.3_a_repeated_genes.pdf": {
+    "sha256": "4f32a6bdffe8a0abdf22076a4e4231cc91d944a76abb3e462b35e6e3391c4480",
+    "bytes": 37514
+   },
+   "plantillas/bgc-en/recursos/cuadernos/nb-bgc/results/5_cluster_comparison/5.4_a_synteny_matrix.pdf": {
+    "sha256": "572a18429d70047aea73f1b3dc1f135e59f43a0ef6bcabfebe29c4b15308e194",
+    "bytes": 64921
+   },
+   "plantillas/bgc-en/recursos/cuadernos/nb-bgc/results/5_cluster_comparison/5.5_alignment_terpene_locus1.pdf": {
+    "sha256": "80b7428941435aecedea3d5d56ed66f6345164ba3dccc052d422d5d97cb4e070",
+    "bytes": 77619
+   },
+   "plantillas/bgc-es/cuadernos/nb-bgc/modelo_bgc_pfam_es.ipynb": {
+    "sha256": "fe4cd3eda35a26d5d4aab538a66127ad796631c1d183bfb7bfab76bdf015c6ab",
+    "bytes": 252027
+   },
+   "plantillas/bgc-es/miniatura.png": {
+    "sha256": "e1c56cb709a0f54b83bad231b8044c5c6cbf022cdc4aff2de3884d759075eab3",
+    "bytes": 104553
+   },
+   "plantillas/bgc-es/modelo.json": {
+    "sha256": "22b4249e0423e566424a6edefefc46b2f61dc41f09c3be7dde699c079069568a",
+    "bytes": 15974
+   },
+   "plantillas/bgc-es/plantilla.json": {
+    "sha256": "f55e13e56b451d90a07ce32201383939f4f21828232e6f35655d17266f418457",
+    "bytes": 751
+   },
+   "plantillas/bgc-es/recursos/cuadernos/nb-bgc/resultados/1_datos/1.3_bgcs_por_clase.pdf": {
+    "sha256": "85c963fd133d0ba57058202bb6fa35468a1fe41b15ee0875299c265ea150cf25",
+    "bytes": 26872
+   },
+   "plantillas/bgc-es/recursos/cuadernos/nb-bgc/resultados/1_datos/1.5_a_tsne_por_clase.pdf": {
+    "sha256": "eb9af50a34c07ccade9ece303406488fbbb3fbd2d46e5fb5fcd8629b7108ece8",
+    "bytes": 78202
+   },
+   "plantillas/bgc-es/recursos/cuadernos/nb-bgc/resultados/2_entrenamiento/2.2_curva_seleccion_dominios.pdf": {
+    "sha256": "dcc97a7cf1347775d359e70e23935e0507ef8bafcf2404d7d2a8f7656d9d5e11",
+    "bytes": 34024
+   },
+   "plantillas/bgc-es/recursos/cuadernos/nb-bgc/resultados/3_evaluacion/3.2_matriz_confusion_prueba.pdf": {
+    "sha256": "16c7e9754caba0c4fccac059fbba12054e70bab59ad0ac10a752bbf4606c38d2",
+    "bytes": 29835
+   },
+   "plantillas/bgc-es/recursos/cuadernos/nb-bgc/resultados/4_grupos_arquitectura/4.1_a_grupos_tsne.pdf": {
+    "sha256": "b342c4fc509ba0637197607945aa10c7d5f032842635c58eea615836a95b842f",
+    "bytes": 52499
+   },
+   "plantillas/bgc-es/recursos/cuadernos/nb-bgc/resultados/4_grupos_arquitectura/4.2_b_arbol_decision.pdf": {
+    "sha256": "2e533259ad3b9382795db0903385aeb58803d56d0ac9b1c5917b0573bc5c231d",
+    "bytes": 34002
+   },
+   "plantillas/bgc-es/recursos/cuadernos/nb-bgc/resultados/5_comparacion_clusteres/5.1_mapa_calor_clusters_dominios.pdf": {
+    "sha256": "127fcc1ff26fd0128a80a90126cd157c5243307b9936d408e33b2275ec2e0fea",
+    "bytes": 73191
+   },
+   "plantillas/bgc-es/recursos/cuadernos/nb-bgc/resultados/5_comparacion_clusteres/5.3_a_genes_repetidos.pdf": {
+    "sha256": "3ba2b428c4c55f3108a5fc635efef400580598c574f9262da844f42001fdf6b3",
+    "bytes": 39164
+   },
+   "plantillas/bgc-es/recursos/cuadernos/nb-bgc/resultados/5_comparacion_clusteres/5.4_a_matriz_sintenia.pdf": {
+    "sha256": "8184e4ff83bd7ec5019cbc3f622cf530da4fb7641ab839a06ebdba0a3727a741",
+    "bytes": 65407
+   },
+   "plantillas/bgc-es/recursos/cuadernos/nb-bgc/resultados/5_comparacion_clusteres/5.5_alineamiento_terpene_locus1.pdf": {
+    "sha256": "9488ba2d3b877138e0dcc11c35d5c5d3a4150a66f21f63f52e9aece250ec64f2",
+    "bytes": 78227
+   },
+   "plantillas/capas-a1/miniatura.png": {
+    "sha256": "13f3f32c75bb21e85d89348552dc14e5d571c9f081571682d11cedbc5bc60b6a",
+    "bytes": 77053
+   },
+   "plantillas/capas-a1/modelo.json": {
+    "sha256": "d57c5b04a9901ee27320daa0c115d69f578727cf5f0be3822c1b42ba64655b87",
+    "bytes": 10213
+   },
+   "plantillas/capas-a1/plantilla.json": {
+    "sha256": "eefb725ca4e8265a662f59dd378522c7e32207696ba5d91076ce155931d5bdef",
+    "bytes": 265
+   },
+   "plantillas/capas-a1/recursos/logo1.png": {
+    "sha256": "925911cc192bb933f893a39602a9a3a07363828cd4c13175d301354b33d04ee6",
+    "bytes": 15602
+   },
+   "plantillas/capas-a1/recursos/logo2.png": {
+    "sha256": "41102351608759fc1612f76f5c624c8d6e48243dbced90be75737e4bbf9c13d1",
+    "bytes": 15190
+   },
+   "plantillas/capas-a1/recursos/prueba1.png": {
+    "sha256": "f682c9318f3f982964197677cd29eef41f7a7947b5191df830dcbec7c04d9b55",
+    "bytes": 118761
+   },
+   "plantillas/capas-a1/recursos/prueba2.png": {
+    "sha256": "3ff765afd719d7b6efc836b32778f2e838d467a086c33decef1c915815884933",
+    "bytes": 148499
+   },
+   "plantillas/capas-a1/recursos/prueba3.png": {
+    "sha256": "a436859b7b865bc20a39adc5aa6662bc3c8d0c96aaae899c29790ab1ee81e6fb",
+    "bytes": 128810
+   },
+   "plantillas/capas-a1/recursos/prueba4.png": {
+    "sha256": "1ce934ea5bd2ba04bc4b6a4946c9e286f0f26f619ce9925e6b5fd480c13862a2",
+    "bytes": 116021
+   },
+   "plantillas/capas-a1/recursos/prueba5.png": {
+    "sha256": "7dbb8e2ee9772db793924255ca1c67439eb35a00d977107bfb54e8c12b306442",
+    "bytes": 152108
+   },
+   "plantillas/capas-a1/recursos/prueba6.png": {
+    "sha256": "67cb9ea3007532d4d2954dc982fbe109fbb44c6610343b1fc66f040550f35b8b",
+    "bytes": 126580
+   },
+   "plantillas/capas-a1/recursos/qr_prueba.png": {
+    "sha256": "2b87fa4c640da9fe5519541e5017f76e2027ec89e44aa131476a2b3ccd2125b4",
+    "bytes": 3806
+   },
+   "plantillas/catalogo-latex/catalogo.tex": {
+    "sha256": "f1d1948b2fb7456970d4c1c7cc73a3abcdc3f154bc670221f595e326e76d5d19",
+    "bytes": 48150
+   },
+   "plantillas/catalogo-latex/img/logo1.png": {
+    "sha256": "925911cc192bb933f893a39602a9a3a07363828cd4c13175d301354b33d04ee6",
+    "bytes": 15602
+   },
+   "plantillas/catalogo-latex/img/logo2.png": {
+    "sha256": "41102351608759fc1612f76f5c624c8d6e48243dbced90be75737e4bbf9c13d1",
+    "bytes": 15190
+   },
+   "plantillas/catalogo-latex/img/prueba1.png": {
+    "sha256": "f682c9318f3f982964197677cd29eef41f7a7947b5191df830dcbec7c04d9b55",
+    "bytes": 118761
+   },
+   "plantillas/catalogo-latex/img/prueba2.png": {
+    "sha256": "3ff765afd719d7b6efc836b32778f2e838d467a086c33decef1c915815884933",
+    "bytes": 148499
+   },
+   "plantillas/catalogo-latex/img/prueba3.png": {
+    "sha256": "a436859b7b865bc20a39adc5aa6662bc3c8d0c96aaae899c29790ab1ee81e6fb",
+    "bytes": 128810
+   },
+   "plantillas/catalogo-latex/img/prueba4.png": {
+    "sha256": "1ce934ea5bd2ba04bc4b6a4946c9e286f0f26f619ce9925e6b5fd480c13862a2",
+    "bytes": 116021
+   },
+   "plantillas/catalogo-latex/img/prueba5.png": {
+    "sha256": "7dbb8e2ee9772db793924255ca1c67439eb35a00d977107bfb54e8c12b306442",
+    "bytes": 152108
+   },
+   "plantillas/catalogo-latex/img/prueba6.png": {
+    "sha256": "67cb9ea3007532d4d2954dc982fbe109fbb44c6610343b1fc66f040550f35b8b",
+    "bytes": 126580
+   },
+   "plantillas/catalogo-latex/img/qr_prueba.png": {
+    "sha256": "2b87fa4c640da9fe5519541e5017f76e2027ec89e44aa131476a2b3ccd2125b4",
+    "bytes": 3806
+   },
+   "plantillas/catalogo-latex/miniatura.png": {
+    "sha256": "e9afe2bb3f8d28224e93086d0772b4b7887681d13a54beec3652a473f622e7dc",
+    "bytes": 117658
+   },
+   "plantillas/catalogo-latex/plantilla.json": {
+    "sha256": "dea01f3b68da55b7a90686701f92c74a59cf19af7b2cfbb8de3841589e076d40",
+    "bytes": 333
+   },
+   "plantillas/catalogo-latex/postercientifico.sty": {
+    "sha256": "92a72cb853db6983abd4f7b6370bac5d6a69edc0536602a64299516c5d89cccb",
+    "bytes": 124447
+   },
+   "plantillas/ejemplo-capas-latex/ejemplo_capas.tex": {
+    "sha256": "66fa1970296615762024ea94cdf2672b91e1351f9b61b37a4d2ffc878462e5fd",
+    "bytes": 5744
+   },
+   "plantillas/ejemplo-capas-latex/img/logo1.png": {
+    "sha256": "925911cc192bb933f893a39602a9a3a07363828cd4c13175d301354b33d04ee6",
+    "bytes": 15602
+   },
+   "plantillas/ejemplo-capas-latex/img/prueba1.png": {
+    "sha256": "f682c9318f3f982964197677cd29eef41f7a7947b5191df830dcbec7c04d9b55",
+    "bytes": 118761
+   },
+   "plantillas/ejemplo-capas-latex/img/prueba2.png": {
+    "sha256": "3ff765afd719d7b6efc836b32778f2e838d467a086c33decef1c915815884933",
+    "bytes": 148499
+   },
+   "plantillas/ejemplo-capas-latex/img/prueba3.png": {
+    "sha256": "a436859b7b865bc20a39adc5aa6662bc3c8d0c96aaae899c29790ab1ee81e6fb",
+    "bytes": 128810
+   },
+   "plantillas/ejemplo-capas-latex/img/prueba4.png": {
+    "sha256": "1ce934ea5bd2ba04bc4b6a4946c9e286f0f26f619ce9925e6b5fd480c13862a2",
+    "bytes": 116021
+   },
+   "plantillas/ejemplo-capas-latex/img/prueba6.png": {
+    "sha256": "67cb9ea3007532d4d2954dc982fbe109fbb44c6610343b1fc66f040550f35b8b",
+    "bytes": 126580
+   },
+   "plantillas/ejemplo-capas-latex/img/qr_prueba.png": {
+    "sha256": "2b87fa4c640da9fe5519541e5017f76e2027ec89e44aa131476a2b3ccd2125b4",
+    "bytes": 3806
+   },
+   "plantillas/ejemplo-capas-latex/miniatura.png": {
+    "sha256": "700a97a8592308fd40b059520595b7a34c3ca1966320ef91810001e1d98d35b1",
+    "bytes": 115419
+   },
+   "plantillas/ejemplo-capas-latex/plantilla.json": {
+    "sha256": "25d91a515731dc48b9c25e5d731a82439bf9889e12340c23f6394019e6a3fbf7",
+    "bytes": 303
+   },
+   "plantillas/ejemplo-capas-latex/postercientifico.sty": {
+    "sha256": "92a72cb853db6983abd4f7b6370bac5d6a69edc0536602a64299516c5d89cccb",
+    "bytes": 124447
+   },
+   "plantillas/horizontal-48x36/miniatura.png": {
+    "sha256": "a41365ae9c4837eaa74c61bf44a67bef37afd819e9c88d68af2bb59dae88c20d",
+    "bytes": 98698
+   },
+   "plantillas/horizontal-48x36/modelo.json": {
+    "sha256": "9608f7734b7f4920d3119a7f40896e3007babc7685326ab3f074b5bd2a7b9933",
+    "bytes": 11242
+   },
+   "plantillas/horizontal-48x36/plantilla.json": {
+    "sha256": "818451f1f1f0eaaa3a253e306f36cefa97fd6f0cabb86152fa4eac2c28b6559e",
+    "bytes": 267
+   },
+   "plantillas/horizontal-48x36/recursos/logo1.png": {
+    "sha256": "925911cc192bb933f893a39602a9a3a07363828cd4c13175d301354b33d04ee6",
+    "bytes": 15602
+   },
+   "plantillas/horizontal-48x36/recursos/logo2.png": {
+    "sha256": "41102351608759fc1612f76f5c624c8d6e48243dbced90be75737e4bbf9c13d1",
+    "bytes": 15190
+   },
+   "plantillas/horizontal-48x36/recursos/prueba1.png": {
+    "sha256": "f682c9318f3f982964197677cd29eef41f7a7947b5191df830dcbec7c04d9b55",
+    "bytes": 118761
+   },
+   "plantillas/horizontal-48x36/recursos/prueba2.png": {
+    "sha256": "3ff765afd719d7b6efc836b32778f2e838d467a086c33decef1c915815884933",
+    "bytes": 148499
+   },
+   "plantillas/horizontal-48x36/recursos/prueba3.png": {
+    "sha256": "a436859b7b865bc20a39adc5aa6662bc3c8d0c96aaae899c29790ab1ee81e6fb",
+    "bytes": 128810
+   },
+   "plantillas/horizontal-48x36/recursos/prueba4.png": {
+    "sha256": "1ce934ea5bd2ba04bc4b6a4946c9e286f0f26f619ce9925e6b5fd480c13862a2",
+    "bytes": 116021
+   },
+   "plantillas/horizontal-48x36/recursos/prueba5.png": {
+    "sha256": "7dbb8e2ee9772db793924255ca1c67439eb35a00d977107bfb54e8c12b306442",
+    "bytes": 152108
+   },
+   "plantillas/horizontal-48x36/recursos/prueba6.png": {
+    "sha256": "67cb9ea3007532d4d2954dc982fbe109fbb44c6610343b1fc66f040550f35b8b",
+    "bytes": 126580
+   },
+   "plantillas/horizontal-48x36/recursos/qr_prueba.png": {
+    "sha256": "2b87fa4c640da9fe5519541e5017f76e2027ec89e44aa131476a2b3ccd2125b4",
+    "bytes": 3806
+   },
+   "plantillas/informe-a4/miniatura.png": {
+    "sha256": "2c3f2598e90cad594a6c5f387325d1b15e44ef4d89d6f8d22ffa8ba52baf299d",
+    "bytes": 47734
+   },
+   "plantillas/informe-a4/modelo.json": {
+    "sha256": "ee056fa0ee033f963f22a33be97da87b28567489b6322abab7708e75ea1e0292",
+    "bytes": 6508
+   },
+   "plantillas/informe-a4/plantilla.json": {
+    "sha256": "b2b5a5d6bdd2b09b053f33b981c26ef9bff16cedb528dfc29d3ef029ec959030",
+    "bytes": 257
+   },
+   "plantillas/informe-a4/recursos/prueba3.png": {
+    "sha256": "a436859b7b865bc20a39adc5aa6662bc3c8d0c96aaae899c29790ab1ee81e6fb",
+    "bytes": 128810
+   },
+   "plantillas/minima-a1/miniatura.png": {
+    "sha256": "0918349c50eca46a8ac3e48f16080e2c75f1e24cdeedce92660b36e6c21471d0",
+    "bytes": 46066
+   },
+   "plantillas/minima-a1/modelo.json": {
+    "sha256": "a60cf3e5b3a28d2b3e0f0f0167f4ec55f4f5ea79fe309902c1107a7389c28b7f",
+    "bytes": 5450
+   },
+   "plantillas/minima-a1/plantilla.json": {
+    "sha256": "2b1c4d0ab57d02ffad4856831d8541babd7847cf21d20cec9a6ade4f2140ff5d",
+    "bytes": 257
+   },
+   "plantillas/minima-a1/recursos/prueba1.png": {
+    "sha256": "f682c9318f3f982964197677cd29eef41f7a7947b5191df830dcbec7c04d9b55",
+    "bytes": 118761
+   },
+   "plantillas/minima-a1/recursos/prueba2.png": {
+    "sha256": "3ff765afd719d7b6efc836b32778f2e838d467a086c33decef1c915815884933",
+    "bytes": 148499
+   },
+   "plantillas/presentacion-16x9/miniatura.png": {
+    "sha256": "7b75eccff987525caf5f25ce831b6c9d4284df0f7e2793fa10f466dcb281badd",
+    "bytes": 12280
+   },
+   "plantillas/presentacion-16x9/modelo.json": {
+    "sha256": "64cc2cced46e4d83cea0973c5e7a8117b7de6f10382f2a3172a5ee306c4c76b2",
+    "bytes": 9876
+   },
+   "plantillas/presentacion-16x9/plantilla.json": {
+    "sha256": "e92eab2cc436792e6dde420501d3279fd143ce7758e01d33ad589051c01611cd",
+    "bytes": 309
+   },
+   "plantillas/presentacion-16x9/recursos/prueba1.png": {
+    "sha256": "f682c9318f3f982964197677cd29eef41f7a7947b5191df830dcbec7c04d9b55",
+    "bytes": 118761
+   },
+   "plantillas/presentacion-16x9/recursos/prueba2.png": {
+    "sha256": "3ff765afd719d7b6efc836b32778f2e838d467a086c33decef1c915815884933",
+    "bytes": 148499
+   },
+   "plantillas/presentacion-16x9/recursos/prueba3.png": {
+    "sha256": "a436859b7b865bc20a39adc5aa6662bc3c8d0c96aaae899c29790ab1ee81e6fb",
+    "bytes": 128810
+   },
+   "plantillas/tesis-generica/miniatura.png": {
+    "sha256": "ba8fbc678c833d069a3998c3ec0f96749ccfdbdbd926e77da6e86e7f95c95747",
+    "bytes": 14210
+   },
+   "plantillas/tesis-generica/modelo.json": {
+    "sha256": "60eb9d3c6ee803b1cd5c7325860c9b6c9ada9b0d0cd3767e870da6af1f2dcbf0",
+    "bytes": 11016
+   },
+   "plantillas/tesis-generica/plantilla.json": {
+    "sha256": "13f288bcac3282672152ae896ebca74c01d0b29ce25b6b41260aeb1e92941e67",
+    "bytes": 295
+   },
+   "plantillas/tesis-generica/recursos/prueba1.png": {
+    "sha256": "f682c9318f3f982964197677cd29eef41f7a7947b5191df830dcbec7c04d9b55",
+    "bytes": 118761
+   },
+   "plantillas/tesis-generica/recursos/prueba2.png": {
+    "sha256": "3ff765afd719d7b6efc836b32778f2e838d467a086c33decef1c915815884933",
+    "bytes": 148499
+   },
+   "pytest.ini": {
+    "sha256": "f600ee6b230d665874b24f353eaf2998db6d7cf6dedbcf8a7d42de516da50dd9",
+    "bytes": 88
+   },
+   "requirements.txt": {
+    "sha256": "e7395755b8b2b64fdfe6fb742a4e74a9cf10ac1767facdc97c524dce3358b52f",
+    "bytes": 719
+   },
+   "servidor.py": {
+    "sha256": "13cf47b50560e1e18b9db86646765d60c1a1fe19d88f12b8ea5a08491767f48c",
+    "bytes": 5208
+   },
+   "static/css/app.css": {
+    "sha256": "af114aaf161e6a6a5f6b591a9bfae2f75f1722f56c698580684199953e5f09df",
+    "bytes": 80442
+   },
+   "static/img/graficos/barras-agrupadas.png": {
+    "sha256": "678ac13d57cb29f0cf0c9b7fc50869190453960427010b10a345252b30ff623f",
+    "bytes": 12638
+   },
+   "static/img/graficos/barras-error.png": {
+    "sha256": "ef4bb36a19e8f84d34406afb5eda797e7bc3a5457bda521e61e35c0976035ac3",
+    "bytes": 14790
+   },
+   "static/img/graficos/barras.png": {
+    "sha256": "2476c27526878d70641b2a9ccc57ccd8d2f8bf696cf3fcc3037d8307376f777a",
+    "bytes": 10259
+   },
+   "static/img/graficos/cajas.png": {
+    "sha256": "9cc1b92cda87366ddb432c176137304bf61c2dde18f556cb1d669e1b4ec9558a",
+    "bytes": 11671
+   },
+   "static/img/graficos/correlacion.png": {
+    "sha256": "4ad0f8043dbf95c393c121f3d7d129bcc2ac843d3fdce70a9c0be28a5cb7c6ec",
+    "bytes": 29568
+   },
+   "static/img/graficos/dispersion.png": {
+    "sha256": "db2a272b80f3118065978a6fba917985083ec57ae99c97f137db73202ee60ac9",
+    "bytes": 22229
+   },
+   "static/img/graficos/histograma.png": {
+    "sha256": "1172ec22b53c0923352e1cb4817239019aa989a2ddb2626496a64df3379fa642",
+    "bytes": 10178
+   },
+   "static/img/graficos/lineas.png": {
+    "sha256": "332e875ba41500179fb2d818639a18e47f9fbed2be44bc9ffb5405428848e27a",
+    "bytes": 30777
+   },
+   "static/img/graficos/px-barras.png": {
+    "sha256": "5b4c404682876947b1b3fdf83d8210404e8dbbe3c94cda5f2bc7b5be6aed39ec",
+    "bytes": 9478
+   },
+   "static/img/graficos/px-dispersion.png": {
+    "sha256": "2657a5c1a250bf24877a7dbcbdd933031a28f451b5559eacd68c7e44cc275bfb",
+    "bytes": 17635
+   },
+   "static/img/graficos/px-lineas.png": {
+    "sha256": "d75c58f7d14f62231b02836e13434b9f789f300121a94e27b8ce3279109fef2d",
+    "bytes": 19358
+   },
+   "static/img/graficos/regresion.png": {
+    "sha256": "1b1b8f23fe2c7d608e7a13bf3a84a5506b7a0212cf2ecd7e9fd173f26b5f7f02",
+    "bytes": 31498
+   },
+   "static/img/graficos/violin.png": {
+    "sha256": "c634aa9f4783d4038cb8c81bff38f538f15d596131dc36806875add7b4376ebe",
+    "bytes": 29529
+   },
+   "static/img/icono.svg": {
+    "sha256": "66b9242e5247645dbded03186da4d7cdf98cc88f2c406a389f2ed46caa1b760c",
+    "bytes": 260
+   },
+   "static/img/variantes/bibliografia.png": {
+    "sha256": "57713441f098ae482bbe3bcf7aa9ec9ee9fbfa0659f8a1dd023092df3feaabde",
+    "bytes": 22416
+   },
+   "static/img/variantes/espacio.png": {
+    "sha256": "4a401ea470c88277d649ed87c8f929457ea2825a5664f5a566f75e4fa8fc8479",
+    "bytes": 836
+   },
+   "static/img/variantes/imgAncho.png": {
+    "sha256": "9d16f8cf1e024e9a8561bddfb017aa99fa90f68eb4ce7878d7dd00e246200a99",
+    "bytes": 34119
+   },
+   "static/img/variantes/imgAnotada.png": {
+    "sha256": "aa92ddca07f071c7efa3c143754de31cb9a6907ac11f55820b03bc8f76d77157",
+    "bytes": 41716
+   },
+   "static/img/variantes/imgCentro.png": {
+    "sha256": "bfe4d8d79054f719317e9147f353113907bfe121c7685165dbd94d75da0c94ed",
+    "bytes": 24667
+   },
+   "static/img/variantes/imgCirculo.png": {
+    "sha256": "9277412629b925ad9b0ed0b1232419a5804156b8453cffb08dce6cc2a628eea9",
+    "bytes": 23928
+   },
+   "static/img/variantes/imgCollage.png": {
+    "sha256": "e5f0d8a5010f40a34af62f7e198318059fa40b6642e890bc0a4a4f999de9c112",
+    "bytes": 47728
+   },
+   "static/img/variantes/imgComparar.png": {
+    "sha256": "7a2f250979c5d2090a63a869fe7890198dd406d936cbb94bef4b6033f5253f4a",
+    "bytes": 39681
+   },
+   "static/img/variantes/imgCuatro.png": {
+    "sha256": "2e27cef15095f86720c48f933e8fc013ba7bf72ed15bab5f1d116dc91c093490",
+    "bytes": 30616
+   },
+   "static/img/variantes/imgDerecha.png": {
+    "sha256": "9f1185e4ac2da749c001e65bb34158993ecc8ab6d698c6236eef4a486e45937b",
+    "bytes": 20364
+   },
+   "static/img/variantes/imgDetalle.png": {
+    "sha256": "f0adb952fa4fb45ae3debbf51f61a4a3a9dd70ce1f3dbd784cf15c733a84a9a5",
+    "bytes": 36539
+   },
+   "static/img/variantes/imgDos.png": {
+    "sha256": "51fa674265a2fbd7f8a01f0b96b78775d5722f38965ed0873f3ee11bab9f9fca",
+    "bytes": 35944
+   },
+   "static/img/variantes/imgDosIzquierdaGrande.png": {
+    "sha256": "151dbefe5dcc27bd8fd103bff8f2b8a3879ac345bcbdbb929ceed4d246d37429",
+    "bytes": 39008
+   },
+   "static/img/variantes/imgEnvueltaDerecha.png": {
+    "sha256": "870b42567eb45af6c9010b3152c1447de95b4e6de94f0b2753d106421fad0d9b",
+    "bytes": 34003
+   },
+   "static/img/variantes/imgEnvueltaIzquierda.png": {
+    "sha256": "94e5635b0802dabf9bfc916d5009046254e777f9c7ac0c49c47e0fff48181aaf",
+    "bytes": 35958
+   },
+   "static/img/variantes/imgGrandeDosDerecha.png": {
+    "sha256": "941400f4d0fbb48d11eebc30a19e8b3c67ce5370515c14517f4d4027a2752751",
+    "bytes": 53086
+   },
+   "static/img/variantes/imgGrandeTresAbajo.png": {
+    "sha256": "e755ccb0cdcfbef2faee74e6ea8e7b6d4dc23017d9abab4465b63563533611da",
+    "bytes": 31761
+   },
+   "static/img/variantes/imgInclinada.png": {
+    "sha256": "3301661af81d22bff79d55b32a9039ef646c6d61f306499cb148e53c4bde3e9a",
+    "bytes": 28176
+   },
+   "static/img/variantes/imgIzquierda.png": {
+    "sha256": "4030f10c7f010ffdf3bb57852c91feac32aee7b33a53967834b055cb97f6671f",
+    "bytes": 18895
+   },
+   "static/img/variantes/imgMarco.png": {
+    "sha256": "0aed0989fc0af480e77cbd26341bc08a3fe53da21f3e4285a50b640822f62a7f",
+    "bytes": 41418
+   },
+   "static/img/variantes/imgMiniatura.png": {
+    "sha256": "ec4be37f8b29fea0dcbc3e405770fa639bb6fa543df2d1384c7424ffc3a4959b",
+    "bytes": 9554
+   },
+   "static/img/variantes/imgPanoramica.png": {
+    "sha256": "2b63cf0871de044f4dec24b0e3fd15d67bd5acf29b0a2e7b82c7217930817f65",
+    "bytes": 19787
+   },
+   "static/img/variantes/imgPieArriba.png": {
+    "sha256": "39cf5c8db7d3731b9ccaf91296fa3ab26fc7d90014e222f56093af7f45a04409",
+    "bytes": 40105
+   },
+   "static/img/variantes/imgPieLateral.png": {
+    "sha256": "1d0ed9556ae20443435b79625d0ac96cf4c926827cd67701b5096d44a3549fcf",
+    "bytes": 14201
+   },
+   "static/img/variantes/imgPieSobre.png": {
+    "sha256": "7288d9603185b21d79340c8251d31615fc60b0d078de8b403be30cdc2c7466ef",
+    "bytes": 38007
+   },
+   "static/img/variantes/imgPila.png": {
+    "sha256": "e8a1ed1e32e912fcb6c295fafe392dd4c7c2eb2ee582eec9be3a3e51256bdccc",
+    "bytes": 25198
+   },
+   "static/img/variantes/imgRedondeada.png": {
+    "sha256": "35d23d26ed668c8e092c70d6de4fe1cfde7975233357ec1849be0443da2be52e",
+    "bytes": 28705
+   },
+   "static/img/variantes/imgRejilla.png": {
+    "sha256": "700ebad5bc6cab2fa9ec883309e1460bca562236ceea3c3618dd56f82a9d5921",
+    "bytes": 40629
+   },
+   "static/img/variantes/imgRejillaSeis.png": {
+    "sha256": "2b7cc050d5126e7be1fea8cc55c64062b1678e595eee7a35744b08023f10346f",
+    "bytes": 50310
+   },
+   "static/img/variantes/imgSombra.png": {
+    "sha256": "781f6538680e0c6bbce033679994bef53bdb6e6f425c70d64aa05e648952b6ac",
+    "bytes": 32356
+   },
+   "static/img/variantes/imgTextoDerecha.png": {
+    "sha256": "f8f1e936763f729236752cb8b8e0aa66f389e609f839ac489dba747b0e00fe4a",
+    "bytes": 18310
+   },
+   "static/img/variantes/imgTextoIzquierda.png": {
+    "sha256": "640f18c0f862b4cb333b1720d872975750ad4ce5b1021b5f38ea748533400a8f",
+    "bytes": 26268
+   },
+   "static/img/variantes/imgTituloSobre.png": {
+    "sha256": "dcb322caeab71e2604f1b5fc77c5847a552b03e5fdbf3f313bd350f03feb0776",
+    "bytes": 29021
+   },
+   "static/img/variantes/imgTres.png": {
+    "sha256": "93b33a8f2d2ee961afe04c26f745f9d767a3ec8f0eddb895ba8e0804ca7eeec2",
+    "bytes": 30576
+   },
+   "static/img/variantes/latex.png": {
+    "sha256": "e03097c2768c40b1274aae97e87c7567c96e3020609bd40c72d7520247e0576d",
+    "bytes": 5155
+   },
+   "static/img/variantes/txtAsimetrico.png": {
+    "sha256": "1e086cfed773514a9ab4495e00bc2390ffd67c28635a28f47bcdbd06074bc627",
+    "bytes": 9413
+   },
+   "static/img/variantes/txtBanda.png": {
+    "sha256": "6427a6c367867790dca3498ba7bf92d5f006ffd579a58074145dbb9b5f6a94d7",
+    "bytes": 5972
+   },
+   "static/img/variantes/txtCaja.png": {
+    "sha256": "8747859fbb68b625d01cae2596b0831aa0db4fd204cd3af6dcd277b3fd3a13c9",
+    "bytes": 9551
+   },
+   "static/img/variantes/txtCajaTitulo.png": {
+    "sha256": "332de04df86f9b13cded2321175e183569ac07c26d64a13dbdf5b6bb906f2ac3",
+    "bytes": 11104
+   },
+   "static/img/variantes/txtCapitular.png": {
+    "sha256": "6153a318ee979bf6766e3a07b1ee45415ae13e195306c8c834e4453ee11e7ebd",
+    "bytes": 4979
+   },
+   "static/img/variantes/txtCentrado.png": {
+    "sha256": "f9811563198cf706c71d326d71b71bb4a91c0ec02bd535bbc420e2b215745422",
+    "bytes": 7725
+   },
+   "static/img/variantes/txtCifra.png": {
+    "sha256": "2c266312239d39090bea0292d48a68cab9734c5da25896923710db6b8ca94e3f",
+    "bytes": 6971
+   },
+   "static/img/variantes/txtCifras.png": {
+    "sha256": "af68d1d67a9d5f2c55dc61f5945a7cf9396cdad05ccb4857fed5d6fc53538973",
+    "bytes": 6639
+   },
+   "static/img/variantes/txtCirculo.png": {
+    "sha256": "b8a981aa2213134e9feec50249199fbe5799e0780389f9db3fe4b1539be96204",
+    "bytes": 9549
+   },
+   "static/img/variantes/txtCitaBarra.png": {
+    "sha256": "20002016db6c91042bfc422c4fb51a419494c097edf30c1e059998d8e3fb991d",
+    "bytes": 8241
+   },
+   "static/img/variantes/txtCitaGrande.png": {
+    "sha256": "212491b38180bd75ff7d57639c6f415ddafe0f6178db2dd8ae8fc7663a40bbbe",
+    "bytes": 6944
+   },
+   "static/img/variantes/txtContacto.png": {
+    "sha256": "4237d05ebe41c1d755033a8b68e4e8bbc762cbe5cfa16c6bf4633030eaed194c",
+    "bytes": 12954
+   },
+   "static/img/variantes/txtDefiniciones.png": {
+    "sha256": "21d351fa6dc514e0a9c3074e4f362e1da895023fd792beae806dda0ab984a60f",
+    "bytes": 8937
+   },
+   "static/img/variantes/txtDerecha.png": {
+    "sha256": "965528ae0c772e83352c426861b0a337e19b7c67ab8525cc87afc0f33fc6bc15",
+    "bytes": 7590
+   },
+   "static/img/variantes/txtDosColumnas.png": {
+    "sha256": "7e021fd8776e38c0271605e35848621ae7adb13a3460a16b387b11c28a7e4909",
+    "bytes": 14853
+   },
+   "static/img/variantes/txtDosColumnasFilete.png": {
+    "sha256": "2e344cee662a951e5bb568a5ffdfb714ffc6b06f7c78aee3cb85ca85ce08a3eb",
+    "bytes": 15050
+   },
+   "static/img/variantes/txtEcuacion.png": {
+    "sha256": "630fcd1ff1a16b248298cd238a092a94fe23990f6b0b239d1661a09bbd22a54a",
+    "bytes": 4682
+   },
+   "static/img/variantes/txtEntradilla.png": {
+    "sha256": "983cf576f6dc6f7632f1052105c979767e84bba3f811104c01da6fb19943c1d1",
+    "bytes": 14130
+   },
+   "static/img/variantes/txtEtiquetaMargen.png": {
+    "sha256": "e558d631467dc009688dd0d795240f0f7bfe8e670d068adb77e744e722f34d1a",
+    "bytes": 9022
+   },
+   "static/img/variantes/txtInvertido.png": {
+    "sha256": "3bbd37fa1f3bbb045c84373aaf9c9babd5c96e44d02b7fbaf7ae149d41d31e46",
+    "bytes": 9679
+   },
+   "static/img/variantes/txtIzquierda.png": {
+    "sha256": "214dc28769d26725e62ff29e6c59e4f1655f0b058347d1632cb1ea025c61444a",
+    "bytes": 7575
+   },
+   "static/img/variantes/txtJustificado.png": {
+    "sha256": "55687b42f563d1b180ea281e3918ed62076d9a9a42be436d5bcdc19830aa51d8",
+    "bytes": 7768
+   },
+   "static/img/variantes/txtLineaTiempo.png": {
+    "sha256": "acf5bb0ccffb32bf1ba854245066b830c2795a61249e3a67c4dce5db2d0c8dd1",
+    "bytes": 9388
+   },
+   "static/img/variantes/txtNotaLateral.png": {
+    "sha256": "2109e1d9c2579b57231ca96fcf23d0996d944dfd04c69e932faa05a80302b56c",
+    "bytes": 9936
+   },
+   "static/img/variantes/txtNumerada.png": {
+    "sha256": "22be8656282f55e1b622b72713f04f2f54e32dce9a75a926cdafdbc9358fdbe0",
+    "bytes": 6716
+   },
+   "static/img/variantes/txtPasos.png": {
+    "sha256": "8caca48fcb51f3e1daa58e8dd705fc79b13388d2c0786dbbbd2ccf15925730d2",
+    "bytes": 8171
+   },
+   "static/img/variantes/txtRecuadro.png": {
+    "sha256": "a5fdfea634e1ed0a52e55bde606401175544980a03ca500df5b04b76bb80f057",
+    "bytes": 8257
+   },
+   "static/img/variantes/txtReferencias.png": {
+    "sha256": "9ded7a76316000a14e3f41390ca5075679b8e201ba95d9931f9c41b04a7607bc",
+    "bytes": 4878
+   },
+   "static/img/variantes/txtResaltado.png": {
+    "sha256": "a0e1c8404f147eb7f9a07ccd78dd59398a4f6caf5d07bd7130eef640d9099f33",
+    "bytes": 9237
+   },
+   "static/img/variantes/txtSobreImagen.png": {
+    "sha256": "bac2e1902842c4b8a10c8db11868a646fa3430db856dffff4762f16e005c03bb",
+    "bytes": 50300
+   },
+   "static/img/variantes/txtTabla.png": {
+    "sha256": "c0a694e7080ab82439453178f29db50f89e7577fc3d9fd567c7614f4eeecc7d6",
+    "bytes": 9042
+   },
+   "static/img/variantes/txtTresColumnas.png": {
+    "sha256": "8524088254131cbe5994c0f16384c782fffcba4ffc61054c1fedf57bfdded664",
+    "bytes": 15322
+   },
+   "static/img/variantes/txtVertical.png": {
+    "sha256": "59701dc8911b43899a1d7a2ac9e58720f98dfd5aaf5b6f46b6cc681c5477f40b",
+    "bytes": 9091
+   },
+   "static/img/variantes/txtVinetas.png": {
+    "sha256": "e9a580565d977d3e8bb9154a602e333116d0e9f486bb76bd3431828eaa9c57ed",
+    "bytes": 6375
+   },
+   "static/index.html": {
+    "sha256": "7d15d68ecbc81b517d0691ef0596c654c59d75b00b59de4c58f45d4d5f065fb5",
+    "bytes": 1636
+   },
+   "static/js/api.js": {
+    "sha256": "ed737c8b6b4c8f58bb4204dd85f3c251cc76a74c5dbe0652c244f5e8916f38c8",
+    "bytes": 3306
+   },
+   "static/js/app.js": {
+    "sha256": "50a79cabfcb77ef0a5e9da0f6c19f18a6150d7a3dd5d979d776069c28930663d",
+    "bytes": 3485
+   },
+   "static/js/arbol.js": {
+    "sha256": "70ce6f6d13e54cab83a3295142d2195c7ef1a0afe9c68a1429839436b5c3dd84",
+    "bytes": 12516
+   },
+   "static/js/campos.js": {
+    "sha256": "72670cb833cb82d7e1bf1c0682636a17e62a77557d12329967920be0c81956f8",
+    "bytes": 26004
+   },
+   "static/js/cuaderno.js": {
+    "sha256": "87594e94290c58853c941b7caa2f816c5f009054b66621f91187cfcd29706bb3",
+    "bytes": 53450
+   },
+   "static/js/cuadernos.js": {
+    "sha256": "dbdf86c744ddcc5ead07f67dc6e0128ffd07f55f83bffc96f29651ffc460fca7",
+    "bytes": 23042
+   },
+   "static/js/dibujos.js": {
+    "sha256": "05febeb291f72f7d1c545bae453f26b51d64712e705107d69f44c193cfeef106",
+    "bytes": 13827
+   },
+   "static/js/directa.js": {
+    "sha256": "928bc3caf721abec304121bd08caece361ef6295554c3d7a2f409da361cc7483",
+    "bytes": 12284
+   },
+   "static/js/editor.js": {
+    "sha256": "95efef5aa003da8790831103173e7afbc78bc9a20502aa2c482c6d4036489854",
+    "bytes": 58659
+   },
+   "static/js/iconos.js": {
+    "sha256": "bfecfeac3d0441d652430aa3097dbe454f4b8739fd59e40350d5acf645dbd5d3",
+    "bytes": 6639
+   },
+   "static/js/inicio.js": {
+    "sha256": "0b5d20b815e32ebbb513f88a8ebb31d92b69b25cbe415667ac105f926943c39e",
+    "bytes": 24950
+   },
+   "static/js/inspector.js": {
+    "sha256": "c8f037fbe5d35242e7209881c3895126f99b11560c35d2a1400d5b0ff93af5d7",
+    "bytes": 53825
+   },
+   "static/js/lab.js": {
+    "sha256": "198132b7a41e3329aa3bb99127d6e39f4145bff35cedfc5287c09bce556bfc3f",
+    "bytes": 54339
+   },
+   "static/js/latex.js": {
+    "sha256": "b3f80831c1f0749e4741981f3be6bc926a0faaf77a45bb4eef736c8dbce5cc63",
+    "bytes": 9756
+   },
+   "static/js/modeloed.js": {
+    "sha256": "121f0102461d38ba3fcbb85154fd12fdc631c55766044ed851f75fb096dfadcc",
+    "bytes": 11600
+   },
+   "static/js/powerpoint.js": {
+    "sha256": "86f51ca80f71adb33276193f8b6f19274b0cd02cc21e45541b459c27df088904",
+    "bytes": 5753
+   },
+   "static/js/recursos.js": {
+    "sha256": "de082e0512815f98b8c4ff7d65ef5bd95503485814171ad542b994d6050af91e",
+    "bytes": 5096
+   },
+   "static/js/referencias.js": {
+    "sha256": "53ab7e71b0e74fc52af5794b092ce2fbecf39dd4cd9d9765c05f31ac8e66cc65",
+    "bytes": 34019
+   },
+   "static/js/registro.js": {
+    "sha256": "4981a7e1e7c51c48b053bfb5f5f40ed831061efa77d8aa6e8e168a2c5da51d8b",
+    "bytes": 6595
+   },
+   "static/js/revision.js": {
+    "sha256": "a51fc5417d382ed02739e8c6645016327bb3764e68e2b8580720502257fa69b4",
+    "bytes": 18859
+   },
+   "static/js/tienda.js": {
+    "sha256": "15d527234ced6c34d299b1aa63c35f06eb1b19e266013b073a8b3617876e0f0f",
+    "bytes": 2997
+   },
+   "static/js/tipografias.js": {
+    "sha256": "dd1deef66472328883e005f3a1672fb2d0532f91a76458ec83923a4f3624805d",
+    "bytes": 8924
+   },
+   "static/js/util.js": {
+    "sha256": "1597ba761c3ed634d26c34a5a097260da5c9bf1ededb1ee1be64dbf9ad97d772",
+    "bytes": 3838
+   },
+   "static/js/variantes.js": {
+    "sha256": "dfefc36465c6875e7e98b6079b08558c54be4e675edd7cd9a3031a46a06d451b",
+    "bytes": 5722
+   },
+   "static/js/vista.js": {
+    "sha256": "2b6846cde1af90bac744c6048caef1b9e3fbfc52ddd65723309833c72650ce1c",
+    "bytes": 19468
+   },
+   "static/vendor/LICENSE-pdfjs.txt": {
+    "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+    "bytes": 10174
+   },
+   "static/vendor/LICENSE-vue.txt": {
+    "sha256": "1bb85cc9b13b81ef41c81c51866172fc345e0503c86726a6755b796590b70175",
+    "bytes": 1091
+   },
+   "static/vendor/codemirror/LICENSE.txt": {
+    "sha256": "168a4becc968f5001e2ee2e0291b6e4daabafc1894a11ade1e11d56e96096e07",
+    "bytes": 1113
+   },
+   "static/vendor/codemirror/addon/active-line.js": {
+    "sha256": "3afbcf78835c9bdc342e3992c53d9b74286722613bb1a8adc9d140edc8737ee8",
+    "bytes": 2509
+   },
+   "static/vendor/codemirror/addon/closebrackets.js": {
+    "sha256": "143c3014c29254f3531cc30be6d90205084bcfc36cffa6f9b2a46fd42a40be20",
+    "bytes": 7123
+   },
+   "static/vendor/codemirror/addon/dialog.css": {
+    "sha256": "5df690d771f12118348562dd2a90060433ae2edeccd0908abcaa4480b1e3e468",
+    "bytes": 507
+   },
+   "static/vendor/codemirror/addon/dialog.js": {
+    "sha256": "fd8c925fcc25357617faff21220c026bb91a617b995268d96c5d39232fd42833",
+    "bytes": 5252
+   },
+   "static/vendor/codemirror/addon/matchbrackets.js": {
+    "sha256": "9d23a177f1e4d07e3acc37c210ffbe4c1c2eb4d55bbe54c16d3e7ad3d04d0401",
+    "bytes": 6815
+   },
+   "static/vendor/codemirror/addon/search.js": {
+    "sha256": "4949580371fcd81c0ad70164b169dd8bcab2bd9869eddaa0d7e295508bec7a04",
+    "bytes": 11863
+   },
+   "static/vendor/codemirror/addon/searchcursor.js": {
+    "sha256": "2c0b8cd8fe7ca5ca2253f4aacc914b390bff5b3cac3475df66c43a9ea8c8ccbe",
+    "bytes": 12234
+   },
+   "static/vendor/codemirror/codemirror.css": {
+    "sha256": "eb494ea972d2661ef86f7f6ac656dd6786d721e49c9c1b46e1eb967e4b6f9bf3",
+    "bytes": 8720
+   },
+   "static/vendor/codemirror/codemirror.js": {
+    "sha256": "e98aac5ffa07bae58acd4ff07c4293059f8921c0ae0eba506929d8c6f41c9288",
+    "bytes": 402055
+   },
+   "static/vendor/codemirror/mode/python.js": {
+    "sha256": "19a59ca387addb04e95002c9adbe2b8c231427ce49369ac537107e3088a6947c",
+    "bytes": 14984
+   },
+   "static/vendor/codemirror/mode/stex.js": {
+    "sha256": "edc1f57c69920967a31defb66954aa29f5751fdb2f7ed8e52fa08978ff890e3b",
+    "bytes": 7798
+   },
+   "static/vendor/fuentes/LICENSE-atkinson-mono.txt": {
+    "sha256": "05327050630a640eb824c8fcb7de8b2e605600d8863e4f531ca7c348239916c6",
+    "bytes": 4609
+   },
+   "static/vendor/fuentes/LICENSE-atkinson-next.txt": {
+    "sha256": "474a034e99845062f661855caaa505880d0e9009deddc2727a92795eab374955",
+    "bytes": 4599
+   },
+   "static/vendor/fuentes/atkinson-hyperlegible-mono-latin-400-normal.woff2": {
+    "sha256": "87b5b94c18025729fc6ed4e8c25221ade3746dc87213943fa4de49f1f0f26787",
+    "bytes": 10056
+   },
+   "static/vendor/fuentes/atkinson-hyperlegible-mono-latin-600-normal.woff2": {
+    "sha256": "a52c1396b3cc1b7c7e52dcb39ed9ed2aeb1b7b0ff3572bca076e441aa7d906f6",
+    "bytes": 10040
+   },
+   "static/vendor/fuentes/atkinson-hyperlegible-next-latin-400-italic.woff2": {
+    "sha256": "59bc0e965694b9409ac2684c6c8d08994f4fee8a474bc63c4653714f8f441435",
+    "bytes": 14152
+   },
+   "static/vendor/fuentes/atkinson-hyperlegible-next-latin-400-normal.woff2": {
+    "sha256": "5cb240a4d99ab7e6fc3a4d4e6d11d89789fdffe9c86a8384000d662c53283f6f",
+    "bytes": 12096
+   },
+   "static/vendor/fuentes/atkinson-hyperlegible-next-latin-600-normal.woff2": {
+    "sha256": "828f4525c741b6864718e41aa23a4acbc049b35e6271317c0fd86e0702dd5d2e",
+    "bytes": 12672
+   },
+   "static/vendor/fuentes/atkinson-hyperlegible-next-latin-700-normal.woff2": {
+    "sha256": "0dbe07ed7679407db9d90f747d5ca3bd1b2bb7ccbcbe41c8246cfc6d2c7bc3bc",
+    "bytes": 12732
+   },
+   "static/vendor/pdf.min.js": {
+    "sha256": "5b5799e6f8c680663207ac5b42ee14eed2a406fa7af48f50c154f0c0b1566946",
+    "bytes": 320004
+   },
+   "static/vendor/pdf.worker.min.js": {
+    "sha256": "feabdf309770ed24bba31a5467836cdc8cf639c705af27d52b585b041bb8527b",
+    "bytes": 1087212
+   },
+   "static/vendor/vue.global.prod.js": {
+    "sha256": "e0a2a0866a8de8887542e24f3c218aad3d907b88f30966068792ba992296dc9f",
+    "bytes": 170605
+   },
+   "tests/conftest.py": {
+    "sha256": "b5aa238ea079368691f8ed7e3eee4ec1a999552cb2fc8305579bc7371417f21e",
+    "bytes": 827
+   },
+   "tests/e2e_navegador.py": {
+    "sha256": "5a1528c9aa3325cfaee95a61ae01298142019500e2fc7bc36b2c6db73a4750be",
+    "bytes": 16354
+   },
+   "tests/test_api.py": {
+    "sha256": "07279988354aa5475f2dfc4d6e93b49a092422e0447f7924b90deb8f0a80c36a",
+    "bytes": 10881
+   },
+   "tests/test_bibliografia.py": {
+    "sha256": "38633a83fc01694dceefa8b313c5ab5e55541fbace57e3a0fb4f45528d4b2850",
+    "bytes": 13038
+   },
+   "tests/test_clases.py": {
+    "sha256": "b6b192ee1e1ff006c2bcf998d8fa057c8f031d8a52bd8b00ff439db13f68d1c3",
+    "bytes": 5675
+   },
+   "tests/test_componentes.py": {
+    "sha256": "bd4c98b275c0133fcf3d54c040f93b78d89fbdc8f22245d5976267a9a94ef0b8",
+    "bytes": 11901
+   },
+   "tests/test_fuentes.py": {
+    "sha256": "2fc62a101a9758f0e874fe345766b45167b7bb98ce57b37e0eff331e7e5ea528",
+    "bytes": 6687
+   },
+   "tests/test_generador.py": {
+    "sha256": "6eadcb604da7b6e7aaadfc7567ca23b632628dd16e2c4da1aabcb07a4f4a4782",
+    "bytes": 8631
+   },
+   "tests/test_lab.py": {
+    "sha256": "f82785b036655c303afe95d87dfcf71c727d8a618bf7e0e57a0bf733e11bde13",
+    "bytes": 7093
+   },
+   "tests/test_motores.py": {
+    "sha256": "4b374acffe02ba175cbcf9d5271fc9a6c3a3979ae37dd980bc3dc7ac07c1e60a",
+    "bytes": 4605
+   },
+   "tests/test_powerpoint.py": {
+    "sha256": "b78386f59ac9e2055dc7ded33a808182024a2348360346fbfb80669b6027d00d",
+    "bytes": 7069
+   },
+   "tests/test_revision.py": {
+    "sha256": "11b719dcbe874efc040c51b12a4941d4a161660ee352bf0b21ca66c900dfcb4b",
+    "bytes": 10227
+   },
+   "tests/test_texto.py": {
+    "sha256": "ff2543ff8ec3cb189af4f339e8e403217e2914e56a62c0ea7a2d5fab335dce4c",
+    "bytes": 1103
+   },
+   "tests/test_version.py": {
+    "sha256": "6718b273863f391cc4bbf6f6b0a986b2ebdfc5dfc19cdf0e9602e46c55997c65",
+    "bytes": 1544
+   }
+  }
+ }
+}

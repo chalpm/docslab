@@ -1,5 +1,5 @@
 %% ============================================================================
-%%  postercientifico.sty · v2.0 · Plantilla de póster científico POR CAPAS
+%%  postercientifico.sty · v1.0.0 · Pósters POR CAPAS, presentaciones y documentos
 %%  ---------------------------------------------------------------------------
 %%  El póster se pinta en capas, de atrás hacia delante:
 %%
@@ -46,7 +46,7 @@
 %%  (latexmk y Overleaf repiten solos).
 %% ============================================================================
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
-\ProvidesPackage{postercientifico}[2026/10/17 v2.0 Plantilla de poster cientifico por capas]
+\ProvidesPackage{postercientifico}[2026/11/18 v1.0.0 Posters por capas, presentaciones y documentos]
 
 %% ---- Paquetes ---------------------------------------------------------------
 \RequirePackage{iftex}
@@ -210,6 +210,8 @@
 %%  2. CONFIGURACIÓN GLOBAL: \posterconfig{clave=valor, ...}
 %% ============================================================================
 \newif\ifPC@numfig \newif\ifPC@marcas \newif\ifPC@mostrartit \newif\ifPC@numbloques
+\newif\ifPC@numpag \newif\ifPC@numsec \newif\ifPC@numtab \newif\ifPC@lof \newif\ifPC@lot
+\newif\ifPC@dpnum \newif\ifPC@dpprog \newif\ifPC@capitulos
 \newif\ifPC@sombra \newif\ifPC@contenido \PC@contenidotrue \newif\ifPC@depurar \newif\ifPC@marcascorte
 \newcommand\PC@tamano[1]{\ifcsname PC@tam@#1\endcsname\csname PC@tam@#1\endcsname
   \else\PackageWarning{postercientifico}{Tamano desconocido: #1}\fi}
@@ -276,6 +278,29 @@
   % ---- Figuras ----
   numerar figuras/.is if=PC@numfig,             numerar figuras=true,
   nombre figura/.store in=\PC@nomfig,           nombre figura=Figura,
+  % ---- Tipo de documento (v3) ----
+  modo/.store in=\PC@modo,                      modo=poster,      % poster | presentacion | documento
+  % ---- Documentos (modo=documento): papers, tesis, informes ----
+  columnas texto/.store in=\PC@doccols,         columnas texto=1, % 1 | 2
+  parrafos/.store in=\PC@docpar,                parrafos=separados, % separados | sangria
+  numerar paginas/.is if=PC@numpag,             numerar paginas=true,
+  numerar secciones/.is if=PC@numsec,           numerar secciones=true,
+  capitulos/.is if=PC@capitulos,                capitulos=false,  % el documento tiene capítulos (tesis)
+  encabezado/.store in=\PC@docenc,              encabezado=,      % texto arriba de cada página
+  nombre capitulo/.store in=\PC@nomcap,         nombre capitulo=Cap\'itulo,
+  nombre apendice/.store in=\PC@nomapen,        nombre apendice=Ap\'endice,
+  nombre tabla/.store in=\PC@nomtab,            nombre tabla=Tabla,
+  numerar tablas/.is if=PC@numtab,              numerar tablas=false,
+  lista figuras/.is if=PC@lof,                  lista figuras=false, % anota las figuras para \PClistafiguras
+  lista tablas/.is if=PC@lot,                   lista tablas=false,
+  escala seccion/.store in=\PC@escsec,          escala seccion=1.45,
+  escala capitulo/.store in=\PC@esccap,         escala capitulo=2.2,
+  % ---- Presentaciones (modo=presentacion) ----
+  pie diapositiva/.store in=\PC@dppie,          pie diapositiva=,
+  numerar diapositivas/.is if=PC@dpnum,         numerar diapositivas=true,
+  titulo diapositiva/.store in=\PC@dpest,       titulo diapositiva=banda, % banda | linea | simple
+  escala diapositiva/.store in=\PC@escdp,       escala diapositiva=1.5,   % título de cada diapositiva
+  progreso/.is if=PC@dpprog,                    progreso=false,   % barra de avance abajo
   % ---- Capas y aplicación ----
   contenido visible/.is if=PC@contenido,
   marcas/.is if=PC@marcas,                      marcas=false,     % posiciones para la aplicación web
@@ -448,8 +473,17 @@
     \let\PC@tmp\PC@ancho\let\PC@ancho\PC@alto\let\PC@alto\PC@tmp\fi}{}%
   \ifdefempty\PC@msup{\let\PC@msup\PC@margen}{}\ifdefempty\PC@minf{\let\PC@minf\PC@margen}{}%
   \ifdefempty\PC@mizq{\let\PC@mizq\PC@margen}{}\ifdefempty\PC@mder{\let\PC@mder\PC@margen}{}%
+  \edef\PC@modo{\PC@modo}%
+  \ifdefstring\PC@modo{documento}{%
+    % cabeza y pie de página dentro de los márgenes
+    \edef\PC@gcab{\the\dimexpr 14\dimexpr\PC@fuente\relax/10\relax}%
+    \edef\PC@gsep{\the\dimexpr\dimexpr\PC@msup\relax/4\relax}%
+    \edef\PC@gpie{\the\dimexpr\dimexpr\PC@minf\relax/2\relax}%
+    \RequirePackage[paperwidth=\PC@ancho,paperheight=\PC@alto,top=\PC@msup,bottom=\PC@minf,
+      left=\PC@mizq,right=\PC@mder,headheight=\PC@gcab,headsep=\PC@gsep,footskip=\PC@gpie]{geometry}%
+  }{%
   \RequirePackage[paperwidth=\PC@ancho,paperheight=\PC@alto,top=\PC@msup,bottom=\PC@minf,
-    left=\PC@mizq,right=\PC@mder,nohead,nofoot]{geometry}%
+    left=\PC@mizq,right=\PC@mder,nohead,nofoot]{geometry}}%
   \PC@cargaridioma
   \PC@ponerfamilias
 }
@@ -458,6 +492,7 @@
   \normalsize\setlength{\PCsep}{\PC@sep}\PC@parrafos\raggedbottom\setlength{\topskip}{0pt}%
   \ifdefempty\PC@sepfilas{\let\PC@sepfilas\PC@sepbloque}{}%
   \PC@abrirposiciones
+  \ifdefstring\PC@modo{documento}{\PC@iniciardocumento}{}%
 }
 
 %% ============================================================================
@@ -492,13 +527,15 @@
     \immediate\openout\PC@posfile=\jobname.pos\relax\global\PC@posabiertotrue
     \immediate\write\PC@posfile{papel \the\paperwidth\space\the\paperheight}%
   \fi\fi}
+%% página absoluta (1, 2, 3…) aunque la numeración sea romana o vuelva a empezar
+\newcommand\PC@pagabs{\the\ReadonlyShipoutCounter}
 %% \PC@marca{id}{a|b}: esquina superior izquierda (a) o inferior derecha (b)
 \newcommand\PC@marca[2]{\ifPC@posabierto\pdfsavepos
-  \write\PC@posfile{#1 #2 \the\pdflastxpos\space\the\pdflastypos\space\thepage}\fi}
+  \write\PC@posfile{#1 #2 \the\pdflastxpos\space\the\pdflastypos\space\PC@pagabs}\fi}
 %% \PC@marcaw{id}{a|b}: igual, pero anota también el ancho de línea actual
 \newcommand\PC@marcaw[2]{\ifPC@posabierto\pdfsavepos
   \edef\PC@tmp{\noexpand\write\PC@posfile{#1 #2 \noexpand\the\noexpand\pdflastxpos\space
-    \noexpand\the\noexpand\pdflastypos\space\noexpand\thepage\space\the\linewidth}}\PC@tmp\fi}
+    \noexpand\the\noexpand\pdflastypos\space\noexpand\PC@pagabs\space\the\linewidth}}\PC@tmp\fi}
 %% Elementos en posición absoluta o marcas: no ocupan sitio en el flujo
 \newcommand\PC@absoluto[1]{\ifvmode\begingroup\dimen0=\prevdepth\nointerlineskip
   \vbox to 0pt{\hbox{#1}\vss}\prevdepth=\dimen0\endgroup\else#1\fi}
@@ -565,18 +602,19 @@
 %%  \colocar[claves]{contenido LaTeX}      \colocarimagen[claves]{archivo}
 %%  \colocartexto[claves]{texto}           \colocarforma[claves]
 %%  Claves comunes: capa, id, x, y, ancla (center, north west, south east …),
-%%  ancho, alto, rotacion, opacidad, pagina (número; por defecto todas), visible.
+%%  ancho, alto, rotacion, opacidad, pagina (número; por defecto todas), aqui (solo en la
+%%  página en la que se escribe la orden), visible.
 %%  Imagen: ajuste = ajustar | cubrir | estirar.
 %%  Texto: escala, color, fondo, borde, grosor, radio, relleno, alineacion
 %%  (izquierda | centro | derecha | justificado), negrita, cursiva.
 %%  Forma: forma = rectangulo | circulo | elipse | linea | flecha, fondo, borde,
 %%  grosor, radio; para linea y flecha, x2 e y2.
-\newif\ifPC@i@vis \newif\ifPC@i@neg \newif\ifPC@i@cur
+\newif\ifPC@i@vis \newif\ifPC@i@neg \newif\ifPC@i@cur \newif\ifPC@i@aqui
 \pgfkeys{/pc/item/.is family, /pc/item/.cd,
   capa/.store in=\PC@i@capa, id/.store in=\PC@i@id, x/.store in=\PC@i@x, y/.store in=\PC@i@y,
   ancla/.store in=\PC@i@ancla, ancho/.store in=\PC@i@ancho, alto/.store in=\PC@i@alto,
   rotacion/.store in=\PC@i@rot, opacidad/.store in=\PC@i@op, pagina/.store in=\PC@i@pag,
-  visible/.is if=PC@i@vis, ajuste/.store in=\PC@i@ajuste, escala/.store in=\PC@i@esc,
+  visible/.is if=PC@i@vis, aqui/.is if=PC@i@aqui, ajuste/.store in=\PC@i@ajuste, escala/.store in=\PC@i@esc,
   color/.store in=\PC@i@color, fondo/.store in=\PC@i@fondo, borde/.store in=\PC@i@borde,
   grosor/.store in=\PC@i@grosor, radio/.store in=\PC@i@radio, relleno/.store in=\PC@i@relleno,
   alineacion/.store in=\PC@i@alin, negrita/.is if=PC@i@neg, cursiva/.is if=PC@i@cur,
@@ -584,20 +622,23 @@
   .unknown/.code={\PackageWarning{postercientifico}{Clave de elemento desconocida: \pgfkeyscurrentname}}}
 \newcommand\PC@i@reset{\def\PC@i@capa{frente}\def\PC@i@id{}\def\PC@i@x{0.5}\def\PC@i@y{0.5}%
   \def\PC@i@ancla{center}\def\PC@i@ancho{}\def\PC@i@alto{}\def\PC@i@rot{0}\def\PC@i@op{1}%
-  \def\PC@i@pag{}\PC@i@vistrue\def\PC@i@ajuste{ajustar}\def\PC@i@esc{1}\def\PC@i@color{pcTexto}%
+  \def\PC@i@pag{}\PC@i@vistrue\PC@i@aquifalse\def\PC@i@ajuste{ajustar}\def\PC@i@esc{1}\def\PC@i@color{pcTexto}%
   \def\PC@i@fondo{}\def\PC@i@borde{}\def\PC@i@grosor{0.08em}\def\PC@i@radio{0pt}\def\PC@i@relleno{0.4em}%
   \def\PC@i@alin{centro}\PC@i@negfalse\PC@i@curfalse\def\PC@i@forma{rectangulo}\def\PC@i@xb{}\def\PC@i@yb{}}
 \newcommand\PC@capade[1]{\begingroup\PC@i@reset\pgfkeys{/pc/item/.cd,#1}%
   \ifcsname PC@capa@\PC@i@capa @items\endcsname\else\nuevacapa{\PC@i@capa}\fi
-  \xdef\PC@capadestino{\PC@i@capa}\endgroup}
+  \xdef\PC@capadestino{\PC@i@capa}%
+  \xdef\PC@pagaqui{\ifPC@i@aqui ,pagina=\the\value{page}\fi}\endgroup}
+%% guarda el elemento en su capa; con «aqui» se pinta solo en la página actual
+\newcommand\PC@guardaritem[4]{\expandafter\gappto\csname PC@capa@\PC@capadestino @items\endcsname{\PC@pintaritem{#2}{#3#1}{#4}}}
 \NewDocumentCommand\colocar{O{}+m}{\PC@capade{#1}%
-  \expandafter\gappto\csname PC@capa@\PC@capadestino @items\endcsname{\PC@pintaritem{general}{#1}{#2}}}
+  \expandafter\PC@guardaritem\expandafter{\PC@pagaqui}{general}{#1}{#2}}
 \NewDocumentCommand\colocarimagen{O{}m}{\PC@capade{#1}%
-  \expandafter\gappto\csname PC@capa@\PC@capadestino @items\endcsname{\PC@pintaritem{imagen}{#1}{#2}}}
+  \expandafter\PC@guardaritem\expandafter{\PC@pagaqui}{imagen}{#1}{#2}}
 \NewDocumentCommand\colocartexto{O{}+m}{\PC@capade{#1}%
-  \expandafter\gappto\csname PC@capa@\PC@capadestino @items\endcsname{\PC@pintaritem{texto}{#1}{#2}}}
+  \expandafter\PC@guardaritem\expandafter{\PC@pagaqui}{texto}{#1}{#2}}
 \NewDocumentCommand\colocarforma{O{}}{\PC@capade{#1}%
-  \expandafter\gappto\csname PC@capa@\PC@capadestino @items\endcsname{\PC@pintaritem{forma}{#1}{}}}
+  \expandafter\PC@guardaritem\expandafter{\PC@pagaqui}{forma}{#1}{}}
 
 %% ---- Dibujo de las capas al enviar cada página -----------------------------
 \newcommand\PC@alinear[1]{\ifstrequal{#1}{izquierda}{\raggedright}{\ifstrequal{#1}{derecha}{\raggedleft}%
@@ -1211,7 +1252,7 @@
 %% ============================================================================
 %%  9. PIEZAS BÁSICAS
 %% ============================================================================
-\newcounter{pcfig}
+\newcounter{pcfig}\newcounter{pctab}
 %% Imagen de reserva: se dibuja si el archivo no existe (la plantilla siempre compila).
 %% Se dibuja ya con el tamaño pedido en vez de escalarla: así mide exactamente lo mismo
 %% que mediría la imagen (escalar con \resizebox deja medio punto de más y desborda).
@@ -1251,7 +1292,8 @@
   {\PackageWarning{postercientifico}{No encuentro la imagen #2}}\PC@reserva{#1}}}
 %% \pie{texto}: pie de figura, numerado si «numerar figuras=true»
 \newcommand{\pie}[1]{\ifstrempty{#1}{}{\par\vspace{0.3em}{\tam{\PC@escpie}\color{pcTenue}\raggedright
-  \ifPC@numfig\stepcounter{pcfig}{\bfseries\color{pcPrimario}\PC@nomfig\ \thepcfig.}\ \fi#1\par}}}
+  \ifPC@numfig\stepcounter{pcfig}{\bfseries\color{pcPrimario}\PC@nomfig\ \thepcfig.}\ %
+    \ifPC@lof\addcontentsline{lof}{figure}{\protect\numberline{\thepcfig}{\ignorespaces#1}}\fi\fi#1\par}}}
 %% \PCrecorte[opciones de recorte]{ancho}{alto}{archivo}[etiqueta]
 %% Rellena exactamente un rectángulo de ancho × alto, recortando lo que sobre.
 \NewDocumentCommand{\PCrecorte}{O{} m m m O{}}{\begingroup
@@ -1498,7 +1540,9 @@
   \begin{tikzpicture}\node[circle,fill=pcPrimario,text=pcContraste,minimum size=\PC@w,inner sep=0pt,align=center,text width=0.72\PC@w] {#2};\end{tikzpicture}\endgroup\par}\PC@despues}
 %% T26 · tabla                                        \txtTabla{pie}{tabular}
 \newcommand{\txtTabla}[2]{\PC@antes{\centering\renewcommand{\arraystretch}{1.25}\tam{0.9}#2\par}%
-  \ifstrempty{#1}{}{\vspace{0.3em}{\tam{\PC@escpie}\color{pcTenue}\raggedright#1\par}}\PC@despues}
+  \ifstrempty{#1}{}{\vspace{0.3em}{\tam{\PC@escpie}\color{pcTenue}\raggedright
+    \ifPC@numtab\stepcounter{pctab}{\bfseries\color{pcPrimario}\PC@nomtab\ \thepctab.}\ %
+      \ifPC@lot\addcontentsline{lot}{table}{\protect\numberline{\thepctab}{\ignorespaces#1}}\fi\fi#1\par}}\PC@despues}
 %% T27 · ecuación con su explicación                  \txtEcuacion[claves]{ecuación}{explicación}
 \NewDocumentCommand{\txtEcuacion}{O{}m+m}{\begin{caja}[estilo=nota,sin titulo,antes=\PC@sepelem,despues=\PC@sepelem,#1]%
   {\centering$\displaystyle#2$\par}\ifstrempty{#3}{}{\vspace{0.3em}{\tam{0.85}\color{pcTenue}#3\par}}\end{caja}}
@@ -1564,5 +1608,250 @@
 %% T35 · caja de texto con cualquier estilo            \txtCaja[claves]{texto}
 %%       p. ej. \txtCaja[estilo=nota, titulo={Recuerda}, mostrar titulo=true]{...}
 \NewDocumentCommand{\txtCaja}{O{}+m}{\begin{caja}[estilo=borde,antes=\PC@sepelem,despues=\PC@sepelem,#1]#2\end{caja}}
+
+%% ============================================================================
+%%  12. DOCUMENTOS (modo=documento): papers, tesis, informes
+%% ============================================================================
+%%  El texto corre de una página a la siguiente. Las mismas piezas de los pósters
+%%  (\img..., \txt..., cajas) se usan dentro de secciones:
+%%      \PCtitulodoc                       título, autores y afiliaciones (de \titulo, \autores…)
+%%      \PCresumen{Resumen}{texto}         \PCpalabrasclave{Palabras clave}{a, b, c}
+%%      \PCdoscolumnas{...}                texto a dos columnas; el argumento va arriba a todo el ancho
+%%      \PCportada[claves]                 portada de tesis (página propia)
+%%      \PCseccion[nivel=0|1|2|3, numerar=true|false, salto, apendice, id=...]{Título}
+%%                                         nivel 0 = capítulo (empieza página)
+%%      \PCindice  \PClistafiguras  \PClistatablas     (con «lista figuras», «lista tablas»)
+%%      \PCnumeracion{roman|arabic}        numeración de las páginas
+\newcounter{pccap}
+\newif\ifPC@concap
+\def\PC@marcader{}
+\def\PC@secid{}
+\newcommand\PC@iniciardocumento{%
+  \setlength{\topskip}{\dimexpr\PC@fuente\relax}%
+  \setlength{\columnsep}{\PC@sep}%
+  \ifdefstring\PC@docpar{sangria}{%
+    \renewcommand{\PC@parrafos}{\setlength{\parindent}{1.5em}\setlength{\parskip}{0pt plus 0.1em}}}{}%
+  \PC@parrafos
+  \ifPC@numsec\setcounter{secnumdepth}{3}\else\setcounter{secnumdepth}{-1}\fi
+  \setcounter{tocdepth}{2}%
+  \renewcommand\thesection{\ifPC@concap\thepccap.\fi\arabic{section}}%
+  \pagestyle{pcdoc}}
+%% cabeza y pie de las páginas
+\def\ps@pcdoc{%
+  \def\@oddhead{\ifdefempty\PC@docenc{\hfil}{\vbox{\hbox to\textwidth{\normalfont\tam{0.8}\color{pcTenue}%
+      \PC@docenc\hfil\PC@marcader}\vskip 0.35em{\color{pcTenue!45}\hrule height 0.03em}}}}%
+  \let\@evenhead\@oddhead
+  \def\@oddfoot{\ifPC@numpag\hfil{\normalfont\tam{0.85}\color{pcTenue}\thepage}\hfil\else\hfil\fi}%
+  \let\@evenfoot\@oddfoot}
+\def\ps@pcvacia{\def\@oddhead{\hfil}\let\@evenhead\@oddhead\def\@oddfoot{\hfil}\let\@evenfoot\@oddfoot}
+\newcommand\PCnumeracion[1]{\clearpage\pagenumbering{#1}}
+%% ---- Títulos de sección -------------------------------------------------------
+\newcommand\PC@marcasec{\ifx\PC@secid\@empty\else\ifPC@posabierto
+  \noindent\raise 0.78em\hbox{\PC@marcaw{\PC@secid}{a}}\fi\fi}
+\newcommand\PC@estilosec[1]{\normalfont\PC@fuentetit\tam{#1}\bfseries\color{pcPrimario}\raggedright\PC@marcasec}
+\renewcommand\section{\@startsection{section}{1}{\z@}{-1.5em plus -0.4em minus -0.2em}{0.6em plus 0.1em}%
+  {\PC@estilosec{\PC@escsec}}}
+\renewcommand\subsection{\@startsection{subsection}{2}{\z@}{-1.2em plus -0.3em minus -0.2em}{0.45em plus 0.1em}%
+  {\PC@estilosec{1.2}}}
+\renewcommand\subsubsection{\@startsection{subsubsection}{3}{\z@}{-1em plus -0.3em minus -0.2em}{0.35em plus 0.1em}%
+  {\PC@estilosec{1.05}}}
+\newif\ifPC@s@num \newif\ifPC@s@salto \newif\ifPC@s@apen \newif\ifPC@s@toc
+\pgfkeys{/pc/sec/.is family, /pc/sec/.cd,
+  id/.store in=\PC@s@id, nivel/.store in=\PC@s@nivel, numerar/.is if=PC@s@num, salto/.is if=PC@s@salto,
+  apendice/.is if=PC@s@apen, indice/.is if=PC@s@toc,
+  .unknown/.code={\PackageWarning{postercientifico}{Clave de sección desconocida: \pgfkeyscurrentname}}}
+\newif\ifPC@enapendices
+\NewDocumentCommand\PCseccion{O{} m}{\par\begingroup
+  \def\PC@s@id{}\def\PC@s@nivel{1}\PC@s@numtrue\PC@s@saltofalse\PC@s@apenfalse\PC@s@toctrue
+  \pgfkeys{/pc/sec/.cd,#1}%
+  \ifPC@numsec\else\PC@s@numfalse\fi
+  \xdef\PC@secid{\PC@s@id}%
+  \ifPC@s@apen\ifPC@enapendices\else\global\PC@enapendicestrue
+    \ifnum\PC@s@nivel=0 \setcounter{pccap}{0}\gdef\thepccap{\Alph{pccap}}\global\let\PC@nomcap\PC@nomapen
+    \else\setcounter{section}{0}\gdef\thesection{\Alph{section}}\fi\fi\fi
+  \ifcase\PC@s@nivel\relax
+    \PC@capitulo{#2}%
+  \or\ifPC@s@salto\clearpage\fi
+    \ifPC@s@num\section{#2}\else\section*{#2}\ifPC@s@toc\addcontentsline{toc}{section}{#2}\fi\fi
+  \or\ifPC@s@salto\clearpage\fi
+    \ifPC@s@num\subsection{#2}\else\subsection*{#2}\ifPC@s@toc\addcontentsline{toc}{subsection}{#2}\fi\fi
+  \else\ifPC@s@salto\clearpage\fi
+    \ifPC@s@num\subsubsection{#2}\else\subsubsection*{#2}\fi
+  \fi
+  \gdef\PC@secid{}\endgroup\@afterheading\@afterindentfalse}
+%% capítulo: página nueva, «Capítulo N» y el título
+\newcommand\PC@capitulo[1]{\clearpage
+  \ifPC@s@num\global\PC@concaptrue\refstepcounter{pccap}\else\global\PC@concapfalse\fi
+  \setcounter{section}{0}%
+  \gdef\PC@marcader{#1}%
+  \vspace*{2em}%
+  {\normalfont\PC@fuentetit\raggedright\PC@parrafos\parindent\z@
+   \ifx\PC@secid\@empty\else\PC@marcav{\PC@secid}{a}\fi
+   \ifPC@s@num{\tam{1.15}\color{pcTenue}\PC@nomcap\ \thepccap\par}\vspace{0.45em}\fi
+   {\tam{\PC@esccap}\bfseries\color{pcPrimario}#1\par}%
+   \vspace{0.5em}{\color{pcAcento}\hrule height 0.14em width 3.2em}}%
+  \nobreak\vspace{1.6em}%
+  \ifPC@s@toc\ifPC@s@num\addcontentsline{toc}{pccap}{\protect\numberline{\thepccap}#1}%
+    \else\addcontentsline{toc}{pccap}{#1}\fi\fi}
+\newcommand\PCfinseccion[1]{\par\ifPC@posabierto\PC@marcaconserva{#1}{b}\fi}
+%% ---- Índices -----------------------------------------------------------------
+\newcommand*\l@pccap[2]{\addpenalty{-\@highpenalty}\vskip 0.8em plus 0.1em
+  {\parindent\z@\rightskip\@pnumwidth\parfillskip-\@pnumwidth\bfseries\color{pcPrimario}\leavevmode
+   \setlength\@tempdima{1.6em}#1\nobreak\hfil\nobreak\hb@xt@\@pnumwidth{\hss#2}\par}}
+\renewcommand*\l@section{\ifPC@capitulos\expandafter\@firstoftwo\else\expandafter\@secondoftwo\fi
+  {\@dottedtocline{1}{1.6em}{2.4em}}{\PC@lsec}}
+\newcommand*\PC@lsec[2]{\addpenalty\@secpenalty\vskip 0.5em plus 0.1em
+  {\parindent\z@\rightskip\@pnumwidth\parfillskip-\@pnumwidth\bfseries\leavevmode
+   \setlength\@tempdima{1.6em}#1\nobreak\hfil\nobreak\hb@xt@\@pnumwidth{\hss#2}\par}}
+\renewcommand*\l@subsection{\ifPC@capitulos\expandafter\@firstoftwo\else\expandafter\@secondoftwo\fi
+  {\@dottedtocline{2}{4em}{3.1em}}{\@dottedtocline{2}{1.6em}{2.4em}}}
+\renewcommand*\l@figure{\@dottedtocline{1}{0em}{2.2em}}
+\let\l@table\l@figure
+\newcommand\PCindice{{\PC@parrafos\parskip\z@\@starttoc{toc}}}
+\newcommand\PClistafiguras{{\PC@parrafos\parskip\z@\@starttoc{lof}}}
+\newcommand\PClistatablas{{\PC@parrafos\parskip\z@\@starttoc{lot}}}
+%% ---- Título, resumen y palabras clave ------------------------------------------
+\newcommand\PC@alindoc{\ifdefstring\PC@alincab{izquierda}{\raggedright}{\centering}}
+\newcommand\PCtitulodoc{\par\begingroup\parindent\z@\parskip\z@
+  \PC@marcav{cabecera}{a}%
+  \ifdefempty\PC@logoL{\ifdefempty\PC@logoR{}{\PC@logosdoc}}{\PC@logosdoc}%
+  {\PC@alindoc
+   {\normalfont\PC@fuentetit\tam{\PC@esctit}\bfseries\color{pcPrimario}\PC@titulo\par}%
+   \ifdefempty{\PC@subtitulo}{}{\vspace{0.35em}{\tam{\PC@escsub}\color{pcTenue}\PC@subtitulo\par}}%
+   \ifdefempty{\PC@autores}{}{\vspace{0.9em}{\tam{\PC@escaut}\PC@autores\par}}%
+   \ifdefempty{\PC@afil}{}{\vspace{0.3em}{\tam{\PC@escafi}\color{pcTenue}\PC@afil\par}}}%
+  \PC@marcav{cabecera}{b}\vspace{1.3em}\endgroup}
+\newcommand\PC@logosdoc{\PC@anchoslogos\hbox to\linewidth{%
+  \hbox to\PC@logowL{\vbox{\hsize=\PC@logowL\linewidth=\hsize\noindent\PC@logo{\PC@logoL}{\PC@logoescL}{cabecera-logo-izq}}\hss}\hfil
+  \hbox to\PC@logowR{\hss\vbox{\hsize=\PC@logowR\linewidth=\hsize\raggedleft\noindent\PC@logo{\PC@logoR}{\PC@logoescR}{cabecera-logo-der}}}}\par\vspace{0.9em}}
+\NewDocumentCommand\PCresumen{O{} m +m}{\par\begingroup\parindent\z@
+  \ifstrempty{#1}{}{\PC@marcav{#1}{a}}%
+  {\leftskip=\ifnum\PC@doccols>1 0pt\else 2em\fi\rightskip=\leftskip\tam{0.92}\parskip=0.4em
+   {\bfseries\color{pcPrimario}#2.}\enspace#3\par}%
+  \ifstrempty{#1}{}{\PC@marcav{#1}{b}}\vspace{0.6em}\endgroup}
+\NewDocumentCommand\PCpalabrasclave{m m}{\par\begingroup\parindent\z@
+  {\leftskip=\ifnum\PC@doccols>1 0pt\else 2em\fi\rightskip=\leftskip\tam{0.92}%
+   {\bfseries\color{pcPrimario}#1:}\enspace#2\par}\vspace{0.9em}\endgroup}
+\newcommand\PCdoscolumnas[1]{\twocolumn[{\PC@parrafos\color{pcTexto}#1\vspace{0.6em}}]}
+%% ---- Portada de tesis ----------------------------------------------------------
+\pgfkeys{/pc/portada/.is family, /pc/portada/.cd,
+  institucion/.store in=\PC@p@inst, dependencia/.store in=\PC@p@dep, tipo/.store in=\PC@p@tipo,
+  grado/.store in=\PC@p@grado, presenta/.store in=\PC@p@pres, director/.store in=\PC@p@dir,
+  lugar/.store in=\PC@p@lugar, fecha/.store in=\PC@p@fecha,
+  .unknown/.code={\PackageWarning{postercientifico}{Clave de portada desconocida: \pgfkeyscurrentname}}}
+\NewDocumentCommand\PCportada{O{}}{\clearpage\thispagestyle{pcvacia}\begingroup
+  \def\PC@p@inst{}\def\PC@p@dep{}\def\PC@p@tipo{}\def\PC@p@grado{}\def\PC@p@pres{}\def\PC@p@dir{}%
+  \def\PC@p@lugar{}\def\PC@p@fecha{}\pgfkeys{/pc/portada/.cd,#1}%
+  \parindent\z@\parskip\z@\centering
+  \PC@marcav{cabecera}{a}%
+  \ifdefempty\PC@logoL{\ifdefempty\PC@logoR{}{\PC@logosdoc}}{\PC@logosdoc}%
+  \ifdefempty\PC@p@inst{}{{\PC@fuentetit\tam{1.5}\bfseries\PC@p@inst\par}}%
+  \ifdefempty\PC@p@dep{}{\vspace{0.5em}{\tam{1.15}\PC@p@dep\par}}%
+  \vspace{0.8em}{\color{pcAcento}\hrule height 0.12em}\vfill
+  {\PC@fuentetit\tam{\PC@esctit}\bfseries\color{pcPrimario}\PC@titulo\par}%
+  \ifdefempty{\PC@subtitulo}{}{\vspace{0.6em}{\tam{\PC@escsub}\color{pcTenue}\PC@subtitulo\par}}%
+  \vfill
+  \ifdefempty\PC@p@tipo{}{{\PC@fuentetit\tam{1.6}\bfseries\PC@p@tipo\par}\vspace{0.6em}}%
+  \ifdefempty\PC@p@grado{}{{\tam{1.1}\PC@p@grado\par}\vspace{1em}}%
+  \ifdefempty\PC@p@pres{}{{\tam{1}\color{pcTenue}\PC@p@pres\par}\vspace{0.4em}}%
+  \ifdefempty{\PC@autores}{}{{\tam{\PC@escaut}\bfseries\PC@autores\par}}%
+  \ifdefempty{\PC@afil}{}{\vspace{0.3em}{\tam{\PC@escafi}\color{pcTenue}\PC@afil\par}}%
+  \vfill
+  \ifdefempty\PC@p@dir{}{{\tam{1.05}\PC@p@dir\par}\vfill}%
+  {\tam{1}\PC@p@lugar\ifdefempty\PC@p@lugar{}{\ifdefempty\PC@p@fecha{}{, }}\PC@p@fecha\par}%
+  \PC@marcav{cabecera}{b}%
+  \endgroup\clearpage}
+
+%% ============================================================================
+%%  13. PRESENTACIONES (modo=presentacion)
+%% ============================================================================
+%%  Cada diapositiva es una página con sus filas, cajas y elementos:
+%%      \diapositiva[titulo={...}, subtitulo={...}, diseno=contenido|portada|seccion|vacia,
+%%                   estilo=banda|linea|simple, pie=true|false, fondo=<color>, id=...]
+%%        \begin{fila} ... \end{fila}
+%%  «portada» usa \titulo, \subtitulo, \autores, \afiliaciones y los logos.
+%%  El pie (texto de «pie diapositiva» y número) se pinta encima, en el margen inferior.
+\newif\ifPC@dp@pievis
+\def\PC@dp@conpie{0}\def\PC@dp@fondoactual{}
+\pgfkeys{/pc/dp/.is family, /pc/dp/.cd,
+  id/.store in=\PC@dp@id, titulo/.store in=\PC@dp@tit, subtitulo/.store in=\PC@dp@sub,
+  diseno/.store in=\PC@dp@dis, estilo/.store in=\PC@dp@est, pie/.is if=PC@dp@pievis,
+  fondo/.store in=\PC@dp@fondo,
+  .unknown/.code={\PackageWarning{postercientifico}{Clave de diapositiva desconocida: \pgfkeyscurrentname}}}
+\NewDocumentCommand\diapositiva{O{}}{\clearpage\begingroup
+  \def\PC@dp@id{}\def\PC@dp@tit{}\def\PC@dp@sub{}\def\PC@dp@dis{contenido}\PC@dp@pievistrue
+  \let\PC@dp@est\PC@dpest\def\PC@dp@fondo{}%
+  \pgfkeys{/pc/dp/.cd,#1}%
+  \edef\PC@dp@dis{\PC@dp@dis}\edef\PC@dp@est{\PC@dp@est}%
+  \xdef\PC@dp@conpie{\ifPC@dp@pievis 1\else 0\fi}%
+  \global\let\PC@dp@fondoactual\PC@dp@fondo
+  \ifx\PC@dp@id\@empty\else\ifPC@posabierto
+    \immediate\write\PC@posfile{\PC@dp@id\space pag \thepage}\fi\fi
+  \hrule height\z@\nointerlineskip            % la página existe aunque solo tenga elementos libres
+  \ifcsname PC@dp@d@\PC@dp@dis\endcsname\csname PC@dp@d@\PC@dp@dis\endcsname
+  \else\csname PC@dp@d@contenido\endcsname\fi
+  \endgroup}
+\newcommand\PC@dp@marcas{\ifx\PC@dp@id\@empty\else\ifPC@posabierto
+  \edef\PC@tmpa{\noexpand\PC@marca{\PC@dp@id}{a}}\edef\PC@tmpb{\noexpand\PC@marca{\PC@dp@id}{b}}%
+  \node[inner sep=0pt,outer sep=0pt] at (pcdp.north west) {\PC@tmpa};
+  \node[inner sep=0pt,outer sep=0pt] at (pcdp.south east) {\PC@tmpb};\fi\fi}
+\newcommand\PC@dp@textotit{{\PC@fuentetit\tam{\PC@escdp}\bfseries\PC@dp@tit\par}%
+  \ifx\PC@dp@sub\@empty\else\vspace{0.15em}{\tam{0.95}\PC@dp@sub\par}\fi}
+\@namedef{PC@dp@d@vacia}{}
+\@namedef{PC@dp@d@contenido}{\ifx\PC@dp@tit\@empty\else
+  \ifdefstring\PC@dp@est{banda}{%
+    \vskip-\dimexpr\PC@msup\relax\nointerlineskip
+    \hbox to\linewidth{\hskip-\dimexpr\PC@mizq\relax
+      \begin{tikzpicture}\node[name=pcdp,fill=pcPrimario,text=pcContraste,inner xsep=\dimexpr\PC@mizq\relax,
+        inner ysep=0.5em,outer sep=0pt,align=left,
+        text width=\dimexpr\paperwidth-2\dimexpr\PC@mizq\relax\relax] {\PC@dp@textotit};\PC@dp@marcas
+      \end{tikzpicture}\hss}\par\vskip 0.8em\relax}%
+   {\hbox to\linewidth{\begin{tikzpicture}\node[name=pcdp,text=pcPrimario,inner sep=0pt,outer sep=0pt,align=left,
+        text width=\linewidth] {\PC@dp@textotit};\PC@dp@marcas\end{tikzpicture}\hss}\par
+    \ifdefstring\PC@dp@est{linea}{\vskip 0.3em{\color{pcAcento}\hrule height 0.12em}\vskip 0.8em\relax}{\vskip 0.6em\relax}}%
+  \fi}
+\@namedef{PC@dp@d@seccion}{\vfill
+  \ifdefstring\PC@alincab{izquierda}{\def\PC@dp@alin{left}}{\def\PC@dp@alin{center}}%
+  {\parindent\z@\PC@alindoc
+   \hbox to\linewidth{\begin{tikzpicture}\node[name=pcdp,text=pcPrimario,inner sep=0pt,outer sep=0pt,
+      align=\PC@dp@alin,text width=\linewidth]
+      {{\PC@fuentetit\tam{\PC@escsub}\bfseries\tam{2.4}\PC@dp@tit\par}};\PC@dp@marcas\end{tikzpicture}\hss}\par
+   \vskip 0.5em
+   \ifdefstring\PC@alincab{izquierda}{{\color{pcAcento}\hrule height 0.16em width 4em}}%
+     {\hbox to\linewidth{\hfil{\color{pcAcento}\vrule height 0.16em width 4em}\hfil}}%
+   \ifx\PC@dp@sub\@empty\else\vskip 0.6em{\tam{1.1}\color{pcTenue}\PC@dp@sub\par}\fi}%
+  \vfill}
+\@namedef{PC@dp@d@portada}{%
+  {\parindent\z@\parskip\z@
+   \ifdefempty\PC@logoL{\ifdefempty\PC@logoR{}{\PC@logosdoc}}{\PC@logosdoc}%
+   \vfill
+   \PC@marcav{cabecera}{a}%
+   {\PC@alindoc
+    {\PC@fuentetit\tam{\PC@esctit}\bfseries\color{pcPrimario}\PC@titulo\par}%
+    \ifdefempty{\PC@subtitulo}{}{\vspace{0.4em}{\tam{\PC@escsub}\color{pcTenue}\PC@subtitulo\par}}%
+    \vspace{0.7em}%
+    \ifdefstring\PC@alincab{izquierda}{{\color{pcAcento}\hrule height 0.16em width 4em}}%
+      {\hbox to\linewidth{\hfil{\color{pcAcento}\vrule height 0.16em width 4em}\hfil}}%
+    \ifdefempty{\PC@autores}{}{\vspace{0.9em}{\tam{\PC@escaut}\bfseries\PC@autores\par}}%
+    \ifdefempty{\PC@afil}{}{\vspace{0.3em}{\tam{\PC@escafi}\color{pcTenue}\PC@afil\par}}}%
+   \PC@marcav{cabecera}{b}%
+   \vfill}}
+%% número total de páginas (de la compilación anterior)
+\AtEndDocument{\ifdefstring\PC@modo{presentacion}{\immediate\write\@auxout{\string\gdef\string\PC@totalpag{\the\value{page}}}}{}}
+%% fondo propio de una diapositiva y pie con el número
+\AddToHook{shipout/background}{\ifx\PC@dp@fondoactual\@empty\else\put(0,0){\begin{tikzpicture}[overlay]
+  \PC@defcolor{pc@dp@fondo}{\PC@dp@fondoactual}%
+  \fill[pc@dp@fondo] (0,0) rectangle (\paperwidth,-\paperheight);\end{tikzpicture}}\fi}
+\AddToHook{shipout/foreground}{\ifdefstring\PC@modo{presentacion}{\ifnum\PC@dp@conpie=1
+  \put(0,0){\normalfont\tam{0.62}\begin{tikzpicture}[overlay]
+    \ifdefempty\PC@dppie{}{\node[anchor=base west,inner sep=0pt,text=pcTenue] at
+      (\dimexpr\PC@mizq\relax,\dimexpr-\paperheight+0.5\dimexpr\PC@mizq\relax\relax) {\PC@dppie};}%
+    \ifPC@dpnum\node[anchor=base east,inner sep=0pt,text=pcTenue] at
+      (\dimexpr\paperwidth-\dimexpr\PC@mder\relax\relax,\dimexpr-\paperheight+0.5\dimexpr\PC@mizq\relax\relax)
+      {\thepage\ifdefined\PC@totalpag\,/\,\PC@totalpag\fi};\fi
+    \ifPC@dpprog\ifdefined\PC@totalpag
+      \fill[pcAcento] (0,-\paperheight) rectangle
+        (\dimexpr\paperwidth*\value{page}/\PC@totalpag\relax,\dimexpr-\paperheight+0.22em\relax);\fi\fi
+  \end{tikzpicture}}\fi}{}}
 
 \endinput
