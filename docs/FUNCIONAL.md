@@ -1,4 +1,4 @@
-# Especificación funcional · DocsLab 1.1.0
+# Especificación funcional · DocsLab 1.2.0
 
 Catálogo de funciones con identificadores estables (**F-NN**). Cada versión futura indica en el CHANGELOG qué F-NN añade, cambia o retira. Los identificadores no se reutilizan.
 
@@ -125,5 +125,5 @@ Columnas: **Módulos** (backend), **API** (grupo de `docs/API.md`), **Pruebas** 
 | RNF-03 | Python ≥ 3.9 | `requirements.txt` |
 | RNF-04 | Uso local de un solo usuario, sin autenticación | `SECURITY.md` |
 | RNF-06 | Compatibilidad hacia atrás: todo proyecto de un esquema anterior se abre sin pérdida de datos | `docs/MIGRACIONES.md`, F-25 |
-| RNF-07 | Licencia AGPL-3.0-only; cabecera SPDX en cada archivo de código propio | `LICENSE` |
+| RNF-07 | Licencias: AGPL-3.0-only (aplicación) y LPPL-1.3c (`postercientifico.sty`); cabecera SPDX en cada archivo de código propio | `LICENSE`, `latex/LICENSE-LPPL-1.3c.txt` |
 | RNF-05 | Las funciones opcionales se desactivan si faltan sus herramientas (Poppler, Ghostscript, LuaLaTeX), con aviso | Pruebas con `skip` |

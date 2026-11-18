@@ -3,7 +3,8 @@
 
 Versionado: SemVer 2.0.0. Ver CHANGELOG.md y docs/VERSIONADO.md.
 """
-__version__ = "1.1.0"
-__version_sty__ = "1.0.1"   # latex/postercientifico.sty
+__version__ = "1.2.0"
+__version_sty__ = "1.1.0"   # latex/postercientifico.sty
 
-__license__ = "AGPL-3.0-only"   # ver LICENSE
+__license__ = "AGPL-3.0-only"   # aplicación; ver LICENSE
+__license_sty__ = "LPPL-1.3c"   # postercientifico.sty; ver latex/LICENSE-LPPL-1.3c.txt

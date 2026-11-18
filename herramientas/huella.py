@@ -96,6 +96,7 @@ def generar(raiz: Path = RAIZ) -> dict:
             "esquema_modelo": M.ESQUEMA,
         },
         "licencia": getattr(docslab, "__license__", None),
+        "licencia_sty": getattr(docslab, "__license_sty__", None),
         "generado_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "contrato": {
             "api": rutas,
@@ -129,8 +130,9 @@ def comparar(a: dict, b: dict) -> tuple[str, list[str]]:
     for k in va:
         if va[k] != vb.get(k):
             lineas.append(f"- Versión `{k}`: {va[k]} → {vb.get(k)}")
-    if a.get("licencia") != b.get("licencia"):
-        lineas.append(f"- Licencia: {a.get('licencia')} → {b.get('licencia')}")
+    for k in ("licencia", "licencia_sty"):
+        if a.get(k) != b.get(k):
+            lineas.append(f"- {k}: {a.get(k)} → {b.get(k)}")
     if va["esquema_modelo"] != vb["esquema_modelo"]:
         rompe = True
     for k in a["contrato"]:
@@ -156,7 +158,7 @@ def comparar(a: dict, b: dict) -> tuple[str, list[str]]:
     lineas.append(f"\n## Pruebas\n- {a['pruebas']['total_funciones']} → {b['pruebas']['total_funciones']} funciones")
     # un módulo nuevo del backend o del frontend suele ser una función nueva
     agrega |= any(re.match(r"(docslab/[^/]+\.py|static/js/[^/]+\.js)$", n) for n in nuevos)
-    agrega |= a.get("licencia") != b.get("licencia")
+    agrega |= any(a.get(k) != b.get(k) for k in ("licencia", "licencia_sty"))
     salto = "MAJOR" if rompe else "MINOR" if agrega else "PATCH" if (nuevos or quitados or cambiados) else "NINGUNO"
     lineas.insert(1, f"**Salto SemVer sugerido:** {salto} (orientativo: los cambios de comportamiento no se detectan solos)\n")
     return salto, lineas

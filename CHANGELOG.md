@@ -12,6 +12,18 @@ Tipos de entrada: **Añadido**, **Cambiado**, **Obsoleto**, **Eliminado**, **Cor
 
 _Nada todavía._
 
+## [1.2.0] - 2026-11-18
+
+Huella: [`huella/v1.2.0.json`](huella/v1.2.0.json). Versiones: aplicación 1.2.0 · `.sty` 1.1.0 · esquema 1 · licencias AGPL-3.0-only (aplicación) y LPPL-1.3c (`.sty`).
+
+### Cambiado
+- **`postercientifico.sty` pasa a LPPL-1.3c o posterior** (antes AGPL-3.0-only), la licencia habitual de los paquetes LaTeX. Lleva el aviso de copyright y licencia recomendado por la LPPL, con estado de mantenimiento `maintained` y responsable Christian Alejandro Ponce Mejia. Texto de la licencia en `latex/LICENSE-LPPL-1.3c.txt`. Las copias de las plantillas LaTeX se sincronizan.
+- Titular del copyright: Christian Alejandro Ponce Mejia (LEEME y `.sty`).
+- `GET /api/estado` informa también `licencia_sty`; `docslab.__license_sty__`.
+- `herramientas/huella.py` registra y compara la licencia de la `.sty`.
+- `docs/VERSIONADO.md`: un cambio de licencia sube la versión MINOR del componente y de la aplicación.
+
+
 ## [1.1.0] - 2026-11-18
 
 Huella: [`huella/v1.1.0.json`](huella/v1.1.0.json). Versiones: aplicación 1.1.0 · `.sty` 1.0.1 · esquema 1 · licencia AGPL-3.0-only.
@@ -86,7 +98,8 @@ Línea base. Es la primera versión con versionado formal. Huella: [`huella/v1.0
 - En un TeX Live sin `texlive-lang-spanish` ni `luatex85.sty` fallan 11 pruebas (las 9 de compilación de plantillas, una de la API y una de LuaLaTeX).
 - La API no tiene autenticación y los cuadernos ejecutan código arbitrario (ver `SECURITY.md`).
 
-[Sin publicar]: ../../compare/v1.1.0...HEAD
+[Sin publicar]: ../../compare/v1.2.0...HEAD
+[1.2.0]: ../../compare/v1.1.0...v1.2.0
 [1.1.0]: ../../compare/v1.0.1...v1.1.0
 [1.0.1]: ../../compare/v1.0.0...v1.0.1
 [1.0.0]: ../../releases/tag/v1.0.0

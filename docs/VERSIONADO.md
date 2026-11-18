@@ -35,12 +35,14 @@ Cuando cambia la plantilla `.sty` o el esquema, también cambia la aplicación, 
 | Se añade una ruta, variante, estilo, idioma, tipografía, plantilla o función de usuario | **MINOR** |
 | Sube `ESQUEMA` con migración automática y probada | **MINOR** |
 | Nueva dependencia obligatoria en `requirements.txt` | **MINOR** (se anota en el CHANGELOG) |
+| Cambio de licencia de la aplicación o de un componente | **MINOR** (del componente y de la aplicación) |
 | Corrección de errores sin cambio de contrato, rendimiento, textos o documentación | **PATCH** |
 
 ### Plantilla `postercientifico.sty`
 - **MAJOR**: se elimina o renombra una clave de `\posterconfig`, un entorno o una orden pública, o el resultado visual de un `.tex` existente cambia de forma incompatible.
 - **MINOR**: nuevas claves, entornos u opciones con valores por defecto que no alteran lo existente.
 - **PATCH**: correcciones.
+- Licencia propia: **LPPL-1.3c** (no la AGPL de la aplicación). Su cabecera de copyright y mantenimiento no se elimina; las copias en `plantillas/*-latex/` deben ser idénticas (`tests/test_version.py`).
 
 ### Esquema del modelo
 - Sube en 1 cada vez que cambia la forma de `modelo.json` de un modo que `normalizar()` no resuelve completando valores por defecto (renombrar, mover o cambiar el tipo de un campo).
@@ -50,7 +52,7 @@ Cuando cambia la plantilla `.sty` o el esquema, también cambia la aplicación, 
 
 `herramientas/huella.py` produce `huella/vX.Y.Z.json` con:
 
-- los números de versión de los cuatro ejes y la licencia;
+- los números de versión de los cuatro ejes y las licencias (aplicación y `.sty`);
 - el **contrato público**: las rutas de la API, las 69 variantes, los estilos de caja y bibliográficos, las clases, los tamaños, los temas, los idiomas, las familias tipográficas y las plantillas incluidas;
 - las dependencias, el número de funciones de prueba por archivo y las líneas de código por módulo;
 - el SHA-256 y el tamaño de cada archivo, más un `sha256_global` del árbol.

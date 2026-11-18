@@ -4,7 +4,7 @@ Editor web de documentos científicos hechos con LaTeX: **pósters, presentacion
 
 Funciona en tu equipo (un pequeño servidor local con Python) o dentro de Google Colab.
 
-**Versión 1.1.0** · Licencia [AGPL-3.0](LICENSE) · [Registro de cambios](CHANGELOG.md) · [Documentación técnica y funcional](docs/README.md) · [Seguridad](SECURITY.md)
+**Versión 1.2.0** · Licencia [AGPL-3.0](LICENSE) (plantilla LaTeX: [LPPL-1.3c](latex/LICENSE-LPPL-1.3c.txt)) · [Registro de cambios](CHANGELOG.md) · [Documentación técnica y funcional](docs/README.md) · [Seguridad](SECURITY.md)
 
 ## Qué incluye
 
@@ -310,7 +310,7 @@ DocsLab es la continuación de PosterLab. Tus pósters se abren igual: importa e
 
 ## Licencia
 
-Copyright (C) 2026 Christian.
+Copyright (C) 2026 Christian Alejandro Ponce Mejia.
 
 DocsLab es software libre: puedes redistribuirlo y modificarlo bajo los términos de la **GNU Affero General Public License, versión 3** (`AGPL-3.0-only`), publicada por la Free Software Foundation. Se distribuye con la esperanza de que sea útil, pero **SIN NINGUNA GARANTÍA**, ni siquiera la implícita de COMERCIABILIDAD o IDONEIDAD PARA UN PROPÓSITO PARTICULAR. El texto completo está en [`LICENSE`](LICENSE).
 
@@ -321,4 +321,6 @@ En la práctica:
 - **Cláusula de red (§13):** si modificas DocsLab y lo ofreces a otras personas a través de una red (por ejemplo, un servidor compartido), debes ofrecerles el código fuente de tu versión modificada.
 - Los documentos que produces con DocsLab (PDF, `.tex`, `.pptx`) son tuyos; la licencia cubre el programa, no tu contenido.
 
-Cada archivo de código propio lleva la cabecera `SPDX-License-Identifier: AGPL-3.0-only`. Las librerías de `static/vendor/` conservan sus propias licencias (ver «Licencias de terceros»).
+**Excepción: la plantilla LaTeX.** `latex/postercientifico.sty` (y sus copias en las plantillas y en los zips para Overleaf) se distribuye bajo la **LaTeX Project Public License 1.3c** o posterior (`LPPL-1.3c`, texto en [`latex/LICENSE-LPPL-1.3c.txt`](latex/LICENSE-LPPL-1.3c.txt)), la licencia habitual de los paquetes LaTeX. Puedes usarla en tus documentos sin restricciones; si la modificas y redistribuyes, la versión modificada debe llevar otro nombre o indicar claramente que no es la original. Estado de mantenimiento LPPL: `maintained`; responsable: Christian Alejandro Ponce Mejia.
+
+Cada archivo de código propio lleva su cabecera `SPDX-License-Identifier` (`AGPL-3.0-only`, o `LPPL-1.3c` en la plantilla LaTeX). Las librerías de `static/vendor/` conservan sus propias licencias (ver «Licencias de terceros»).

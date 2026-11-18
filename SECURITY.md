@@ -4,7 +4,8 @@
 
 | Versión | Soporte |
 |---|---|
-| 1.1.x | ✅ |
+| 1.2.x | ✅ |
+| 1.1.x | Sin definir |
 | 1.0.x | Sin definir |
 
 ## Modelo de amenazas

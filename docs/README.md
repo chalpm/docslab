@@ -9,6 +9,7 @@
 | [`MIGRACIONES.md`](MIGRACIONES.md) | Migraciones del esquema de `modelo.json`: funcionamiento y procedimiento para añadir una |
 | [`VERSIONADO.md`](VERSIONADO.md) | SemVer, ejes versionados, huella digital y lista de publicación |
 | [`../CHANGELOG.md`](../CHANGELOG.md) | Cambios por versión |
-| [`../LICENSE`](../LICENSE) | GNU AGPL-3.0-only |
+| [`../LICENSE`](../LICENSE) | GNU AGPL-3.0-only (aplicación) |
+| [`../latex/LICENSE-LPPL-1.3c.txt`](../latex/LICENSE-LPPL-1.3c.txt) | LPPL-1.3c (`postercientifico.sty`) |
 | [`../SECURITY.md`](../SECURITY.md) | Modelo de amenazas y cómo reportar vulnerabilidades |
 | [`../huella/`](../huella/) | Huellas digitales de cada versión publicada |
