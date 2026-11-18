@@ -4,7 +4,7 @@
 
 Funciona **en tu equipo** (Windows, macOS o Linux, con un pequeño servidor local) o **en Google Colab**. Una vez instalado no necesita internet, salvo para buscar referencias por DOI.
 
-**Versión 1.2.2** · Licencia [AGPL-3.0](LICENSE) (plantilla LaTeX: [LPPL-1.3c](latex/LICENSE-LPPL-1.3c.txt)) · [Registro de cambios](CHANGELOG.md) · [Documentación técnica y funcional](docs/README.md) · [Seguridad](SECURITY.md)
+**Versión 1.2.3** · Licencia [AGPL-3.0](LICENSE) (plantilla LaTeX: [LPPL-1.3c](latex/LICENSE-LPPL-1.3c.txt)) · [Registro de cambios](CHANGELOG.md) · [Documentación técnica y funcional](docs/README.md) · [Seguridad](SECURITY.md)
 
 ---
 
@@ -66,7 +66,7 @@ flowchart LR
 | **Proyecto LaTeX** | El modo código: el documento son archivos `.tex` que editas a mano. Cualquier proyecto estructurado se puede convertir a este modo. |
 | **Capas** | Planos del póster: *detrás* (fondos, formas), *contenido* (cabecera, filas, pie) y *delante* (sellos, notas). Se ocultan, se atenúan y se reordenan. |
 | **Fila · columna · caja** | La cuadrícula del contenido: las filas contienen columnas, y las columnas contienen cajas con elementos. |
-| **Variante (I01–I34, T01–T36)** | Cada forma predefinida de colocar imágenes (I) o texto (T) dentro de una caja. Hay 69 en total, contando «LaTeX libre» y «espacio». |
+| **Variante (I01–I34, T01–T36)** | Cada forma predefinida de colocar imágenes (I) o texto (T) dentro de una caja. El editor ofrece 69: 32 de imagen, 35 de texto, «LaTeX libre» y «espacio». Las tres de posición absoluta (I30, I31 y T33) solo existen en la plantilla LaTeX; en el editor eso se hace con capas o con posición libre. |
 | **Estilo de caja** | El aspecto del recuadro (barra, borde, sombra…). Hay 12. |
 | **Plantilla** | Un proyecto de partida. Hay 12 incluidas y puedes guardar las tuyas. |
 | **Componente** | Un elemento propio, hecho en el Componente Lab, reutilizable en cualquier documento. |
@@ -518,7 +518,7 @@ Las incluidas se regeneran con `python herramientas/construir_plantillas.py`, y 
 
 ## 15. La plantilla LaTeX sin la aplicación
 
-`latex/postercientifico.sty` funciona sola, también en Overleaf. `python herramientas/empaquetar.py` genera `dist/plantilla_postercientifico_overleaf.zip`, con la plantilla, un póster de ejemplo por capas (`main.tex`), el catálogo de 7 páginas (`catalogo.tex`, variantes I01–I34 y T01–T35) y las imágenes de prueba. En Overleaf: *New Project › Upload Project*, compila con pdfLaTeX y cambia de documento en *Menu › Main document*.
+`latex/postercientifico.sty` funciona sola, también en Overleaf. `python herramientas/empaquetar.py` genera `dist/plantilla_postercientifico_overleaf.zip`, con la plantilla, un póster de ejemplo por capas (`main.tex`), el catálogo de 7 páginas (`catalogo.tex`, las 70 variantes de la plantilla: I01–I34 y T01–T36) y las imágenes de prueba. En Overleaf: *New Project › Upload Project*, compila con pdfLaTeX y cambia de documento en *Menu › Main document*.
 
 Las filas con `alto=llenar` y las cajas con `estirar` se miden en una pasada y se ajustan en la siguiente: Overleaf repite solo; a mano, repite `pdflatex` mientras el registro diga «Rerun …» (2 o 3 veces).
 

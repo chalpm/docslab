@@ -12,6 +12,22 @@ Tipos de entrada: **Añadido**, **Cambiado**, **Obsoleto**, **Eliminado**, **Cor
 
 _Nada todavía._
 
+## [1.2.3] - 2026-11-18
+
+Huella: [`huella/v1.2.3.json`](huella/v1.2.3.json). Versiones: aplicación 1.2.3 · `.sty` 1.1.0 (sin cambios) · esquema 1.
+
+### Añadido
+- **Catálogo de la plantilla: T36 «Referencias con estilo (gestor)»**, con la forma de uso de `\PCbibliografia` / `\PCref`, una cita volada con `\PCcitasup` y una lista numérica de ejemplo. El subtítulo y la banda de la página 3 pasan a «36 textos (T01–T36)». El catálogo sigue teniendo 7 páginas y la misma estructura; miniatura regenerada.
+
+### Cambiado
+- Para que T36 quepa en la página 3, se acortan los textos de relleno de T01, T02, T03, T08, T20 y T31 y el círculo de muestra de T25 (diámetro de 0,42 a 0,30 del ancho). Las variantes no cambian; solo su demostración.
+- Cabecera de `catalogo.tex`: «Páginas 6-7» para la configuración global.
+
+### Corregido
+- LEEME y `docs/FUNCIONAL.md` (F-05): el editor ofrece 69 variantes (32 de imagen, 35 de texto, LaTeX libre y espacio). I30, I31 y T33, de posición absoluta, solo existen en la plantilla LaTeX. Antes se daba a entender que el editor incluía I01–I34 y T01–T36 completos.
+- `empaquetar.py`: «36 textos».
+
+
 ## [1.2.2] - 2026-11-18
 
 Huella: [`huella/v1.2.2.json`](huella/v1.2.2.json). Versiones: aplicación 1.2.2 · `.sty` 1.1.0 · esquema 1.
@@ -135,7 +151,8 @@ Línea base. Es la primera versión con versionado formal. Huella: [`huella/v1.0
 - En un TeX Live sin `texlive-lang-spanish` ni `luatex85.sty` fallan 11 pruebas (las 9 de compilación de plantillas, una de la API y una de LuaLaTeX). Verificado como problema de entorno en 1.2.1.
 - La API no tiene autenticación y los cuadernos ejecutan código arbitrario (ver `SECURITY.md`).
 
-[Sin publicar]: ../../compare/v1.2.2...HEAD
+[Sin publicar]: ../../compare/v1.2.3...HEAD
+[1.2.3]: ../../compare/v1.2.2...v1.2.3
 [1.2.2]: ../../compare/v1.2.1...v1.2.2
 [1.2.1]: ../../compare/v1.2.0...v1.2.1
 [1.2.0]: ../../compare/v1.1.0...v1.2.0

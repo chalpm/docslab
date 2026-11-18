@@ -1,10 +1,10 @@
 %% ============================================================================
 %%  catalogo.tex · Catálogo de la plantilla postercientifico.sty
 %%    Páginas 1-2  34 formas de colocar imágenes (I01–I34)
-%%    Página 3     35 formas de colocar texto (T01–T35)
+%%    Página 3     36 formas de colocar texto (T01–T36)
 %%    Página 4     cajas: 12 estilos, con y sin título; filas y columnas
 %%    Página 5     capas: fondo, contenido, frente y capas propias; posiciones absolutas
-%%    Página 6     configuración global: claves, temas, familias, cabeceras, pies y un ejemplo mínimo
+%%    Páginas 6-7  configuración global: claves, temas, familias, cabeceras, pies y un ejemplo mínimo
 %%  Compilar mientras salga el aviso «Rerun» (2 o 3 veces):  pdflatex catalogo.tex   (Overleaf y latexmk repiten solos)
 %%  El catálogo usa la misma plantilla con OTRO lienzo (A2) y OTRA letra (12 pt):
 %%  sirve también de ejemplo de cómo cambia todo con \posterconfig.
@@ -19,7 +19,7 @@
   alto logos = 4em, idioma = spanish,
 }
 \titulo{Catálogo de la plantilla}
-\subtitulo{34 imágenes (I01--I34), 35 textos (T01--T35), 12 estilos de caja, filas y capas}
+\subtitulo{34 imágenes (I01--I34), 36 textos (T01--T36), 12 estilos de caja, filas y capas}
 \autores{Plantilla \texttt{postercientifico.sty}}
 \afiliaciones{Imágenes de prueba y texto de relleno. El argumento opcional [\,] de cada orden es su tamaño.}
 \logoizquierdo{img/logo1.png}
@@ -203,19 +203,19 @@
 
 %% ===========================================================================
 \newpage
-\txtBanda{Texto · T01--T35}
+\txtBanda{Texto · T01--T36}
 \begin{multicols}{3}\raggedcolumns
 
 \begin{variante}{T01}{Justificado}{txtJustificado}{\pa{texto}}
-  \txtJustificado{\relleno[1-4]}
+  \txtJustificado{\relleno[1-3]}
 \end{variante}
 
 \begin{variante}{T02}{Alineado a la izquierda}{txtIzquierda}{\pa{texto}}
-  \txtIzquierda{\relleno[1-4]}
+  \txtIzquierda{\relleno[1-3]}
 \end{variante}
 
 \begin{variante}{T03}{Alineado a la derecha}{txtDerecha}{\pa{texto}}
-  \txtDerecha{\relleno[1-4]}
+  \txtDerecha{\relleno[1-3]}
 \end{variante}
 
 \begin{variante}{T04}{Centrado}{txtCentrado}{[ancho]\pa{texto}}
@@ -235,7 +235,7 @@
 \end{variante}
 
 \begin{variante}{T08}{Dos columnas desiguales}{txtAsimetrico}{[fracción]\pa{izquierda}\pa{derecha}}
-  \txtAsimetrico[0.3]{\textbf{Texto corto en la columna estrecha.}}{\relleno[1-4]}
+  \txtAsimetrico[0.3]{\textbf{Texto corto en la columna estrecha.}}{\relleno[1-3]}
 \end{variante}
 
 \begin{variante}{T09}{Letra capitular}{txtCapitular}{[líneas]\pa{L}\pa{resto de la palabra}\pa{texto}}
@@ -283,7 +283,7 @@
 \end{variante}
 
 \begin{variante}{T20}{Nota lateral junto al texto}{txtNotaLateral}{[fracción]\pa{nota}\pa{texto}}
-  \txtNotaLateral[0.28]{Nota breve al margen del texto principal.}{\relleno[1-4]}
+  \txtNotaLateral[0.28]{Nota breve al margen del texto principal.}{\relleno[1-3]}
 \end{variante}
 
 \begin{variante}{T21}{Cifra destacada}{txtCifra}{\pa{cifra}\pa{explicación}}
@@ -303,7 +303,7 @@
 \end{variante}
 
 \begin{variante}{T25}{Texto dentro de un círculo}{txtCirculo}{[diámetro]\pa{texto}}
-  \txtCirculo[0.42\linewidth]{\textbf{Lorem ipsum}\\dolor sit amet consectetuer}
+  \txtCirculo[0.3\linewidth]{\textbf{Lorem ipsum}\\dolor sit amet consectetuer}
 \end{variante}
 
 \begin{variante}{T26}{Tabla}{txtTabla}{\pa{pie}\pa{tabular}}
@@ -338,7 +338,7 @@
 
 \begin{variante}{T31}{Rótulo al margen y texto}{txtEtiquetaMargen}{[fracción]\pa{rótulo}\pa{texto}}
   \txtEtiquetaMargen{Lorem}{\relleno[1-2]}
-  \txtEtiquetaMargen{Ipsum}{\relleno[3-4]}
+  \txtEtiquetaMargen{Ipsum}{\relleno[3]}
 \end{variante}
 
 \begin{variante}{T32}{Banda a todo el ancho}{txtBanda}{[escala]\pa{texto}}
@@ -356,6 +356,13 @@
 \begin{variante}{T35}{Caja de texto con cualquier estilo}{txtCaja}{[claves]\pa{texto}}
   \txtCaja[estilo=nota, titulo={Con título}]{\relleno[1-2]}
   \txtCaja[estilo=nota, titulo={Sin título}, mostrar titulo=false]{Misma caja con \texttt{mostrar titulo=false}.}
+\end{variante}
+
+\begin{variante}{T36}{Referencias con estilo (gestor)}{PCbibliografia}{[numerica|autor][col.]\pa{\bs PCref\pa{etiq.}\pa{texto}...}}
+  Texto que cita\,\PCcitasup{1,2}. Con \texttt{[autor]}: lista autor-año.
+  \PCbibliografia[numerica]{
+    \PCref{1.}{Apellido N. Título de relleno. \textit{Revista}. 2020;12:34--56.}
+    \PCref{2.}{Apellido N. \textit{Título del libro}. Editorial; 2019.}}
 \end{variante}
 
 \end{multicols}

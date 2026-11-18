@@ -20,7 +20,7 @@ LEEME_OVERLEAF = """Plantilla postercientifico.sty (versión 2, por capas)
 
 Archivos
   main.tex                  póster de ejemplo (A1) con capas, filas y cajas con título opcional
-  catalogo.tex              catálogo de 7 páginas: 34 imágenes, 35 textos, 12 estilos de caja,
+  catalogo.tex              catálogo de 7 páginas: 34 imágenes, 36 textos, 12 estilos de caja,
                             filas, capas, tipografías y todas las claves de configuración
   postercientifico.sty      la plantilla
   img/                      imágenes de prueba (cámbialas por las tuyas)

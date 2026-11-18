@@ -29,7 +29,7 @@ Columnas: **Módulos** (backend), **API** (grupo de `docs/API.md`), **Pruebas** 
 **Módulos.** `compilador.py` (marcas de posición), frontend `directa.js` y `vista.js`. **Pruebas.** `test_clases.py` · `test_una_caja_suelta_sale_de_la_cuadricula`, `test_la_caja_suelta_queda_donde_se_pone`. Interacción: `e2e_navegador.py`. **Estado.** Estable (backend) / Parcial (interacción, solo en e2e).
 
 ## F-05 · Variantes de elemento y estilos de caja
-**Descripción.** 69 variantes (I01–I34 de imagen, T01–T36 de texto, LaTeX libre y espacio) con miniaturas, y 12 estilos de caja. Todas las cajas tienen un título opcional.
+**Descripción.** 69 variantes en el editor: 32 de imagen (I01–I34 salvo I30 e I31), 35 de texto (T01–T36 salvo T33), LaTeX libre y espacio, con miniaturas, y 12 estilos de caja. I30, I31 y T33 (posición absoluta) solo existen en la plantilla LaTeX; en el editor se sustituyen por las capas (F-03) y la posición libre (F-04). El catálogo de la plantilla muestra las 70 variantes numeradas. Todas las cajas tienen un título opcional.
 **Módulos.** `variantes.py`, `generador.py`. **API.** `GET /api/variantes`. **Pruebas.** `test_generador.py` · `test_cada_variante_genera_su_orden`, `test_titulo_oculto_en_cajas_y_cajas_de_texto`. **Estado.** Estable.
 
 ## F-06 · Texto con formato sencillo
