@@ -352,10 +352,3 @@ def elemento_nuevo(clave: str, id_: str) -> dict:
             d = copy.deepcopy(d)
         e[c["nombre"]] = d if d is not None else ""
     return e
-
-
-def campos_imagen(clave: str) -> list[str]:
-    v = POR_CLAVE.get(clave)
-    if not v:
-        return []
-    return [c["nombre"] for c in v["campos"] if c["tipo"] == "imagen"]

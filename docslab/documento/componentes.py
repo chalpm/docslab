@@ -1002,7 +1002,7 @@ def compilar_vista(datos: dict, raiz: Path, tema: str = "pizarra", ancho: str = 
                               hacer_miniatura=False, formato=compilador.formato_poster())
     pos = res.get("posiciones") or {}
     caja = (pos.get("cajas") or {}).get("b-vista") or (pos.get("cajas") or {}).get("e-vista")
-    cuerpo, pre = f"cmp-e-vista.tex", f"cmp-pre-{c['id']}.tex"
+    cuerpo, pre = "cmp-e-vista.tex", f"cmp-pre-{c['id']}.tex"
     errores = []
     for e in res.get("errores") or []:
         archivo = str(e.get("archivo") or "").replace("./", "").split("/")[-1]

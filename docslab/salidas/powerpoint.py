@@ -63,11 +63,8 @@ class ErrorPowerPoint(ValueError):
 
 def disponible() -> dict:
     """Qué se puede hacer en este equipo."""
-    try:
-        import pptx  # noqa: F401
-        hay_pptx = True
-    except ImportError:
-        hay_pptx = False
+    import importlib.util
+    hay_pptx = importlib.util.find_spec("pptx") is not None
     gs = bool(compilador.ghostscript())
     return {"pptx": hay_pptx, "imagen": hay_pptx and (gs or bool(shutil.which("pdftoppm"))),
             "editable": hay_pptx and gs and bool(shutil.which("pdftohtml"))}

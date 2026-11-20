@@ -12,6 +12,41 @@ Tipos de entrada: **Añadido**, **Cambiado**, **Obsoleto**, **Eliminado**, **Cor
 
 _Nada todavía._
 
+## [1.8.0] - 2026-11-19
+
+Huella: [`huella/v1.8.0.json`](huella/v1.8.0.json). Versiones: aplicación 1.8.0 · `.sty` 1.1.0 (sin cambios) · esquema 1. Rutas sin cambios.
+
+Aplica una lista de comprobación de seguridad de 10 puntos. Lo que no aplica a una aplicación local de una persona (panel con doble factor, protección de formularios contra bots, límite de intentos de inicio de sesión, separación entre usuarios) queda explicado en «Lista de comprobación» de `SECURITY.md`.
+
+### Añadido
+- **Copias de seguridad automáticas** (`docslab/nucleo/copias.py`):
+  - Al arrancar y cada 24 h, si algo cambió, se guarda un zip de proyectos, plantillas, componentes y gráficos, sin `build/` ni `formatos/`.
+  - Se conservan las 7 más recientes.
+  - Variables: `DOCSLAB_COPIAS` (cuántas; `0` las desactiva), `DOCSLAB_COPIAS_DIR` (mejor en otro disco o carpeta sincronizada) y `DOCSLAB_COPIAS_HORAS`.
+  - La terminal dice dónde se guardan.
+- **HTTPS opcional**: `--certificado` y `--clave` (o `DOCSLAB_CERTIFICADO` y `DOCSLAB_CLAVE`), con TLS 1.2 o posterior. Pensado para `--host 0.0.0.0` con un certificado de mkcert. Si DocsLab escucha fuera de este equipo sin HTTPS, la terminal avisa de que el tráfico va sin cifrar.
+- `herramientas/revisar_dependencias.py`: pip-audit de `requirements.txt` y versión del JS incluido frente a la última de npm (Vue 3.x, pdf.js 4.x, CodeMirror 5.x).
+- Pruebas:
+  - `tests/test_copias.py`.
+  - `tests/test_servidor_red.py`: HTTPS real con un certificado de openssl y el aviso de red.
+  - `tests/test_higiene.py`: ninguna clave ni archivo de secretos en el repositorio, errores sin traza y pyflakes limpio.
+- `SECURITY.md`: «Lista de comprobación» con el estado de los 10 puntos.
+
+### Cambiado
+- **Errores sin detalles internos:** un fallo inesperado en un trabajo (compilar, ejecutar…) muestra un mensaje genérico, y la traza va solo a la terminal. Antes aparecía en el registro de la interfaz con tipo y ruta. Los errores propios de DocsLab mantienen su mensaje.
+- Vue 3.5.44 → 3.5.45.
+
+### Eliminado
+- Código sin usar:
+  - `bibliografia.autor`, `variantes.campos_imagen`, `modelo.pagina_de_fila`, `modelo.renombrar_recurso`.
+  - Las constantes `OPCIONES_BLOQUE` y `GENES`.
+  - Variables sin usar en `compilador`, `revision` y `bibliografia`.
+  - Las importaciones de comprobación, sustituidas por `importlib.util.find_spec`.
+  - pyflakes queda limpio en todo el código.
+
+### Corregido
+- Contraste del aviso «hoja vacía» de la vista previa: 5,3:1, antes 3:1.
+
 ## [1.7.0] - 2026-11-18
 
 Huella: [`huella/v1.7.0.json`](huella/v1.7.0.json). Versiones: aplicación 1.7.0 · `.sty` 1.1.0 (sin cambios) · esquema 1. Rutas sin cambios.
@@ -313,7 +348,8 @@ Línea base. Es la primera versión con versionado formal. Huella: [`huella/v1.0
 - En un TeX Live sin `texlive-lang-spanish` ni `luatex85.sty` fallan 11 pruebas (las 9 de compilación de plantillas, una de la API y una de LuaLaTeX). Verificado como problema de entorno en 1.2.1.
 - La API no tiene autenticación y los cuadernos ejecutan código arbitrario (ver `SECURITY.md`).
 
-[Sin publicar]: ../../compare/v1.7.0...HEAD
+[Sin publicar]: ../../compare/v1.8.0...HEAD
+[1.8.0]: ../../compare/v1.7.0...v1.8.0
 [1.7.0]: ../../compare/v1.6.1...v1.7.0
 [1.6.1]: ../../compare/v1.6.0...v1.6.1
 [1.6.0]: ../../compare/v1.5.1...v1.6.0

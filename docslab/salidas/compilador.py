@@ -337,7 +337,7 @@ def leer_posiciones(ruta: Path) -> dict:
     for ident, d in parciales.items():
         if "a" not in d or "b" not in d:
             continue
-        (xa, ya, pa, wa), (xb, yb, pb, wb) = d["a"], d["b"]
+        (xa, ya, pa, wa), (xb, yb, pb, _) = d["a"], d["b"]
         if wa is not None:   # marca de flujo: x de la esquina, ancho de línea
             caja = {"pagina": pa, "x0": xa, "y0": ya, "x1": xa + wa, "y1": yb}
             if pb != pa or yb < ya - 0.5:

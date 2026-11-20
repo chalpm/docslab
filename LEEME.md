@@ -4,7 +4,7 @@
 
 Funciona **en tu equipo** (Windows, macOS o Linux, con un pequeño servidor local) o **en Google Colab**. Una vez instalado no necesita internet, salvo para buscar referencias por DOI.
 
-**Versión 1.7.0** · Licencia [AGPL-3.0](LICENSE) (plantilla LaTeX: [LPPL-1.3c](latex/LICENSE-LPPL-1.3c.txt)) · [Registro de cambios](CHANGELOG.md) · [Documentación técnica y funcional](docs/README.md) · [Seguridad](SECURITY.md)
+**Versión 1.8.0** · Licencia [AGPL-3.0](LICENSE) (plantilla LaTeX: [LPPL-1.3c](latex/LICENSE-LPPL-1.3c.txt)) · [Registro de cambios](CHANGELOG.md) · [Documentación técnica y funcional](docs/README.md) · [Seguridad](SECURITY.md)
 
 ---
 
@@ -297,10 +297,14 @@ Se pasan al lanzador o a `python servidor.py`:
 | `--puerto 9000` | `DOCSLAB_PUERTO` | `8765` | Usar otro puerto |
 | `--datos <carpeta>` | `DOCSLAB_DATOS` | `docslab/datos` | Guardar los proyectos en otra carpeta |
 | `--raices <carpetas…>` | — | Tu carpeta personal | Carpetas donde se pueden buscar cuadernos desde la aplicación |
-| `--host 0.0.0.0` | `DOCSLAB_HOST` | `127.0.0.1` | Abrirlo a otras máquinas de tu red. **No tiene contraseña:** úsalo solo en redes de confianza (ver [SECURITY.md](SECURITY.md)) |
+| `--host 0.0.0.0` | `DOCSLAB_HOST` | `127.0.0.1` | Abrirlo a otras máquinas de tu red. **No tiene contraseña:** úsalo solo en redes de confianza y, mejor, con HTTPS (ver abajo y [SECURITY.md](SECURITY.md)). Sin HTTPS, la terminal lo avisa |
+| `--certificado <cert.pem>` `--clave <clave.pem>` | `DOCSLAB_CERTIFICADO`, `DOCSLAB_CLAVE` | (sin HTTPS) | Servir por **HTTPS**. Útil con `--host 0.0.0.0`: con [mkcert](https://github.com/FiloSottile/mkcert), `mkcert -install` y `mkcert 192.168.1.20 mi-pc.lan` crean un certificado que tus navegadores aceptan |
 | `--abrir` | — | (los lanzadores la usan) | Abrir el navegador al arrancar |
 | `--detalle` | — | No | Mostrar cada petición en la terminal (para buscar un fallo) |
 | — | `DOCSLAB_HOSTS` | (vacío) | Nombres de equipo extra con los que se puede abrir DocsLab (separados por comas), p. ej. `mi-pc.lan` con `--host 0.0.0.0`. Por seguridad, sin esto solo se aceptan `localhost` y direcciones IP |
+| — | `DOCSLAB_COPIAS` | `7` | Copias de seguridad automáticas que se guardan (las más recientes); `0` las desactiva (ver [§16](#16-dónde-se-guardan-tus-datos)) |
+| — | `DOCSLAB_COPIAS_DIR` | `datos/copias` | Dónde se guardan las copias. **Mejor en otro disco o en una carpeta sincronizada con la nube** |
+| — | `DOCSLAB_COPIAS_HORAS` | `24` | Cada cuántas horas se hace una copia (si algo cambió) |
 | — | `DOCSLAB_MAX_NUCLEOS` | `4` | Cuadernos del LAB con Python en marcha a la vez; al pasar del tope se apaga el que lleva más tiempo sin usarse |
 
 Otras variables, para casos especiales: `DOCSLAB_PDFLATEX`, `DOCSLAB_LUALATEX` y `DOCSLAB_GS` (ruta a pdfLaTeX, LuaLaTeX o Ghostscript si no están en el PATH) y `DOCSLAB_PYTHON` (qué Python usa `iniciar.command`).
@@ -602,10 +606,18 @@ datos/
 │   └── build/             salida de LaTeX (se puede borrar)
 ├── plantillas/            tus plantillas
 ├── componentes/           tu biblioteca del Componente Lab
-└── graficos/              tus plantillas de gráficos
+├── graficos/              tus plantillas de gráficos
+├── copias/                copias de seguridad automáticas (zip)
+└── formatos/              caché de LaTeX (se puede borrar)
 ```
 
-- **Copia de seguridad:** copia la carpeta `datos/` entera, o descarga el zip de cada proyecto.
+- **Copias de seguridad automáticas** (desde 1.8.0):
+  - Al arrancar y luego cada 24 h, si algo cambió, DocsLab guarda un zip en `datos/copias/` con proyectos, plantillas, componentes y plantillas de gráficos.
+  - No incluye lo que se regenera solo (`build/` y `formatos/`).
+  - Se guardan las 7 más recientes. Cambia el número con `DOCSLAB_COPIAS` (`0` las desactiva) y la frecuencia con `DOCSLAB_COPIAS_HORAS`.
+  - **Pon `DOCSLAB_COPIAS_DIR` en otro disco o en una carpeta sincronizada** (OneDrive, Google Drive, iCloud…): una copia en el mismo disco no te salva si el disco falla.
+  - **Para restaurar,** cierra DocsLab, descomprime la copia y copia lo que necesites (por ejemplo `proyectos/p-1234abcd/`) dentro de `datos/`.
+- **Copia a mano:** copia la carpeta `datos/` entera, o descarga el zip de cada proyecto.
 - **Pasar a otro equipo:** copia `datos/` a la carpeta de DocsLab del otro equipo (o usa `--datos`).
 - **Al actualizar DocsLab**, tus proyectos se conservan: si la estructura de `modelo.json` cambió, se actualizan solos al abrirlos y antes se guarda una copia en `historial/modelo-antes-de-esquema-<N>.json`. Un proyecto creado con un DocsLab **más nuevo** no se abre en uno más antiguo: actualiza DocsLab (detalles en [docs/MIGRACIONES.md](docs/MIGRACIONES.md)).
 
@@ -650,7 +662,8 @@ docslab/                    (carpeta del proyecto)
 │   │   ├── almacen.py      proyectos, plantillas, recursos, historial y zips
 │   │   ├── modelo.py       el modelo JSON: clases, tamaños, temas, tipografías, capas
 │   │   ├── migraciones.py  actualización de proyectos de esquemas anteriores
-│   │   └── trabajos.py     tareas en segundo plano (compilar, ejecutar)
+│   │   ├── trabajos.py     tareas en segundo plano (compilar, ejecutar)
+│   │   └── copias.py       copias de seguridad automáticas de datos/
 │   ├── documento/          del modelo al LaTeX
 │   │   ├── generador.py    modelo → LaTeX (también el PDF para imprenta)
 │   │   ├── variantes.py    las 69 variantes de elemento
@@ -687,9 +700,10 @@ Más detalle en [docs/ARQUITECTURA.md](docs/ARQUITECTURA.md).
 Con el entorno `.venv` activado:
 ```
 python -m pip install pytest
-python -m pytest                 # 491 pruebas
+python -m pytest                 # 512 pruebas
 python tests/e2e_navegador.py    # opcional: necesita playwright y chromium
 python tests/auditoria_navegador.py   # opcional: accesibilidad (axe) y seguridad; además, pip install axe-playwright-python
+python herramientas/revisar_dependencias.py   # antes de publicar: pip-audit y JS incluido frente a npm (necesita internet)
 ```
 Las pruebas que necesitan LaTeX, Poppler, LuaLaTeX o Ghostscript se saltan si faltan esas herramientas. Para que pasen todas hace falta un TeX Live completo: en Ubuntu/Debian, `texlive-latex-extra`, `texlive-lang-spanish` y `texlive-luatex`, además de `poppler-utils` y `ghostscript`.
 

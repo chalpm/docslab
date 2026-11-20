@@ -2,11 +2,21 @@
 """Trabajos en segundo plano (compilar, ejecutar cuadernos) con progreso y cancelación."""
 from __future__ import annotations
 
+import logging
 import secrets
 import threading
 import time
-import traceback
 from collections import deque
+
+log = logging.getLogger("docslab")
+
+
+def mensaje_para_usuario(exc: BaseException) -> str:
+    """Los errores propios de DocsLab (y los ValueError) ya traen un mensaje pensado para el usuario; el resto
+    (fallos inesperados) se resume sin detalles internos: la traza completa va a la terminal."""
+    if isinstance(exc, ValueError) or type(exc).__module__.startswith("docslab"):
+        return str(exc)
+    return "Error inesperado. Los detalles técnicos están en la ventana (terminal) donde se abrió DocsLab."
 
 
 class Trabajo:
@@ -80,8 +90,9 @@ class GestorTrabajos:
                 t.progreso = 1.0 if t.estado == "terminado" else t.progreso
             except Exception as exc:  # noqa: BLE001
                 t.estado = "error"
-                t.mensaje = str(exc) if isinstance(exc, ValueError) else f"{type(exc).__name__}: {exc}"
-                t.registro.append(traceback.format_exc())
+                t.mensaje = mensaje_para_usuario(exc)
+                t.registro.append(time.strftime("%H:%M:%S ") + t.mensaje)
+                log.exception("Error en el trabajo %s (%s) del proyecto %s", t.id, t.tipo, t.proyecto)
             finally:
                 t.fin = time.time()
                 if cerrojo:

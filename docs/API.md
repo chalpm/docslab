@@ -12,13 +12,13 @@ Parámetros de ruta: `<pid>` proyecto · `<tid>` plantilla o trabajo · `<cid>` 
 
 | Método | Ruta | Función (docslab/api/) | Descripción |
 |---|---|---|---|
-| `GET` | `/api/estado` | `estado` (sistema.py:48) | — |
+| `GET` | `/api/estado` | `estado` (sistema.py:49) | — |
 
 ## Catálogo de variantes
 
 | Método | Ruta | Función (docslab/api/) | Descripción |
 |---|---|---|---|
-| `GET` | `/api/variantes` | `lista_variantes` (sistema.py:72) | — |
+| `GET` | `/api/variantes` | `lista_variantes` (sistema.py:65) | — |
 
 ## Cuadernos (ejecución completa)
 
@@ -165,5 +165,5 @@ Parámetros de ruta: `<pid>` proyecto · `<tid>` plantilla o trabajo · `<cid>` 
 
 | Método | Ruta | Función (docslab/api/) | Descripción |
 |---|---|---|---|
-| `GET` | `/` | `inicio` (sistema.py:27) | — |
-| `GET` | `/static/<path:ruta>` | `estatico` (sistema.py:31) | — |
+| `GET` | `/` | `inicio` (sistema.py:28) | — |
+| `GET` | `/static/<path:ruta>` | `estatico` (sistema.py:32) | — |

@@ -691,7 +691,7 @@ def revisar(directorio: Path, pdf: Path, modelo: dict | None = None, compilacion
         if p.suffix.lower() in EXT_RASTER:
             try:
                 from PIL import Image
-                with Image.open(p, formats=("PNG", "JPEG")) as im:
+                with Image.open(p, formats=M.FORMATOS_IMAGEN) as im:
                     a["dims"].add(tuple(im.size))
             except Exception:
                 pass
@@ -1083,7 +1083,7 @@ def _revisar_contenido_modelo(sc: list, m: dict, nodos: dict, pos: _Posiciones, 
 def _revisar_registro(sc: list, comp: dict, directorio: Path, m: dict | None, nodos: dict, pos: _Posiciones,
                       nombre, tipo: str):
     """Líneas que se salen de su sitio (Overfull \\hbox) y referencias sin resolver (proyectos LaTeX)."""
-    mapa, lineas = {}, []
+    mapa = {}
     desbordes = []
     for a in comp.get("avisos") or []:
         mo = re.search(r"Overfull \\hbox \(([\d.]+)pt too wide\).*?lines? (\d+)", str(a.get("mensaje")))

@@ -6,20 +6,21 @@ Solo la **última versión MINOR publicada** recibe correcciones de seguridad, q
 
 | Versión | Soporte |
 |---|---|
-| 1.7.x | ✅ Con soporte (Python 3.11 o posterior) |
-| 1.6.x | ❌ Sin soporte: actualiza a 1.7.x |
-| 1.5.x | ❌ Sin soporte: actualiza a 1.7.x (corrige fallos de seguridad, ver CHANGELOG) |
-| 1.4.x | ❌ Sin soporte: actualiza a 1.7.x |
-| 1.3.x | ❌ Sin soporte: actualiza a 1.7.x |
-| 1.2.x | ❌ Sin soporte: actualiza a 1.7.x |
-| 1.1.x | ❌ Sin soporte: actualiza a 1.7.x |
-| 1.0.x | ❌ Sin soporte: actualiza a 1.7.x |
+| 1.8.x | ✅ Con soporte (Python 3.11 o posterior) |
+| 1.7.x | ❌ Sin soporte: actualiza a 1.8.x |
+| 1.6.x | ❌ Sin soporte: actualiza a 1.8.x |
+| 1.5.x | ❌ Sin soporte: actualiza a 1.8.x (corrige fallos de seguridad, ver CHANGELOG) |
+| 1.4.x | ❌ Sin soporte: actualiza a 1.8.x |
+| 1.3.x | ❌ Sin soporte: actualiza a 1.8.x |
+| 1.2.x | ❌ Sin soporte: actualiza a 1.8.x |
+| 1.1.x | ❌ Sin soporte: actualiza a 1.8.x |
+| 1.0.x | ❌ Sin soporte: actualiza a 1.8.x |
 
 ## Modelo de amenazas
 
 DocsLab está pensado como **aplicación local de un solo usuario**.
 
-| Superficie | Estado en 1.7.0 | Riesgo |
+| Superficie | Estado en 1.8.0 | Riesgo |
 |---|---|---|
 | Interfaz de red | Escucha en `127.0.0.1:8765` por defecto | Bajo en local |
 | Otras webs abiertas en el navegador (CSRF) | Las peticiones que cambian algo exigen la cabecera `X-DocsLab: 1` (otra web no puede ponerla sin un permiso CORS que DocsLab nunca da) y, si traen `Origin`, que sea el propio servidor (`docslab/seguridad.py`; pruebas en `tests/test_seguridad.py`) | Bajo |
@@ -36,9 +37,29 @@ DocsLab está pensado como **aplicación local de un solo usuario**.
 | Explorador de carpetas | Limitado a `--raices` (prueba `test_explorar_solo_dentro_de_las_raices`) | Bajo |
 | Rutas y colores en el modelo | Se neutralizan antes de generar LaTeX (prueba `test_rutas_y_colores_peligrosos_se_neutralizan`) | Bajo |
 | Búsqueda por DOI | Petición saliente a doi.org (solo el DOI); respuesta limitada a 2 MB | Bajo |
+| Tráfico en la red | Por defecto solo `127.0.0.1` (no sale del equipo). Con `--host 0.0.0.0` el tráfico va sin cifrar salvo que se use `--certificado` y `--clave` (HTTPS, TLS 1.2 o posterior); la terminal avisa si no | Bajo en local; medio en red sin HTTPS |
+| Pérdida de datos | Copias automáticas (zip) cada 24 h en `DOCSLAB_COPIAS_DIR`; se guardan 7 | Bajo si la carpeta está en otro disco |
+| Mensajes de error | 500 y fallos inesperados de los trabajos sin detalles internos (la traza va solo a la terminal) | Bajo |
+
+## Lista de comprobación (2026-11-19)
+
+| Punto | Estado en DocsLab |
+|---|---|
+| 1. HTTPS en todas las páginas | Local: no hace falta (127.0.0.1 no sale del equipo). En red: `--certificado`/`--clave`; aviso si falta. En Colab, HTTPS por el proxy de Google |
+| 2. Ninguna clave escondida en el código | Sí: `tests/test_higiene.py` busca claves y archivos de secretos en todo el repositorio |
+| 3. Contraseña larga y doble factor en el panel | No aplica: DocsLab no tiene panel ni cuentas. Sí aplica a tu cuenta de GitHub y al correo de seguridad: actívalo ahí |
+| 4. Copia de seguridad automática | Sí: `docslab/nucleo/copias.py` (cada 24 h, 7 copias) |
+| 5. Todo actualizado | Sí a 2026-11-19: `herramientas/revisar_dependencias.py` (pip-audit y JS incluido frente a npm) |
+| 6. Formulario protegido contra bots | No aplica: no hay formularios públicos. Las peticiones de otras webs se rechazan (cabecera `X-DocsLab` y `Origin`) |
+| 7. Límite de intentos al iniciar sesión | No aplica: no hay inicio de sesión (uso local de una persona) |
+| 8. Que cada usuario solo vea sus datos | No aplica (un solo usuario). Cada proyecto queda dentro de su carpeta: rutas comprobadas y pruebas de «zip slip» y de `--raices` |
+| 9. Errores que no enseñen nada interno | Sí: 404/405/500 en JSON genérico y fallos inesperados de los trabajos sin traza (va a la terminal) |
+| 10. Borrar lo que no uses | Sí: código sin usar eliminado en 1.8.0; `tests/test_higiene.py` comprueba con pyflakes que no vuelva |
 
 ## Recomendaciones de uso
-- No uses `--host 0.0.0.0` fuera de una red de confianza. Si entras por un nombre (no por la IP), añádelo a `DOCSLAB_HOSTS`.
+- No uses `--host 0.0.0.0` fuera de una red de confianza. Si lo usas, sírvelo por HTTPS (`--certificado` y `--clave`, por ejemplo con mkcert). Si entras por un nombre (no por la IP), añádelo a `DOCSLAB_HOSTS`.
+- Pon las copias de seguridad (`DOCSLAB_COPIAS_DIR`) en otro disco o en una carpeta sincronizada.
+- Activa el doble factor en la cuenta de GitHub donde publiques DocsLab y en el correo de seguridad.
 - Abre DocsLab siempre por `http://127.0.0.1:<puerto>/` o `http://localhost:<puerto>/`.
 - Si usas la API desde tus propios scripts, las peticiones POST, PUT, PATCH y DELETE deben llevar la cabecera `X-DocsLab: 1`.
 - Ejecuta solo cuadernos y plantillas de origen conocido.

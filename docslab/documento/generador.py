@@ -573,7 +573,7 @@ def _aspecto(ruta) -> float | None:
             w, h = info["tamanos"][0] if info else (0, 0)
         else:
             from PIL import Image
-            with Image.open(p, formats=("PNG", "JPEG")) as im:
+            with Image.open(p, formats=M.FORMATOS_IMAGEN) as im:
                 w, h = im.size
         return w / h if w and h else None
     except Exception:          # noqa: BLE001

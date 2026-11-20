@@ -2,6 +2,7 @@
 """Página de la aplicación, archivos estáticos, estado del servidor y catálogo de variantes."""
 from __future__ import annotations
 
+import importlib.util
 import platform
 import sys
 from pathlib import Path
@@ -46,16 +47,8 @@ def registrar(app, c):
 
     @bp.get("/api/estado")
     def estado():
-        try:
-            import nbclient  # noqa: F401
-            nb_ok = True
-        except ImportError:
-            nb_ok = False
-        try:
-            import PIL  # noqa: F401
-            pil_ok = True
-        except ImportError:
-            pil_ok = False
+        nb_ok = importlib.util.find_spec("nbclient") is not None
+        pil_ok = importlib.util.find_spec("PIL") is not None
         return jsonify({
             "version": __version__, "licencia": __license__, "licencia_sty": __license_sty__, "pdflatex": compilador.pdflatex(), "tex": compilador.version_tex(),
             "miktex": compilador.es_miktex(),

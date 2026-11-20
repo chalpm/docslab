@@ -224,9 +224,6 @@ def _texto(v) -> str:
     return str(v or "").strip()
 
 
-def autor(apellido: str = "", nombre: str = "", literal: str = "") -> dict:
-    return {"literal": literal} if literal else {"apellido": apellido, "nombre": nombre}
-
 
 def iniciales(nombre: str, punto: bool = True, espacio: bool = True, guion: bool = True) -> str:
     """«Ana María» → «A. M.»; «Jean-Paul» → «J.-P.»."""
@@ -1296,7 +1293,6 @@ class Contexto:
         if not conocidas:
             return malas
         tipo = self.info["cita"]
-        lx = self.est.lx
         if tipo == "numero":
             nums = [self.numero(c) or 0 for c, _ in conocidas]
             locs = [loc for _, loc in conocidas if loc]

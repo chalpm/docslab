@@ -1,4 +1,4 @@
-# Especificación funcional · DocsLab 1.7.0
+# Especificación funcional · DocsLab 1.8.0
 
 Catálogo de funciones con identificadores estables (**F-NN**). Cada versión futura indica en el CHANGELOG qué F-NN añade, cambia o retira. Los identificadores no se reutilizan.
 
@@ -153,6 +153,24 @@ Columnas: **Módulos** (backend), **API** (grupo de `docs/API.md`), **Pruebas** 
 - Una petición POST, PUT, PATCH o DELETE sin `X-DocsLab: 1`, o con un `Origin` distinto del servidor (incluido `null`), recibe 403.
 - Como mucho `DOCSLAB_MAX_NUCLEOS` (4) procesos de Python del LAB a la vez; se apaga el que lleva más tiempo sin usarse y su cuaderno lo avisa.
 **Módulos.** `seguridad.py`, `api/sistema.py` (tipos MIME), `lab/nucleos.py` (`hacer_sitio`), `nucleo/almacen.py` (`FORMATOS_*`), `salidas/powerpoint.py` (`abrir_render`); frontend `api.js`, `foco.js`, `cuaderno.js`, `arbol.js`, `inicio.js`, `cuadernos.js`. **API.** Sin rutas nuevas; cabecera obligatoria en las que cambian algo. **Pruebas.** `test_seguridad.py` (21); `test_lab.py` · `test_tope_de_procesos_del_lab_apaga_el_mas_antiguo`; `test_bibliografia.py` · `test_buscar_doi_no_lee_respuestas_enormes`; `tests/auditoria_navegador.py` (axe, foco, marco aislado, CSRF y rebinding en Chrome). **Estado.** Estable.
+
+## F-29 · Copias de seguridad automáticas, HTTPS opcional e higiene
+**Introducida en.** 1.8.0.
+**Descripción.** Sale de una lista de comprobación de seguridad (ver «Lista de comprobación» en `SECURITY.md`).
+- Al arrancar y luego cada `DOCSLAB_COPIAS_HORAS` (24), si algo cambió, se guarda un zip de `datos/` en `DOCSLAB_COPIAS_DIR` (`datos/copias`). Incluye proyectos, plantillas, componentes y gráficos, sin `build/` ni `formatos/`. Se conservan las `DOCSLAB_COPIAS` (7) más recientes.
+- `--certificado` y `--clave` sirven DocsLab por HTTPS (TLS 1.2 o posterior). Si el servidor escucha fuera de este equipo sin HTTPS, la terminal lo avisa.
+- Los fallos inesperados de los trabajos se muestran sin detalles internos; la traza va a la terminal.
+- Las pruebas impiden que entren claves en el repositorio o que vuelva el código sin usar.
+**Reglas.**
+- Una copia no se repite si nada cambió.
+- Se escribe en un `.zip.parcial` y se renombra al terminar.
+- Un fallo al copiar se registra y no detiene el servidor.
+- `DOCSLAB_COPIAS=0` desactiva las copias.
+- En modo Colab no hay copias: los datos ya están en Drive.
+**Módulos.** `nucleo/copias.py`, `servidor.py` (`contexto_tls`, `solo_este_equipo`), `nucleo/trabajos.py` (`mensaje_para_usuario`), `herramientas/revisar_dependencias.py`.
+**API.** Sin cambios.
+**Pruebas.** `test_copias.py`, `test_servidor_red.py`, `test_higiene.py`.
+**Estado.** Estable.
 
 ---
 

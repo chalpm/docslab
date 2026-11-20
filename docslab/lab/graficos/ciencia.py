@@ -33,7 +33,6 @@ VISTA_3D = [_p("elevacion", "Ángulo de elevación (°)", "numero", 22, min=-90,
             _p("giro", "Ángulo de giro (°)", "numero", -60, min=-180, max=180)]
 
 # ------------------------------------------------------------------------- matriz numérica y grupos
-GENES = [f"gen{i:02d}" for i in range(1, 13)]
 P_COLUMNAS = _p("columnas", "Variables (vacío = todas las numéricas)", "columnas", [], opcional=True, numerica=True)
 P_GRUPO = _p("grupo", "Un color por", "columna", "grupo", opcional=True)
 P_ESCALAR = _p("escalar", "Estandarizar las variables (media 0, desviación 1)", "interruptor", True)

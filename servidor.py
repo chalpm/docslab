@@ -13,7 +13,9 @@ import argparse
 import json
 import logging
 import os
+import ipaddress
 import shutil
+import ssl
 import sys
 import threading
 import urllib.request
@@ -56,8 +58,11 @@ def completar_path() -> None:
 
 def ya_abierto(url: str) -> bool:
     """¿Hay ya un DocsLab respondiendo en esa dirección?"""
+    # Con HTTPS y un certificado propio (mkcert, autofirmado) la verificación fallaría; esta consulta solo
+    # mira si el propio DocsLab ya está escuchando en este equipo, no envía ni recibe datos del usuario.
+    contexto = ssl._create_unverified_context() if url.startswith("https:") else None  # noqa: S323
     try:
-        with urllib.request.urlopen(url + "api/estado", timeout=1.5) as r:
+        with urllib.request.urlopen(url + "api/estado", timeout=1.5, context=contexto) as r:
             return "version" in json.loads(r.read() or b"{}")
     except Exception:
         return False
@@ -72,6 +77,35 @@ def silenciar_registro() -> None:
         cli.show_server_banner = lambda *a, **k: None
     except Exception:
         pass
+
+
+def solo_este_equipo(host: str) -> bool:
+    """¿El servidor escucha solo en este equipo (loopback)? Si no, la red ve el tráfico."""
+    if host in ("localhost",):
+        return True
+    try:
+        return ipaddress.ip_address(host.strip("[]")).is_loopback
+    except ValueError:
+        return False
+
+
+def contexto_tls(certificado: str | None, clave: str | None):
+    """(certificado, clave) para HTTPS, comprobados; None si no se pidió HTTPS."""
+    if not certificado and not clave:
+        return None
+    if not (certificado and clave):
+        raise SystemExit("Para HTTPS hacen falta los dos: --certificado y --clave.")
+    cert, key = Path(certificado).expanduser(), Path(clave).expanduser()
+    for f in (cert, key):
+        if not f.is_file():
+            raise SystemExit(f"No encuentro el archivo {f}.")
+    try:
+        ctx = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
+        ctx.minimum_version = ssl.TLSVersion.TLSv1_2
+        ctx.load_cert_chain(cert, key)
+    except (ssl.SSLError, OSError) as exc:
+        raise SystemExit(f"El certificado o la clave no sirven: {exc}") from exc
+    return ctx
 
 
 def python_valido(version=None) -> bool:
@@ -98,10 +132,15 @@ def main(argv=None):
     ap.add_argument("--colab", action="store_true", help="modo Google Colab (lo usa el cuaderno lanzador)")
     ap.add_argument("--abrir", action="store_true", help="abrir el navegador al arrancar")
     ap.add_argument("--detalle", action="store_true", help="mostrar cada petición en la terminal (para depurar)")
+    ap.add_argument("--certificado", default=os.environ.get("DOCSLAB_CERTIFICADO"),
+                    help="certificado TLS (.pem) para servir por HTTPS, p. ej. hecho con mkcert")
+    ap.add_argument("--clave", default=os.environ.get("DOCSLAB_CLAVE"), help="clave privada (.pem) del certificado")
     a = ap.parse_args(argv)
 
     completar_path()
-    url = f"http://{'127.0.0.1' if a.host in ('0.0.0.0', '') else a.host}:{a.puerto}/"
+    tls = contexto_tls(a.certificado, a.clave)
+    esquema = "https" if tls else "http"
+    url = f"{esquema}://{'127.0.0.1' if a.host in ('0.0.0.0', '::', '') else a.host}:{a.puerto}/"
     if not a.colab and ya_abierto(url):
         print(f"DocsLab ya está abierto en {url}", flush=True)
         if a.abrir:
@@ -115,14 +154,21 @@ def main(argv=None):
     if not a.detalle:
         silenciar_registro()
     print(f"DocsLab en {url}  (datos: {Path(a.datos).expanduser().resolve()})", flush=True)
+    if not a.colab and not tls and not solo_este_equipo(a.host):
+        print("Aviso: DocsLab está abierto a la red sin cifrar (HTTP) y sin contraseña. Úsalo solo en una red de "
+              "confianza o sírvelo por HTTPS con --certificado y --clave (ver «Seguridad» en LEEME.md).", flush=True)
     if not a.colab:
+        from docslab.nucleo.copias import Copias
+        copias = Copias(Path(a.datos).expanduser())
+        print(copias.resumen(), flush=True)
+        copias.programar()
         if not shutil.which("pdflatex") and not os.environ.get("DOCSLAB_PDFLATEX"):
             print("Aviso: no encuentro LaTeX (pdflatex); sin él no hay vista previa. Mira «Instalación» en LEEME.md.",
                   flush=True)
         print("Deja esta ventana abierta mientras usas DocsLab; Ctrl + C lo cierra.", flush=True)
     if a.abrir:
         threading.Timer(1.0, lambda: webbrowser.open(url)).start()
-    app.run(host=a.host, port=a.puerto, threaded=True, use_reloader=False, debug=False)
+    app.run(host=a.host, port=a.puerto, threaded=True, use_reloader=False, debug=False, ssl_context=tls)
 
 
 if __name__ == "__main__":

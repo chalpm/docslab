@@ -23,9 +23,8 @@ STY = RAIZ_APP / "latex" / "postercientifico.sty"
 
 EXT_IMAGEN = {".png", ".jpg", ".jpeg", ".pdf"}
 EXT_CONVERTIBLE = {".gif", ".bmp", ".tif", ".tiff", ".webp"}
-# Formatos que Pillow puede leer en cada caso (sin «formats», Pillow prueba todos sus decodificadores,
-# también los raros, con un archivo que viene de fuera).
-FORMATOS_IMAGEN = ("PNG", "JPEG")
+# Formatos que Pillow puede leer al convertir (sin «formats», Pillow prueba todos sus decodificadores,
+# también los raros, con un archivo que viene de fuera). Los de las imágenes ya guardadas: M.FORMATOS_IMAGEN.
 FORMATOS_CONVERTIBLES = ("GIF", "BMP", "TIFF", "WEBP", "PNG", "JPEG")
 EXT_TEXTO = {".tex", ".sty", ".cls", ".bib", ".bst", ".txt", ".md", ".csv", ".json", ".cfg", ".def", ".py"}
 IGNORAR = {"build", "historial", "__pycache__", ".ipynb_checkpoints", ".git"}

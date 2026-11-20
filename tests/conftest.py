@@ -13,7 +13,9 @@ hay_latex = pytest.mark.skipif(shutil.which("pdflatex") is None, reason="sin pdf
 
 def _hay_nucleo():
     try:
-        import nbclient  # noqa: F401
+        import importlib.util
+        if importlib.util.find_spec("nbclient") is None:
+            return False
         from jupyter_client.kernelspec import find_kernel_specs
         return bool(find_kernel_specs())
     except Exception:

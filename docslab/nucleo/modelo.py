@@ -203,12 +203,11 @@ CAPAS_DEFECTO = [
 
 FILA_DEFECTO = {"visible": True, "alto": "auto", "rejilla": 0, "separacion": "", "despues": "",
                 "igualar": True, "columnas": []}
+# Formatos de imagen de un proyecto que Pillow puede abrir (lo demás se convierte a PNG al subirlo)
+FORMATOS_IMAGEN = ("PNG", "JPEG")
 COLUMNA_DEFECTO = {"abarca": 1, "distribucion": "repartir", "bloques": []}
 BLOQUE_DEFECTO = {"visible": True, "titulo": "", "mostrar_titulo": True, "estilo": "", "numero": "",
                   "estirar": False, "opciones": {}, "elementos": []}
-OPCIONES_BLOQUE = ["fondo", "borde", "fondo_titulo", "color_titulo", "color_texto", "grosor_borde",
-                   "radio", "relleno", "escala_titulo", "escala_texto", "alineacion_titulo",
-                   "alinear_texto", "columnas", "alto", "opacidad", "sombra", "tcb"]
 ITEM_DEFECTO = {"visible": True, "tipo": "texto", "x": 0.5, "y": 0.5, "ancla": "center", "ancho": "",
                 "alto": "", "rotacion": 0, "opacidad": 1, "pagina": ""}
 ITEM_TIPOS = {
@@ -348,17 +347,6 @@ def paginas_con_filas(m: dict) -> list[tuple[dict, list]]:
     return [(pg, por_pag.get(pg.get("id"), [])) for pg in m.get("paginas", [])]
 
 
-def pagina_de_fila(m: dict) -> dict:
-    """Presentaciones: id de fila → número de página (contando solo las diapositivas visibles)."""
-    salida, n = {}, 0
-    for pg, filas in paginas_con_filas(m):
-        if pg.get("visible", True) is False:
-            continue
-        n += 1
-        for f in filas:
-            salida[f.get("id")] = n
-    return salida
-
 
 def bloques_de_flujo(m: dict):
     """Documentos: las secciones (bloques) en orden, sin importar filas ni columnas."""
@@ -396,26 +384,6 @@ def recursos_usados(m: dict) -> set[str]:
                 usados.add(it["archivo"])
     return usados
 
-
-def renombrar_recurso(m: dict, viejo: str, nuevo: str) -> int:
-    """Cambia todas las referencias a una imagen. Devuelve cuántas cambió."""
-    n = 0
-    cab = m.get("cabecera", {})
-    for k in ("logo_izquierdo", "logo_derecho", "imagen"):
-        if cab.get(k) == viejo:
-            cab[k] = nuevo
-            n += 1
-    for _, e in recorrer_elementos(m):
-        for campo in campos_imagen_de(e, m):
-            if e.get(campo) == viejo:
-                e[campo] = nuevo
-                n += 1
-    for capa in m.get("capas", []):
-        for it in capa.get("elementos", []):
-            if it.get("tipo") == "imagen" and it.get("archivo") == viejo:
-                it["archivo"] = nuevo
-                n += 1
-    return n
 
 
 # ------------------------------------------------------------------ formato del texto

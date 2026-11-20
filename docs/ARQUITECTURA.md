@@ -1,4 +1,4 @@
-# Arquitectura · DocsLab 1.7.0
+# Arquitectura · DocsLab 1.8.0
 
 ## 1. Vista general
 
@@ -14,6 +14,7 @@ Flask  docslab/app.py  crear_app(): configuración, seguridad.py y registro de 9
   ├─ nucleo/     almacen.py   disco: proyectos, plantillas, recursos, historial, zips
   │              modelo.py    modelo JSON  └─ migraciones.py  esquema N→N+1
   │              trabajos.py  hilos: compilar, ejecutar; progreso, registro, cancelación
+  │              copias.py    copias de seguridad automáticas (zip, cada 24 h)
   │
   ├─ documento/  generador.py modelo → .tex ──────┐
   │              variantes.py (69) · texto.py     │
@@ -39,7 +40,7 @@ Dependencias entre subpaquetes (estado en 1.5.1): `api` usa todos; `lab` solo us
 |---|---:|---|
 | `app.py` | 68 | Fábrica de Flask: configuración, manejadores de error, contexto compartido y registro de los blueprints |
 | `seguridad.py` | 103 | Defensas del servidor local: Host (DNS rebinding), cabecera `X-DocsLab` y `Origin` en las peticiones que cambian algo, cabeceras CSP/nosniff y errores en JSON |
-| `api/sistema.py` | 88 | Estado del servidor, catálogo, tipografías del sistema, archivos estáticos |
+| `api/sistema.py` | 81 | Estado del servidor, catálogo, tipografías del sistema, archivos estáticos |
 | `api/componentes.py` | 120 | Rutas del Componente Lab |
 | `api/bibliografia.py` | 60 | Importar referencias, DOI, estilos |
 | `api/plantillas.py` | 55 | Plantillas incluidas y propias |
@@ -48,25 +49,26 @@ Dependencias entre subpaquetes (estado en 1.5.1): `api` usa todos; `lab` solo us
 | `api/lab.py` | 173 | Cuadernos del LAB: ejecutar, reiniciar, borrar variables, instalar paquetes, ejemplos |
 | `api/graficos.py` | 69 | Plantillas de gráficos |
 | `api/trabajos.py` | 33 | Estado y cancelación de trabajos en segundo plano |
-| `nucleo/almacen.py` | 685 | Disco: proyectos, plantillas, recursos, historial, importar/exportar zips (Overleaf, proyecto, plantilla) |
-| `nucleo/modelo.py` | 819 | Esquema y valores por defecto del modelo JSON: clases, tamaños, temas, idiomas, tipografías, capas, `normalizar()` |
+| `nucleo/almacen.py` | 684 | Disco: proyectos, plantillas, recursos, historial, importar/exportar zips (Overleaf, proyecto, plantilla) |
+| `nucleo/modelo.py` | 787 | Esquema y valores por defecto del modelo JSON: clases, tamaños, temas, idiomas, tipografías, capas, `normalizar()` |
 | `nucleo/migraciones.py` | 107 | Migraciones del esquema del modelo, en cadena, con detección de modelos heredados y de esquemas más nuevos (ver `MIGRACIONES.md`) |
-| `nucleo/trabajos.py` | 117 | Cola de trabajos en hilos, con progreso, registro (400 líneas) y cancelación |
-| `documento/variantes.py` | 361 | Catálogo de las 69 variantes de elemento y sus campos |
+| `nucleo/copias.py` | 151 | Copias de seguridad automáticas (zip) de `datos/`, rotación y programación en un hilo |
+| `nucleo/trabajos.py` | 128 | Cola de trabajos en hilos, con progreso, registro (400 líneas) y cancelación |
+| `documento/variantes.py` | 354 | Catálogo de las 69 variantes de elemento y sus campos |
 | `documento/generador.py` | 1184 | Modelo → LaTeX, con un mapa línea→elemento para ubicar errores. También el PDF para imprenta |
 | `documento/texto.py` | 149 | Marcado sencillo (`**`, `*`, `^`, `~`, `$…$`, `[@clave]`, `{{…}}`) → LaTeX escapado |
-| `documento/bibliografia.py` | 1844 | 8 estilos de cita, numeración, BibTeX/RIS/CSL-JSON y DOI |
+| `documento/bibliografia.py` | 1840 | 8 estilos de cita, numeración, BibTeX/RIS/CSL-JSON y DOI |
 | `documento/componentes.py` | 1054 | Componente Lab: piezas o código, campos `{{…}}`, vista previa, importar/exportar (formato v1) |
 | `documento/fuentes.py` | 173 | Tipografías propias .ttf/.otf: lectura de metadatos, familias, licencia de incrustación |
 | `salidas/compilador.py` | 625 | Detecta el motor (TeX Live o MiKTeX), formato precompilado, pasadas, errores, marcas de posición y CMYK |
 | `salidas/revision.py` | 1149 | Revisión antes de imprimir (resolución, letra, contraste, gama, tipografías, contenido) |
-| `salidas/powerpoint.py` | 603 | Exportación .pptx editable (texto sobre imagen sin texto) o como imagen |
+| `salidas/powerpoint.py` | 600 | Exportación .pptx editable (texto sobre imagen sin texto) o como imagen |
 | `lab/nucleos.py` | 621 | Núcleos Jupyter persistentes por cuaderno del LAB; reiniciar y borrar variables; tope de procesos a la vez (`DOCSLAB_MAX_NUCLEOS`) |
 | `lab/cuadernos.py` | 503 | Ejecución completa de `.ipynb`, recogida de figuras y celda para Colab |
 | `lab/graficos/__init__.py` | 540 | Catálogo de plantillas de gráficos (`{{param}}`) → código Python; categorías; probar con los datos de ejemplo |
 | `lab/graficos/comun.py` | 60 | Piezas comunes de las plantillas (parámetros, cabeceras y pies de código) |
 | `lab/graficos/galeria.py` | 1219 | Las plantillas de la galería (F-26) |
-| `lab/graficos/ciencia.py` | 955 | Las 25 plantillas de análisis científico (F-27) |
+| `lab/graficos/ciencia.py` | 954 | Las 25 plantillas de análisis científico (F-27) |
 | `lab/graficos/datos_ejemplo/` | — | Datos de ejemplo de las plantillas y mapa base |
 
 Cada área de `api/` expone `registrar(app, c)`: crea su `Blueprint`, toma del contexto `c` (un `SimpleNamespace` con `alm`, `trabajos`, `raices`, `lab`, `graficos`, `biblio` y las utilidades `json_body`, `sin_cache`, `archivos_subidos`) lo que necesita, y se registra en la app.

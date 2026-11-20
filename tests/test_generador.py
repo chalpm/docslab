@@ -1,6 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 import json
-from pathlib import Path
 
 import pytest
 

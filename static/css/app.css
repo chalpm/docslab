@@ -429,7 +429,7 @@ button.chip { border: 0; cursor: pointer; }
 .editor-en-vista header { display: flex; align-items: center; gap: 8px; }
 .editor-en-vista header strong { flex: 1; font-size: var(--t-s); }
 .estado-vista { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: 12px; color: var(--tinta-2); text-align: center; padding: 30px; }
-.estado-vista .hoja-vacia { width: 210px; height: 297px; background: #fff; box-shadow: var(--sombra-hoja); display: grid; place-items: center; color: #8A949E; position: relative; }
+.estado-vista .hoja-vacia { width: 210px; height: 297px; background: #fff; box-shadow: var(--sombra-hoja); display: grid; place-items: center; color: #5F6B76; position: relative; }   /* 5,3:1 sobre blanco (antes #8A949E, 3:1) */
 .compilando-velo { position: absolute; right: 16px; top: 12px; z-index: 6; }
 
 /* registro de compilación */
