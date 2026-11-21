@@ -2,6 +2,9 @@
 flask>=3.1.3         # versiones anteriores con avisos de seguridad
 pillow>=13.0         # miniaturas y conversión de GIF, WEBP, TIFF… a PNG (13.0: correcciones de seguridad)
 python-pptx>=0.6.21  # exportar a PowerPoint
+pymupdf>=1.25       # PowerPoint todo editable (formas e imágenes sueltas); licencia AGPL, como DocsLab
+python-docx>=1.1    # exportar a Word (.docx)
+# Opcional, fuera de Python: pandoc (fórmulas como ecuaciones de Word editables)
 # Extensión de cuadernos (ejecutar .ipynb de Colab o Jupyter)
 nbclient>=0.7
 nbformat>=5.7

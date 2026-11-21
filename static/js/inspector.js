@@ -22,6 +22,83 @@ const comun = {
   },
 };
 
+// Animación de entrada y transiciones: solo se ven al exportar a PowerPoint (salidas/animaciones.py)
+export const EFECTOS_ANIMACION = [
+  { valor: '', texto: 'Ninguna' }, { valor: 'aparecer', texto: 'Aparecer' }, { valor: 'desvanecer', texto: 'Desvanecer' },
+  { valor: 'subir', texto: 'Subir desde abajo' }, { valor: 'barrido', texto: 'Barrido' }, { valor: 'aumentar', texto: 'Aumentar' },
+];
+export const INICIOS_ANIMACION = [
+  { valor: 'clic', texto: 'Al hacer clic' }, { valor: 'con', texto: 'Con la anterior' }, { valor: 'despues', texto: 'Después de la anterior' },
+];
+export const EFECTOS_TRANSICION = [
+  { valor: '', texto: 'Ninguna' }, { valor: 'desvanecer', texto: 'Desvanecer' }, { valor: 'empujar', texto: 'Empujar' },
+  { valor: 'barrido', texto: 'Barrido' }, { valor: 'cubrir', texto: 'Cubrir' }, { valor: 'dividir', texto: 'Dividir' },
+];
+export const VELOCIDADES_TRANSICION = [{ valor: 'rapida', texto: 'Rápida' }, { valor: 'media', texto: 'Media' }, { valor: 'lenta', texto: 'Lenta' }];
+
+const CAnimacion = {
+  name: 'c-animacion',
+  components: CAMPOS,
+  props: { obj: Object, que: { type: String, default: 'este elemento' } },
+  computed: {
+    efecto: {
+      get() { return (this.obj.animacion && this.obj.animacion.efecto) || ''; },
+      set(v) {
+        if (!v) { delete this.obj.animacion; return; }
+        this.obj.animacion = { inicio: 'clic', duracion: 0.5, retraso: 0, ...(this.obj.animacion || {}), efecto: v };
+      },
+    },
+    efectos() { return EFECTOS_ANIMACION; },
+    inicios() { return INICIOS_ANIMACION; },
+  },
+  template: `
+    <details class="seccion" :open="!!efecto">
+      <summary>Animación en PowerPoint<span v-if="efecto" class="insignia">{{ efectos.find((e) => e.valor === efecto).texto }}</span></summary>
+      <div class="contenido-seccion">
+        <div class="campo"><label class="etiqueta" :for="'anim-' + obj.id">Efecto de entrada</label>
+          <select :id="'anim-' + obj.id" class="entrada" v-model="efecto">
+            <option v-for="o in efectos" :key="o.valor" :value="o.valor">{{ o.texto }}</option>
+          </select></div>
+        <template v-if="efecto">
+          <c-seleccion :obj="obj.animacion" clave="inicio" etiqueta="Empieza" :opciones="inicios"/>
+          <div class="fila-campos">
+            <c-numero :obj="obj.animacion" clave="duracion" etiqueta="Duración (s)" :min="0.1" :max="10" :paso="0.1"/>
+            <c-numero :obj="obj.animacion" clave="retraso" etiqueta="Retraso (s)" :min="0" :max="30" :paso="0.1"/>
+          </div>
+        </template>
+        <p class="ayuda">Al exportar a PowerPoint (modo editable), {{ que }} entra con este efecto, en el orden del documento. En el PDF no se ve.</p>
+      </div>
+    </details>`,
+};
+
+const CTransicion = {
+  name: 'c-transicion',
+  components: CAMPOS,
+  props: { obj: Object, etiqueta: { type: String, default: 'Transición en PowerPoint' }, ayuda: String },
+  emits: ['todas'],
+  computed: {
+    efecto: {
+      get() { return (this.obj.transicion && this.obj.transicion.efecto) || ''; },
+      set(v) {
+        if (!v) { delete this.obj.transicion; return; }
+        this.obj.transicion = { velocidad: 'media', ...(this.obj.transicion || {}), efecto: v };
+      },
+    },
+    efectos() { return EFECTOS_TRANSICION; },
+    velocidades() { return VELOCIDADES_TRANSICION; },
+  },
+  template: `
+    <div class="seccion">
+      <div class="campo"><label class="etiqueta" :for="'trans-' + (obj.id || 'doc')">{{ etiqueta }}</label>
+        <select :id="'trans-' + (obj.id || 'doc')" class="entrada" v-model="efecto">
+          <option v-for="o in efectos" :key="o.valor" :value="o.valor">{{ o.texto }}</option>
+        </select></div>
+      <c-segmentos v-if="efecto" :obj="obj.transicion" clave="velocidad" etiqueta="Velocidad" :opciones="velocidades"/>
+      <span v-if="ayuda" class="ayuda">{{ ayuda }}</span>
+      <slot/>
+    </div>`,
+};
+
 // Selector visual de estilos de caja
 const SelectorEstilo = {
   name: 'selector-estilo',
@@ -54,7 +131,7 @@ const SelectorEstilo = {
 const InspPoster = {
   name: 'insp-poster',
   ...comun,
-  components: { ...CAMPOS, SelectorEstilo, SelectorTipografias },
+  components: { ...CAMPOS, SelectorEstilo, SelectorTipografias, CTransicion },
   computed: {
     ...comun.computed,
     m() { return this.ed.modelo; },
@@ -248,6 +325,9 @@ const InspPoster = {
       </template>
     </div>
 
+    <c-transicion v-if="!diapos" :obj="m" etiqueta="Transición entre páginas en PowerPoint"
+      ayuda="Al exportar a PowerPoint, cada página entra con esta transición. En el PDF no se ve."/>
+
     <details class="seccion">
       <summary>Avanzado</summary>
       <div class="contenido-seccion">
@@ -414,7 +494,15 @@ const InspDocumento = {
 const InspPagina = {
   name: 'insp-pagina',
   ...comun,
+  components: { ...CAMPOS, CTransicion },
   props: { info: Object },
+  methods: {
+    aTodas() {
+      for (const pg of this.ed.modelo.paginas) {
+        if (pg !== this.p) pg.transicion = { ...this.p.transicion };
+      }
+    },
+  },
   computed: {
     ...comun.computed,
     p() { return this.info.obj; },
@@ -455,6 +543,9 @@ const InspPagina = {
       <c-interruptor :obj="p" clave="pie" etiqueta="Mostrar el pie y el número" :defecto="true"/>
       <c-interruptor :obj="p" clave="visible" etiqueta="Incluir en la presentación" :defecto="true" ayuda="Apagada se conserva aquí, pero no sale en el PDF."/>
     </div>
+    <c-transicion :obj="p" ayuda="Al exportar a PowerPoint, esta diapositiva entra con esta transición. En el PDF no se ve.">
+      <button v-if="p.transicion" class="btn pequeno" style="justify-self:start" @click="aTodas">Usarla en todas las diapositivas</button>
+    </c-transicion>
     <div class="seccion">
       <c-parrafo :obj="p" clave="notas" etiqueta="Notas para quien expone" :filas="3"/>
       <p class="ayuda">No salen en el PDF.</p>
@@ -534,7 +625,7 @@ const InspColumna = {
 const InspBloque = {
   name: 'insp-bloque',
   ...comun,
-  components: { ...CAMPOS, SelectorEstilo },
+  components: { ...CAMPOS, SelectorEstilo, CAnimacion },
   props: { info: Object },
   computed: {
     ...comun.computed,
@@ -614,6 +705,7 @@ const InspBloque = {
     <div class="seccion">
       <selector-estilo :obj="b" clave="estilo" con-defecto/>
     </div>
+    <c-animacion :obj="b" que="la caja entera (con lo que tenga dentro sin animación propia)"/>
     <details class="seccion">
       <summary>Colores, bordes y texto de esta caja</summary>
       <div class="contenido-seccion">
@@ -645,6 +737,7 @@ const InspBloque = {
 const InspElemento = {
   name: 'insp-elemento',
   ...comun,
+  components: { ...CAMPOS, CAnimacion },
   props: { info: Object },
   computed: {
     ...comun.computed,
@@ -709,6 +802,7 @@ const InspElemento = {
       <campo-variante v-for="c in campos" :key="c.nombre" :obj="e" :campo="c"/>
       <c-interruptor :obj="e" clave="visible" etiqueta="Mostrar el elemento" :defecto="true"/>
     </div>
+    <c-animacion :obj="e"/>
     <details class="seccion" v-if="!comp">
       <summary>Cambiar por otra variante</summary>
       <div class="contenido-seccion">
@@ -757,6 +851,7 @@ const InspCapa = {
 const InspItem = {
   name: 'insp-item',
   ...comun,
+  components: { ...CAMPOS, CAnimacion },
   props: { info: Object },
   computed: {
     ...comun.computed,
@@ -834,6 +929,7 @@ const InspItem = {
           <option v-for="o in capas" :key="o.valor" :value="o.valor">{{ o.texto }}</option>
         </select></div>
     </div>
+    <c-animacion :obj="it"/>
   </div>`,
 };
 

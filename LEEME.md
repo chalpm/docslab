@@ -1,10 +1,10 @@
 # DocsLab
 
-**Editor web de documentos científicos hechos con LaTeX:** pósters, presentaciones, artículos, tesis y documentos generales. Editas con formularios o directamente sobre la vista previa, ves el PDF real compilado al momento, revisas que esté listo para imprimir y lo descargas en PDF (también preparado para la imprenta), PowerPoint o como zip para Overleaf. Las figuras pueden salir directamente de tus cuadernos de Python.
+**Editor web de documentos científicos hechos con LaTeX:** pósters, presentaciones, artículos, tesis y documentos generales. Editas con formularios o directamente sobre la vista previa, ves el PDF real compilado al momento, revisas que esté listo para imprimir y lo descargas en PDF (también preparado para la imprenta), PowerPoint (todo editable y con animaciones), Word o como zip para Overleaf. Las figuras pueden salir directamente de tus cuadernos de Python.
 
 Funciona **en tu equipo** (Windows, macOS o Linux, con un pequeño servidor local) o **en Google Colab**. Una vez instalado no necesita internet, salvo para buscar referencias por DOI.
 
-**Versión 1.8.0** · Licencia [AGPL-3.0](LICENSE) (plantilla LaTeX: [LPPL-1.3c](latex/LICENSE-LPPL-1.3c.txt)) · [Registro de cambios](CHANGELOG.md) · [Documentación técnica y funcional](docs/README.md) · [Seguridad](SECURITY.md)
+**Versión 1.9.0** · Licencia [AGPL-3.0](LICENSE) (plantilla LaTeX: [LPPL-1.3c](latex/LICENSE-LPPL-1.3c.txt)) · [Registro de cambios](CHANGELOG.md) · [Documentación técnica y funcional](docs/README.md) · [Seguridad](SECURITY.md)
 
 ---
 
@@ -50,7 +50,7 @@ flowchart LR
     S -->|vista previa| E
     S --> D[(Carpeta datos/<br/>proyectos, plantillas)]
     N[Cuadernos .ipynb<br/>LAB] -->|figuras| S
-    S -->|descargas| O[PDF · PDF imprenta ·<br/>PowerPoint · zip Overleaf]
+    S -->|descargas| O[PDF · PDF imprenta ·<br/>PowerPoint · Word · zip Overleaf]
 ```
 
 - **Todo corre en tu máquina.** El servidor escucha solo en `127.0.0.1` (tu propio equipo); nadie más lo ve salvo que lo abras a la red a propósito.
@@ -104,7 +104,8 @@ flowchart LR
 - **Ajustar a una página**: busca el tamaño de letra más grande con el que todo cabe.
 - **Revisión para imprimir**: resolución, tamaño de letra, contraste, colores de tinta, tipografías y contenido.
 - **PDF para imprenta**: sangrado, marcas de corte, TrimBox y BleedBox, en RGB o CMYK.
-- **PowerPoint**: con el texto editable o como imagen.
+- **PowerPoint**: todo editable (texto, formas e imágenes sueltas), con animaciones por caja o elemento y transiciones entre diapositivas; o como imagen.
+- **Word (.docx)** de documentos, artículos y tesis: estilos de título de Word, listas, tablas, figuras y tablas numeradas, citas y bibliografía, índices y ecuaciones editables (con pandoc).
 - **Zip para Overleaf** y **zip del proyecto** (copia de seguridad).
 - **Compilación rápida**: la plantilla va precompilada y no se compila lo que no cambió. En nuestras pruebas, con un póster A0, la primera compilación tardó unos 5 s y cada cambio pequeño, unos 2–3 s; depende del equipo y del documento.
 
@@ -115,13 +116,14 @@ flowchart LR
 | **Python 3.11+** | Sí | El servidor | [python.org](https://www.python.org/downloads/) (marca «Add python.exe to PATH») | `brew install python` (el `python3` que trae macOS es 3.9 y no sirve) | `python3` + `python3-venv` (Ubuntu 24.04+, Debian 12+); en Ubuntu 22.04, `python3.11` + `python3.11-venv` |
 | **LaTeX (pdfLaTeX)** | Sí | Compilar | [MiKTeX](https://miktex.org/) | MacTeX (`brew install --cask mactex-no-gui`) | `texlive-latex-recommended`, `texlive-latex-extra`, `texlive-pictures`, `texlive-fonts-recommended` |
 | **Poppler** | Recomendado | Miniaturas, revisión para imprimir, PowerPoint | `winget install oschwartz10612.Poppler` | `brew install poppler` | `poppler-utils` |
-| **Ghostscript** | Opcional | CMYK, comprobación de color, PowerPoint editable | [ghostscript.com](https://ghostscript.com/releases/gsdnld.html) | `brew install ghostscript` | `ghostscript` |
+| **Ghostscript** | Opcional | CMYK, comprobación de color | [ghostscript.com](https://ghostscript.com/releases/gsdnld.html) | `brew install ghostscript` | `ghostscript` |
+| **pandoc** | Opcional | Fórmulas de Word editables (sin él, van como imagen) | `winget install JohnMacFarlane.Pandoc` | `brew install pandoc` | `pandoc` |
 | **LuaLaTeX** | Opcional | Tipografías propias | Viene con MiKTeX | Viene con MacTeX | `texlive-luatex` |
 | **Idioma de LaTeX** | Recomendado | Separación de palabras | MiKTeX lo descarga solo | Viene con MacTeX | `texlive-lang-spanish` (u otro idioma) |
 | **Tipografías libres** | Opcional | Las 19 de TeX Live | MiKTeX las descarga solas | Vienen con MacTeX | `texlive-fonts-extra` |
 | **Navegador moderno** | Sí | La interfaz | Chrome, Edge o Firefox | Safari, Chrome o Firefox | Chrome o Firefox |
 
-Las dependencias de Python (Flask, Pillow, python-pptx, Jupyter, pandas, matplotlib, seaborn, plotly…) **no se instalan a mano**: el lanzador las instala en un entorno propio (ver [§5.5](#55-qué-hace-el-lanzador-los-tres-sistemas)).
+Las dependencias de Python (Flask, Pillow, python-pptx, PyMuPDF, python-docx, Jupyter, pandas, matplotlib, seaborn, plotly…) **no se instalan a mano**: el lanzador las instala en un entorno propio (ver [§5.5](#55-qué-hace-el-lanzador-los-tres-sistemas)).
 
 DocsLab arranca aunque falten las herramientas opcionales: avisa y desactiva solo la función que las necesita.
 
@@ -150,7 +152,7 @@ Resumen por sistema:
    ```
    winget install oschwartz10612.Poppler
    ```
-4. **Ghostscript** (opcional, para CMYK y PowerPoint editable): instalador de [ghostscript.com](https://ghostscript.com/releases/gsdnld.html).
+4. **Ghostscript** (opcional, para CMYK): instalador de [ghostscript.com](https://ghostscript.com/releases/gsdnld.html).
 
 No hace falta tocar el PATH de MiKTeX, Poppler ni Ghostscript: DocsLab los busca en sus carpetas habituales aunque se hayan instalado después de abrir la ventana.
 
@@ -318,7 +320,7 @@ flowchart LR
     C -->|se compila solo| D[Vista previa PDF]
     D --> C
     D --> E[Revisar para imprimir]
-    E --> F[Descargar:<br/>PDF · imprenta ·<br/>PowerPoint · Overleaf]
+    E --> F[Descargar:<br/>PDF · imprenta ·<br/>PowerPoint · Word · Overleaf]
 ```
 
 1. **Crea el documento.** En el inicio, pulsa «Documento nuevo», elige *Póster* y completa el asistente: tamaño (por ejemplo A0), columnas, colores, tipografía e idioma. También puedes partir de una plantilla de la parte inferior.
@@ -384,7 +386,7 @@ Si prefieres escribir LaTeX, cambia a «Código LaTeX» en el diseño general: l
 
 **Menú ⋯ del editor.** Compilar solo al guardar (sí o no), guardar como plantilla nueva, actualizar su plantilla, ajustar a una página, duplicar, **versiones anteriores** (el historial, para restaurar), ver el código LaTeX y convertir en proyecto LaTeX.
 
-**Descargar.** «Revisar para imprimir…», «PDF para imprenta…», el PDF tal cual, PowerPoint, el zip para Overleaf (`poster.tex`, la plantilla, las imágenes usadas y las tipografías propias) o el zip del proyecto completo (copia de seguridad que se puede volver a importar).
+**Descargar.** «Revisar para imprimir…», «PDF para imprenta…», el PDF tal cual, PowerPoint, Word (documentos, artículos y tesis), el zip para Overleaf (`poster.tex`, la plantilla, las imágenes usadas y las tipografías propias) o el zip del proyecto completo (copia de seguridad que se puede volver a importar).
 
 **Modo LaTeX.** Menú ⋯ › «Convertir en proyecto LaTeX»: el proyecto pasa a archivos `.tex` editables con resaltado y vista previa (se guarda antes una copia del modelo). Una primera línea `% !TEX program = lualatex` (o `xelatex`) elige el programa.
 
@@ -674,7 +676,10 @@ docslab/                    (carpeta del proyecto)
 │   ├── salidas/            lo que sale del documento
 │   │   ├── compilador.py   pdfLaTeX/LuaLaTeX, formato precompilado, errores, CMYK
 │   │   ├── revision.py     revisión para imprimir
-│   │   └── powerpoint.py   exportar a .pptx
+│   │   ├── powerpoint.py   exportar a .pptx
+│   │   ├── pptx_formas.py  formas e imágenes del PDF como piezas de PowerPoint
+│   │   ├── animaciones.py  animaciones y transiciones de PowerPoint
+│   │   └── word.py         exportar a .docx
 │   └── lab/                el LAB de Python
 │       ├── nucleos.py      núcleos de Python (celda a celda, reiniciar, borrar variables)
 │       ├── cuadernos.py    ejecución completa de .ipynb y recogida de figuras
@@ -700,12 +705,12 @@ Más detalle en [docs/ARQUITECTURA.md](docs/ARQUITECTURA.md).
 Con el entorno `.venv` activado:
 ```
 python -m pip install pytest
-python -m pytest                 # 512 pruebas
+python -m pytest                 # 533 pruebas
 python tests/e2e_navegador.py    # opcional: necesita playwright y chromium
 python tests/auditoria_navegador.py   # opcional: accesibilidad (axe) y seguridad; además, pip install axe-playwright-python
 python herramientas/revisar_dependencias.py   # antes de publicar: pip-audit y JS incluido frente a npm (necesita internet)
 ```
-Las pruebas que necesitan LaTeX, Poppler, LuaLaTeX o Ghostscript se saltan si faltan esas herramientas. Para que pasen todas hace falta un TeX Live completo: en Ubuntu/Debian, `texlive-latex-extra`, `texlive-lang-spanish` y `texlive-luatex`, además de `poppler-utils` y `ghostscript`.
+Las pruebas que necesitan LaTeX, Poppler, LuaLaTeX, Ghostscript, pandoc o LibreOffice se saltan si faltan esas herramientas. Para que pasen todas hace falta un TeX Live completo: en Ubuntu/Debian, `texlive-latex-extra`, `texlive-lang-spanish` y `texlive-luatex`, además de `poppler-utils` y `ghostscript`.
 
 ## 19. Problemas frecuentes
 
@@ -741,7 +746,10 @@ Las pruebas que necesitan LaTeX, Poppler, LuaLaTeX o Ghostscript se saltan si fa
 | No se pueden subir tipografías | Hace falta LuaLaTeX (`texlive-luatex`; viene con MacTeX y MiKTeX) |
 | CMYK no disponible o «Color al imprimir» sin revisar | Instala Ghostscript |
 | La revisión dice «No se pudo revisar» | Faltan las herramientas de Poppler |
-| PowerPoint sin la opción de texto editable | Hace falta Ghostscript |
+| PowerPoint sin la opción editable | Hace falta Poppler y PyMuPDF (el lanzador lo instala) |
+| PowerPoint editable con las imágenes en un fondo | Falta PyMuPDF: `python -m pip install -r requirements.txt` en `.venv` |
+| Word: las fórmulas van como imagen | Instala pandoc y reinicia DocsLab |
+| Word: falta «python-docx» | Vuelve a abrir el lanzador o `python -m pip install -r requirements.txt` en `.venv` |
 | PowerPoint: falta «python-pptx» | Vuelve a abrir el lanzador (lo instala) o `python -m pip install -r requirements.txt` en `.venv` |
 
 **Cuadernos**
@@ -788,7 +796,7 @@ En la práctica:
 - Puedes usarlo, estudiarlo, modificarlo y redistribuirlo, también con fines comerciales.
 - Si distribuyes una versión (modificada o no), debe ir con su código fuente y bajo la misma licencia.
 - **Cláusula de red (§13):** si modificas DocsLab y lo ofreces a otras personas a través de una red (por ejemplo, un servidor compartido), debes ofrecerles el código fuente de tu versión modificada.
-- Los documentos que produces con DocsLab (PDF, `.tex`, `.pptx`) son tuyos; la licencia cubre el programa, no tu contenido.
+- Los documentos que produces con DocsLab (PDF, `.tex`, `.pptx`, `.docx`) son tuyos; la licencia cubre el programa, no tu contenido.
 
 **Excepción: la plantilla LaTeX.** `latex/postercientifico.sty` (y sus copias en las plantillas y en los zips para Overleaf) se distribuye bajo la **LaTeX Project Public License 1.3c** o posterior (`LPPL-1.3c`, texto en [`latex/LICENSE-LPPL-1.3c.txt`](latex/LICENSE-LPPL-1.3c.txt)), la licencia habitual de los paquetes LaTeX. Puedes usarla en tus documentos sin restricciones; si la modificas y redistribuyes, la versión modificada debe llevar otro nombre o indicar claramente que no es la original. Estado de mantenimiento LPPL: `maintained`; responsable: Christian Alejandro Ponce Mejia.
 

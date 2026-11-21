@@ -1,4 +1,4 @@
-# Especificación funcional · DocsLab 1.8.0
+# Especificación funcional · DocsLab 1.9.0
 
 Catálogo de funciones con identificadores estables (**F-NN**). Cada versión futura indica en el CHANGELOG qué F-NN añade, cambia o retira. Los identificadores no se reutilizan.
 
@@ -170,6 +170,32 @@ Columnas: **Módulos** (backend), **API** (grupo de `docs/API.md`), **Pruebas** 
 **Módulos.** `nucleo/copias.py`, `servidor.py` (`contexto_tls`, `solo_este_equipo`), `nucleo/trabajos.py` (`mensaje_para_usuario`), `herramientas/revisar_dependencias.py`.
 **API.** Sin cambios.
 **Pruebas.** `test_copias.py`, `test_servidor_red.py`, `test_higiene.py`.
+**Estado.** Estable.
+
+## F-30 · PowerPoint todo editable, con animaciones y transiciones
+**Introducida en.** 1.9.0.
+**Descripción.** El modo «Editable» de PowerPoint deja de poner una imagen de fondo con todo lo que no es texto. Con PyMuPDF, cada página del PDF se separa en piezas de PowerPoint en el orden en que se pintan: cajas, bandas, líneas y círculos como formas (rectángulo, rectángulo redondeado o forma libre, con relleno, borde y transparencia); cada imagen como una imagen suelta, con su recorte y su opacidad; el texto en cuadros de texto. Solo van como imagen, una por pieza, las fórmulas, los gráficos vectoriales con letras, los degradados y lo que se dibuja con código LaTeX. En el inspector, «Animación en PowerPoint» pone a cada caja, elemento o elemento de capa un efecto de entrada (aparecer, desvanecer, subir, barrido, aumentar), cuándo empieza (al hacer clic, con la anterior, después de la anterior), duración y retraso. Las piezas de cada caja o elemento animado se agrupan para que entren juntas. Cada diapositiva puede tener una transición (desvanecer, empujar, barrido, cubrir, dividir) con su velocidad, y un botón la copia a todas.
+**Reglas.**
+- Sin PyMuPDF, el modo editable vuelve a ser texto sobre una imagen sin texto (con Ghostscript), y lo avisa.
+- Las animaciones y transiciones solo cambian el .pptx; el PDF no se ve afectado.
+- Un valor de animación o transición no válido se descarta al normalizar el modelo.
+- En modo imagen van las transiciones, no las animaciones.
+**Módulos.** `salidas/powerpoint.py`, `salidas/pptx_formas.py`, `salidas/animaciones.py`, `nucleo/modelo.py` (`_limpiar_animaciones`); frontend `inspector.js` (`CAnimacion`, `CTransicion`), `powerpoint.js`.
+**API.** Sin rutas nuevas; el resultado de `POST /api/proyectos/<pid>/powerpoint` añade `formas`, `imagenes`, `piezas`, `animadas` y `todo_editable`. Campos nuevos del modelo: `animacion` (bloques, elementos y elementos de capa) y `transicion` (modelo y páginas).
+**Pruebas.** `test_animaciones.py`, `test_powerpoint.py`.
+**Estado.** Estable.
+
+## F-31 · Exportar a Word (.docx)
+**Introducida en.** 1.9.0.
+**Descripción.** Documentos, artículos y tesis se exportan a Word escritos desde el modelo, no desde el PDF, para seguir trabajando en Word, LibreOffice o Google Docs. Tamaño de página y márgenes del lienzo; letra, tamaño e interlineado de la tipografía; títulos con los estilos «Título 1…5» y su numeración; capítulos y apéndices en las tesis; portada, dedicatoria, agradecimientos, resúmenes y palabras clave; índice, índice de figuras y de tablas como campos de Word; artículo a dos columnas; número de página y encabezado. Elementos: párrafos con su alineación y marcado (negrita, cursiva, sub/superíndice, código), listas con viñetas y numeradas, definiciones, cajas como párrafos con borde y fondo, citas, cifras, tablas de Word con el pie numerado encima, imágenes y rejillas de imágenes con el pie numerado (campo SEQ), bibliografía en el estilo del proyecto. Fórmulas: con pandoc, ecuaciones de Word (OMML) editables; sin pandoc, una imagen hecha con LaTeX con su código como texto alternativo. El código LaTeX libre, los componentes y las imágenes anotadas van como imagen recortada del PDF compilado.
+**Reglas.**
+- Solo para las clases `documento`, `paper` y `tesis`; en pósters y presentaciones el trabajo termina en error.
+- Se compila antes (si hace falta) para los recortes; si no compila, el Word se hace igualmente sin esas piezas y lo avisa.
+- Las tipografías de TeX se piden por su equivalente de Word (Palatino → Palatino Linotype, Helvetica → Arial…).
+- Al abrir, Word pregunta si actualiza los campos para rellenar los índices.
+**Módulos.** `salidas/word.py`, `api/documento.py` (`_word`), `api/sistema.py` (`word` en `/api/estado`); frontend `word.js`, `editor.js` (menú Descargar).
+**API.** `POST /api/proyectos/<pid>/word` (trabajo) y `GET /api/proyectos/<pid>/word.docx`.
+**Pruebas.** `test_word.py`.
 **Estado.** Estable.
 
 ---

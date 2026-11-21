@@ -124,7 +124,12 @@ def test_exportar_a_powerpoint_editable_y_como_imagen(cliente):
     prs = Presentation(io.BytesIO(r.data))
     assert abs(prs.slide_width / EMU_CM - 29.7) < 0.1 and abs(prs.slide_height / EMU_CM - 42.0) < 0.1
     assert any("Un título para PowerPoint" in x for x in textos(prs))
-    assert sum(1 for sh in prs.slides[0].shapes if sh.shape_type == 13) == 1        # el fondo
+    if t["resultado"].get("todo_editable"):
+        # todo editable: formas de PowerPoint y ninguna imagen que ocupe la diapositiva entera
+        assert t["resultado"]["formas"] > 0
+        assert not any(sh.shape_type == 13 and sh.width >= prs.slide_width * 0.98 for sh in prs.slides[0].shapes)
+    else:
+        assert sum(1 for sh in prs.slides[0].shapes if sh.shape_type == 13) == 1    # el fondo
     assert c.get(f"/api/proyectos/{pid}").get_json()["meta"]["ajustes"]["powerpoint"]["modo"] == "editable"
     # como imagen: sin cuadros de texto
     t = esperar(c, c.post(f"/api/proyectos/{pid}/powerpoint", json={"modo": "imagen"}).get_json()["id"])

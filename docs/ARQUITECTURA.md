@@ -1,4 +1,4 @@
-# Arquitectura · DocsLab 1.8.0
+# Arquitectura · DocsLab 1.9.0
 
 ## 1. Vista general
 
@@ -25,7 +25,10 @@ Flask  docslab/app.py  crear_app(): configuración, seguridad.py y registro de 9
   │                    ├─► pdftoppm (Poppler): miniaturas y recortes
   │                    └─► gs (Ghostscript): CMYK
   │              revision.py    análisis del PDF
-  │              powerpoint.py  PDF → .pptx (pdftohtml -xml; Ghostscript en modo editable)
+  │              powerpoint.py  PDF → .pptx (pdftohtml -xml; PyMuPDF para formas e imágenes)
+  │              pptx_formas.py dibujos, imágenes y recortes del PDF → DrawingML
+  │              animaciones.py animaciones (p:timing) y transiciones
+  │              word.py        modelo → .docx (python-docx; pandoc para OMML)
   │
   └─ lab/        nucleos.py    núcleo interactivo (ipykernel, celda a celda; se apaga tras 3 h sin uso)
                  cuadernos.py  .ipynb completo (nbclient/nbformat)
@@ -62,7 +65,10 @@ Dependencias entre subpaquetes (estado en 1.5.1): `api` usa todos; `lab` solo us
 | `documento/fuentes.py` | 173 | Tipografías propias .ttf/.otf: lectura de metadatos, familias, licencia de incrustación |
 | `salidas/compilador.py` | 625 | Detecta el motor (TeX Live o MiKTeX), formato precompilado, pasadas, errores, marcas de posición y CMYK |
 | `salidas/revision.py` | 1149 | Revisión antes de imprimir (resolución, letra, contraste, gama, tipografías, contenido) |
-| `salidas/powerpoint.py` | 600 | Exportación .pptx editable (texto sobre imagen sin texto) o como imagen |
+| `salidas/powerpoint.py` | 853 | Exportación .pptx: todo editable (texto, formas, imágenes y recortes en el orden de pintado del PDF, agrupados para animar) o como imagen |
+| `salidas/pptx_formas.py` | 361 | Piezas de una página del PDF con PyMuPDF (dibujos, imágenes con su recorte, degradados) y su DrawingML |
+| `salidas/animaciones.py` | 235 | Animaciones de entrada (5 efectos, 3 inicios) y transiciones (5) en PresentationML |
+| `salidas/word.py` | 1227 | Documento, artículo o tesis → .docx desde el modelo: estilos, listas, tablas, pies SEQ, citas, índices, OMML con pandoc o fórmulas en imagen |
 | `lab/nucleos.py` | 621 | Núcleos Jupyter persistentes por cuaderno del LAB; reiniciar y borrar variables; tope de procesos a la vez (`DOCSLAB_MAX_NUCLEOS`) |
 | `lab/cuadernos.py` | 503 | Ejecución completa de `.ipynb`, recogida de figuras y celda para Colab |
 | `lab/graficos/__init__.py` | 540 | Catálogo de plantillas de gráficos (`{{param}}`) → código Python; categorías; probar con los datos de ejemplo |
@@ -75,7 +81,7 @@ Cada área de `api/` expone `registrar(app, c)`: crea su `Blueprint`, toma del c
 
 ## 3. Frontend (`static/js`)
 
-Son módulos ES cargados por `index.html`, sin paso de compilación. Piezas principales: `app.js` (arranque y rutas), `inicio.js` (inicio y asistente), `editor.js` (el editor), `vista.js` (vista previa con pdf.js), `directa.js` (edición directa), `inspector.js` y `campos.js` (formularios), `arbol.js` (estructura), `referencias.js`, `lab.js`, `cuaderno.js`, `cuadernos.js`, `revision.js`, `powerpoint.js`, `tipografias.js`, `latex.js` (modo código), `modeloed.js` (operaciones sobre el modelo), `tienda.js` (estado), `api.js` (cliente HTTP; añade la cabecera `X-DocsLab` a todas las peticiones), `foco.js` (foco en los diálogos modales: entra, no sale con Tab y vuelve al cerrar) y `util.js`. pdf.js 4.10.38 (compilación «legacy») se carga como módulo desde `app.js`. Las salidas HTML de los cuadernos se pintan en un `<iframe sandbox>`.
+Son módulos ES cargados por `index.html`, sin paso de compilación. Piezas principales: `app.js` (arranque y rutas), `inicio.js` (inicio y asistente), `editor.js` (el editor), `vista.js` (vista previa con pdf.js), `directa.js` (edición directa), `inspector.js` y `campos.js` (formularios), `arbol.js` (estructura), `referencias.js`, `lab.js`, `cuaderno.js`, `cuadernos.js`, `revision.js`, `powerpoint.js`, `word.js`, `tipografias.js`, `latex.js` (modo código), `modeloed.js` (operaciones sobre el modelo), `tienda.js` (estado), `api.js` (cliente HTTP; añade la cabecera `X-DocsLab` a todas las peticiones), `foco.js` (foco en los diálogos modales: entra, no sale con Tab y vuelve al cerrar) y `util.js`. pdf.js 4.10.38 (compilación «legacy») se carga como módulo desde `app.js`. Las salidas HTML de los cuadernos se pintan en un `<iframe sandbox>`.
 
 ## 4. Almacenamiento (`datos/`, configurable con `--datos`)
 

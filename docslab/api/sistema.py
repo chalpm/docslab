@@ -11,7 +11,7 @@ from .. import __license__, __license_sty__, __version__
 from ..documento import bibliografia as B, componentes as CP
 from ..salidas import compilador
 from ..nucleo import modelo as M
-from ..salidas import powerpoint as PP, revision
+from ..salidas import powerpoint as PP, revision, word as W
 from ..documento import variantes as V
 
 RAIZ_APP = Path(__file__).resolve().parents[2]
@@ -55,6 +55,7 @@ def registrar(app, c):
             "pdftoppm": bool(compilador.pdftoppm()), "cuadernos": nb_ok, "pillow": pil_ok,
             "ghostscript": bool(compilador.ghostscript()), "poppler": revision.herramientas(),
             "powerpoint": PP.disponible(),
+            "word": W.disponible(),
             "lualatex": bool(compilador.lualatex()), "familias": _familias_instaladas(),
             "colab": colab, "raices": [str(r) for r in raices], "datos": str(alm.datos),
             "python": sys.version.split()[0], "python_exe": sys.executable, "sistema": platform.system(),

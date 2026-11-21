@@ -314,7 +314,41 @@ def normalizar(m: dict | None) -> dict:
                                 e[campo["nombre"]] = copy.deepcopy(campo.get("defecto", ""))
                     e.setdefault("visible", True)
                     asegurar(e, "e")
+    _limpiar_animaciones(m)
     return m
+
+
+def _limpiar_animaciones(m: dict) -> None:
+    """Animaciones y transiciones para PowerPoint (opcionales): se dejan solo si son válidas."""
+    from ..salidas.animaciones import normalizar_animacion, normalizar_transicion
+
+    def anim(obj):
+        if "animacion" in obj:
+            a = normalizar_animacion(obj["animacion"])
+            if a:
+                obj["animacion"] = a
+            else:
+                del obj["animacion"]
+
+    def trans(obj):
+        if "transicion" in obj:
+            tr = normalizar_transicion(obj["transicion"])
+            if tr:
+                obj["transicion"] = tr
+            else:
+                del obj["transicion"]
+    trans(m)
+    for pg in m.get("paginas") or []:
+        trans(pg)
+    for fila in m.get("filas") or []:
+        for col in fila.get("columnas") or []:
+            for b in col.get("bloques") or []:
+                anim(b)
+                for e in b.get("elementos") or []:
+                    anim(e)
+    for capa in m.get("capas") or []:
+        for it in capa.get("elementos") or []:
+            anim(it)
 
 
 def familias_propias(m: dict) -> dict:

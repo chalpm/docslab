@@ -21,6 +21,7 @@ import { PanelReferencias, insertarCita } from './referencias.js';
 import { EdicionDirecta } from './directa.js';
 import { PanelRevision, DialogoImprenta } from './revision.js';
 import { DialogoPowerpoint } from './powerpoint.js';
+import { DialogoWord } from './word.js';
 
 const { reactive, computed, watch, provide, onMounted, onBeforeUnmount, nextTick } = Vue;
 
@@ -81,7 +82,7 @@ const DialogoCodigo = {
 export const VistaEditor = {
   name: 'vista-editor',
   props: { pid: String },
-  components: { ArbolEstructura: Arbol, InspectorEditor: Inspector, VistaPdf, EdicionDirecta, PanelRecursos, LabDocumento, PanelReferencias, PanelRegistro, SelectorVariantes, CuerpoLatex, DialogoHistorial, DialogoCodigo, PanelRevision, DialogoImprenta, DialogoPowerpoint },
+  components: { ArbolEstructura: Arbol, InspectorEditor: Inspector, VistaPdf, EdicionDirecta, PanelRecursos, LabDocumento, PanelReferencias, PanelRegistro, SelectorVariantes, CuerpoLatex, DialogoHistorial, DialogoCodigo, PanelRevision, DialogoImprenta, DialogoPowerpoint, DialogoWord },
   setup(props) {
     const pid = props.pid;
     const ed = reactive({
@@ -961,6 +962,7 @@ export const VistaEditor = {
           <div class="separador"></div>
           <button @click="ed.descargar('pdf')"><icono n="hoja"/>PDF</button>
           <button @click="ed.menu = null; ed.dialogo = 'powerpoint'"><icono n="diapositiva"/>PowerPoint (.pptx)…</button>
+          <button v-if="ed.modelo && ed.flujo" @click="ed.menu = null; ed.dialogo = 'word'"><icono n="archivo"/>Word (.docx)…</button>
           <button @click="ed.descargar('overleaf')"><icono n="archivo"/>Zip para Overleaf</button>
           <button @click="ed.descargar('proyecto')"><icono n="carpeta"/>Zip del proyecto (copia de seguridad)</button>
           <p class="nota">El zip para Overleaf trae el .tex, la plantilla y solo las imágenes que se usan.</p>
@@ -1059,6 +1061,7 @@ export const VistaEditor = {
     <dialogo-codigo v-if="ed.dialogo === 'codigo'" :pid="ed.pid" @cerrar="ed.dialogo = null"/>
     <dialogo-imprenta v-if="ed.dialogo === 'imprenta'" @cerrar="ed.dialogo = null"/>
     <dialogo-powerpoint v-if="ed.dialogo === 'powerpoint'" @cerrar="ed.dialogo = null"/>
+    <dialogo-word v-if="ed.dialogo === 'word'" @cerrar="ed.dialogo = null"/>
     <panel-revision v-if="ed.revision" @cerrar="ed.revision = false" @imprenta="ed.dialogo = 'imprenta'"/>
   </div>
   <div v-else class="arranque"><p>Abriendo el proyecto…</p></div>`,

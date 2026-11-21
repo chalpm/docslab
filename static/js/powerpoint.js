@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// Exportar el documento a PowerPoint (.pptx): con el texto editable o como imagen.
+// Exportar el documento a PowerPoint (.pptx): todo editable (texto, formas e imágenes, con animaciones) o como imagen.
 import { post, esperarTrabajo, descargar } from './api.js';
 import { tienda, avisar, avisarError } from './tienda.js';
 import { tamano } from './util.js';
@@ -59,14 +59,18 @@ export const DialogoPowerpoint = {
         <div class="opciones-pptx" role="radiogroup" aria-label="Cómo va el texto">
           <label class="opcion-pptx" :class="{activa: modoEfectivo === 'editable', desactivada: !hay.editable}">
             <input type="radio" value="editable" v-model="modo" :disabled="!hay.editable">
-            <span><strong>Texto editable</strong>
-              <span class="ayuda">Cada línea de texto es un cuadro de texto que puedes cambiar. El fondo, las cajas y las figuras van como imagen; las fórmulas y las letras de las figuras, también.</span>
-              <span class="ayuda" v-if="!hay.editable">Necesita Ghostscript (gs) en el ordenador donde corre DocsLab.</span></span>
+            <span><strong>Editable</strong>
+              <template v-if="hay.todo_editable !== false">
+                <span class="ayuda">Todo se puede cambiar: el texto en cuadros de texto, las cajas, bandas y líneas como formas de PowerPoint y cada imagen por separado. Solo van como imagen, una por pieza, las fórmulas, los gráficos vectoriales con letras y los degradados.</span>
+                <span class="ayuda">Lleva las animaciones y transiciones que pongas en el inspector («Animación en PowerPoint»).</span>
+              </template>
+              <span class="ayuda" v-else>Cada línea de texto es un cuadro de texto; el resto va en una imagen de fondo. Instala el paquete de Python «pymupdf» para que también sean editables las imágenes y las formas.</span>
+              <span class="ayuda" v-if="!hay.editable">Necesita PyMuPDF (o Ghostscript) y Poppler en el ordenador donde corre DocsLab.</span></span>
           </label>
           <label class="opcion-pptx" :class="{activa: modoEfectivo === 'imagen'}">
             <input type="radio" value="imagen" v-model="modo">
             <span><strong>Imagen</strong>
-              <span class="ayuda">Cada página como una imagen: se ve exactamente igual que el PDF, pero no se puede editar.</span></span>
+              <span class="ayuda">Cada página como una imagen: se ve exactamente igual que el PDF, pero no se puede editar. Lleva las transiciones, no las animaciones.</span></span>
           </label>
         </div>
         <label class="interruptor"><span class="texto">Imágenes en alta resolución</span>
@@ -79,7 +83,7 @@ export const DialogoPowerpoint = {
           <span class="ayuda">{{ mensaje }}</span>
           <div class="barra-progreso"><div :style="{width: Math.round(Math.max(0.06, progreso) * 100) + '%'}"></div></div>
         </div>
-        <span v-else-if="hecho" class="izq ayuda">Listo: {{ tamano(hecho.bytes) }}<template v-if="hecho.cuadros">, {{ hecho.cuadros }} cuadros de texto</template>.
+        <span v-else-if="hecho" class="izq ayuda">Listo: {{ tamano(hecho.bytes) }}<template v-if="hecho.cuadros">, {{ hecho.cuadros }} cuadros de texto</template><template v-if="hecho.formas">, {{ hecho.formas }} formas</template><template v-if="hecho.imagenes">, {{ hecho.imagenes }} imágenes</template><template v-if="hecho.animadas">, {{ hecho.animadas }} animaciones</template>.
           <button class="btn pequeno fantasma" @click="descargarOtraVez"><icono n="descargar"/>Descargar otra vez</button></span>
         <button class="btn" @click="$emit('cerrar')" :disabled="trabajando">Cerrar</button>
         <button class="btn primario" @click="generar" :disabled="trabajando || !hay.pptx"><icono n="diapositiva"/>{{ trabajando ? 'Preparando…' : 'Preparar y descargar' }}</button>

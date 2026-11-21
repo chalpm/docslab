@@ -1,15 +1,19 @@
 # SPDX-License-Identifier: AGPL-3.0-only
-"""Exportar el póster a PowerPoint (.pptx).
+"""Exportar el documento a PowerPoint (.pptx).
 
 Dos modos:
 
-* «editable»: cada página es una diapositiva del tamaño del póster. El fondo es una
-  imagen del póster SIN el texto (Ghostscript, -dFILTERTEXT) y encima va cada línea
-  de texto como un cuadro de texto de PowerPoint, en su sitio, con su tamaño, color,
-  negrita y cursiva. Lo que no se puede escribir bien como texto (las etiquetas de
-  las figuras, las fórmulas, el texto girado de otra forma) se queda en la imagen.
+* «editable»: cada página es una diapositiva del tamaño de la página. Cada línea de
+  texto va como un cuadro de texto, en su sitio, con su tamaño, color, negrita y
+  cursiva. Desde 1.9.0, con PyMuPDF, todo lo demás también es un objeto de PowerPoint
+  (``pptx_formas.py``): cajas, bandas, líneas y flechas como formas; cada imagen por
+  separado; y, como imagen pero una por pieza, solo lo que no se puede reconstruir
+  (fórmulas, letras de figuras vectoriales, degradados). Sin PyMuPDF se hace como
+  antes: el texto encima de una imagen de fondo con todo lo demás.
+  Las animaciones de entrada y las transiciones del modelo se aplican aquí
+  (``animaciones.py``).
 * «imagen»: cada página es una imagen del póster entero. Se ve exactamente igual
-  que el PDF, pero no se puede editar.
+  que el PDF, pero no se puede editar (sí lleva las transiciones).
 
 PowerPoint no admite diapositivas de más de 56 pulgadas (142,24 cm): si el póster es
 más grande, se reduce entero en la misma proporción (y se avisa).
@@ -25,7 +29,7 @@ import tempfile
 import threading
 from pathlib import Path
 
-from . import compilador, revision
+from . import animaciones as AN, compilador, pptx_formas as PF, revision
 
 EMU_PT = 12700
 MAX_PT = 56 * 72                      # lado máximo de una diapositiva de PowerPoint
@@ -66,8 +70,11 @@ def disponible() -> dict:
     import importlib.util
     hay_pptx = importlib.util.find_spec("pptx") is not None
     gs = bool(compilador.ghostscript())
+    nativo = PF.disponible()
+    texto = bool(shutil.which("pdftohtml"))
     return {"pptx": hay_pptx, "imagen": hay_pptx and (gs or bool(shutil.which("pdftoppm"))),
-            "editable": hay_pptx and gs and bool(shutil.which("pdftohtml"))}
+            "editable": hay_pptx and texto and (gs or nativo),
+            "todo_editable": hay_pptx and texto and nativo}
 
 
 # ---------------------------------------------------------------------- tipografías
@@ -402,8 +409,29 @@ def fondo(lleno, sin_texto, clases: dict, w_pt: float, h_pt: float):
         caja = (int(z["x0"] * lleno.size[0]), int(z["y0"] * lleno.size[1]),
                 int(z["x1"] * lleno.size[0]) + 1, int(z["y1"] * lleno.size[1]) + 1)
         img.paste(lleno.crop(caja), caja[:2])
-    # lo que se queda pintado, agrupado (una fórmula entera, con sus símbolos grandes
-    # que sobresalen de la caja que da pdftohtml)
+    grupos = grupos_imagen(clases)
+    pegadas = []
+    for g in grupos:
+        caja = (max(0, int(g[0] * k)), max(0, int(g[1] * k)), min(lleno.size[0], int(g[2] * k) + 1),
+                min(lleno.size[1], int(g[3] * k) + 1))
+        if caja[2] > caja[0] and caja[3] > caja[1]:
+            img.paste(lleno.crop(caja), caja[:2])
+            pegadas.append(caja)
+
+    def se_cruzan(a, b):
+        return a[0] < b[2] and a[2] > b[0] and a[1] < b[3] and a[3] > b[1]
+    # donde se ha pegado el póster con letras, el texto que va encima como cuadro de
+    # texto se quita de la imagen (si no, se vería dos veces)
+    for ln in clases["editables"]:
+        caja = _caja_px(ln, k, 0.05 * ln["tam"], 0.08 * ln["tam"], lleno.size)
+        if any(_dentro(ln, z, w_pt, h_pt) for z in clases["zonas"]) or any(se_cruzan(caja, c) for c in pegadas):
+            img.paste(sin_texto.crop(caja), caja[:2])
+    return img
+
+
+def grupos_imagen(clases: dict) -> list[list[float]]:
+    """Las líneas que se quedan pintadas, agrupadas (una fórmula entera, con sus símbolos
+    grandes que sobresalen de la caja que da pdftohtml): cajas en pt."""
     grupos = []
     for ln in clases["imagen"]:
         mx, my = (0.3, 0.6) if _MATEMATICAS.match(ln["familia"]) or _CM.match(ln["familia"]) else (0.1, 0.15)
@@ -422,23 +450,7 @@ def fondo(lleno, sin_texto, clases: dict, w_pt: float, h_pt: float):
                     break
             if unidos:
                 break
-    pegadas = []
-    for g in grupos:
-        caja = (max(0, int(g[0] * k)), max(0, int(g[1] * k)), min(lleno.size[0], int(g[2] * k) + 1),
-                min(lleno.size[1], int(g[3] * k) + 1))
-        if caja[2] > caja[0] and caja[3] > caja[1]:
-            img.paste(lleno.crop(caja), caja[:2])
-            pegadas.append(caja)
-
-    def se_cruzan(a, b):
-        return a[0] < b[2] and a[2] > b[0] and a[1] < b[3] and a[3] > b[1]
-    # donde se ha pegado el póster con letras, el texto que va encima como cuadro de
-    # texto se quita de la imagen (si no, se vería dos veces)
-    for ln in clases["editables"]:
-        caja = _caja_px(ln, k, 0.05 * ln["tam"], 0.08 * ln["tam"], lleno.size)
-        if any(_dentro(ln, z, w_pt, h_pt) for z in clases["zonas"]) or any(se_cruzan(caja, c) for c in pegadas):
-            img.paste(sin_texto.crop(caja), caja[:2])
-    return img
+    return grupos
 
 
 # ---------------------------------------------------------------------- PowerPoint
@@ -527,7 +539,13 @@ def _girada(z: dict, lineas: list[dict], w: float, h: float) -> dict:
     ancho = (W - alto_texto * s) / c if c > 0.2 else (H - alto_texto * c) / max(s, 0.2)
     ancho = max(ancho, tam) * 1.08
     principal = max(lineas, key=lambda l: l["tam"])
-    return dict(principal, cx=(x0 + x1) / 2, cy=(y0 + y1) / 2, ancho_girado=ancho, alto_girado=alto_texto * 1.1)
+    # el centro: el de la caja del elemento girado en el modelo (pdftohtml parte el texto girado en
+    # trozos sueltos, y el centro de esos trozos puede quedar lejos)
+    if all(k in z for k in ("x0", "y0", "x1", "y1")):
+        cx, cy = (z["x0"] + z["x1"]) / 2 * w, (z["y0"] + z["y1"]) / 2 * h
+    else:
+        cx, cy = (x0 + x1) / 2, (y0 + y1) / 2
+    return dict(principal, cx=cx, cy=cy, ancho_girado=ancho, alto_girado=alto_texto * 1.1)
 
 
 def exportar(pdf: Path, destino: Path, modo: str = "editable", modelo: dict | None = None,
@@ -540,8 +558,10 @@ def exportar(pdf: Path, destino: Path, modo: str = "editable", modelo: dict | No
         raise ErrorPowerPoint("Falta el paquete de Python «python-pptx»: instálalo en el entorno de DocsLab "
                               "(pip install python-pptx).") from exc
     modo = modo if modo in MODOS else "editable"
-    if modo == "editable" and not compilador.ghostscript():
-        raise ErrorPowerPoint("Para el texto editable hace falta Ghostscript (gs). Sin él se puede exportar como imagen.")
+    nativo = modo == "editable" and PF.disponible()
+    if modo == "editable" and not nativo and not compilador.ghostscript():
+        raise ErrorPowerPoint("Para el texto editable hace falta PyMuPDF o Ghostscript (gs). Sin ellos se puede "
+                              "exportar como imagen.")
     info = revision.info_pdf(pdf)
     if not info:
         raise ErrorPowerPoint("No se pudo leer el PDF del póster (hace falta Poppler).")
@@ -562,7 +582,11 @@ def exportar(pdf: Path, destino: Path, modo: str = "editable", modelo: dict | No
     if titulo:
         prs.core_properties.title = titulo
     vacia = prs.slide_layouts[6]
-    cuadros = 0
+    cuadros = formas = imagenes = piezas = animadas = 0
+    docs = None
+    if nativo:
+        import pymupdf
+        docs = (pymupdf.open(str(pdf)), pymupdf.open(str(pdf)))      # el segundo, para quitarle el texto editable
     with tempfile.TemporaryDirectory(prefix="pl-pptx-") as tmp:
         tmp = Path(tmp)
         for n in range(1, paginas + 1):
@@ -570,6 +594,19 @@ def exportar(pdf: Path, destino: Path, modo: str = "editable", modelo: dict | No
             r = _resolucion(pw, ph, ppp)
             if informar:
                 informar(f"Página {n} de {paginas}: imagen", 0.15 + 0.75 * (n - 1) / paginas)
+            transicion = AN.xml_transicion(AN.transicion_de_pagina(modelo, n, posiciones))
+            if nativo:
+                pag = lineas.get(n) or {"ancho": pw, "alto": ph, "lineas": []}
+                clases = clasificar(pag, n, figuras, girados, modelo is not None, tapan)
+                diapo = prs.slides.add_slide(vacia)
+                cuenta = _pagina_nativa(diapo, docs, n, clases, pw, ph, r, esc, modelo, posiciones)
+                cuadros += cuenta["cuadros"]
+                formas += cuenta["formas"]
+                imagenes += cuenta["imagenes"]
+                piezas += cuenta["piezas"]
+                animadas += cuenta["animadas"]
+                AN.poner_en_diapositiva(diapo, transicion, cuenta["timing"])
+                continue
             px = int(pw / 72 * r + 2) * int(ph / 72 * r + 2)
             lleno = abrir_render(renderizar(pdf, n, r, False, tmp / f"lleno-{n}.png"), px)
             if modo == "editable":
@@ -595,6 +632,222 @@ def exportar(pdf: Path, destino: Path, modo: str = "editable", modelo: dict | No
                     g = _girada(z, ls, pw, ph)
                     _cuadro(diapo, g, esc, giro=z["giro"], opacidad=z["opacidad"], texto=[l["trozos"] for l in ls])
                     cuadros += 1
+            AN.poner_en_diapositiva(diapo, transicion, "")
             lleno.close()
+    if docs:
+        for d in docs:
+            d.close()
+    if modo == "editable" and not nativo:
+        avisos.append("Sin PyMuPDF solo el texto es editable: lo demás va en una imagen de fondo "
+                      "(instala pymupdf para que también lo sean las imágenes y las formas).")
     prs.save(str(destino))
-    return {"diapositivas": paginas, "cuadros": cuadros, "escala": round(esc, 4), "avisos": avisos, "modo": modo}
+    return {"diapositivas": paginas, "cuadros": cuadros, "formas": formas, "imagenes": imagenes, "piezas": piezas,
+            "animadas": animadas, "escala": round(esc, 4), "avisos": avisos, "modo": modo,
+            "todo_editable": bool(nativo)}
+
+
+def _caja_linea(ln: dict) -> tuple[float, float, float, float]:
+    return (ln["x0"], ln["y0"], ln["x1"], ln["y1"])
+
+
+def _pagina_nativa(diapo, docs, n: int, clases: dict, pw: float, ph: float, r: int, esc: float,
+                   modelo: dict | None, posiciones: dict | None) -> dict:
+    """Una diapositiva con cada cosa de la página como objeto de PowerPoint (ver pptx_formas)."""
+    import pymupdf
+    from lxml import etree
+    from pptx.oxml.ns import nsdecls, qn
+    from pptx.util import Emu
+    pagina = docs[0][n - 1]
+    pz = PF.piezas(pagina)
+    # la página sin el texto que va en cuadros de texto: de ahí salen las piezas que van como imagen
+    limpia = docs[1][n - 1]
+    editables = list(clases["editables"]) + [l for _, ls in clases["giradas"] for l in ls]
+    for ln in editables:
+        limpia.add_redact_annot(pymupdf.Rect(ln["x0"] + 0.02 * ln["tam"], ln["y0"] + 0.05 * ln["tam"],
+                                             ln["x1"] - 0.02 * ln["tam"], ln["y1"] - 0.05 * ln["tam"]))
+    if editables:
+        limpia.apply_redactions(images=pymupdf.PDF_REDACT_IMAGE_NONE, graphics=pymupdf.PDF_REDACT_LINE_ART_NONE,
+                                text=pymupdf.PDF_REDACT_TEXT_REMOVE)
+    pix = limpia.get_pixmap(dpi=r, alpha=False)
+    from PIL import Image
+    img = Image.frombytes("RGB", (pix.width, pix.height), pix.samples)
+    k = img.size[0] / pw
+    zonas = [(z["x0"] * pw, z["y0"] * ph, z["x1"] * pw, z["y1"] * ph) for z in clases["zonas"]]
+    lejos = 10 ** 9
+    objetos = []                       # (z, orden, tipo, datos)
+    z_zona = {i: lejos for i in range(len(zonas))}
+
+    def en_zona(caja):
+        for i, zona in enumerate(zonas):
+            if PF._dentro(caja, zona, 1.0):
+                return i
+        return None
+    # fondo de la página: un rectángulo que la cubre entera → color de fondo de la diapositiva
+    dibujos = list(pz["dibujos"])
+    if dibujos:
+        p0 = dibujos[0]
+        c0 = p0["rect"]
+        if (PF._es_rectangulo(p0) and p0.get("fill") is not None and c0.x0 <= 1 and c0.y0 <= 1
+                and c0.x1 >= pw - 1 and c0.y1 >= ph - 1 and (p0.get("fill_opacity") or 1) >= 0.999):
+            from pptx.dml.color import RGBColor
+            diapo.background.fill.solid()
+            diapo.background.fill.fore_color.rgb = RGBColor.from_string(PF._hex(p0["fill"]))
+            dibujos = dibujos[1:]
+    for p in dibujos:
+        caja = (p["rect"].x0, p["rect"].y0, p["rect"].x1, p["rect"].y1)
+        i = en_zona(caja)
+        if i is not None:
+            z_zona[i] = min(z_zona[i], p["seqno"])
+            continue
+        objetos.append((p["seqno"], len(objetos), "forma", p))
+    for im in pz["imagenes"]:
+        i = en_zona(im["visible"])
+        if i is not None:
+            z_zona[i] = min(z_zona[i], im["z"])
+            continue
+        objetos.append((im["z"], len(objetos), "recorte" if im["giro"] or not im["xref"] else "imagen", im))
+    for o in pz["otros"]:
+        i = en_zona(o["caja"])
+        if i is not None:
+            z_zona[i] = min(z_zona[i], o["z"])
+            continue
+        objetos.append((o["z"], len(objetos), "recorte", {"visible": o["caja"]}))
+    for i, zona in enumerate(zonas):
+        z = min(z_zona[i], PF.z_de_caja(zona, pz["texto"], lejos))
+        objetos.append((z, len(objetos), "recorte", {"visible": zona}))
+    for g in grupos_imagen(clases):
+        if en_zona(tuple(g)) is None:
+            objetos.append((PF.z_de_caja(g, pz["texto"], lejos), len(objetos), "recorte", {"visible": tuple(g)}))
+    for ln in clases["editables"]:
+        objetos.append((PF.z_de_caja(_caja_linea(ln), pz["texto"], lejos), len(objetos), "texto", ln))
+    for zg, ls in clases["giradas"]:
+        ls = sorted(ls, key=lambda l: l["y0"])
+        zt = min(PF.z_de_caja(_caja_linea(l), pz["texto"], lejos) for l in ls)
+        objetos.append((zt, len(objetos), "girada", (zg, ls)))
+    objetos.sort(key=lambda o: (o[0], o[1]))
+
+    # imágenes de las capas con transparencia (en el PDF van en un grupo transparente que PyMuPDF no
+    # describe): su opacidad sale del modelo
+    atenuadas = []
+    if modelo and posiciones and posiciones.get("papel"):
+        papel, cajas = posiciones["papel"], posiciones.get("cajas") or {}
+        fx, fy = pw / papel["ancho"], ph / papel["alto"]
+        for capa in modelo.get("capas") or []:
+            for it in capa.get("elementos") or []:
+                c = cajas.get(it.get("id"))
+                if it.get("tipo") != "imagen" or not c or int(c.get("pagina") or 1) != n:
+                    continue
+                try:
+                    op = float(it.get("opacidad", 1)) * float(capa.get("opacidad", 1))
+                except (TypeError, ValueError):
+                    op = 1.0
+                if op < 0.999:
+                    atenuadas.append(((c["x0"] * fx, c["y0"] * fy, c["x1"] * fx, c["y1"] * fy), max(0.0, op)))
+    arbol = diapo.shapes._spTree
+    creados = []                       # (elemento XML, caja pt)
+    cuenta = {"cuadros": 0, "formas": 0, "imagenes": 0, "piezas": 0, "animadas": 0, "timing": ""}
+
+    def emu(v):
+        return Emu(int(round(v * esc * EMU_PT)))
+    for _, _, tipo, d in objetos:
+        if tipo == "forma":
+            hecho = PF.xml_forma(d, esc, diapo.shapes._next_shape_id)
+            if hecho is None:
+                if len(d["items"]) > PF.MAX_ITEMS_FORMA:
+                    tipo, d = "recorte", {"visible": (d["rect"].x0, d["rect"].y0, d["rect"].x1, d["rect"].y1)}
+                else:
+                    continue
+            else:
+                xml, caja = hecho
+                el = etree.fromstring(xml.replace("<p:sp>", f"<p:sp {nsdecls('p', 'a')}>", 1))
+                arbol.append(el)
+                creados.append((el, caja))
+                cuenta["formas"] += 1
+                continue
+        if tipo == "imagen":
+            try:
+                datos = PF.bytes_imagen(docs[0], d["xref"])
+            except (RuntimeError, ValueError):
+                tipo, d = "recorte", {"visible": d["visible"]}
+            else:
+                c = d["caja"]
+                foto = diapo.shapes.add_picture(io.BytesIO(datos), emu(c[0]), emu(c[1]), emu(c[2] - c[0]), emu(c[3] - c[1]))
+                v = d["visible"]                 # lo que se ve, si la imagen va recortada en el PDF
+                w, h = max(1e-6, c[2] - c[0]), max(1e-6, c[3] - c[1])
+                recorte = [max(0.0, (v[0] - c[0]) / w), max(0.0, (v[1] - c[1]) / h),
+                           max(0.0, (c[2] - v[2]) / w), max(0.0, (c[3] - v[3]) / h)]
+                if any(x > 0.002 for x in recorte):
+                    foto.crop_left, foto.crop_top, foto.crop_right, foto.crop_bottom = recorte
+                    foto.left, foto.top = emu(max(v[0], c[0])), emu(max(v[1], c[1]))
+                    foto.width, foto.height = emu(min(v[2], c[2]) - max(v[0], c[0])), emu(min(v[3], c[3]) - max(v[1], c[1]))
+                foto.name = f"Imagen {foto.shape_id}"
+                for zona, op in atenuadas:     # la misma imagen: casi la misma caja (intersección / unión)
+                    inter = PF._area((max(v[0], zona[0]), max(v[1], zona[1]), min(v[2], zona[2]), min(v[3], zona[3])))
+                    if inter > 0.7 * (PF._area(v) + PF._area(zona) - inter):
+                        PF.opacidad_imagen(foto, op)
+                        break
+                creados.append((foto._element, (max(v[0], c[0]), max(v[1], c[1]), min(v[2], c[2]), min(v[3], c[3]))))
+                cuenta["imagenes"] += 1
+                continue
+        if tipo == "recorte":
+            v = d["visible"]
+            datos = PF.recorte_png(img, v, k)
+            if datos:
+                foto = diapo.shapes.add_picture(io.BytesIO(datos), emu(v[0]), emu(v[1]), emu(v[2] - v[0]), emu(v[3] - v[1]))
+                foto.name = f"Pieza {foto.shape_id}"
+                creados.append((foto._element, tuple(v)))
+                cuenta["piezas"] += 1
+            continue
+        if tipo == "texto":
+            caja = _cuadro(diapo, d, esc)
+            creados.append((caja._element, _caja_linea(d)))
+            cuenta["cuadros"] += 1
+        elif tipo == "girada":
+            zg, ls = d
+            g = _girada(zg, ls, pw, ph)
+            caja = _cuadro(diapo, g, esc, giro=zg["giro"], opacidad=zg["opacidad"], texto=[l["trozos"] for l in ls])
+            creados.append((caja._element, (min(l["x0"] for l in ls), min(l["y0"] for l in ls),
+                                            max(l["x1"] for l in ls), max(l["y1"] for l in ls))))
+            cuenta["cuadros"] += 1
+    img.close()
+    # agrupar lo de cada elemento animado y escribir la animación
+    if modelo and posiciones and posiciones.get("papel"):
+        papel, cajas = posiciones["papel"], posiciones.get("cajas") or {}
+        fx, fy = pw / papel["ancho"], ph / papel["alto"]
+        animados = [(i, a, prof) for i, a, prof in AN.nodos_animados(modelo)
+                    if i in cajas and int(cajas[i].get("pagina") or 1) == n]
+        reclamados, grupos = set(), {}
+        for i, a, prof in sorted(animados, key=lambda x: -x[2]):     # primero lo más interior
+            c = cajas[i]
+            zona = (c["x0"] * fx, c["y0"] * fy, c["x1"] * fx, c["y1"] * fy)
+            # lo que cae dentro de la caja del nodo (con algo de holgura: el texto sobresale un poco);
+            # no basta con el centro: el marco de la caja que lo contiene también tiene el centro dentro
+            holgura = max(3.0, 0.03 * max(zona[2] - zona[0], zona[3] - zona[1]))
+            miembros = [el for el, caja in creados if id(el) not in reclamados and PF._dentro(caja, zona, holgura)]
+            reclamados.update(id(el) for el in miembros)
+            grupos[i] = miembros
+        pasos, hechos = [], {}
+        for i, a, _ in animados:                                     # en el orden del documento
+            sid = PF.agrupar(diapo, grupos.get(i) or [], f"Animado {i}")
+            if sid:
+                pasos.append((sid, a))
+                hechos[i] = sid
+        # un elemento animado dentro de una caja animada va justo encima de ella (si no, el fondo de la
+        # caja, que ahora es parte del grupo de la caja, lo taparía)
+        por_id = {int(e.find(".//" + qn("p:cNvPr")).get("id")): e for e in arbol
+                  if e.tag in (qn("p:sp"), qn("p:grpSp"), qn("p:pic"), qn("p:cxnSp"))}
+        for i, _, prof in animados:
+            if prof != 1 or i not in hechos:
+                continue
+            c = cajas[i]
+            centro = ((c["x0"] + c["x1"]) / 2, (c["y0"] + c["y1"]) / 2)
+            padre = next((j for j, _, pj in animados if pj == 0 and j in hechos
+                          and cajas[j]["x0"] <= centro[0] <= cajas[j]["x1"] and cajas[j]["y0"] <= centro[1] <= cajas[j]["y1"]),
+                         None)
+            hijo, madre = por_id.get(hechos[i]), por_id.get(hechos.get(padre))
+            if hijo is not None and madre is not None and list(arbol).index(hijo) < list(arbol).index(madre):
+                arbol.remove(hijo)
+                arbol.insert(list(arbol).index(madre) + 1, hijo)
+        cuenta["animadas"] = len(pasos)
+        cuenta["timing"] = AN.xml_animaciones(pasos)
+    return cuenta

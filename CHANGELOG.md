@@ -12,6 +12,36 @@ Tipos de entrada: **Añadido**, **Cambiado**, **Obsoleto**, **Eliminado**, **Cor
 
 _Nada todavía._
 
+## [1.9.0] - 2026-11-21
+
+Huella: [`huella/v1.9.0.json`](huella/v1.9.0.json). Versiones: aplicación 1.9.0 · `.sty` 1.1.0 (sin cambios) · esquema 1 (campos opcionales nuevos, sin migración). Rutas nuevas: `POST /api/proyectos/<pid>/word` y `GET /api/proyectos/<pid>/word.docx`.
+
+### Añadido
+- **PowerPoint todo editable** (F-30). Antes, en modo «Editable», solo el texto se podía cambiar; el resto iba en una imagen de fondo. Ahora, con PyMuPDF:
+  - cajas, bandas, líneas y círculos son formas de PowerPoint (rectángulo, redondeado o forma libre), con relleno, borde y transparencia;
+  - cada imagen es una imagen suelta, con su recorte y su opacidad (también las de las capas);
+  - todo va en el orden en que se pinta en el PDF;
+  - solo van como imagen, una por pieza, las fórmulas, los gráficos vectoriales con letras, los degradados y lo dibujado con código LaTeX.
+- **Animaciones en PowerPoint**: en el inspector, «Animación en PowerPoint» para cajas, elementos y elementos de capa:
+  - efecto de entrada: aparecer, desvanecer, subir, barrido o aumentar;
+  - inicio: al hacer clic, con la anterior o después de la anterior;
+  - duración y retraso.
+  Las piezas de cada caja o elemento animado se agrupan para entrar juntas.
+- **Transiciones** entre diapositivas (desvanecer, empujar, barrido, cubrir, dividir) con su velocidad, por diapositiva o para todo el documento, con un botón para copiarla a todas. También en modo imagen.
+- **Word (.docx)** de documentos, artículos y tesis (F-31), escrito desde el modelo y todo editable:
+  - estilos de título de Word con su numeración, capítulos y apéndices;
+  - portada, dedicatoria, agradecimientos, resúmenes e índices (campos de Word);
+  - dos columnas, número de página y encabezado;
+  - listas, tablas de Word, figuras y tablas con pie numerado (SEQ), citas y bibliografía en el estilo del proyecto;
+  - fórmulas como ecuaciones de Word con pandoc, o como imagen con su código como texto alternativo si no está;
+  - el código LaTeX libre, los componentes y las imágenes anotadas, como imagen recortada del PDF.
+  Menú «Descargar → Word (.docx)…». `/api/estado` informa de `word` (python-docx y pandoc).
+- Dependencias: `pymupdf>=1.25` (AGPL-3.0, compatible con la licencia de DocsLab) y `python-docx>=1.1`. pandoc es opcional.
+- Pruebas: `tests/test_animaciones.py` (8) y `tests/test_word.py` (12), con LibreOffice para comprobar que los archivos se abren y que las animaciones se reconocen.
+
+### Cambiado
+- El modo editable de PowerPoint ya no necesita Ghostscript: PyMuPDF quita el texto del PDF. Ghostscript queda como respaldo sin PyMuPDF.
+
 ## [1.8.0] - 2026-11-19
 
 Huella: [`huella/v1.8.0.json`](huella/v1.8.0.json). Versiones: aplicación 1.8.0 · `.sty` 1.1.0 (sin cambios) · esquema 1. Rutas sin cambios.

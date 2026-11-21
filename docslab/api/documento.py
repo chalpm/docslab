@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-only
-"""Salidas del documento: compilar, ajustar a una página, revisar, PDF para imprenta, PowerPoint, PDF, miniatura y zip."""
+"""Salidas del documento: compilar, ajustar a una página, revisar, PDF para imprenta, PowerPoint, Word, PDF, miniatura y zip."""
 from __future__ import annotations
 
 import hashlib
@@ -15,7 +15,7 @@ from ..nucleo import almacen as A
 from ..documento import generador
 from ..salidas import compilador
 from ..nucleo import modelo as M
-from ..salidas import powerpoint as PP, revision
+from ..salidas import powerpoint as PP, revision, word as W
 from ..documento import texto as T
 
 RAIZ_APP = Path(__file__).resolve().parents[2]
@@ -350,7 +350,7 @@ def registrar(app, c):
         notas = []
         if modo == "editable" and not hay["editable"]:
             modo = "imagen"
-            notas.append("Sin Ghostscript no se puede separar el texto: el póster va como imagen.")
+            notas.append("Sin PyMuPDF ni Ghostscript no se puede separar el texto: el documento va como imagen.")
         res = _compilar(pid, t)                      # al día (si no hay cambios, no compila)
         if res is None:
             return None
@@ -396,6 +396,62 @@ def registrar(app, c):
         return sin_cache(send_file(p, mimetype="application/vnd.openxmlformats-officedocument.presentationml.presentation",
                                    as_attachment=request.args.get("descargar") == "1",
                                    download_name=datos.get("nombre") or "poster.pptx", max_age=0))
+
+    # ------------------------------------------------------------------ Word
+    def _word(pid, t):
+        """Documento, artículo o tesis en Word, escrito desde el modelo (todo editable). Se compila
+        antes para poder poner como imagen lo que Word no sabe hacer (código LaTeX, componentes)."""
+        meta = alm.meta(pid)
+        if meta["tipo"] != "estructurado":
+            raise ValueError("Word está disponible para los documentos del editor visual")
+        modelo = alm.leer_modelo(pid)
+        if modelo.get("clase") not in W.CLASES:
+            raise ValueError("Word está disponible para documentos, artículos y tesis")
+        if not W.disponible()["docx"]:
+            raise ValueError("Falta el paquete de Python «python-docx»: instálalo en el entorno de DocsLab "
+                             "(python -m pip install python-docx) y reinicia DocsLab")
+        d = alm.dir_proyecto(pid)
+        build = d / "build"
+        build.mkdir(exist_ok=True)
+        notas, pdf, posiciones = [], None, None
+        try:
+            res = _compilar(pid, t)
+        except Exception:                                # sin LaTeX también se puede hacer el Word
+            res = None
+        if res:
+            pdf = _pdf_actual(pid, meta, res)
+            posiciones = res.get("posiciones") if res.get("ok") else None
+            if not pdf.exists():
+                pdf = None
+        if pdf is None:
+            notas.append("El documento no compiló: el código LaTeX libre y los componentes no van en el Word.")
+        destino = build / "documento.docx"
+        info = W.exportar(modelo, d, destino, pdf, posiciones, informar=lambda msg, pr=None: t.informar(msg, pr))
+        datos = dict(info, nombre=A.limpiar_nombre(meta["nombre"], "documento") + ".docx", bytes=destino.stat().st_size,
+                     notas=notas + info.get("avisos", []), fecha=time.time(), url=f"api/proyectos/{pid}/word.docx")
+        (build / "word.json").write_text(json.dumps(datos, ensure_ascii=False), encoding="utf-8")
+        t.informar("Word listo", 1.0)
+        return datos
+
+    @bp.post("/api/proyectos/<pid>/word")
+    def word(pid):
+        alm.meta(pid)
+        t = trabajos.lanzar("word", pid, lambda t: _word(pid, t), "Word", exclusivo="compilar")
+        return jsonify(t.como_dict(False))
+
+    @bp.get("/api/proyectos/<pid>/word.docx")
+    def word_docx(pid):
+        d = alm.dir_proyecto(pid) / "build"
+        try:
+            datos = json.loads((d / "word.json").read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            return jsonify({"error": "Todavía no hay Word"}), 404
+        p = d / "documento.docx"
+        if not p.is_file():
+            return jsonify({"error": "Todavía no hay Word"}), 404
+        return sin_cache(send_file(p, mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                                   as_attachment=request.args.get("descargar") == "1",
+                                   download_name=datos.get("nombre") or "documento.docx", max_age=0))
 
     @bp.post("/api/proyectos/<pid>/imprenta")
     def imprenta(pid):

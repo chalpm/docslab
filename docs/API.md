@@ -2,7 +2,7 @@
 
 > Archivo generado por `herramientas/doc_api.py` a partir de `docslab/api/*.py`. No editar a mano.
 
-Total: **95** combinaciones método + ruta. Base: `http://127.0.0.1:8765`. Formato: JSON salvo descargas (PDF, PNG, ZIP, PPTX, BIB). Sin autenticación (ver `SECURITY.md`).
+Total: **97** combinaciones método + ruta. Base: `http://127.0.0.1:8765`. Formato: JSON salvo descargas (PDF, PNG, ZIP, PPTX, BIB). Sin autenticación (ver `SECURITY.md`).
 
 **Cabecera obligatoria (desde 1.6.0):** las peticiones POST, PUT, PATCH y DELETE deben llevar `X-DocsLab: 1`; sin ella, 403. Si llevan `Origin`, debe ser el propio servidor. El servidor solo atiende a `localhost`, `*.localhost`, direcciones IP y los nombres de `DOCSLAB_HOSTS`. Los errores (400, 403, 404, 405, 413, 500) llegan en JSON: `{"error": "…"}`.
 
@@ -18,7 +18,7 @@ Parámetros de ruta: `<pid>` proyecto · `<tid>` plantilla o trabajo · `<cid>` 
 
 | Método | Ruta | Función (docslab/api/) | Descripción |
 |---|---|---|---|
-| `GET` | `/api/variantes` | `lista_variantes` (sistema.py:65) | — |
+| `GET` | `/api/variantes` | `lista_variantes` (sistema.py:66) | — |
 
 ## Cuadernos (ejecución completa)
 
@@ -63,11 +63,11 @@ Parámetros de ruta: `<pid>` proyecto · `<tid>` plantilla o trabajo · `<cid>` 
 | `GET` | `/api/proyectos/<pid>/archivos/<path:ruta>` | `archivo_leer` (proyectos.py:117) | — |
 | `PUT` | `/api/proyectos/<pid>/archivos/<path:ruta>` | `archivo_escribir` (proyectos.py:121) | — |
 | `GET` | `/api/proyectos/<pid>/bibliografia.bib` | `bib_exportar` (bibliografia.py:53) | — |
-| `GET` | `/api/proyectos/<pid>/compilacion` | `compilacion` (documento.py:450) | — |
-| `POST` | `/api/proyectos/<pid>/compilar` | `compilar` (documento.py:439) | — |
+| `GET` | `/api/proyectos/<pid>/compilacion` | `compilacion` (documento.py:506) | — |
+| `POST` | `/api/proyectos/<pid>/compilar` | `compilar` (documento.py:495) | — |
 | `POST` | `/api/proyectos/<pid>/convertir-latex` | `convertir_latex` (proyectos.py:99) | — |
 | `POST` | `/api/proyectos/<pid>/duplicar` | `proyecto_duplicar` (proyectos.py:70) | — |
-| `GET` | `/api/proyectos/<pid>/exportar` | `exportar` (documento.py:490) | — |
+| `GET` | `/api/proyectos/<pid>/exportar` | `exportar` (documento.py:546) | — |
 | `GET` | `/api/proyectos/<pid>/f/<path:ruta>` | `fichero` (proyectos.py:191) | — |
 | `POST` | `/api/proyectos/<pid>/formato` | `formato_texto` (proyectos.py:82) | — |
 | `DELETE` | `/api/proyectos/<pid>/fuentes` | `fuentes_borrar` (proyectos.py:164) | — |
@@ -75,13 +75,13 @@ Parámetros de ruta: `<pid>` proyecto · `<tid>` plantilla o trabajo · `<cid>` 
 | `POST` | `/api/proyectos/<pid>/fuentes` | `fuentes_subir` (proyectos.py:151) | — |
 | `GET` | `/api/proyectos/<pid>/historial` | `historial` (proyectos.py:91) | — |
 | `POST` | `/api/proyectos/<pid>/historial/<nombre>/restaurar` | `historial_restaurar` (proyectos.py:95) | — |
-| `POST` | `/api/proyectos/<pid>/imprenta` | `imprenta` (documento.py:401) | — |
-| `GET` | `/api/proyectos/<pid>/imprenta.pdf` | `imprenta_pdf` (documento.py:409) | — |
-| `GET` | `/api/proyectos/<pid>/imprenta.png` | `imprenta_png` (documento.py:422) | — |
+| `POST` | `/api/proyectos/<pid>/imprenta` | `imprenta` (documento.py:457) | — |
+| `GET` | `/api/proyectos/<pid>/imprenta.pdf` | `imprenta_pdf` (documento.py:465) | — |
+| `GET` | `/api/proyectos/<pid>/imprenta.png` | `imprenta_png` (documento.py:478) | — |
 | `GET` | `/api/proyectos/<pid>/latex` | `ver_latex` (proyectos.py:103) | — |
-| `GET` | `/api/proyectos/<pid>/miniatura` | `miniatura` (documento.py:483) | — |
+| `GET` | `/api/proyectos/<pid>/miniatura` | `miniatura` (documento.py:539) | — |
 | `PUT` | `/api/proyectos/<pid>/modelo` | `modelo_guardar` (proyectos.py:74) | — |
-| `GET` | `/api/proyectos/<pid>/pdf` | `pdf` (documento.py:469) | — |
+| `GET` | `/api/proyectos/<pid>/pdf` | `pdf` (documento.py:525) | — |
 | `POST` | `/api/proyectos/<pid>/powerpoint` | `powerpoint` (documento.py:379) | — |
 | `GET` | `/api/proyectos/<pid>/powerpoint.pptx` | `powerpoint_pptx` (documento.py:387) | — |
 | `DELETE` | `/api/proyectos/<pid>/recursos` | `recursos_borrar` (proyectos.py:186) | — |
@@ -90,6 +90,8 @@ Parámetros de ruta: `<pid>` proyecto · `<tid>` plantilla o trabajo · `<cid>` 
 | `POST` | `/api/proyectos/<pid>/revisar` | `revisar` (documento.py:245) | — |
 | `GET` | `/api/proyectos/<pid>/trabajos` | `trabajos_proyecto` (trabajos.py:19) | — |
 | `GET` | `/api/proyectos/<pid>/vista` | `vista_recurso` (proyectos.py:199) | Miniatura de un recurso (PNG/JPG reducidos con Pillow, PDF con pdftoppm). |
+| `POST` | `/api/proyectos/<pid>/word` | `word` (documento.py:437) | — |
+| `GET` | `/api/proyectos/<pid>/word.docx` | `word_docx` (documento.py:443) | — |
 | `POST` | `/api/proyectos/importar` | `proyecto_importar` (proyectos.py:36) | — |
 
 ## Plantillas
