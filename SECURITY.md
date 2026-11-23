@@ -6,21 +6,22 @@ Solo la **última versión MINOR publicada** recibe correcciones de seguridad, q
 
 | Versión | Soporte |
 |---|---|
-| 1.8.x | ✅ Con soporte (Python 3.11 o posterior) |
-| 1.7.x | ❌ Sin soporte: actualiza a 1.8.x |
-| 1.6.x | ❌ Sin soporte: actualiza a 1.8.x |
-| 1.5.x | ❌ Sin soporte: actualiza a 1.8.x (corrige fallos de seguridad, ver CHANGELOG) |
-| 1.4.x | ❌ Sin soporte: actualiza a 1.8.x |
-| 1.3.x | ❌ Sin soporte: actualiza a 1.8.x |
-| 1.2.x | ❌ Sin soporte: actualiza a 1.8.x |
-| 1.1.x | ❌ Sin soporte: actualiza a 1.8.x |
-| 1.0.x | ❌ Sin soporte: actualiza a 1.8.x |
+| 1.9.x | ✅ Con soporte (Python 3.11 o posterior) |
+| 1.8.x | ❌ Sin soporte: actualiza a 1.9.x |
+| 1.7.x | ❌ Sin soporte: actualiza a 1.9.x |
+| 1.6.x | ❌ Sin soporte: actualiza a 1.9.x |
+| 1.5.x | ❌ Sin soporte: actualiza a 1.9.x (corrige fallos de seguridad, ver CHANGELOG) |
+| 1.4.x | ❌ Sin soporte: actualiza a 1.9.x |
+| 1.3.x | ❌ Sin soporte: actualiza a 1.9.x |
+| 1.2.x | ❌ Sin soporte: actualiza a 1.9.x |
+| 1.1.x | ❌ Sin soporte: actualiza a 1.9.x |
+| 1.0.x | ❌ Sin soporte: actualiza a 1.9.x |
 
 ## Modelo de amenazas
 
 DocsLab está pensado como **aplicación local de un solo usuario**.
 
-| Superficie | Estado en 1.9.0 | Riesgo |
+| Superficie | Estado en 1.9.1 | Riesgo |
 |---|---|---|
 | Interfaz de red | Escucha en `127.0.0.1:8765` por defecto | Bajo en local |
 | Otras webs abiertas en el navegador (CSRF) | Las peticiones que cambian algo exigen la cabecera `X-DocsLab: 1` (otra web no puede ponerla sin un permiso CORS que DocsLab nunca da) y, si traen `Origin`, que sea el propio servidor (`docslab/seguridad.py`; pruebas en `tests/test_seguridad.py`) | Bajo |
@@ -33,14 +34,14 @@ DocsLab está pensado como **aplicación local de un solo usuario**.
 | `--host 0.0.0.0` | **Sin autenticación** | **Alto**: cualquiera en la red tiene acceso total |
 | Cuadernos (`.ipynb`, LAB) | Ejecutan Python arbitrario con los permisos del usuario | **Alto** si el cuaderno no es de confianza |
 | Compilación LaTeX | `-no-shell-escape` al compilar documentos (`salidas/compilador.py` L425 y L566). La precompilación del formato (L88) no lo pasa explícitamente, pero solo procesa contenido interno (`pcformato.tex` y la `.sty`) y depende del valor por defecto de la distribución | Bajo |
-| Importación de zips | Se impide el *path traversal* (prueba `test_zip_malicioso_no_sale_de_su_carpeta`) | Bajo |
+| Importación de zips | Se impide el *path traversal* (prueba `test_zip_malicioso_no_sale_de_su_carpeta`). Un `proyecto.json` o `plantilla.json` dañado se rechaza sin dejar carpetas a medias, y un proyecto dañado en disco no impide ver los demás (pruebas `test_h01_*`) | Bajo |
 | Explorador de carpetas | Limitado a `--raices` (prueba `test_explorar_solo_dentro_de_las_raices`) | Bajo |
 | Rutas y colores en el modelo | Se neutralizan antes de generar LaTeX (prueba `test_rutas_y_colores_peligrosos_se_neutralizan`) | Bajo |
 | Exportar a Word (pandoc) | A pandoc solo le llegan fórmulas sueltas, que trata como matemáticas sin expandir órdenes como `\input`; una fórmula que intente salir de las matemáticas (`$`, `\]`, `\)`) no pasa por pandoc y va como imagen. Se pide `--sandbox` y, si esa versión de pandoc no lo admite, se repite sin él (`salidas/word.py`) | Bajo |
 | PDF en PowerPoint (PyMuPDF) | Solo se abre el PDF que DocsLab acaba de compilar | Bajo |
 | Búsqueda por DOI | Petición saliente a doi.org (solo el DOI); respuesta limitada a 2 MB | Bajo |
 | Tráfico en la red | Por defecto solo `127.0.0.1` (no sale del equipo). Con `--host 0.0.0.0` el tráfico va sin cifrar salvo que se use `--certificado` y `--clave` (HTTPS, TLS 1.2 o posterior); la terminal avisa si no | Bajo en local; medio en red sin HTTPS |
-| Pérdida de datos | Copias automáticas (zip) cada 24 h en `DOCSLAB_COPIAS_DIR`; se guardan 7 | Bajo si la carpeta está en otro disco |
+| Pérdida de datos | Copias automáticas (zip) cada 24 h en `DOCSLAB_COPIAS_DIR`; se guardan 7. Las escrituras son atómicas con un temporal propio y un candado por proyecto, y un `modelo.json` dañado no se abre en blanco (pruebas `test_h02_*`) | Bajo si la carpeta está en otro disco |
 | Mensajes de error | 500 y fallos inesperados de los trabajos sin detalles internos (la traza va solo a la terminal) | Bajo |
 
 ## Lista de comprobación (2026-11-19)

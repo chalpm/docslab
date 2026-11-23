@@ -1,4 +1,4 @@
-# Arquitectura · DocsLab 1.9.0
+# Arquitectura · DocsLab 1.9.1
 
 ## 1. Vista general
 
@@ -52,7 +52,7 @@ Dependencias entre subpaquetes (estado en 1.5.1): `api` usa todos; `lab` solo us
 | `api/lab.py` | 173 | Cuadernos del LAB: ejecutar, reiniciar, borrar variables, instalar paquetes, ejemplos |
 | `api/graficos.py` | 69 | Plantillas de gráficos |
 | `api/trabajos.py` | 33 | Estado y cancelación de trabajos en segundo plano |
-| `nucleo/almacen.py` | 684 | Disco: proyectos, plantillas, recursos, historial, importar/exportar zips (Overleaf, proyecto, plantilla) |
+| `nucleo/almacen.py` | 746 | Disco: proyectos, plantillas, recursos, historial, importar/exportar zips (Overleaf, proyecto, plantilla) |
 | `nucleo/modelo.py` | 787 | Esquema y valores por defecto del modelo JSON: clases, tamaños, temas, idiomas, tipografías, capas, `normalizar()` |
 | `nucleo/migraciones.py` | 107 | Migraciones del esquema del modelo, en cadena, con detección de modelos heredados y de esquemas más nuevos (ver `MIGRACIONES.md`) |
 | `nucleo/copias.py` | 151 | Copias de seguridad automáticas (zip) de `datos/`, rotación y programación en un hilo |

@@ -156,14 +156,14 @@ def main(argv=None):
     print(f"DocsLab en {url}  (datos: {Path(a.datos).expanduser().resolve()})", flush=True)
     if not a.colab and not tls and not solo_este_equipo(a.host):
         print("Aviso: DocsLab está abierto a la red sin cifrar (HTTP) y sin contraseña. Úsalo solo en una red de "
-              "confianza o sírvelo por HTTPS con --certificado y --clave (ver «Seguridad» en LEEME.md).", flush=True)
+              "confianza o sírvelo por HTTPS con --certificado y --clave (ver «Seguridad» en README.md).", flush=True)
     if not a.colab:
         from docslab.nucleo.copias import Copias
         copias = Copias(Path(a.datos).expanduser())
         print(copias.resumen(), flush=True)
         copias.programar()
         if not shutil.which("pdflatex") and not os.environ.get("DOCSLAB_PDFLATEX"):
-            print("Aviso: no encuentro LaTeX (pdflatex); sin él no hay vista previa. Mira «Instalación» en LEEME.md.",
+            print("Aviso: no encuentro LaTeX (pdflatex); sin él no hay vista previa. Mira «Instalación» en README.md.",
                   flush=True)
         print("Deja esta ventana abierta mientras usas DocsLab; Ctrl + C lo cierra.", flush=True)
     if a.abrir:

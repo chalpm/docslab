@@ -2,7 +2,7 @@
 
 | Documento | Contenido |
 |---|---|
-| [`../LEEME.md`](../LEEME.md) | Manual de usuario: instalación, uso y problemas frecuentes |
+| [`../README.md`](../README.md) | Manual de usuario: instalación, uso y problemas frecuentes |
 | [`FUNCIONAL.md`](FUNCIONAL.md) | Especificación funcional: catálogo F-01…F-27 con módulos, API y pruebas |
 | [`ARQUITECTURA.md`](ARQUITECTURA.md) | Componentes, almacenamiento, flujo de compilación y dependencias |
 | [`API.md`](API.md) | Referencia de las rutas HTTP (generada con `herramientas/doc_api.py`) |

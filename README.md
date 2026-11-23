@@ -4,7 +4,7 @@
 
 Funciona **en tu equipo** (Windows, macOS o Linux, con un pequeño servidor local) o **en Google Colab**. Una vez instalado no necesita internet, salvo para buscar referencias por DOI.
 
-**Versión 1.9.0** · Licencia [AGPL-3.0](LICENSE) (plantilla LaTeX: [LPPL-1.3c](latex/LICENSE-LPPL-1.3c.txt)) · [Registro de cambios](CHANGELOG.md) · [Documentación técnica y funcional](docs/README.md) · [Seguridad](SECURITY.md)
+**Versión 1.9.1** · Licencia [AGPL-3.0](LICENSE) (plantilla LaTeX: [LPPL-1.3c](latex/LICENSE-LPPL-1.3c.txt)) · [Registro de cambios](CHANGELOG.md) · [Documentación técnica y funcional](docs/README.md) · [Seguridad](SECURITY.md)
 
 ---
 
@@ -34,6 +34,7 @@ Funciona **en tu equipo** (Windows, macOS o Linux, con un pequeño servidor loca
 20. [Versionado y documentación](#20-versionado-y-documentación)
 21. [Si venías de PosterLab](#21-si-venías-de-posterlab)
 22. [Licencia](#22-licencia)
+23. [Créditos](#23-créditos)
 
 ---
 
@@ -705,7 +706,7 @@ Más detalle en [docs/ARQUITECTURA.md](docs/ARQUITECTURA.md).
 Con el entorno `.venv` activado:
 ```
 python -m pip install pytest
-python -m pytest                 # 533 pruebas
+python -m pytest                 # 544 pruebas
 python tests/e2e_navegador.py    # opcional: necesita playwright y chromium
 python tests/auditoria_navegador.py   # opcional: accesibilidad (axe) y seguridad; además, pip install axe-playwright-python
 python herramientas/revisar_dependencias.py   # antes de publicar: pip-audit y JS incluido frente a npm (necesita internet)
@@ -803,3 +804,19 @@ En la práctica:
 Cada archivo de código propio lleva su cabecera `SPDX-License-Identifier` (`AGPL-3.0-only`, o `LPPL-1.3c` en la plantilla LaTeX).
 
 **Licencias de terceros** (incluidos en `static/vendor/`, con su licencia completa junto a cada archivo): Vue 3 (MIT), pdf.js (Apache 2.0), CodeMirror 5 (MIT) y las tipografías Atkinson Hyperlegible Next y Mono (SIL Open Font License 1.1). El mapa base y los datos de países de los ejemplos son de [Natural Earth](https://www.naturalearthdata.com/) (dominio público). Las plantillas de gráficos toman de [The R Graph Gallery](https://r-graph-gallery.com/) solo la lista de tipos de gráfico; su código es propio.
+
+## 23. Créditos
+
+**Autor y mantenedor:** Christian Alejandro Ponce Mejia ([@chalpm](https://github.com/chalpm)).
+
+**Desarrollado con Claude.** Gran parte de DocsLab se ha escrito junto con [Claude](https://www.anthropic.com/claude), el asistente de inteligencia artificial de Anthropic. Claude trabajó en el código, las pruebas, la documentación, las auditorías de seguridad y de entrega y el proceso de versionado. Entre otras cosas:
+
+- el versionado formal desde 1.0.0 y la huella digital de cada versión;
+- la galería de 73 plantillas de gráficos;
+- la reorganización del servidor en módulos;
+- las protecciones de seguridad y las copias automáticas;
+- la exportación a PowerPoint todo editable con animaciones y a Word.
+
+Los commits en los que participó lo indican con la línea `Co-Authored-By: Claude`. Las decisiones de diseño, el alcance y la revisión de cada versión son del autor.
+
+Gracias también a los proyectos libres en los que se apoya DocsLab: LaTeX y TeX Live, Flask, Jupyter, matplotlib, seaborn, PyMuPDF, python-pptx, python-docx, pandoc, Vue, pdf.js y CodeMirror, entre otros (ver la sección anterior y `requirements.txt`).

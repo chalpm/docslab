@@ -3,7 +3,7 @@
 
 Versionado: SemVer 2.0.0. Ver CHANGELOG.md y docs/VERSIONADO.md.
 """
-__version__ = "1.9.0"
+__version__ = "1.9.1"
 __version_sty__ = "1.1.0"   # latex/postercientifico.sty
 
 # Python mínimo para el servidor (lo comprueban servidor.py y los lanzadores). El código que generan las

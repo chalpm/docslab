@@ -395,7 +395,7 @@ def compilar(directorio: Path, principal: str = "poster.tex", copiar_sty: bool =
     build.mkdir(exist_ok=True)
     if not exe:
         if motor == "pdflatex":
-            mensaje = "No se encontró pdflatex. Instala TeX Live o MiKTeX (ver LEEME) o abre la aplicación en Colab."
+            mensaje = "No se encontró pdflatex. Instala TeX Live o MiKTeX (ver README.md) o abre la aplicación en Colab."
         else:
             mensaje = (f"No se encontró {motor}, que hace falta para las tipografías propias. "
                        "Viene con TeX Live (paquete texlive-luatex) y con MiKTeX.")

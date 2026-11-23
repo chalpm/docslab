@@ -1,4 +1,4 @@
-# Especificación funcional · DocsLab 1.9.0
+# Especificación funcional · DocsLab 1.9.1
 
 Catálogo de funciones con identificadores estables (**F-NN**). Cada versión futura indica en el CHANGELOG qué F-NN añade, cambia o retira. Los identificadores no se reutilizan.
 
@@ -109,12 +109,12 @@ Columnas: **Módulos** (backend), **API** (grupo de `docs/API.md`), **Pruebas** 
 **Módulos.** `nucleo/almacen.py`. **API.** `GET …/exportar`, `POST /api/proyectos/importar`. **Pruebas.** `test_api.py` · `test_plantilla_propia_y_zips`, `test_zip_malicioso_no_sale_de_su_carpeta`. **Estado.** Estable.
 
 ## F-23 · Historial, deshacer y guardado automático
-**Descripción.** Deshacer y rehacer en el cliente; guardado automático; historial en el servidor (copias con al menos 120 s de diferencia, se conservan 30) y restauración.
+**Descripción.** Deshacer y rehacer en el cliente; guardado automático; historial en el servidor (copias con al menos 120 s de diferencia, se conservan 30) y restauración. Los guardados de un mismo proyecto van de uno en uno y se escriben de forma atómica; un `modelo.json` dañado no se abre en blanco, sino que avisa para recuperarlo desde el historial (pruebas `test_integridad.py`).
 **Módulos.** `nucleo/almacen.py`, frontend `tienda.js` y `editor.js`. **API.** `…/historial`, `…/historial/<nombre>/restaurar`. **Pruebas.** Sin prueba específica. **Estado.** Parcial.
 
 ## F-24 · Despliegue
 **Descripción.** `iniciar.command` (macOS/Linux) e `iniciar.bat` (Windows) crean `.venv`, instalan las dependencias y abren `http://127.0.0.1:8765`; si ya está en marcha, solo abren el navegador. Opciones `--puerto`, `--datos`, `--raices`, `--host` y `--detalle`. Lanzador de Colab que usa Drive.
-**Módulos.** `servidor.py`, `herramientas/crear_lanzador_colab.py`. **API.** `GET /api/estado`. **Pruebas.** `test_api.py` · `test_estado_y_catalogo`. Colab [NO VERIFICADO] en un Colab real (según el LEEME, se probó en un entorno simulado). **Estado.** Parcial.
+**Módulos.** `servidor.py`, `herramientas/crear_lanzador_colab.py`. **API.** `GET /api/estado`. **Pruebas.** `test_api.py` · `test_estado_y_catalogo`. Colab [NO VERIFICADO] en un Colab real (según el README, se probó en un entorno simulado). **Estado.** Parcial.
 
 ## F-25 · Migración del esquema de proyectos
 **Introducida en.** 1.1.0.
@@ -204,8 +204,8 @@ Columnas: **Módulos** (backend), **API** (grupo de `docs/API.md`), **Pruebas** 
 
 | ID | Requisito | Fuente |
 |---|---|---|
-| RNF-01 | Funciona sin conexión (librerías incluidas), salvo la búsqueda por DOI | LEEME |
-| RNF-02 | Recompilación rápida. Medido el 2026-11-18 (plantilla Académico A0, Linux, TeX Live): primera compilación ≈ 5,3 s; cambio pequeño ≈ 2,4 s. El LEEME original decía ~1 s | Medición |
+| RNF-01 | Funciona sin conexión (librerías incluidas), salvo la búsqueda por DOI | README |
+| RNF-02 | Recompilación rápida. Medido el 2026-11-18 (plantilla Académico A0, Linux, TeX Live): primera compilación ≈ 5,3 s; cambio pequeño ≈ 2,4 s. El LEEME original (hoy README) decía ~1 s | Medición |
 | RNF-03 | Python ≥ 3.11 para el servidor (desde 1.7.0; lo comprueban los lanzadores y `servidor.py`). El código que generan las plantillas de gráficos sigue valiendo en Python 3.9, porque puede ejecutarse en otro núcleo o en Colab | `requirements.txt`, `docslab.PYTHON_MINIMO` |
 | RNF-04 | Uso local de un solo usuario, sin autenticación; protegido frente a otras webs del mismo navegador (F-28) | `SECURITY.md` |
 | RNF-06 | Compatibilidad hacia atrás: todo proyecto de un esquema anterior se abre sin pérdida de datos | `docs/MIGRACIONES.md`, F-25 |

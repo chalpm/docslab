@@ -62,7 +62,7 @@ export PATH
 if ! command -v pdflatex >/dev/null 2>&1; then
   echo "Aviso: no encuentro LaTeX (pdflatex), sin él no hay vista previa."
   echo "  macOS:          brew install --cask mactex-no-gui"
-  echo "  Ubuntu/Debian:  ver «Instalación» en LEEME.md"
+  echo "  Ubuntu/Debian:  ver «Instalación» en README.md"
 fi
 if ! command -v pdftoppm >/dev/null 2>&1; then
   echo "Aviso: no encuentro Poppler (miniaturas y revisión para imprimir)."

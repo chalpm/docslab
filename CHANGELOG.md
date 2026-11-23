@@ -12,6 +12,30 @@ Tipos de entrada: **Añadido**, **Cambiado**, **Obsoleto**, **Eliminado**, **Cor
 
 _Nada todavía._
 
+## [1.9.1] - 2026-11-23
+
+Huella: [`huella/v1.9.1.json`](huella/v1.9.1.json). Versiones: aplicación 1.9.1 · `.sty` 1.1.0 · esquema 1 (sin cambios). Sin cambios en la API ni en las dependencias.
+
+### Corregido
+- **Importar un zip con un `proyecto.json` dañado dejaba DocsLab sin lista de proyectos** (H-01 de la auditoría de entrega del 2026-11-22). Antes, un `proyecto.json` que no era un objeto (o con campos de otro tipo) dejaba una carpeta a medias, y desde entonces `GET /api/proyectos` daba error 500: la pantalla de inicio se quedaba en «Cargando…».
+  - Ahora el zip se rechaza con un mensaje claro y no deja carpeta.
+  - Un proyecto dañado en disco se salta en la lista, sin ocultar los demás.
+  - Un `plantilla.json` dañado da error 400 (antes, 500).
+- **Guardar a la vez podía dañar el documento** (H-02 de la misma auditoría). Todas las escrituras de un archivo usaban el mismo temporal `.tmp`; con guardados simultáneos (dos pestañas, o el autoguardado mientras un trabajo en segundo plano actualizaba el proyecto) daban error 500 y podían dejar `modelo.json` o `proyecto.json` mezclados. Un `modelo.json` dañado se abría como documento en blanco, y el siguiente autoguardado lo sobrescribía.
+  - Cada escritura usa ahora su propio temporal, volcado a disco antes de renombrarlo.
+  - Un candado por proyecto hace que los guardados vayan de uno en uno.
+  - Un `modelo.json` dañado ya no se abre en blanco: DocsLab avisa y se recupera desde «Historial».
+  - El historial solo guarda copias legibles.
+- `SECURITY.md`: la tabla de soporte marcaba 1.8.x; ahora 1.9.x.
+- `CHANGELOG.md`: faltaban los enlaces del pie de 1.9.0 y 1.9.1.
+
+### Cambiado
+- `LEEME.md` pasa a llamarse `README.md`, para que GitHub lo muestre en la portada del repositorio. Se actualizan las referencias en `iniciar.command`, `servidor.py`, `salidas/compilador.py`, la pantalla de inicio, `docs/README.md` y `docs/FUNCIONAL.md`. Las entradas anteriores de este CHANGELOG conservan el nombre antiguo.
+- El README tiene una sección nueva, «Créditos», que reconoce el trabajo de Claude (Anthropic) en el desarrollo.
+
+### Añadido
+- `tests/test_integridad.py` (11 pruebas de regresión de H-01 y H-02).
+
 ## [1.9.0] - 2026-11-21
 
 Huella: [`huella/v1.9.0.json`](huella/v1.9.0.json). Versiones: aplicación 1.9.0 · `.sty` 1.1.0 (sin cambios) · esquema 1 (campos opcionales nuevos, sin migración). Rutas nuevas: `POST /api/proyectos/<pid>/word` y `GET /api/proyectos/<pid>/word.docx`.
@@ -378,7 +402,9 @@ Línea base. Es la primera versión con versionado formal. Huella: [`huella/v1.0
 - En un TeX Live sin `texlive-lang-spanish` ni `luatex85.sty` fallan 11 pruebas (las 9 de compilación de plantillas, una de la API y una de LuaLaTeX). Verificado como problema de entorno en 1.2.1.
 - La API no tiene autenticación y los cuadernos ejecutan código arbitrario (ver `SECURITY.md`).
 
-[Sin publicar]: ../../compare/v1.8.0...HEAD
+[Sin publicar]: ../../compare/v1.9.1...HEAD
+[1.9.1]: ../../compare/v1.9.0...v1.9.1
+[1.9.0]: ../../compare/v1.8.0...v1.9.0
 [1.8.0]: ../../compare/v1.7.0...v1.8.0
 [1.7.0]: ../../compare/v1.6.1...v1.7.0
 [1.6.1]: ../../compare/v1.6.0...v1.6.1

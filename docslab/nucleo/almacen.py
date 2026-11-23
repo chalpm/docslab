@@ -8,6 +8,8 @@ import os
 import re
 import secrets
 import shutil
+import tempfile
+import threading
 import time
 import unicodedata
 import zipfile
@@ -74,9 +76,38 @@ def _leer_json(p: Path, defecto=None):
 
 
 def _escribir_json(p: Path, datos):
-    tmp = p.with_suffix(p.suffix + ".tmp")
-    tmp.write_text(json.dumps(datos, ensure_ascii=False, indent=1), encoding="utf-8")
-    os.replace(tmp, p)
+    """Escribe sin dejar nunca un archivo a medias: un temporal propio de esta escritura (dos escrituras
+    a la vez no se pisan), volcado a disco y renombrado encima del original."""
+    texto = json.dumps(datos, ensure_ascii=False, indent=1)
+    fd, tmp = tempfile.mkstemp(prefix=p.name + ".", suffix=".tmp", dir=p.parent)
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as f:
+            f.write(texto)
+            f.flush()
+            os.fsync(f.fileno())
+        os.replace(tmp, p)
+    except BaseException:
+        Path(tmp).unlink(missing_ok=True)
+        raise
+
+
+_CANDADOS: dict[str, threading.RLock] = {}
+_CANDADO_GLOBAL = threading.Lock()
+
+
+def candado(pid: str) -> threading.RLock:
+    """Un candado por proyecto: las escrituras de un mismo proyecto van de una en una."""
+    with _CANDADO_GLOBAL:
+        return _CANDADOS.setdefault(pid, threading.RLock())
+
+
+_TIPOS_META = {"id": str, "nombre": str, "tipo": str, "principal": str, "plantilla": (str, type(None)),
+               "clase": (str, type(None)), "ajustes": dict, "cuadernos": list}
+
+
+def _meta_valida(m) -> bool:
+    """proyecto.json tiene que ser un objeto y sus campos conocidos, del tipo esperado."""
+    return isinstance(m, dict) and all(not (k in m and not isinstance(m[k], t)) for k, t in _TIPOS_META.items())
 
 
 def _copiar_arbol(origen: Path, destino: Path, ignorar=IGNORAR, excluir_archivos=()):
@@ -110,7 +141,7 @@ class Almacen:
     def meta(self, pid: str) -> dict:
         d = self.dir_proyecto(pid)
         m = _leer_json(d / "proyecto.json")
-        if not m:
+        if not m or not _meta_valida(m):
             raise ErrorAlmacen("proyecto.json dañado")
         m.setdefault("ajustes", {})
         m["ajustes"].setdefault("auto_compilar", True)
@@ -120,7 +151,8 @@ class Almacen:
 
     def guardar_meta(self, pid: str, meta: dict):
         meta["modificado"] = ahora()
-        _escribir_json(self.dir_proyecto(pid) / "proyecto.json", meta)
+        with candado(pid):
+            _escribir_json(self.dir_proyecto(pid) / "proyecto.json", meta)
 
     def miniatura(self, pid: str) -> Path | None:
         """La miniatura del último PDF correcto; se hace aquí si aún no está o es vieja."""
@@ -138,8 +170,8 @@ class Almacen:
             if not d.is_dir():
                 continue
             m = _leer_json(d / "proyecto.json")
-            if not m:
-                continue
+            if not _meta_valida(m):
+                continue                       # dañado o ajeno: no debe impedir ver los demás proyectos
             m["tiene_pdf"] = (d / "build" / (Path(m.get("principal", "poster.tex")).stem + ".pdf")).exists()
             ok_pdf = d / "build" / (Path(m.get("principal", "poster.tex")).stem + ".ok.pdf")
             m["tiene_miniatura"] = (d / "build" / "miniatura.png").exists() or ok_pdf.exists()
@@ -193,7 +225,11 @@ class Almacen:
 
     def leer_modelo(self, pid: str) -> dict:
         d = self.dir_proyecto(pid)
-        crudo = _leer_json(d / "modelo.json", {})
+        crudo = _leer_json(d / "modelo.json") if (d / "modelo.json").exists() else {}
+        if crudo is None or not isinstance(crudo, dict):
+            # no se abre en blanco: el siguiente guardado borraría el documento
+            raise ErrorAlmacen("El archivo del documento (modelo.json) está dañado. Recupera una versión "
+                               "anterior desde «Historial» o desde una copia de seguridad.")
         try:
             if isinstance(crudo, dict) and MG.necesita_copia(crudo):
                 copia = d / "historial" / f"modelo-antes-de-esquema-{M.ESQUEMA}.json"
@@ -210,9 +246,13 @@ class Almacen:
             modelo = M.normalizar(modelo)
         except MG.ErrorEsquema as exc:
             raise ErrorAlmacen(str(exc)) from exc
+        with candado(pid):
+            return self._guardar_modelo(pid, d, modelo)
+
+    def _guardar_modelo(self, pid: str, d: Path, modelo: dict) -> dict:
         actual = d / "modelo.json"
         hist = d / "historial"
-        if actual.exists():
+        if actual.exists() and isinstance(_leer_json(actual), dict):   # al historial, solo copias legibles
             hist.mkdir(exist_ok=True)
             copias = sorted(hist.glob("modelo-*.json"))
             if not copias or time.time() - copias[-1].stat().st_mtime > 120:
@@ -578,21 +618,44 @@ class Almacen:
             return n[len(tope):] if tope else n
         rels = {rel(n): n for n in nombres}
         if "plantilla.json" in rels:
-            pm = json.loads(z.read(rels["plantilla.json"]).decode("utf-8"))
+            try:
+                pm = json.loads(z.read(rels["plantilla.json"]).decode("utf-8"))
+            except (ValueError, UnicodeDecodeError, zipfile.BadZipFile) as exc:
+                raise ErrorAlmacen("El plantilla.json del zip está dañado.") from exc
+            if not isinstance(pm, dict):
+                raise ErrorAlmacen("El plantilla.json del zip está dañado.")
             base = limpiar_nombre(pm.get("nombre") or nombre or "plantilla").lower().replace("_", "-")
             base = re.sub(r"[^a-z0-9-]", "-", base)[:40].strip("-") or "plantilla"
             tid, n = base, 2
             while (self.dir_plantillas / tid).exists() or (PLANTILLAS_INCLUIDAS / tid).exists():
                 tid, n = f"{base}-{n}", n + 1
             destino = self.dir_plantillas / tid
-            _extraer(z, rels, destino)
+            try:
+                _extraer(z, rels, destino)
+            except BaseException as exc:
+                shutil.rmtree(destino, ignore_errors=True)
+                if isinstance(exc, (zipfile.BadZipFile, OSError, EOFError)):
+                    raise ErrorAlmacen("El zip está dañado y no se pudo leer entero.") from exc
+                raise
             pm["id"] = tid
             return {"tipo": "plantilla", "plantilla": pm}
         pid = self._nuevo_pid()
         destino = self.dir_proyectos / pid
-        _extraer(z, rels, destino)
+        try:
+            return self._importar_proyecto(z, rels, destino, pid, nombre)
+        except BaseException:
+            shutil.rmtree(destino, ignore_errors=True)     # sin carpetas a medias en la lista de proyectos
+            raise
+
+    def _importar_proyecto(self, z, rels, destino: Path, pid: str, nombre: str) -> dict:
+        try:
+            _extraer(z, rels, destino)
+        except (zipfile.BadZipFile, OSError, EOFError) as exc:
+            raise ErrorAlmacen("El zip está dañado y no se pudo leer entero.") from exc
         if (destino / "proyecto.json").exists():
-            meta = _leer_json(destino / "proyecto.json", {})
+            meta = _leer_json(destino / "proyecto.json")
+            if not _meta_valida(meta):
+                raise ErrorAlmacen("El proyecto.json del zip está dañado o no es de DocsLab.")
             meta.update({"id": pid, "creado": ahora(), "modificado": ahora()})
             meta.pop("plantilla_vinculada", None)   # era de otro equipo
             if nombre:
@@ -610,7 +673,6 @@ class Almacen:
                         principal = p.relative_to(destino).as_posix()
                         break
             if not principal:
-                shutil.rmtree(destino, ignore_errors=True)
                 raise ErrorAlmacen("El zip no contiene ningún documento LaTeX (\\documentclass).")
             meta = {"id": pid, "nombre": nombre or Path(principal).stem, "tipo": "latex", "creado": ahora(),
                     "modificado": ahora(), "plantilla": "importado", "principal": principal,

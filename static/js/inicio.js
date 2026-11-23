@@ -338,7 +338,7 @@ export const VistaInicio = {
 
       <div v-if="estado && !estado.pdflatex" class="vacio">
         <strong>No se encontró pdflatex en este equipo.</strong>
-        Puedes editar, pero para ver el PDF hace falta TeX Live (o MiKTeX). La guía LEEME explica cómo instalarlo, o abre DocsLab en Google Colab con el cuaderno lanzador.
+        Puedes editar, pero para ver el PDF hace falta TeX Live (o MiKTeX). El README explica cómo instalarlo, o abre DocsLab en Google Colab con el cuaderno lanzador.
       </div>
 
       <section>
