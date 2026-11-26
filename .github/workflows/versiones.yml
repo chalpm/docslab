@@ -1,0 +1,32 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+# Etiquetas y Releases automáticas: al subir a main un commit con huella/vX.Y.Z.json nueva,
+# crea la etiqueta vX.Y.Z y su Release con las notas del CHANGELOG. Ver docs/VERSIONADO.md §5.
+name: Versiones
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: versiones
+  cancel-in-progress: false
+
+jobs:
+  etiquetar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Identidad de las etiquetas
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      - name: Crear etiquetas y Releases que falten
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 .github/scripts/etiquetar.py

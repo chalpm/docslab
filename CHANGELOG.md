@@ -10,7 +10,8 @@ Tipos de entrada: **Añadido**, **Cambiado**, **Obsoleto**, **Eliminado**, **Cor
 
 ## [Sin publicar]
 
-_Nada todavía._
+### Añadido
+- Etiquetas y Releases automáticas en GitHub (`.github/workflows/versiones.yml` y `.github/scripts/etiquetar.py`). Al subir a `main`, se crean la etiqueta anotada `vX.Y.Z` y su Release, con las notas de este CHANGELOG, de cada versión que aún no las tenga. La versión se publica en el último commit que tocó `huella/vX.Y.Z.json`, siempre que su `__version__` coincida. Nunca se mueve ni se borra una etiqueta existente.
 
 ## [1.9.1] - 2026-11-23
 

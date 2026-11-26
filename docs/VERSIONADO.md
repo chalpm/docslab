@@ -77,9 +77,9 @@ python herramientas/huella.py comparar huella/v1.0.0.json huella/v1.1.0.json
 5. `python herramientas/doc_api.py`, para regenerar `docs/API.md`.
 6. `python -m pytest`: todas las pruebas en verde, en un entorno con TeX Live completo. En Debian/Ubuntu, como mínimo: `texlive-latex-extra`, `texlive-lang-spanish`, `texlive-luatex` (incluye `luatex85.sty`), Poppler y Ghostscript.
 7. `python herramientas/huella.py generar`.
-8. `git commit -m "chore(release): vX.Y.Z"` y `git tag -a vX.Y.Z -m "DocsLab X.Y.Z"`.
+8. `git commit -m "chore(release): vX.Y.Z"` y `git push origin main`. **La etiqueta y la Release se crean solas** (`.github/workflows/versiones.yml`): la acción etiqueta como `vX.Y.Z` el último commit que tocó `huella/vX.Y.Z.json`, siempre que su `__version__` sea X.Y.Z, y publica la Release con la entrada del CHANGELOG. Para ver qué haría sin tocar nada: `python .github/scripts/etiquetar.py --simular`. Si se trabaja sin GitHub, la etiqueta se crea a mano: `git tag -a vX.Y.Z -m "DocsLab X.Y.Z"`.
 9. `python herramientas/empaquetar.py` si se distribuye un zip; anota su SHA-256 en las notas de la versión.
-10. En `SECURITY.md`, actualiza la tabla de soporte: la nueva MINOR pasa a tener soporte y la anterior deja de tenerlo.
+10. En `SECURITY.md`, actualiza la tabla de soporte: la nueva MINOR pasa a tener soporte y la anterior deja de tenerlo (antes del paso 7).
 
 ## 6. Commits
 
